@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
+import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/calendar/widgets/custom_svg.dart';
+
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/styles.dart';
 
 class CalendarMeeting extends StatefulWidget {
   const CalendarMeeting({Key? key}) : super(key: key);
@@ -11,18 +15,6 @@ class CalendarMeeting extends StatefulWidget {
 }
 
 class _CalendarMeetingState extends State<CalendarMeeting> {
-  List<Map<String, dynamic>> calendarMeetingDetails = [
-    {
-      "time": "09:15 AM - 09:45 AM Room 404",
-      "person": "Bessie Miles",
-      "personJob": "Lead UX / UI Designer, #Studio"
-    },
-    {
-      "time": "10:15 AM - 10:45 AM Room 78",
-      "person": "Calvin Cooper",
-      "personJob": "Product Designer, Apple Inc."
-    },
-  ];
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -43,25 +35,17 @@ class _CalendarMeetingState extends State<CalendarMeeting> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset(
+                    const CustomSVG(
                       IconPath.timeSvg,
-                      width: 22,
-                      height: 22,
-                      fit: BoxFit.cover,
+                      size: 22,
                     ),
                     Text(
                       meeting["time"],
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: CustomColors.customGreyTextColor,
-                      ),
+                      style: kTextStyleS13W600CustomGrey,
                     ),
-                    SvgPicture.asset(
+                    const CustomSVG(
                       IconPath.locationSvg,
-                      width: 22,
-                      height: 22,
-                      fit: BoxFit.cover,
+                      size: 22,
                     ),
                   ],
                 ),
@@ -75,9 +59,7 @@ class _CalendarMeetingState extends State<CalendarMeeting> {
                       radius: 25,
                       backgroundColor: CustomColors.circleAvatarBackgroundColor,
                     ),
-                    const SizedBox(
-                      width: 12,
-                    ),
+                    kSizedBoxW12,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -88,9 +70,7 @@ class _CalendarMeetingState extends State<CalendarMeeting> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const SizedBox(
-                          height: 4,
-                        ),
+                        kSizedBoxH4,
                         Text(
                           meeting["personJob"],
                           style: const TextStyle(
@@ -108,7 +88,6 @@ class _CalendarMeetingState extends State<CalendarMeeting> {
                 thickness: 3,
                 indent: 10,
                 endIndent: 10,
-                // color: Color.fromRGBO(161, 161, 161, 1),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 5, 25, 12),
@@ -116,46 +95,30 @@ class _CalendarMeetingState extends State<CalendarMeeting> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
-                      children: [
-                        SvgPicture.asset(
+                      children: const [
+                        CustomSVG(
                           IconPath.scheduleSvg,
-                          width: 22,
-                          height: 22,
-                          fit: BoxFit.cover,
+                          size: 22,
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
-                          "Reschedule",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        kSizedBoxW10,
+                        Text(
+                          kRescheduleString,
+                          style: kTextStyleS13W600,
                         ),
                       ],
                     ),
                     Row(
-                      children: [
-                        SvgPicture.asset(
+                      children: const [
+                        CustomSVG(
                           IconPath.talkSvg,
-                          width: 22,
-                          height: 22,
-                          fit: BoxFit.cover,
+                          size: 22,
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
+                        kSizedBoxW10,
+                        Text(
                           "Let's talk",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: kTextStyleS13W600,
                         ),
-                        const SizedBox(
-                          width: 50,
-                        ),
+                        kSizedBoxW50,
                       ],
                     ),
                   ],

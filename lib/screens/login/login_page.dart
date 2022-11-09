@@ -1,3 +1,4 @@
+import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/network/base_client.dart';
@@ -15,10 +16,10 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(BaseClient());
-    final loginController = Get.put(LoginController());
+    final loginController = Get.put(LoginController(), permanent: true);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: CustomColors.backgroundColor,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
@@ -35,11 +36,11 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Log In",
+                    kLogInString,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
-                      color: Color.fromRGBO(75, 103, 176, 1),
+                      color: CustomColors.blueTextColor,
                     ),
                   ),
                   kSizedBoxH40,
@@ -50,7 +51,7 @@ class LoginPage extends StatelessWidget {
                         CustomTextFormField(
                           onSaved: (value) =>
                               loginController.userModel.email = value!,
-                          hintText: 'Email',
+                          hintText: kEmailString,
                           validator: (value) =>
                               loginController.emailValidator(value!),
                         ),
@@ -59,26 +60,23 @@ class LoginPage extends StatelessWidget {
                           onSaved: (value) =>
                               loginController.userModel.password = value!,
                           obscureText: true,
-                          hintText: 'Password',
+                          hintText: kPasswordString,
                           validator: (value) =>
                               loginController.passwordValidator(value!),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 6,
-                  ),
+                  kSizedBoxH6,
                   GestureDetector(
                     onTap: () => Get.toNamed(Routes.forgotPassword),
                     child: const Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        "Forgot Password?",
+                        kForgotPasswordString,
                         style: TextStyle(
                           fontSize: 13,
-                          // fontWeight: FontWeight.w400,
-                          color: Color.fromRGBO(75, 103, 176, 1),
+                          color: CustomColors.blueTextColor,
                         ),
                       ),
                     ),
@@ -90,15 +88,15 @@ class LoginPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => loginController.goToLoginPage(),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(75, 103, 176, 1),
+                        backgroundColor: CustomColors.blueTextColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: const Text(
-                        "Login",
+                        kLogInString,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: CustomColors.whiteTextColor,
                         ),
                       ),
                     ),

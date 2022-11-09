@@ -1,4 +1,4 @@
-import 'calendar_model.dart';
+import '../../models/calendar/calendar_model.dart';
 import 'package:flutter/material.dart';
 
 class CalendarController {

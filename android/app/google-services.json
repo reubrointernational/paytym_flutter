@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "653354822329",
+    "project_id": "paytym-cf0ed",
+    "storage_bucket": "paytym-cf0ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653354822329:android:fb1abc9b696708e9c24968",
+        "android_client_info": {
+          "package_name": "com.reubro.paytym"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653354822329-ska481k0c20l2mibflhbbm0h94j0p27t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe_5SJLX5C_5xFoC2CSClgjM7DjhnzgIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653354822329-ska481k0c20l2mibflhbbm0h94j0p27t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

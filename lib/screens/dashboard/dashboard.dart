@@ -2,43 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
+import 'package:paytym/core/constants/styles.dart';
+import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/calendar/widgets/custom_svg.dart';
 import 'package:paytym/screens/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:paytym/screens/scan_time/scanner_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/widgets/paytym_logo.dart';
 
-List<Map<String, dynamic>> employeeLeaves = [
-  {
-    "bgColor": Colors.green,
-    'total': 10,
-    'icon': Icons.people_outline,
-    "title": "Absentees",
-    "attendance_percentage": 98,
-  },
-  {
-    "bgColor": Colors.red,
-    'total': 05,
-    'icon': Icons.text_snippet_outlined,
-    "title": "Sick Leave",
-    "attendance_percentage": 98,
-  },
-  {
-    "bgColor": Colors.orange,
-    'total': 12,
-    'icon': Icons.event,
-    "title": "Annual Leave",
-    "attendance_percentage": 98,
-  },
-  {
-    "bgColor": Colors.blue,
-    'total': 04,
-    'icon': Icons.schedule,
-    "title": "Late Arrival",
-    "attendance_percentage": 98,
-  },
-];
+import '../../core/constants/strings.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -49,18 +23,17 @@ class DashboardPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ScanTime()),
-            );
-          },
-          backgroundColor: CustomColors.fabColor,
-          child: SvgPicture.asset(
-            IconPath.scanIconSvg,
-            width: 23,
-            height: 23,
-            fit: BoxFit.cover,
-          )),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const ScanTime()),
+          );
+        },
+        backgroundColor: CustomColors.fabColor,
+        child: const CustomSVG(
+          IconPath.scanIconSvg,
+          size: 23,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -78,11 +51,8 @@ class DashboardPage extends StatelessWidget {
                       children: [
                         Text(
                           dashboardController.getWish(),
-                          style: const TextStyle(
-                            color: CustomColors.darkGreyTextColor,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: kTextStyleS13W600.copyWith(
+                              color: CustomColors.darkGreyTextColor),
                         ),
                         Text(
                           '${Get.find<LoginController>().loginResponseModel?.employee?.firstName ?? ''} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName ?? ''}',
@@ -102,7 +72,6 @@ class DashboardPage extends StatelessWidget {
             Expanded(
               flex: 7,
               child: Container(
-                // height: 480,
                 width: double.infinity,
                 color: CustomColors.dashboardGreyBackgroundColor,
                 child: GridView.builder(
@@ -172,9 +141,7 @@ class DashboardPage extends StatelessWidget {
                       color: leaves["bgColor"],
                     ),
                   ),
-                  const SizedBox(
-                    height: 2,
-                  ),
+                  kSizedBoxH2,
                   Text(
                     leaves["title"],
                     style: const TextStyle(
@@ -229,11 +196,11 @@ class DashboardPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "CHECK IN/CHECK OUT",
+                  kCheckInOutString,
                   style: TextStyle(
                     fontSize: 9,
                     fontWeight: FontWeight.w700,
-                    color: Color.fromRGBO(75, 103, 176, 1),
+                    color: CustomColors.blueTextColor,
                   ),
                 ),
                 Row(
@@ -247,13 +214,13 @@ class DashboardPage extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(255, 80, 80, 80)),
+                              color: CustomColors.grey80x3TextColor),
                           children: const [
                             TextSpan(
-                              text: ' hrs',
+                              text: khrsString,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Color.fromARGB(255, 156, 156, 156),
+                                color: CustomColors.grey156x3TextColor,
                               ),
                             ),
                           ],
@@ -269,8 +236,7 @@ class DashboardPage extends StatelessWidget {
                             Get.find<DashboardController>().updateTimer();
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromRGBO(75, 103, 176, 1),
+                            backgroundColor: CustomColors.blueCardColor,
                             // padding: const EdgeInsets.symmetric(
                             //     horizontal: 10, vertical: 20),
                             shape: const RoundedRectangleBorder(
@@ -282,8 +248,8 @@ class DashboardPage extends StatelessWidget {
                           ),
                           child: Text(
                             Get.find<DashboardController>().isTimerOn.value
-                                ? 'Stop'
-                                : 'Start',
+                                ? kStopString
+                                : kStartString,
                             style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 12,
@@ -299,12 +265,8 @@ class DashboardPage extends StatelessWidget {
                     children: [
                       Obx(
                         () => Text(
-                          "Now is ${Get.find<DashboardController>().time.value}",
-                          style: const TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(255, 140, 140, 140),
-                          ),
+                          "$kNowIsString ${Get.find<DashboardController>().time.value}",
+                          style: kTextStyleS11W600C255140x3,
                         ),
                       ),
                       const VerticalDivider(
@@ -315,12 +277,7 @@ class DashboardPage extends StatelessWidget {
                       ),
                       Text(
                         Get.find<DashboardController>().getDate(),
-                        // "Wednesday, 12 Sep 2022",
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: Color.fromARGB(255, 140, 140, 140),
-                        ),
+                        style: kTextStyleS11W600C255140x3,
                       ),
                     ],
                   ),
@@ -329,7 +286,7 @@ class DashboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Next Shift :",
+                      kNextShiftString,
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -340,18 +297,12 @@ class DashboardPage extends StatelessWidget {
                         Icon(
                           Icons.calendar_month,
                           size: 13,
-                          color: Color.fromARGB(255, 105, 105, 105),
+                          color: CustomColors.greyIconColor,
                         ),
-                        SizedBox(
-                          width: 4,
-                        ),
+                        kSizedBoxW4,
                         Text(
-                          "Sep 20",
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(255, 140, 140, 140),
-                          ),
+                          kSep20String,
+                          style: kTextStyleS11W600C255140x3,
                         ),
                       ],
                     ),
@@ -360,24 +311,16 @@ class DashboardPage extends StatelessWidget {
                         Icon(
                           Icons.schedule,
                           size: 13,
-                          color: Color.fromARGB(255, 105, 105, 105),
+                          color: CustomColors.greyIconColor,
                         ),
-                        SizedBox(
-                          width: 4,
-                        ),
+                        kSizedBoxW4,
                         Text(
-                          "08:00 PM",
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(255, 140, 140, 140),
-                          ),
+                          k08PMString,
+                          style: kTextStyleS11W600C255140x3,
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      width: 25,
-                    ),
+                    kSizedBoxW25,
                   ],
                 ),
               ],
@@ -390,34 +333,12 @@ class DashboardPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            children: [
-              SvgPicture.asset(
-                IconPath.menuSvg,
-                width: 20,
-                height: 20,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(width: 15),
-              RichText(
-                text: const TextSpan(
-                  text: "Pay",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Color.fromRGBO(75, 103, 176, 1),
-                  ),
-                  children: [
-                    TextSpan(
-                      text: 'tym',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            children: const [
+              CustomSVG(IconPath.menuSvg, size: 20),
+              kSizedBoxW15,
+              PaytymLogo(
+                size: 18,
+              )
             ],
           ),
           Row(
@@ -428,14 +349,12 @@ class DashboardPage extends StatelessWidget {
                   right: 0,
                   top: 2,
                   child: CircleAvatar(
-                    backgroundColor: Colors.red,
+                    backgroundColor: CustomColors.redColor,
                     radius: 5,
                   ),
                 ),
               ]),
-              const SizedBox(
-                width: 15,
-              ),
+              kSizedBoxW15,
               CachedNetworkImage(
                 imageUrl: Get.find<LoginController>()
                         .loginResponseModel

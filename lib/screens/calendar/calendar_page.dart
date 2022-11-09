@@ -5,6 +5,8 @@ import 'package:paytym/screens/calendar/widgets/calendar_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/constants/strings.dart';
+import '../../core/constants/styles.dart';
 import 'Tabs/meeting/calendar_meeting_tab.dart';
 import 'Tabs/schedule/calendar_schedule_tab.dart';
 
@@ -37,22 +39,14 @@ class _CalendarPageState extends State<CalendarPage> {
                     height: 40,
                     child: Center(
                       child: Text(
-                        "Meeting",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.2,
-                        ),
+                        kMeetingString,
+                        style: kTextStyleS14W600LS0p2,
                       ),
                     ),
                   ),
                   CalendarTabs.schedule: Text(
-                    "Schedule",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.2,
-                    ),
+                    kScheduleString,
+                    style: kTextStyleS14W600LS0p2,
                   ),
                 },
                 groupValue: selectedCalendarTab,

@@ -1,10 +1,10 @@
+import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:paytym/screens/widgets/paytym_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../../core/constants/strings.dart';
 import '../../core/constants/widgets.dart';
-import 'login_page.dart';
 import 'widgets/custom_text_form_field.dart';
 
 class ResetPasswordPage extends StatelessWidget {
@@ -13,7 +13,7 @@ class ResetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: CustomColors.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 50),
@@ -29,16 +29,14 @@ class ResetPasswordPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Reset Password",
+                      kResetPasswordString,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: Color.fromRGBO(75, 103, 176, 1),
+                        color: CustomColors.blueTextColor,
                       ),
                     ),
-                    const SizedBox(
-                      height: 40,
-                    ),
+                    kSizedBoxH40,
                     Form(
                       key: Get.find<LoginController>().formKeyResetPassword,
                       child: Column(
@@ -48,7 +46,7 @@ class ResetPasswordPage extends StatelessWidget {
                                 .userModel
                                 .password = value!,
                             obscureText: true,
-                            hintText: 'New Password',
+                            hintText: kNewPasswordString,
                             validator: (value) => Get.find<LoginController>()
                                 .passwordValidator(value!),
                           ),
@@ -58,16 +56,14 @@ class ResetPasswordPage extends StatelessWidget {
                                 .userModel
                                 .confirmPassword = value!,
                             obscureText: true,
-                            hintText: 'Confirm Password',
+                            hintText: kConfirmPasswordString,
                             validator: (value) => Get.find<LoginController>()
                                 .passwordValidator(value!),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 50,
-                    ),
+                    kSizedBoxH50,
                     SizedBox(
                       height: 50,
                       width: double.infinity,
@@ -77,16 +73,15 @@ class ResetPasswordPage extends StatelessWidget {
                               .goToOTPPageFromPasswordResetPage();
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromRGBO(75, 103, 176, 1),
+                          backgroundColor: CustomColors.blueTextColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: const Text(
-                          "Submit",
+                          kSubmitString,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: CustomColors.whiteTextColor,
                           ),
                         ),
                       ),
@@ -94,9 +89,7 @@ class ResetPasswordPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 60,
-              ),
+              kSizedBoxH60,
             ],
           ),
         ),

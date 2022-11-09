@@ -3,17 +3,19 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/calendar/widgets/custom_svg.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:paytym/screens/reports/attendance.dart';
 import 'package:paytym/screens/reports/deduction.dart';
 import 'package:paytym/screens/reports/payslip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:paytym/screens/reports/reports_controller.dart';
 
+import '../../core/colors/colors.dart';
 import '../../core/constants/enums.dart';
-import '../login/login_page.dart';
+import '../../core/constants/strings.dart';
+import '../../core/constants/styles.dart';
 
 class ReportsPage extends StatefulWidget {
   const ReportsPage({Key? key}) : super(key: key);
@@ -23,8 +25,6 @@ class ReportsPage extends StatefulWidget {
 }
 
 class _ReportsPageState extends State<ReportsPage> {
-  Color? primaryColor = const Color.fromRGBO(75, 103, 176, 1);
-
   String? selectedPayment = "";
 
   Reports _reportTab = Reports.payslip;
@@ -33,7 +33,7 @@ class _ReportsPageState extends State<ReportsPage> {
     Get.lazyPut(() => ReportsController());
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: CustomColors.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
@@ -54,52 +54,39 @@ class _ReportsPageState extends State<ReportsPage> {
                                 ?.image ??
                             '',
                         imageBuilder: (context, imageProvider) => CircleAvatar(
-                          backgroundColor: Colors.grey.shade300,
+                          backgroundColor:
+                              CustomColors.circleAvatarBackgroundColor,
                           radius: 26,
                           backgroundImage: imageProvider,
                         ),
                         placeholder: (context, url) =>
                             const SpinKitDoubleBounce(
-                          color: Colors.white,
+                          color: CustomColors.whiteCircleAvatarBackgroundColor,
                         ),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      kSizedBoxH10,
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${Get.find<LoginController>().loginResponseModel?.employee?.firstName ?? ''} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName ?? ''}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
-                              color: primaryColor,
+                              color: CustomColors.blueTextColor,
                             ),
                           ),
-                          const SizedBox(
-                            height: 4,
-                          ),
+                          kSizedBoxH4,
                           const Text(
                             "#4578340",
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                            ),
+                            style: kTextStyleS13W500Cgrey,
                           ),
-                          const SizedBox(
-                            height: 4,
-                          ),
+                          kSizedBoxH4,
                           const Text(
-                            "Net Pay: \$45000",
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                            ),
+                            "$kNetPayString \$45000",
+                            style: kTextStyleS13W500Cgrey,
                           ),
                         ],
                       ),
@@ -110,7 +97,7 @@ class _ReportsPageState extends State<ReportsPage> {
             ),
             Expanded(
               child: Container(
-                color: const Color.fromRGBO(246, 247, 249, 1),
+                color: CustomColors.calendarPageBackgroundColor,
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: Column(
                   children: [
@@ -118,41 +105,26 @@ class _ReportsPageState extends State<ReportsPage> {
                       backgroundColor: Colors.transparent,
                       middle: CupertinoSlidingSegmentedControl(
                         padding: EdgeInsets.zero,
-                        backgroundColor: primaryColor!,
-                        thumbColor: Colors.white,
+                        backgroundColor: CustomColors.blueTextColor,
+                        thumbColor: CustomColors.whiteCardColor,
                         children: {
-                          Reports.payslip: Container(
+                          Reports.payslip: SizedBox(
                             width: 100,
                             height: 40,
                             child: Center(
                               child: Text(
-                                "Pay Slip",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey.shade300,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.2,
-                                ),
+                                kPaySlipString,
+                                style: kTextStyleS14W600Cgrey300LS0p2,
                               ),
                             ),
                           ),
                           Reports.deduction: Text(
-                            "Deduction",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade300,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.2,
-                            ),
+                            kDeductionString,
+                            style: kTextStyleS14W600Cgrey300LS0p2,
                           ),
                           Reports.attendance: Text(
-                            "Attendance",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade300,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.2,
-                            ),
+                            kAttendanceString,
+                            style: kTextStyleS14W600Cgrey300LS0p2,
                           ),
                         },
                         groupValue: _reportTab,
@@ -194,27 +166,17 @@ class _ReportsPageState extends State<ReportsPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            children: [
-              SvgPicture.asset(
-                IconPath.menuSvg,
-                width: 20,
-                height: 20,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              const Text(
-                "Reports",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+            children: const [
+              CustomSVG(IconPath.menuSvg, size: 20),
+              kSizedBoxW15,
+              Text(
+                kReportsString,
+                style: kTextStyleS18W600,
               ),
             ],
           ),
           PopupMenuButton<Payments>(
-            color: primaryColor,
+            color: CustomColors.blueTextColor,
             onSelected: (Payments value) {
               if (value == Payments.payment) {
                 paymentBottomSheet();
@@ -228,28 +190,24 @@ class _ReportsPageState extends State<ReportsPage> {
               const PopupMenuItem(
                 value: Payments.payment,
                 child: Text(
-                  "Request Payment",
+                  kRequestPaymentString,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: CustomColors.whiteTextColor,
                   ),
                 ),
               ),
               const PopupMenuItem(
                 value: Payments.advance,
                 child: Text(
-                  "Request Advance",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                  kRequestAdvanceString,
+                  style: kTextStyleCwhite,
                 ),
               ),
               const PopupMenuItem(
                 value: Payments.logout,
                 child: Text(
-                  "Logout",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                  kLogoutString,
+                  style: kTextStyleCwhite,
                 ),
               ),
             ],
@@ -283,114 +241,73 @@ class _ReportsPageState extends State<ReportsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Request Advance",
-                style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                kRequestAdvanceString,
+                style: kTextStyleS18W600.copyWith(
+                    color: CustomColors.blueTextColor),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              kSizedBoxH10,
               Column(
                 children: [
                   TextFormField(
                     decoration: InputDecoration(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 10),
-                      hintText: "Name",
+                      hintText: kNameString,
                       hintStyle: const TextStyle(
-                        color: Colors.grey,
+                        color: CustomColors.greyTextColor,
                         fontSize: 14,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
+                      enabledBorder: kInputBorderBlueW1p2,
+                      focusedBorder: kInputBorderBlueW1p2,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  kSizedBoxH10,
                   TextFormField(
                     decoration: InputDecoration(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 10),
-                      hintText: "Employee ID",
+                      hintText: kEmployeeIDString,
                       hintStyle: const TextStyle(
-                        color: Colors.grey,
+                        color: CustomColors.greyTextColor,
                         fontSize: 14,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
+                      enabledBorder: kInputBorderBlueW1p2,
+                      focusedBorder: kInputBorderBlueW1p2,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  kSizedBoxH10,
                   TextFormField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 10),
-                      hintText: "Amount",
+                      hintText: kAmountString,
                       hintStyle: const TextStyle(
-                        color: Colors.grey,
+                        color: CustomColors.greyTextColor,
                         fontSize: 14,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
+                      enabledBorder: kInputBorderBlueW1p2,
+                      focusedBorder: kInputBorderBlueW1p2,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              kSizedBoxH10,
               SizedBox(
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
+                    backgroundColor: CustomColors.blueTextColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   child: const Text(
-                    "Request Advance",
+                    kRequestAdvanceString,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: CustomColors.whiteTextColor,
                     ),
                   ),
                 ),
@@ -428,111 +345,73 @@ class _ReportsPageState extends State<ReportsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Request Payment",
-                style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                kRequestPaymentString,
+                style: kTextStyleS18W600.copyWith(
+                    color: CustomColors.blueTextColor),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              kSizedBoxH10,
               Column(
                 children: [
                   TextField(
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      hintText: "Name",
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      hintText: kNameString,
                       hintStyle: const TextStyle(
-                        color: Colors.grey,
+                        color: CustomColors.greyTextColor,
                         fontSize: 14,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
+                      enabledBorder: kInputBorderBlueW1p2,
+                      focusedBorder: kInputBorderBlueW1p2,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  kSizedBoxH10,
                   TextField(
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      hintText: "Employee ID",
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      hintText: kEmployeeIDString,
                       hintStyle: const TextStyle(
-                        color: Colors.grey,
+                        color: CustomColors.greyTextColor,
                         fontSize: 14,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
+                      enabledBorder: kInputBorderBlueW1p2,
+                      focusedBorder: kInputBorderBlueW1p2,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  kSizedBoxH10,
                   TextField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      hintText: "Amount",
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      hintText: kAmountString,
                       hintStyle: const TextStyle(
-                        color: Colors.grey,
+                        color: CustomColors.greyTextColor,
                         fontSize: 14,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            width: 1.2,
-                            color: Color.fromRGBO(75, 103, 176, 0.37)),
-                      ),
+                      enabledBorder: kInputBorderBlueW1p2,
+                      focusedBorder: kInputBorderBlueW1p2,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
+              kSizedBoxH10,
+              SizedBox(
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
+                    backgroundColor: CustomColors.blueTextColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   child: const Text(
-                    "Request Payment",
+                    kRequestPaymentString,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: CustomColors.whiteTextColor,
                     ),
                   ),
                 ),

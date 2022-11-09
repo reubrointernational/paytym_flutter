@@ -1,8 +1,11 @@
+import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:paytym/screens/widgets/paytym_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/constants/strings.dart';
 import 'widgets/custom_text_form_field.dart';
 
 class ForgetPasswordPage extends StatelessWidget {
@@ -11,7 +14,7 @@ class ForgetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: CustomColors.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 50),
@@ -27,41 +30,35 @@ class ForgetPasswordPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Forgot Password?",
+                      kForgotPasswordString,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: Color.fromRGBO(75, 103, 176, 1),
+                        color: CustomColors.blueTextColor,
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    kSizedBoxH10,
                     const Text(
-                      "Don't worry! It happens. Please enter the address associated with your account",
+                      kDontWorryString,
                       style: TextStyle(
                         height: 1.5,
                         fontSize: 12.5,
-                        color: Color.fromARGB(255, 143, 143, 143),
+                        color: CustomColors.darkGreyTextColor,
                       ),
                     ),
-                    const SizedBox(
-                      height: 35,
-                    ),
+                    kSizedBoxH35,
                     Form(
                       key: Get.find<LoginController>().formKeyForgotPassword,
                       child: CustomTextFormField(
                         onSaved: (value) => Get.find<LoginController>()
                             .userModel
                             .email = value!,
-                        hintText: 'Email',
+                        hintText: kEmailString,
                         validator: (value) =>
                             Get.find<LoginController>().emailValidator(value!),
                       ),
                     ),
-                    const SizedBox(
-                      height: 40,
-                    ),
+                    kSizedBoxH40,
                     SizedBox(
                       height: 50,
                       width: double.infinity,
@@ -70,16 +67,15 @@ class ForgetPasswordPage extends StatelessWidget {
                           Get.find<LoginController>().goToOTPPage();
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromRGBO(75, 103, 176, 1),
+                          backgroundColor: CustomColors.blueTextColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: const Text(
-                          "Send",
+                          kSendString,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: CustomColors.whiteTextColor,
                           ),
                         ),
                       ),
@@ -87,9 +83,7 @@ class ForgetPasswordPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 60,
-              ),
+              kSizedBoxH60,
             ],
           ),
         ),

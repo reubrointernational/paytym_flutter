@@ -11,6 +11,8 @@ environment:
 dependencies:
   cached_network_image: ^3.2.2
   cupertino_icons: ^1.0.2
+  firebase_core: ^2.1.1
+  firebase_messaging: ^14.0.4
   flutter:
     sdk: flutter
   flutter_cached_pdfview: ^0.4.1
@@ -50,3 +52,5 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+  # Dependencies using target specific config
+  # *FCM

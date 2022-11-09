@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get/get.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:http/http.dart' as http;
 
 import 'network_exceptions.dart';
 
 //!Exception handling
-class BaseClient {
+class BaseClient extends GetxService {
   var baseClient = http.Client();
   final baseHeader = {'content-type': 'application/json'};
 

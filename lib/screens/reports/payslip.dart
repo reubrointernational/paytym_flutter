@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:paytym/core/constants/icons.dart';
+import 'package:paytym/core/constants/widgets.dart';
 
 class PaySlipPage extends StatefulWidget {
   const PaySlipPage({Key? key}) : super(key: key);
@@ -24,9 +25,7 @@ class _PaySlipPageState extends State<PaySlipPage> {
             preventLinkNavigation: true,
           ).fromAsset(IconPath.salarySlipPdf),
         ),
-        const SizedBox(
-          height: 8,
-        ),
+        kSizedBoxH8,
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(

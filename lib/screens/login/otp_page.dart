@@ -1,8 +1,12 @@
+import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:paytym/screens/widgets/paytym_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import '../../core/constants/strings.dart';
 
 class OTPPage extends StatelessWidget {
   const OTPPage({super.key});
@@ -11,7 +15,7 @@ class OTPPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> otpList = ['0', '0', '0', '0'];
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: CustomColors.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 50),
@@ -27,26 +31,22 @@ class OTPPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "OTP",
+                      kOTPString,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: Color.fromRGBO(75, 103, 176, 1),
+                        color: CustomColors.blueTextColor,
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    kSizedBoxH10,
                     const Text(
-                      "Enter the OTP send to your number",
+                      kEnterTheOTPString,
                       style: TextStyle(
                         fontSize: 12.5,
-                        color: Color.fromARGB(255, 143, 143, 143),
+                        color: CustomColors.darkGreyTextColor,
                       ),
                     ),
-                    const SizedBox(
-                      height: 35,
-                    ),
+                    kSizedBoxH35,
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
@@ -63,7 +63,7 @@ class OTPPage extends StatelessWidget {
                               margin: const EdgeInsets.only(right: 8),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 246, 246, 246),
+                                color: CustomColors.greyFillTextFieldColor,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: TextField(
@@ -79,7 +79,7 @@ class OTPPage extends StatelessWidget {
                                 decoration: const InputDecoration(
                                   hintText: "0",
                                   hintStyle: TextStyle(
-                                    color: Color.fromARGB(255, 143, 143, 143),
+                                    color: CustomColors.darkGreyTextColor,
                                   ),
                                   border: InputBorder.none,
                                 ),
@@ -89,9 +89,7 @@ class OTPPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 40,
-                    ),
+                    kSizedBoxH40,
                     SizedBox(
                       height: 50,
                       width: double.infinity,
@@ -101,16 +99,15 @@ class OTPPage extends StatelessWidget {
                               .reduce((value, element) => value + element));
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromRGBO(75, 103, 176, 1),
+                          backgroundColor: CustomColors.blueTextColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: const Text(
-                          "Submit",
+                          kSubmitString,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: CustomColors.whiteTextColor,
                           ),
                         ),
                       ),
@@ -118,9 +115,7 @@ class OTPPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 60,
-              ),
+              kSizedBoxH60,
             ],
           ),
         ),

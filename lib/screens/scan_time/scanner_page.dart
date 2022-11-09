@@ -1,3 +1,4 @@
+import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -17,11 +18,10 @@ class _ScanTimeState extends State<ScanTime> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   Barcode? result;
-  Color? primaryColor = const Color.fromRGBO(75, 103, 176, 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: CustomColors.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -37,10 +37,10 @@ class _ScanTimeState extends State<ScanTime> {
               child: Center(
                 child: (result != null)
                     ? Text(
-                        "Data: ${result!.code}",
+                        "$kDataString ${result!.code}",
                       )
                     : const Text(
-                        "Scan Code",
+                        kScanCodeString,
                       ),
               ),
             ),
@@ -49,7 +49,7 @@ class _ScanTimeState extends State<ScanTime> {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
+                  backgroundColor: CustomColors.blueTextColor,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
                   shape: RoundedRectangleBorder(
@@ -57,9 +57,9 @@ class _ScanTimeState extends State<ScanTime> {
                   ),
                 ),
                 child: const Text(
-                  "Submit",
+                  kSubmitString,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: CustomColors.whiteTextColor,
                     fontSize: 14,
                   ),
                 ),

@@ -4,6 +4,8 @@ import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:paytym/core/constants/styles.dart';
+import 'package:paytym/core/constants/widgets.dart';
 
 import '../../models/chatMessages.dart';
 
@@ -16,12 +18,8 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<ChatMessages> messages = [
-    ChatMessages(
-        chatMessage: "Hi, Jimmy! any update today? please come today as well",
-        chatType: ChatType.hod),
-    ChatMessages(
-        chatMessage: "All good! we have some update  please come today as well",
-        chatType: ChatType.employee),
+    ChatMessages(chatMessage: kHiJimmyString, chatType: ChatType.hod),
+    ChatMessages(chatMessage: kAllgoodString, chatType: ChatType.employee),
   ];
   @override
   Widget build(BuildContext context) {
@@ -39,16 +37,11 @@ class _ChatPageState extends State<ChatPage> {
                     radius: 24,
                     backgroundColor: CustomColors.circleAvatarBackgroundColor,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Text(
-                    "Darlene Robertson",
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: CustomColors.blueTextColor,
-                    ),
+                  kSizedBoxW10,
+                  Text(
+                    kDarleneRobertsonString,
+                    style: kTextStyleS13W600.copyWith(
+                        color: CustomColors.blueTextColor),
                   ),
                 ],
               ),
@@ -114,7 +107,7 @@ class _ChatPageState extends State<ChatPage> {
                     const Expanded(
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: "Type here...",
+                          hintText: kTypeHereString,
                           hintStyle: TextStyle(
                             color: CustomColors.blueTextColor,
                           ),

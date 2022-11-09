@@ -90,6 +90,7 @@ class DialogHelper {
           ],
         ),
       ),
+      barrierDismissible: false,
     );
   }
 

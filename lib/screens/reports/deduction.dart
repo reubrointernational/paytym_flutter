@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../core/colors/colors.dart';
+import '../../core/constants/strings.dart';
+import '../../core/constants/styles.dart';
+
 class DeductionPage extends StatefulWidget {
   const DeductionPage({Key? key}) : super(key: key);
 
@@ -8,12 +12,11 @@ class DeductionPage extends StatefulWidget {
 }
 
 class _DeductionPageState extends State<DeductionPage> {
-  Color? primaryColor = const Color.fromRGBO(75, 103, 176, 1);
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: 2,
-      itemBuilder: (context, index){
+      itemBuilder: (context, index) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -21,18 +24,14 @@ class _DeductionPageState extends State<DeductionPage> {
               padding: EdgeInsets.only(left: 10),
               child: Text(
                 "01-09-2022",
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Color.fromRGBO(138, 138, 138, 1),
-                ),
+                style: kTextStyleS13W600CustomGrey,
               ),
             ),
             Container(
               height: 180,
               padding: const EdgeInsets.only(top: 8, bottom: 10),
               child: Card(
-                color: Colors.white,
+                color: CustomColors.whiteCardColor,
                 elevation: 10,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -43,8 +42,8 @@ class _DeductionPageState extends State<DeductionPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Deductions",
+                      const Text(
+                        kDeductionsString,
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
@@ -52,39 +51,27 @@ class _DeductionPageState extends State<DeductionPage> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
-                            "Fund deductions",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color.fromRGBO(138, 138, 138, 1),
-                            ),
+                            kFundDeductionsString,
+                            style: kTextStyleS12W600CcustomGrey,
                           ),
                           Text(
                             "\$20.00",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color.fromRGBO(138, 138, 138, 1),
-                            ),
+                            style: kTextStyleS12W600CcustomGrey,
                           ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
-                            "Professional Tax",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color.fromRGBO(138, 138, 138, 1),
-                            ),
+                            kProfessionalTaxString,
+                            style: kTextStyleS12W600CcustomGrey,
                           ),
                           Text(
                             "\$10.00",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color.fromRGBO(138, 138, 138, 1),
-                            ),
+                            style: kTextStyleS12W600CcustomGrey,
                           ),
                         ],
                       ),
@@ -92,22 +79,14 @@ class _DeductionPageState extends State<DeductionPage> {
                         padding: const EdgeInsets.only(top: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          children: const [
                             Text(
-                              "Total",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
-                                color: primaryColor,
-                              ),
+                              kTotalString,
+                              style: kTextStyleS13W600Cblue,
                             ),
                             Text(
                               "\$30.00",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: primaryColor,
-                              ),
+                              style: kTextStyleS13W600Cblue,
                             ),
                           ],
                         ),

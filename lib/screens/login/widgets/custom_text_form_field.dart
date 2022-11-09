@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/colors/colors.dart';
+import '../../../core/constants/styles.dart';
+
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
@@ -21,35 +24,20 @@ class CustomTextFormField extends StatelessWidget {
       validator: validator,
       onSaved: onSaved,
       style: TextStyle(
-        color: Colors.grey.shade600,
+        color: CustomColors.greyShade600TextColor,
       ),
-      cursorColor: Colors.grey.shade600,
+      cursorColor: CustomColors.greyShade600TextColor,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: const TextStyle(
-          color: Color.fromARGB(255, 143, 143, 143),
+          color: CustomColors.darkGreyTextColor,
         ),
-        fillColor: const Color.fromARGB(255, 246, 246, 246),
+        fillColor: CustomColors.greyFillTextFieldColor,
         filled: true,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-              color: Color.fromARGB(247, 223, 10, 10), width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-              color: Color.fromARGB(247, 223, 10, 10), width: 1),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-              color: Color.fromARGB(247, 97, 132, 221), width: 1),
-        ),
+        enabledBorder: kInputBorderNone,
+        errorBorder: kInputBorderRed,
+        focusedErrorBorder: kInputBorderRed,
+        focusedBorder: kInputBorderBlue,
       ),
     );
   }

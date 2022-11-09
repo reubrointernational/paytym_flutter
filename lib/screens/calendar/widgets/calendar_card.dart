@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
+import 'package:paytym/core/constants/strings.dart';
+import 'package:paytym/screens/calendar/widgets/custom_svg.dart';
 
 import '../../../core/constants/widgets.dart';
 import '../calendar_controller.dart';
 import 'calendar_app_bar.dart';
-import 'calendar_arrows.dart';
 
 class CalendarCard extends StatelessWidget {
   const CalendarCard({super.key});
@@ -32,16 +33,16 @@ class CalendarCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
-                    CalendarArrows(svg: IconPath.backArrowSvg),
+                    CustomSVG(IconPath.backArrowSvg, size: 25),
                     Text(
-                      "October 2022",
+                      kOctober2022String,
                       style: TextStyle(
                         color: CustomColors.whiteTextColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    CalendarArrows(svg: IconPath.forwardArrowSvg),
+                    CustomSVG(IconPath.forwardArrowSvg, size: 25),
                   ],
                 ),
                 kSizedBoxH20,

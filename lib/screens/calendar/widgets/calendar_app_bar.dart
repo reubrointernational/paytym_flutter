@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:paytym/core/constants/icons.dart';
+import 'package:paytym/core/constants/strings.dart';
+import 'package:paytym/core/constants/styles.dart';
+import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/calendar/widgets/custom_svg.dart';
 
 class CalendarAppBar extends StatelessWidget {
   const CalendarAppBar({super.key});
@@ -11,31 +14,16 @@ class CalendarAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
-          children: [
-            SvgPicture.asset(
-              IconPath.menuSvg,
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            const Text(
-              "Calendar",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+          children: const [
+            CustomSVG(IconPath.menuSvg, size: 20),
+            kSizedBoxW15,
+            Text(
+              kCalendarString,
+              style: kTextStyleS18W600,
             ),
           ],
         ),
-        SvgPicture.asset(
-          IconPath.settingsSvg,
-          width: 23,
-          height: 23,
-          fit: BoxFit.cover,
-        ),
+        const CustomSVG(IconPath.settingsSvg, size: 23),
       ],
     );
   }

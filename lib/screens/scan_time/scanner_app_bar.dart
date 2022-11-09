@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/calendar/widgets/custom_svg.dart';
+
+import '../../core/constants/icons.dart';
+import '../../core/constants/strings.dart';
+import '../../core/constants/styles.dart';
 
 class ScannerAppBar extends StatelessWidget {
   const ScannerAppBar({super.key});
@@ -12,31 +17,16 @@ class ScannerAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            children: [
-              SvgPicture.asset(
-                'assets/svg/menu.svg',
-                width: 20,
-                height: 20,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              const Text(
-                "Report",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+            children: const [
+              CustomSVG(IconPath.menuSvg, size: 20),
+              kSizedBoxW15,
+              Text(
+                kReportString,
+                style: kTextStyleS18W600,
               ),
             ],
           ),
-          SvgPicture.asset(
-            'assets/svg/settings.svg',
-            width: 23,
-            height: 23,
-            fit: BoxFit.cover,
-          ),
+          const CustomSVG(IconPath.settingsSvg, size: 23),
         ],
       ),
     );

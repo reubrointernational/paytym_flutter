@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/widgets.dart';
 import 'package:pie_chart/pie_chart.dart';
+
+import '../../core/constants/strings.dart';
+import '../../core/constants/styles.dart';
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
@@ -9,31 +14,17 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  Map<String, double> datamap = {
-    "OnTime": 20,
-    "Leaves": 8,
-    "Late": 2,
-    "EarlyOut": 1,
-  };
-  Color? primaryColor = const Color.fromRGBO(75, 103, 176, 1);
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          // color: Colors.yellow,
-          child: PieChart(
+        PieChart(
             dataMap: datamap,
-            chartRadius:  MediaQuery.of(context).size.width / 3.2,
+            chartRadius: MediaQuery.of(context).size.width / 3.2,
             chartLegendSpacing: 60,
-            colorList: [
-              Colors.green,
-              Colors.red,
-              Colors.blue,
-              Colors.yellow,
-            ],
-            chartValuesOptions: ChartValuesOptions(
+            colorList: CustomColors.cardColorList,
+            chartValuesOptions: const ChartValuesOptions(
               showChartValues: false,
             ),
             legendLabels: <String, String>{
@@ -41,22 +32,20 @@ class _AttendancePageState extends State<AttendancePage> {
               "Leaves": "Leaves : ${datamap["Leaves"]}",
               "Late": "Late : ${datamap["Late"]}",
               "EarlyOut": "Early Out : ${datamap["EarlyOut"]}"
-          }
-          ),
-        ),
-        const SizedBox(height: 10,),
-        Text(
-            "History",
+            }),
+        kSizedBoxH10,
+        const Text(
+          kHistoryString,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 8,),
+        kSizedBoxH8,
         Expanded(
           child: ListView.builder(
             itemCount: 2,
-            itemBuilder: (context, index){
+            itemBuilder: (context, index) {
               return Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -68,14 +57,10 @@ class _AttendancePageState extends State<AttendancePage> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
-                            "Date: ",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: primaryColor,
-                            ),
+                            kDateString,
+                            style: kTextStyleS12W600Cblue,
                           ),
                           Text(
                             "10-18-2022",
@@ -85,17 +70,13 @@ class _AttendancePageState extends State<AttendancePage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10,),
+                      kSizedBoxH10,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
-                            "Punch In: ",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: primaryColor,
-                            ),
+                            kPunchInString,
+                            style: kTextStyleS12W600Cblue,
                           ),
                           Text(
                             "09:00 AM",
@@ -105,17 +86,13 @@ class _AttendancePageState extends State<AttendancePage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10,),
+                      kSizedBoxH10,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: const [
                           Text(
-                            "Punch Out: ",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: primaryColor,
-                            ),
+                            kPunchOutString,
+                            style: kTextStyleS12W600Cblue,
                           ),
                           Text(
                             "05:20 PM",

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
+import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/calendar/widgets/custom_svg.dart';
+
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/styles.dart';
 
 class CalendarSchedule extends StatefulWidget {
   const CalendarSchedule({Key? key}) : super(key: key);
@@ -11,48 +15,6 @@ class CalendarSchedule extends StatefulWidget {
 }
 
 class _CalendarScheduleState extends State<CalendarSchedule> {
-  List<Map<String, dynamic>> calendarScheduleDetails = [
-    {
-      "scheduleOne": [
-        {
-          "title": "Registration",
-          "place": "Entrance Hall",
-          "startTime": "09:15 AM",
-          "endTime": "09:45 AM",
-          "dividerColor": Colors.blue,
-        }
-      ],
-      "scheduleTwo": [
-        {
-          "title": "Coffee Break",
-          "place": "Entrance Hall",
-          "startTime": "10:00 AM",
-          "endTime": "10:15 AM",
-          "dividerColor": Colors.orange,
-        }
-      ],
-    },
-    {
-      "scheduleOne": [
-        {
-          "title": "Design thinking",
-          "place": "Entrance Hall",
-          "startTime": "10:15 AM",
-          "endTime": "10:45 AM",
-          "dividerColor": Colors.purple,
-        }
-      ],
-      "scheduleTwo": [
-        {
-          "title": "User flow as a tool",
-          "place": "Entrance Hall",
-          "startTime": "11:45 AM",
-          "endTime": "01:00 PM",
-          "dividerColor": Colors.green,
-        }
-      ],
-    },
-  ];
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -67,12 +29,8 @@ class _CalendarScheduleState extends State<CalendarSchedule> {
             const Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
-                "08:00 AM",
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: CustomColors.customGreyTextColor,
-                ),
+                k8amString,
+                style: kTextStyleS13W600CustomGrey,
               ),
             ),
             Padding(
@@ -98,22 +56,12 @@ class _CalendarScheduleState extends State<CalendarSchedule> {
                                   children: [
                                     Text(
                                       schedule["scheduleOne"][0]["startTime"],
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: CustomColors.customGreyTextColor,
-                                      ),
+                                      style: kTextStyleS13W600CustomGrey,
                                     ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
+                                    kSizedBoxH3,
                                     Text(
                                       schedule["scheduleOne"][0]["endTime"],
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: CustomColors.customGreyTextColor,
-                                      ),
+                                      style: kTextStyleS13W600CustomGrey,
                                     ),
                                   ],
                                 ),
@@ -133,38 +81,22 @@ class _CalendarScheduleState extends State<CalendarSchedule> {
                                         fontWeight: FontWeight.w800,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
+                                    kSizedBoxH3,
                                     Text(
                                       schedule["scheduleOne"][0]["place"],
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: CustomColors.customGreyTextColor,
-                                      ),
+                                      style: kTextStyleS13W600CustomGrey,
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                             Stack(
-                              children: [
-                                SvgPicture.asset(
-                                  IconPath.tick1Svg,
-                                  width: 18,
-                                  height: 18,
-                                  fit: BoxFit.cover,
-                                ),
+                              children: const [
+                                CustomSVG(IconPath.tick1Svg, size: 18),
                                 Positioned(
                                   top: 1.6,
                                   left: 4,
-                                  child: SvgPicture.asset(
-                                    IconPath.tick2Svg,
-                                    width: 11,
-                                    height: 11,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child: CustomSVG(IconPath.tick2Svg, size: 11),
                                 ),
                               ],
                             ),
@@ -186,22 +118,12 @@ class _CalendarScheduleState extends State<CalendarSchedule> {
                                   children: [
                                     Text(
                                       schedule["scheduleTwo"][0]["startTime"],
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: CustomColors.customGreyTextColor,
-                                      ),
+                                      style: kTextStyleS13W600CustomGrey,
                                     ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
+                                    kSizedBoxH3,
                                     Text(
                                       schedule["scheduleTwo"][0]["endTime"],
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: CustomColors.customGreyTextColor,
-                                      ),
+                                      style: kTextStyleS13W600CustomGrey,
                                     ),
                                   ],
                                 ),
@@ -216,43 +138,30 @@ class _CalendarScheduleState extends State<CalendarSchedule> {
                                   children: [
                                     Text(
                                       schedule["scheduleTwo"][0]["title"],
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w800,
-                                      ),
+                                      style: kTextStyleS14W800,
                                     ),
-                                    const SizedBox(
-                                      height: 3,
-                                    ),
+                                    kSizedBoxH3,
                                     Text(
                                       schedule["scheduleTwo"][0]["place"],
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: CustomColors.customGreyTextColor,
-                                      ),
+                                      style: kTextStyleS13W600CustomGrey,
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                             Stack(
-                              children: [
+                              children: const [
                                 Positioned(
                                   top: 4,
                                   left: 5,
-                                  child: SvgPicture.asset(
+                                  child: CustomSVG(
                                     IconPath.add1Svg,
-                                    width: 10,
-                                    height: 10,
-                                    fit: BoxFit.cover,
+                                    size: 10,
                                   ),
                                 ),
-                                SvgPicture.asset(
+                                CustomSVG(
                                   IconPath.add2Svg,
-                                  width: 18,
-                                  height: 18,
-                                  fit: BoxFit.cover,
+                                  size: 18,
                                 ),
                               ],
                             ),

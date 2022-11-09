@@ -14,13 +14,13 @@ class LeaveRequestModel {
   LeaveRequestModel({
     this.startDate,
     this.endDate,
-    this.type,
+    this.type = 'annual',
     this.title,
   });
 
   String? startDate;
   String? endDate;
-  String? type;
+  String type;
   String? title;
 
   factory LeaveRequestModel.fromJson(Map<String, dynamic> json) =>

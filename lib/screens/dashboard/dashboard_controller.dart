@@ -22,6 +22,7 @@ class DashboardController extends GetxController {
     } else if (hour >= 21 && hour <= 24) {
       return "Good Night";
     }
+    return '';
   }
 
   @override

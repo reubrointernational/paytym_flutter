@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 
+import '../../core/colors/colors.dart';
+import '../../core/constants/strings.dart';
+
 class PaytymLogo extends StatelessWidget {
-  const PaytymLogo({super.key});
+  final double size;
+  const PaytymLogo({super.key, this.size = 40});
 
   @override
   Widget build(BuildContext context) {
     return RichText(
-      text: const TextSpan(
-        text: "Pay",
+      text: TextSpan(
+        text: kPayString,
         style: TextStyle(
-          fontSize: 40,
+          fontSize: size,
           fontWeight: FontWeight.w700,
-          color: Color.fromRGBO(75, 103, 176, 1),
+          color: CustomColors.blueTextColor,
         ),
         children: [
           TextSpan(
-            text: 'tym',
+            text: ktymString,
             style: TextStyle(
-              fontSize: 40,
+              fontSize: size,
               fontWeight: FontWeight.w700,
-              color: Colors.black,
+              color: CustomColors.blackTextColor,
             ),
           ),
         ],
