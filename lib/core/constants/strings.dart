@@ -229,6 +229,8 @@ const kReportsString = 'Reports';
 
 const kRequestPaymentString = 'Request Payment';
 
+const kQuitCompanyString = 'Quit Company';
+
 const kRequestAdvanceString = 'Request Advance';
 
 const kLogoutString = 'Logout';

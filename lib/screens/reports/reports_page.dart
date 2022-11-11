@@ -14,6 +14,7 @@ import 'package:paytym/screens/reports/reports_controller.dart';
 
 import '../../core/colors/colors.dart';
 import '../../core/constants/enums.dart';
+import '../../core/constants/list_maps.dart';
 import '../../core/constants/strings.dart';
 import '../../core/constants/styles.dart';
 
@@ -175,42 +176,29 @@ class _ReportsPageState extends State<ReportsPage> {
               ),
             ],
           ),
-          PopupMenuButton<Payments>(
+          PopupMenuButton<ReportsDropDown>(
             color: CustomColors.blueTextColor,
-            onSelected: (Payments value) {
-              if (value == Payments.payment) {
+            onSelected: (ReportsDropDown value) {
+              if (value == ReportsDropDown.payment) {
                 paymentBottomSheet();
-              } else if (value == Payments.advance) {
+              } else if (value == ReportsDropDown.advance) {
                 advanceBottomSheet();
-              } else if (value == Payments.logout) {
+              } else if (value == ReportsDropDown.logout) {
                 Get.find<ReportsController>().logout();
               }
             },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<Payments>>[
-              const PopupMenuItem(
-                value: Payments.payment,
+            itemBuilder: (BuildContext context) => List.generate(
+              4,
+              (index) => PopupMenuItem(
+                value: kReportDropDownItemList[index].dropDownItem,
                 child: Text(
-                  kRequestPaymentString,
-                  style: TextStyle(
+                  kReportDropDownItemList[index].label,
+                  style: const TextStyle(
                     color: CustomColors.whiteTextColor,
                   ),
                 ),
               ),
-              const PopupMenuItem(
-                value: Payments.advance,
-                child: Text(
-                  kRequestAdvanceString,
-                  style: kTextStyleCwhite,
-                ),
-              ),
-              const PopupMenuItem(
-                value: Payments.logout,
-                child: Text(
-                  kLogoutString,
-                  style: kTextStyleCwhite,
-                ),
-              ),
-            ],
+            ).toList(),
           ),
         ],
       );

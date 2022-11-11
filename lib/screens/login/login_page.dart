@@ -6,7 +6,6 @@ import 'package:paytym/routes/app_routes.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../widgets/paytym_logo.dart';
 import 'widgets/custom_text_form_field.dart';
 

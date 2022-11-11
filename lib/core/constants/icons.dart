@@ -36,10 +36,10 @@ abstract class IconPath {
   //menusvg//
 
   //payslip
+  static const String downloadingJson = 'assets/json/downloading.json';
 
   //todo remove pdf
   static const String salarySlipPdf = 'assets/pdf/salarySlip.pdf';
-  static const String circleBackgroundSvg = 'assets/svg/circleBackground.svg';
   static const String shareIconSvg = 'assets/svg/shareIcon.svg';
   static const String downloadIconSvg = 'assets/svg/downloadIcon.svg';
 
