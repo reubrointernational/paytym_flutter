@@ -19,91 +19,88 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const PaytymLogo(),
-              SizedBox(
-                height: h * 0.2,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    kLogInString,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: CustomColors.blueTextColor,
-                    ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const PaytymLogo(),
+            const Spacer(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  kLogInString,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: CustomColors.blueTextColor,
                   ),
-                  kSizedBoxH40,
-                  Form(
-                    key: loginController.formKey,
-                    child: Column(
-                      children: [
-                        CustomTextFormField(
-                          onSaved: (value) =>
-                              loginController.userModel.email = value!,
-                          hintText: kEmailString,
-                          validator: (value) =>
-                              loginController.emailValidator(value!),
-                        ),
-                        kSizedBoxH10,
-                        CustomTextFormField(
-                          onSaved: (value) =>
-                              loginController.userModel.password = value!,
-                          obscureText: true,
-                          hintText: kPasswordString,
-                          validator: (value) =>
-                              loginController.passwordValidator(value!),
-                        ),
-                      ],
-                    ),
+                ),
+                kSizedBoxH40,
+                Form(
+                  key: loginController.formKey,
+                  child: Column(
+                    children: [
+                      CustomTextFormField(
+                        onSaved: (value) =>
+                            loginController.userModel.email = value!,
+                        hintText: kEmailString,
+                        inputType: TextInputType.emailAddress,
+                        validator: (value) =>
+                            loginController.emailValidator(value!),
+                      ),
+                      kSizedBoxH10,
+                      CustomTextFormField(
+                        onSaved: (value) =>
+                            loginController.userModel.password = value!,
+                        obscureText: true,
+                        hintText: kPasswordString,
+                        validator: (value) =>
+                            loginController.passwordValidator(value!),
+                      ),
+                    ],
                   ),
-                  kSizedBoxH6,
-                  GestureDetector(
-                    onTap: () => Get.toNamed(Routes.forgotPassword),
-                    child: const Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        kForgotPasswordString,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: CustomColors.blueTextColor,
-                        ),
+                ),
+                kSizedBoxH6,
+                GestureDetector(
+                  onTap: () => Get.toNamed(Routes.forgotPassword),
+                  child: const Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      kForgotPasswordString,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: CustomColors.blueTextColor,
                       ),
                     ),
                   ),
-                  kSizedBoxH40,
-                  SizedBox(
-                    height: 50,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => loginController.goToLoginPage(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: CustomColors.blueTextColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                ),
+                kSizedBoxH40,
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => loginController.goToMainOrOtpPage(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blueTextColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Text(
-                        kLogInString,
-                        style: TextStyle(
-                          color: CustomColors.whiteTextColor,
-                        ),
+                    ),
+                    child: const Text(
+                      kLogInString,
+                      style: TextStyle(
+                        color: CustomColors.whiteTextColor,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+            const Spacer(),
+          ],
         ),
       ),
     );

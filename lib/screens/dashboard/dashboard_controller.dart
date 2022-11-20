@@ -2,8 +2,15 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:paytym/core/dialog_helper.dart';
+import 'package:paytym/models/message_only_response_model.dart';
+import 'package:paytym/network/base_controller.dart';
+import 'package:paytym/screens/login/login_controller.dart';
 
-class DashboardController extends GetxController {
+import '../../network/base_client.dart';
+import '../../network/end_points.dart';
+
+class DashboardController extends GetxController with BaseController {
   final time = '00:00 AM'.obs;
   late Timer? timer;
   late Timer? checkInOutTimer;
@@ -50,20 +57,57 @@ class DashboardController extends GetxController {
     return DateFormat('EEEE, dd MMM yyyy').format(now);
   }
 
-  updateTimer() {
-    if (!isTimerOn.value) {
-      try {
-        checkInOutTimer =
-            Timer.periodic(const Duration(minutes: 1), (timer) async {
-          seconds.value++;
-        });
-      } finally {
-        isTimerOn.value = true;
+  updateTimer([String? qrCode]) async {
+    if (isTimerOn.isFalse) {
+      bool isSuccess = qrCode == null
+          ? await serverCheckInOut(true)
+          : await serverCheckInOutByScan(true);
+      if (isSuccess) {
+        try {
+          checkInOutTimer =
+              Timer.periodic(const Duration(minutes: 1), (timer) async {
+            seconds.value++;
+          });
+        } finally {
+          isTimerOn.value = true;
+        }
       }
     } else {
-      checkInOutTimer?.cancel();
-      seconds.value = 0;
-      isTimerOn.value = false;
+      bool isSuccess = qrCode == null
+          ? await serverCheckInOut(false)
+          : await serverCheckInOutByScan(false);
+      if (isSuccess) {
+        checkInOutTimer?.cancel();
+        seconds.value = 0;
+        isTimerOn.value = false;
+      }
+    }
+  }
+
+  Future<bool> serverCheckInOut(bool isCheckIn) async {
+    String endPoint = isCheckIn ? ApiEndPoints.checkIn : ApiEndPoints.checkOut;
+    var responseString = await Get.find<BaseClient>()
+        .post(endPoint, null, Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    return handleResponseForMessageOnlyResponse(responseString);
+  }
+
+  Future<bool> serverCheckInOutByScan(bool isCheckIn) async {
+    String endPoint =
+        isCheckIn ? ApiEndPoints.checkInByScan : ApiEndPoints.checkOutByScan;
+    var responseString = await Get.find<BaseClient>()
+        .post(endPoint, null, Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    return handleResponseForMessageOnlyResponse(responseString);
+  }
+
+  bool handleResponseForMessageOnlyResponse(String? responseString) {
+    if (responseString == null) {
+      return false;
+    } else {
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message!);
+      return true;
     }
   }
 }

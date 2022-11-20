@@ -7,3 +7,5 @@ enum ReportsDropDown { payment, advance, quit, logout }
 enum Reports { payslip, deduction, attendance }
 
 enum LeavesTab { all, casual, sick }
+
+enum PaySlipType { image, pdf }

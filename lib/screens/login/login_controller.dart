@@ -18,6 +18,7 @@ class LoginController extends GetxController with BaseController {
   final formKey = GlobalKey<FormState>();
   final formKeyForgotPassword = GlobalKey<FormState>();
   final formKeyResetPassword = GlobalKey<FormState>();
+  RxList<String> otpList = ['', '', '', ''].obs;
 
   Map<String, String>? getHeader() {
     return {
@@ -46,18 +47,13 @@ class LoginController extends GetxController with BaseController {
   }
 
   Future<MessageOnlyResponseModel?> sendOtp() async {
-    showLoading();
-
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.sendOtp, null, getHeader())
         .catchError(handleError);
 
-    if (responseString == null) {
-      return null;
-    } else {
-      hideLoading();
-      return messageOnlyResponseModelFromJson(responseString);
-    }
+    return responseString == null
+        ? null
+        : messageOnlyResponseModelFromJson(responseString);
   }
 
   Future<MessageOnlyResponseModel?> confirmOtp(String otp) async {
@@ -112,7 +108,7 @@ class LoginController extends GetxController with BaseController {
   }
 
 //goto
-  goToLoginPage() async {
+  goToMainOrOtpPage() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
 
@@ -121,34 +117,32 @@ class LoginController extends GetxController with BaseController {
       userModel.token = loginResponseModel?.token;
       //isFirst = 1 => first time login
       if (loginResponseModel?.employee?.isFirst == '1') {
-        Get.offAndToNamed(Routes.resetPassword);
+        Get.offAndToNamed(Routes.otp);
       } else if (loginResponseModel?.employee?.isFirst == '0') {
         Get.offAndToNamed(Routes.bottomNav);
       }
     }
   }
 
-  goToMainPage(String otp) async {
-    if (otp.isNotEmpty && otp != '0000') {
+  goToPasswordResetPage(String otp) async {
+    if (otp.isNotEmpty) {
       MessageOnlyResponseModel? model = await confirmOtp(otp);
       if (model != null) {
-        MessageOnlyResponseModel? confirmModel = await updatePassword();
-        if (confirmModel != null) {
-          Get.toNamed(Routes.bottomNav);
-        }
+        Get.toNamed(Routes.resetPassword);
+        //todo show toast if otp is not confirmed
+
       }
     }
   }
 
-  goToOTPPageFromPasswordResetPage() async {
+  goToMainPageFromPasswordResetPage() async {
     if (formKeyResetPassword.currentState!.validate()) {
       formKeyResetPassword.currentState!.save();
       if (userModel.password.isNotEmpty &&
           userModel.password == userModel.confirmPassword) {
-        final model = await sendOtp();
-        if (model != null) {
-          Get.toNamed(Routes.otp);
-// check mail toast
+        MessageOnlyResponseModel? confirmModel = await updatePassword();
+        if (confirmModel != null) {
+          Get.toNamed(Routes.login);
         }
       } else {
         //todo toast password mismatch
@@ -156,6 +150,7 @@ class LoginController extends GetxController with BaseController {
     }
   }
 
+//todo need to complete once otp api without authorization is finished
   goToOTPPage() async {
     if (formKeyForgotPassword.currentState!.validate()) {
       formKeyForgotPassword.currentState!.save();

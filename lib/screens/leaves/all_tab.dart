@@ -9,6 +9,7 @@ class AllLeavesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => ListView.builder(
+          physics: const BouncingScrollPhysics(),
           itemCount: Get.find<LeavesController>()
                   .leaveResponseModel
                   .value

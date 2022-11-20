@@ -46,11 +46,16 @@ abstract class CustomColors {
   static Color circleAvatarBackgroundColor = Colors.grey.shade300;
   static const Color whiteCircleAvatarBackgroundColor = Colors.white;
   static const Color orangeLabelColor = Colors.orange;
+  static final Color lightOrangeColor = Colors.orange.shade50;
   static const Color blueLabelColor = Colors.blue;
   static const Color redColor = Colors.red;
+  static final Color lightRedColor = Colors.red.shade50;
+  static const Color greenColor = Colors.green;
+  static final Color lightGreenColor = Colors.green.shade50;
   static const Color leaveAllIconColor = Color.fromRGBO(153, 155, 163, 1);
   static const Color greyIconColor = Color.fromARGB(255, 105, 105, 105);
   static const Color whiteIconColor = Colors.white;
+  static const Color disabledButtonColor = Color.fromARGB(255, 124, 188, 240);
 
   //color list
   static const List<Color> cardColorList = [

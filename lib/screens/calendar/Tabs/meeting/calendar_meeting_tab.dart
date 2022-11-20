@@ -7,14 +7,9 @@ import 'package:paytym/screens/calendar/widgets/custom_svg.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 
-class CalendarMeeting extends StatefulWidget {
+class CalendarMeeting extends StatelessWidget {
   const CalendarMeeting({Key? key}) : super(key: key);
 
-  @override
-  State<CalendarMeeting> createState() => _CalendarMeetingState();
-}
-
-class _CalendarMeetingState extends State<CalendarMeeting> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -33,16 +28,22 @@ class _CalendarMeetingState extends State<CalendarMeeting> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(18, 12, 18, 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const CustomSVG(
                       IconPath.timeSvg,
                       size: 22,
                     ),
-                    Text(
-                      meeting["time"],
-                      style: kTextStyleS13W600CustomGrey,
+                    kSizedBoxW10,
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          meeting["time"],
+                          overflow: TextOverflow.ellipsis,
+                          style: kTextStyleS13W600CustomGrey,
+                        ),
+                      ),
                     ),
+                    kSizedBoxW10,
                     const CustomSVG(
                       IconPath.locationSvg,
                       size: 22,
@@ -60,26 +61,30 @@ class _CalendarMeetingState extends State<CalendarMeeting> {
                       backgroundColor: CustomColors.circleAvatarBackgroundColor,
                     ),
                     kSizedBoxW12,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          meeting["person"],
-                          style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            meeting["person"],
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                        kSizedBoxH4,
-                        Text(
-                          meeting["personJob"],
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: CustomColors.customGreyTextColor,
+                          kSizedBoxH4,
+                          Text(
+                            meeting["personJob"],
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: CustomColors.customGreyTextColor,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -118,7 +123,6 @@ class _CalendarMeetingState extends State<CalendarMeeting> {
                           "Let's talk",
                           style: kTextStyleS13W600,
                         ),
-                        kSizedBoxW50,
                       ],
                     ),
                   ],

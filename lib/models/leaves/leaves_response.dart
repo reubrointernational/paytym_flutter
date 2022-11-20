@@ -40,6 +40,7 @@ class LeaveRequest {
     this.title,
     this.startDate,
     this.endDate,
+    this.status,
     this.type,
     this.createdAt,
     this.updatedAt,
@@ -53,6 +54,7 @@ class LeaveRequest {
   String? type;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? status;
 
   factory LeaveRequest.fromJson(Map<String, dynamic> json) => LeaveRequest(
         id: json["id"],
@@ -61,6 +63,7 @@ class LeaveRequest {
         startDate: json["start_date"],
         endDate: json["end_date"],
         type: json["type"],
+        status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
       );
@@ -72,6 +75,7 @@ class LeaveRequest {
         "start_date": startDate,
         "end_date": endDate,
         "type": type,
+        "status": status,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };

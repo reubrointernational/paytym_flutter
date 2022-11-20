@@ -97,4 +97,21 @@ class DialogHelper {
   static void hideLoading() {
     if (Get.isDialogOpen ?? false) Get.back();
   }
+
+  //show bottomsheet
+  static void showBottomSheet(Widget child) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: Get.context!,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return child;
+      },
+    );
+  }
 }

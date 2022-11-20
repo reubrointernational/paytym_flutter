@@ -6,14 +6,9 @@ import 'package:pie_chart/pie_chart.dart';
 import '../../core/constants/strings.dart';
 import '../../core/constants/styles.dart';
 
-class AttendancePage extends StatefulWidget {
+class AttendancePage extends StatelessWidget {
   const AttendancePage({Key? key}) : super(key: key);
 
-  @override
-  State<AttendancePage> createState() => _AttendancePageState();
-}
-
-class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
     return Column(

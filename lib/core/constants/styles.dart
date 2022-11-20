@@ -74,6 +74,13 @@ final kTextStyleS14W600Cgrey300LS0p2 = TextStyle(
   letterSpacing: 0.2,
 );
 
+const kTextStyleS14W600Cblack300LS0p2 = TextStyle(
+  fontSize: 14,
+  color: Colors.black,
+  fontWeight: FontWeight.w600,
+  letterSpacing: 0.2,
+);
+
 final kInputBorderNone = OutlineInputBorder(
   borderRadius: BorderRadius.circular(12),
   borderSide: BorderSide.none,
@@ -100,4 +107,9 @@ final kInputBorderBlueW1p2 = OutlineInputBorder(
 final kInputBorderRedW1p2 = OutlineInputBorder(
   borderRadius: BorderRadius.circular(12),
   borderSide: const BorderSide(width: 1.2, color: CustomColors.redColor),
+);
+
+const kCalendarCard = TextStyle(
+  fontWeight: FontWeight.w500,
+  color: CustomColors.whiteTextColor,
 );

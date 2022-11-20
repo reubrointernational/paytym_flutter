@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -8,46 +9,37 @@ import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/reports/reports_controller.dart';
+import 'package:paytym/screens/reports/widgets/cached_image.dart';
+import 'package:paytym/screens/reports/widgets/pdf_viewer.dart';
+import 'package:paytym/core/extensions/camelcase.dart';
 
-class PaySlipPage extends StatefulWidget {
+class PaySlipPage extends StatelessWidget {
   const PaySlipPage({Key? key}) : super(key: key);
 
   @override
-  State<PaySlipPage> createState() => _PaySlipPageState();
-}
-
-class _PaySlipPageState extends State<PaySlipPage> {
-  @override
   Widget build(BuildContext context) {
+    String? url;
     return Column(
       children: [
         Expanded(
-          child: const PDF(
-            enableSwipe: true,
-            swipeHorizontal: false,
-            autoSpacing: false,
-            pageFling: false,
-            preventLinkNavigation: true,
-          ).cachedFromUrl(
-            'http://africau.edu/images/default/sample.pdf',
-            placeholder: (progress) => const Center(
-              child: SpinKitCubeGrid(
-                color: Colors.blue,
-                size: 50.0,
-              ),
-            ),
-            errorWidget: (error) => Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.error_outline_sharp,
-                  color: Colors.red,
-                  size: 50,
-                ),
-                Text('error.toString()'),
-              ],
-            ),
-          ),
+          child: Obx(() {
+            url = Get.find<ReportsController>()
+                .payslipResponseModel
+                .value
+                .payroll
+                ?.paySlip;
+            if (url?.getType() == 'pdf') {
+              return PdfViewer(
+                url: url!,
+              );
+            } else if (url?.getType() == 'png') {
+              return CachedImage(
+                url: url!,
+              );
+            } else {
+              return const SizedBox();
+            }
+          }),
         ),
         kSizedBoxH8,
         Container(
@@ -56,8 +48,8 @@ class _PaySlipPageState extends State<PaySlipPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                onPressed: () => Get.find<ReportsController>().sharePdf(
-                    'https://www.wlwv.k12.or.us/cms/lib8/OR01001812/Centricity/Domain/1309/Kate%20Chopin%20Story%20Texts.pdf'),
+                onPressed: () =>
+                    Get.find<ReportsController>().sharePdf(url, url?.getType()),
                 icon: CircleAvatar(
                   backgroundColor: CustomColors.fabColor,
                   child: Obx(
@@ -72,8 +64,7 @@ class _PaySlipPageState extends State<PaySlipPage> {
                 ),
               ),
               IconButton(
-                onPressed: () => Get.find<ReportsController>().downloadPdf(
-                    'https://www.wlwv.k12.or.us/cms/lib8/OR01001812/Centricity/Domain/1309/Kate%20Chopin%20Story%20Texts.pdf'),
+                onPressed: () => Get.find<ReportsController>().downloadPdf(url),
                 icon: CircleAvatar(
                   backgroundColor: CustomColors.fabColor,
                   child: Obx(

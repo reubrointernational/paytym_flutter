@@ -4,14 +4,9 @@ import '../../core/colors/colors.dart';
 import '../../core/constants/strings.dart';
 import '../../core/constants/styles.dart';
 
-class DeductionPage extends StatefulWidget {
+class DeductionPage extends StatelessWidget {
   const DeductionPage({Key? key}) : super(key: key);
 
-  @override
-  State<DeductionPage> createState() => _DeductionPageState();
-}
-
-class _DeductionPageState extends State<DeductionPage> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(

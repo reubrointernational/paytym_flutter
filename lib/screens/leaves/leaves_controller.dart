@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/models/leaves/leaves_request_model.dart';
 import 'package:paytym/models/leaves/leaves_response.dart';
+import 'package:paytym/models/leaves/leaves_status_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
@@ -156,5 +158,24 @@ class LeavesController extends GetxController with BaseController {
     return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
         ? null
         : "Enter a valid date";
+  }
+
+  LeaveStatusModel getLeaveStatusModel(String? status) {
+    switch (status) {
+      case '0':
+        //0 => status - awaiting
+        return LeaveStatusModel('Awaiting', CustomColors.orangeLabelColor,
+            CustomColors.lightOrangeColor);
+      case '1':
+        //1 => status - approved
+        return LeaveStatusModel(
+            'Approved', CustomColors.greenColor, CustomColors.lightGreenColor);
+      case '2':
+        //2 => status - declined
+        return LeaveStatusModel(
+            'Declined', CustomColors.redColor, CustomColors.lightRedColor);
+      default:
+        return LeaveStatusModel();
+    }
   }
 }

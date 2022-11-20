@@ -1,6 +1,7 @@
 import 'package:paytym/screens/login/login_page.dart';
 import 'package:paytym/screens/login/otp_page.dart';
 import 'package:paytym/screens/reports/reports_page.dart';
+import 'package:paytym/screens/scan_time/scanner_page.dart';
 import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +12,7 @@ import '../screens/login/reset_password_page.dart';
 import 'app_routes.dart';
 
 class AppPages {
-  static const initial = Routes.login;
+  static const initial = Routes.splash;
   static final routes = [
     GetPage(
       name: Routes.splash,
@@ -49,6 +50,10 @@ class AppPages {
     GetPage(
       name: Routes.dashboard,
       page: () => const DashboardPage(),
+    ),
+    GetPage(
+      name: Routes.scanTime,
+      page: () => const ScanTime(),
     ),
   ];
 }

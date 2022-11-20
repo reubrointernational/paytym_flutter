@@ -1,8 +1,9 @@
+import 'package:get/get.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:flutter/material.dart';
-
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:paytym/screens/dashboard/dashboard_controller.dart';
 
 import '../../core/constants/strings.dart';
 import 'scanner_app_bar.dart';
@@ -15,9 +16,10 @@ class ScanTime extends StatefulWidget {
 }
 
 class _ScanTimeState extends State<ScanTime> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  QRViewController? controller;
-  Barcode? result;
+  // final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  // QRViewController? controller;
+  // Barcode? result;
+  String? code;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,17 +29,27 @@ class _ScanTimeState extends State<ScanTime> {
           children: [
             const ScannerAppBar(),
             Expanded(
-              child: QRView(
-                key: qrKey,
-                onQRViewCreated: onQRViewCreated,
-              ),
+              child: MobileScanner(
+                  allowDuplicates: false,
+                  onDetect: (barcode, args) {
+                    if (barcode.rawValue == null) {
+                      debugPrint('Failed to scan Barcode');
+                    } else {
+                      code = barcode.rawValue!;
+                      debugPrint('success to scan Barcode $code');
+                      Get.find<DashboardController>().updateTimer(code);
+                      setState(() {
+                        code;
+                      });
+                    }
+                  }),
             ),
             SizedBox(
               height: h * 0.13,
               child: Center(
-                child: (result != null)
+                child: (code != null)
                     ? Text(
-                        "$kDataString ${result!.code}",
+                        "$kDataString $code",
                       )
                     : const Text(
                         kScanCodeString,
@@ -72,12 +84,12 @@ class _ScanTimeState extends State<ScanTime> {
     );
   }
 
-  void onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((event) {
-      setState(() {
-        result = event;
-      });
-    });
-  }
+  // void onQRViewCreated(QRViewController controller) {
+  //   this.controller = controller;
+  //   controller.scannedDataStream.listen((event) {
+  //     setState(() {
+  //       result = event;
+  //     });
+  //   });
+  // }
 }

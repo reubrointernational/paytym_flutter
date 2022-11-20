@@ -21,7 +21,7 @@ class ScannerAppBar extends StatelessWidget {
               CustomSVG(IconPath.menuSvg, size: 20),
               kSizedBoxW15,
               Text(
-                kReportString,
+                kScanString,
                 style: kTextStyleS18W600,
               ),
             ],

@@ -19,6 +19,7 @@ class CasualLeavesPage extends StatelessWidget {
             ?.where((element) => element.type == 'casual')
             .toList();
         return ListView.builder(
+          physics: const BouncingScrollPhysics(),
           itemCount: casualLeaves?.length ?? 0,
           itemBuilder: (context, index) {
             final leave = casualLeaves?[index];

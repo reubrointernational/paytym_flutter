@@ -190,7 +190,7 @@ const kPasswordString = 'Password';
 
 const kOTPString = 'OTP';
 
-const kEnterTheOTPString = 'Enter the OTP send to your number';
+const kEnterTheOTPString = 'Enter the OTP send to your email';
 
 const kSubmitString = 'Submit';
 
@@ -245,5 +245,7 @@ const kReportString = 'Report';
 
 //Scan
 const kDataString = 'Data:';
+
+const kScanString = 'Scan';
 
 const kScanCodeString = 'Scan Code';
