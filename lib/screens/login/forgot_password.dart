@@ -1,13 +1,11 @@
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/routes/app_pages.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:paytym/screens/widgets/paytym_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants/strings.dart';
-import '../../routes/app_routes.dart';
 import 'widgets/custom_text_form_field.dart';
 
 class ForgetPasswordPage extends StatelessWidget {

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 import '../firebase_options.dart';
+import 'init_fcm.dart';
 
 Future<void> initApp() async {
   final WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
@@ -26,4 +27,6 @@ Future<void> initApp() async {
       ignoreSsl: true //todo delete if server is https
 
       );
+
+  initFcm();
 }

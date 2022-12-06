@@ -47,7 +47,7 @@ class LeavesController extends GetxController with BaseController {
 
   fetchLeaveData() async {
     showLoading();
-
+    Get.find<BaseClient>().onError = fetchLeaveData;
     var responseString = await Get.find<BaseClient>()
         .get(ApiEndPoints.leave, Get.find<LoginController>().getHeader())
         .catchError(handleError);
@@ -57,6 +57,7 @@ class LeavesController extends GetxController with BaseController {
     } else {
       hideLoading();
       leaveResponseModel.value = leaveResponseModelFromJson(responseString);
+      Get.find<BaseClient>().onError = null;
     }
   }
 

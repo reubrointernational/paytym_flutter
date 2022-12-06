@@ -1,5 +1,3 @@
-import 'package:paytym/screens/scan_time/scanner_page.dart';
-
 abstract class Routes {
   // Main Menu Route
   static const login = '/login';

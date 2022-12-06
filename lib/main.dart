@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import 'core/init_app.dart';
 import 'routes/app_pages.dart';
-import 'routes/app_routes.dart';
 
 void main() async {
   await initApp();

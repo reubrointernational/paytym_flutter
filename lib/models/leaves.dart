@@ -17,10 +17,10 @@ class Leaves {
     required this.process,
     required this.bgColor,
     required this.color,
-});
+  });
 }
 
-final List<Leaves> LeavesData = [
+final List<Leaves> leavesData = [
   Leaves(
     date: "December 2022",
     application: "Half Day Application",

@@ -6,6 +6,7 @@ import 'package:paytym/models/login/otp_request_model.dart';
 import 'package:paytym/models/login/password_reset_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/network/shared_preference_helper.dart';
 
 import '../../network/base_client.dart';
 import '../../network/base_controller.dart';
@@ -27,8 +28,10 @@ class LoginController extends GetxController with BaseController {
     };
   }
 
-  fetchLoginData() async {
-    showLoading();
+  Future<bool> fetchLoginData(bool isloadingOn) async {
+    if (isloadingOn) showLoading();
+
+    if (!isloadingOn) Get.find<BaseClient>().onErrorBool = goToMainOrOtpPage;
 
     LoginRequestModel loginRequestModel =
         LoginRequestModel(email: userModel.email, password: userModel.password);
@@ -38,12 +41,13 @@ class LoginController extends GetxController with BaseController {
         .catchError(handleError);
 
     if (responseString == null) {
-      return;
+      return false;
     } else {
       hideLoading();
       loginResponseModel = loginResponseModelFromJson(responseString);
+      if (!isloadingOn) Get.find<BaseClient>().onErrorBool = null;
+      return true;
     }
-    // update();
   }
 
   Future<MessageOnlyResponseModel?> sendOtp() async {
@@ -107,13 +111,18 @@ class LoginController extends GetxController with BaseController {
         : null;
   }
 
-//goto
-  goToMainOrOtpPage() async {
+  validateAndGoToMainOrOtpPage() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
+      goToMainOrOtpPage();
+    }
+  }
 
-      await fetchLoginData();
-
+  goToMainOrOtpPage([bool showLoading = true]) async {
+    bool isSuccess = await fetchLoginData(showLoading);
+    if (isSuccess) {
+      await Get.find<SharedPreferenceHelper>()
+          .addUserLoginCredentials(userModel.email, userModel.password);
       userModel.token = loginResponseModel?.token;
       //isFirst = 1 => first time login
       if (loginResponseModel?.employee?.isFirst == '1') {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../screens/login/login_controller.dart';
+
 double w = Get.width;
 double h = Get.height;
 
@@ -61,31 +63,36 @@ List<Map<String, dynamic>> calendarScheduleDetails = [
 
 List<Map<String, dynamic>> employeeLeaves = [
   {
+    //todo change percentage by calculating
     "bgColor": Colors.green,
-    'total': 10,
+    'total':
+        "${Get.find<LoginController>().loginResponseModel?.absence ?? '0'}",
     'icon': Icons.people_outline,
     "title": "Absentees",
     "attendance_percentage": 98,
   },
   {
     "bgColor": Colors.red,
-    'total': 05,
+    //todo change casual to sick leave in api
+    'total': "${Get.find<LoginController>().loginResponseModel?.casual ?? '0'}",
     'icon': Icons.text_snippet_outlined,
     "title": "Sick Leave",
     "attendance_percentage": 98,
   },
   {
     "bgColor": Colors.orange,
-    'total': 12,
+    'total': "${Get.find<LoginController>().loginResponseModel?.annual ?? '0'}",
     'icon': Icons.event,
-    "title": "Annual Leave",
+    "title": 'Annual Leave',
     "attendance_percentage": 98,
   },
   {
     "bgColor": Colors.blue,
-    'total': 04,
+    'total':
+        "${Get.find<LoginController>().loginResponseModel?.halfday ?? '0'}",
     'icon': Icons.schedule,
-    "title": "Late Arrival",
+    //todo change halfday to late arrival in api
+    "title": 'Late Arrival',
     "attendance_percentage": 98,
   },
 ];
@@ -127,12 +134,6 @@ const kMeetingString = 'Meeting';
 const kScheduleString = 'Schedule';
 
 //Chat
-const kHiJimmyString = 'Hi, Jimmy! any update today? please come today as well';
-
-const kAllgoodString =
-    'All good! we have some update  please come today as well';
-
-const kDarleneRobertsonString = 'Darlene Robertson';
 
 const kTypeHereString = 'Type here...';
 
@@ -235,11 +236,11 @@ const kRequestAdvanceString = 'Request Advance';
 
 const kLogoutString = 'Logout';
 
-const kNameString = 'Name';
-
-const kEmployeeIDString = 'Employee ID';
-
 const kAmountString = 'Amount';
+
+const kDescString = 'Description';
+
+const kSalaryString = 'Salary';
 
 const kReportString = 'Report';
 

@@ -17,7 +17,6 @@ class AppPages {
     GetPage(
       name: Routes.splash,
       page: () => const SplashScreen(),
-      // binding: DownloadsBinding(),
     ),
     GetPage(
       name: Routes.login,

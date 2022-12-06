@@ -1,7 +1,6 @@
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/network/base_client.dart';
 import 'package:paytym/routes/app_routes.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +13,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(BaseClient());
-    final loginController = Get.put(LoginController(), permanent: true);
-
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       body: Padding(
@@ -40,25 +36,27 @@ class LoginPage extends StatelessWidget {
                 ),
                 kSizedBoxH40,
                 Form(
-                  key: loginController.formKey,
+                  key: Get.find<LoginController>().formKey,
                   child: Column(
                     children: [
                       CustomTextFormField(
-                        onSaved: (value) =>
-                            loginController.userModel.email = value!,
+                        onSaved: (value) => Get.find<LoginController>()
+                            .userModel
+                            .email = value!,
                         hintText: kEmailString,
                         inputType: TextInputType.emailAddress,
                         validator: (value) =>
-                            loginController.emailValidator(value!),
+                            Get.find<LoginController>().emailValidator(value!),
                       ),
                       kSizedBoxH10,
                       CustomTextFormField(
-                        onSaved: (value) =>
-                            loginController.userModel.password = value!,
+                        onSaved: (value) => Get.find<LoginController>()
+                            .userModel
+                            .password = value!,
                         obscureText: true,
                         hintText: kPasswordString,
-                        validator: (value) =>
-                            loginController.passwordValidator(value!),
+                        validator: (value) => Get.find<LoginController>()
+                            .passwordValidator(value!),
                       ),
                     ],
                   ),
@@ -82,7 +80,8 @@ class LoginPage extends StatelessWidget {
                   height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => loginController.goToMainOrOtpPage(),
+                    onPressed: () => Get.find<LoginController>()
+                        .validateAndGoToMainOrOtpPage(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: CustomColors.blueTextColor,
                       shape: RoundedRectangleBorder(

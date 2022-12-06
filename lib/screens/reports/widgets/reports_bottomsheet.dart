@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:paytym/screens/login/login_controller.dart';
+import 'package:paytym/screens/reports/reports_controller.dart';
+import 'package:paytym/screens/reports/widgets/bottomsheet_text_field.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/strings.dart';
@@ -6,7 +11,8 @@ import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
 
 class ReportsBottomsheet extends StatelessWidget {
-  const ReportsBottomsheet({super.key});
+  final bool isSalary;
+  const ReportsBottomsheet({super.key, required this.isSalary});
 
   @override
   Widget build(BuildContext context) {
@@ -24,69 +30,70 @@ class ReportsBottomsheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            kRequestAdvanceString,
+            !isSalary ? kRequestAdvanceString : kRequestPaymentString,
             style:
                 kTextStyleS18W600.copyWith(color: CustomColors.blueTextColor),
           ),
           kSizedBoxH10,
-          Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  hintText: kNameString,
-                  hintStyle: const TextStyle(
-                    color: CustomColors.greyTextColor,
-                    fontSize: 14,
-                  ),
-                  enabledBorder: kInputBorderBlueW1p2,
-                  focusedBorder: kInputBorderBlueW1p2,
+          Form(
+            key: Get.find<ReportsController>().requestAdvanceFormKey,
+            child: Column(
+              children: [
+                BottomsheetTextField(
+                  text:
+                      '${Get.find<LoginController>().loginResponseModel?.employee?.firstName} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName}',
+                  enabled: false,
                 ),
-              ),
-              kSizedBoxH10,
-              TextFormField(
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  hintText: kEmployeeIDString,
-                  hintStyle: const TextStyle(
-                    color: CustomColors.greyTextColor,
-                    fontSize: 14,
-                  ),
-                  enabledBorder: kInputBorderBlueW1p2,
-                  focusedBorder: kInputBorderBlueW1p2,
-                ),
-              ),
-              kSizedBoxH10,
-              TextFormField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                kSizedBoxH10,
+                BottomsheetTextField(
                   hintText: kAmountString,
-                  hintStyle: const TextStyle(
-                    color: CustomColors.greyTextColor,
-                    fontSize: 14,
-                  ),
-                  enabledBorder: kInputBorderBlueW1p2,
-                  focusedBorder: kInputBorderBlueW1p2,
+                  enabled: !isSalary,
+                  text: isSalary
+                      ? Get.find<ReportsController>()
+                          .payslipResponseModel
+                          .value
+                          .payroll
+                          ?.salary
+                      : null,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  validator: (value) =>
+                      Get.find<ReportsController>().amountValidator(value!),
+                  onSaved: (value) => Get.find<ReportsController>()
+                      .requestAdvanceModel
+                      .amount = value!,
                 ),
-              ),
-            ],
+                kSizedBoxH10,
+                BottomsheetTextField(
+                  hintText: kDescString,
+                  text: isSalary ? kSalaryString : null,
+                  enabled: !isSalary,
+                  validator: (value) => Get.find<ReportsController>()
+                      .descriptionValidator(value!),
+                  onSaved: (value) => Get.find<ReportsController>()
+                      .requestAdvanceModel
+                      .description = value!,
+                ),
+              ],
+            ),
           ),
           kSizedBoxH10,
           SizedBox(
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () => !isSalary
+                  ? Get.find<ReportsController>().requestAdvance()
+                  : Get.find<ReportsController>().requestPayment(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                kRequestAdvanceString,
-                style: TextStyle(
+              child: Text(
+                isSalary ? kRequestPaymentString : kRequestAdvanceString,
+                style: const TextStyle(
                   color: CustomColors.whiteTextColor,
                 ),
               ),

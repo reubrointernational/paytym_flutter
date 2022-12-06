@@ -11,6 +11,8 @@ import 'network_exceptions.dart';
 //!Exception handling
 class BaseClient extends GetxService {
   var baseClient = http.Client();
+  void Function()? onError;
+  void Function(bool)? onErrorBool;
   final baseHeader = {'content-type': 'application/json'};
 
   static const int timeOutDuration = 20;

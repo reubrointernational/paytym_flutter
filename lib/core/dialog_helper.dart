@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+import '../network/base_client.dart';
 import 'constants/strings.dart';
 
 class DialogHelper {
@@ -12,8 +13,10 @@ class DialogHelper {
 
   //show dialog
 
-  static void showErrorDialog(
-      {String title = 'Error', String desc = 'Something went wrong'}) {
+  static void showErrorDialog({
+    String title = 'Error',
+    String desc = 'Something went wrong',
+  }) {
     Get.dialog(
       Scaffold(
         backgroundColor: Colors.white54,
@@ -37,11 +40,19 @@ class DialogHelper {
               width: w * 0.8,
               child: ElevatedButton(
                 onPressed: () {
+                  if (Get.find<BaseClient>().onError != null) {
+                    Get.find<BaseClient>().onError!();
+                  } else if (Get.find<BaseClient>().onErrorBool != null) {
+                    Get.find<BaseClient>().onErrorBool!(false);
+                  }
                   if (Get.isDialogOpen ?? false) Get.back();
                 },
-                child: const Text(
-                  'OK',
-                  style: TextStyle(
+                child: Text(
+                  Get.find<BaseClient>().onError != null ||
+                          Get.find<BaseClient>().onErrorBool != null
+                      ? 'Retry'
+                      : 'OK',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -52,6 +63,22 @@ class DialogHelper {
         ),
       ),
     );
+  }
+
+  static void showConfirmDialog({
+    String title = 'Logout',
+    String desc = 'Do you want to Logout?',
+    void Function()? onConfirm,
+    void Function()? onCancel,
+  }) {
+    Get.defaultDialog(
+        title: title,
+        middleText: desc,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
+        textConfirm: 'YES',
+        confirmTextColor: Colors.white,
+        textCancel: 'NO');
   }
   //show toast
 

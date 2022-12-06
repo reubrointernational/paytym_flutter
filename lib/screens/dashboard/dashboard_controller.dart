@@ -84,6 +84,8 @@ class DashboardController extends GetxController with BaseController {
     }
   }
 
+  //repositories
+
   Future<bool> serverCheckInOut(bool isCheckIn) async {
     String endPoint = isCheckIn ? ApiEndPoints.checkIn : ApiEndPoints.checkOut;
     var responseString = await Get.find<BaseClient>()

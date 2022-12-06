@@ -7,7 +7,6 @@ import 'package:paytym/screens/dashboard/widgets/check_in_out_card.dart';
 import 'package:paytym/screens/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:paytym/screens/dashboard/widgets/dashboard_colored_card.dart';
 import 'package:paytym/screens/login/login_controller.dart';
-import 'package:paytym/screens/scan_time/scanner_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

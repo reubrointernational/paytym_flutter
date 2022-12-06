@@ -1,63 +1,99 @@
 // To parse this JSON data, do
 //
-//     final loginResponseModel = loginResponseModelFromJson(jsonString);
+//     final meetingResponseModel = meetingResponseModelFromJson(jsonString);
 
 import 'dart:convert';
 
-LoginResponseModel loginResponseModelFromJson(String str) =>
-    LoginResponseModel.fromJson(json.decode(str));
+MeetingResponseModel meetingResponseModelFromJson(String str) =>
+    MeetingResponseModel.fromJson(json.decode(str));
 
-String loginResponseModelToJson(LoginResponseModel data) =>
+String meetingResponseModelToJson(MeetingResponseModel data) =>
     json.encode(data.toJson());
 
-class LoginResponseModel {
-  LoginResponseModel({
+class MeetingResponseModel {
+  MeetingResponseModel({
     this.message,
-    this.employee,
-    this.token,
-    this.casual,
-    this.absence,
-    this.annual,
-    this.halfday,
+    this.payroll,
   });
 
   String? message;
-  Employee? employee;
-  String? token;
-  int? casual;
-  int? absence;
-  int? annual;
-  int? halfday;
+  List<Payroll>? payroll;
 
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
-      LoginResponseModel(
+  factory MeetingResponseModel.fromJson(Map<String, dynamic> json) =>
+      MeetingResponseModel(
         message: json["message"],
-        employee: Employee.fromJson(json["employee"]),
-        token: json["token"],
-        casual: json["casual"],
-        absence: json["absence"],
-        annual: json["annual"],
-        halfday: json["halfday"],
+        payroll: json["payroll"] != null
+            ? List<Payroll>.from(
+                json["payroll"].map((x) => Payroll.fromJson(x)))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "employee": employee?.toJson(),
-        "token": token,
-        "casual": casual,
-        "absence": absence,
-        "annual": annual,
-        "halfday": halfday,
+        "payroll": List<dynamic>.from(payroll!.map((x) => x.toJson())),
       };
 }
 
-class Employee {
-  Employee({
+class Payroll {
+  Payroll({
+    this.id,
+    this.userId,
+    this.attendeeId,
+    this.date,
+    this.startTime,
+    this.endTime,
+    this.location,
+    this.createdAt,
+    this.updatedAt,
+    this.user,
+  });
+
+  int? id;
+  int? userId;
+  int? attendeeId;
+  String? date;
+  String? startTime;
+  String? endTime;
+  String? location;
+  String? createdAt;
+  String? updatedAt;
+  User? user;
+
+  factory Payroll.fromJson(Map<String, dynamic> json) => Payroll(
+        id: json["id"],
+        userId: json["user_id"],
+        attendeeId: json["attendee_id"],
+        date: json["date"],
+        startTime: json["start_time"],
+        endTime: json["end_time"],
+        location: json["location"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        user: User.fromJson(json["user"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "attendee_id": attendeeId,
+        "date": date,
+        "start_time": startTime,
+        "end_time": endTime,
+        "location": location,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "user": user?.toJson(),
+      };
+}
+
+class User {
+  User({
     this.id,
     this.firstName,
     this.lastName,
     this.company,
     this.branch,
+    this.position,
     this.email,
     this.phone,
     this.dateOfBirth,
@@ -83,9 +119,10 @@ class Employee {
   String? lastName;
   String? company;
   String? branch;
+  String? position;
   String? email;
   String? phone;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String? street;
   String? city;
   String? town;
@@ -102,15 +139,16 @@ class Employee {
   String? createdAt;
   String? updatedAt;
 
-  factory Employee.fromJson(Map<String, dynamic> json) => Employee(
+  factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         firstName: json["first_name"],
         lastName: json["last_name"],
         company: json["company"],
         branch: json["branch"],
+        position: json["position"],
         email: json["email"],
         phone: json["phone"],
-        dateOfBirth: DateTime.parse(json["date_of_birth"]),
+        dateOfBirth: json["date_of_birth"],
         street: json["street"],
         city: json["city"],
         town: json["town"],
@@ -134,6 +172,7 @@ class Employee {
         "last_name": lastName,
         "company": company,
         "branch": branch,
+        "position": position,
         "email": email,
         "phone": phone,
         "date_of_birth": dateOfBirth,

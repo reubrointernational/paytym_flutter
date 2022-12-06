@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/login/login_controller.dart';
@@ -11,6 +9,7 @@ import '../../core/colors/colors.dart';
 import '../../core/constants/enums.dart';
 import '../../core/constants/strings.dart';
 import '../../core/constants/styles.dart';
+import '../widgets/custom_cached_network_image.dart';
 import 'widgets/reports_app_bar.dart';
 
 class ReportsPage extends StatelessWidget {
@@ -35,24 +34,13 @@ class ReportsPage extends StatelessWidget {
                   kSizedBoxH10,
                   Row(
                     children: [
-                      CachedNetworkImage(
+                      CustomCachedNetworkImage(
                         imageUrl: Get.find<LoginController>()
                                 .loginResponseModel
                                 ?.employee
                                 ?.image ??
                             '',
-                        imageBuilder: (context, imageProvider) => CircleAvatar(
-                          backgroundColor:
-                              CustomColors.circleAvatarBackgroundColor,
-                          radius: 26,
-                          backgroundImage: imageProvider,
-                        ),
-                        placeholder: (context, url) =>
-                            const SpinKitDoubleBounce(
-                          color: CustomColors.whiteCircleAvatarBackgroundColor,
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        radius: 26,
                       ),
                       kSizedBoxW10,
                       Column(

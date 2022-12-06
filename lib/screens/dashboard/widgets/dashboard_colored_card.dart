@@ -24,7 +24,7 @@ class DashboardColoredCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: Text(
-                    "${leaves["total"]}",
+                    leaves["total"].toString(),
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
