@@ -25,12 +25,10 @@ class AppPages {
     GetPage(
       name: Routes.bottomNav,
       page: () => const BottomNavigationPage(),
-      // binding: DownloadsBinding(),
     ),
     GetPage(
       name: Routes.resetPassword,
       page: () => const ResetPasswordPage(),
-      // binding: DownloadsBinding(),
     ),
     GetPage(
       name: Routes.forgotPassword,
@@ -40,7 +38,6 @@ class AppPages {
     GetPage(
       name: Routes.otp,
       page: () => const OTPPage(),
-      // binding: DownloadsBinding(),
     ),
     GetPage(
       name: Routes.reports,

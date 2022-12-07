@@ -14,9 +14,7 @@ class CalendarController extends GetxController with BaseController {
 
   final selectedDay = DateTime.now().obs;
 
-  List<dynamic> getEventsForDay(DateTime day) {
-    return ['HI'];
-  }
+  List<dynamic> getEventsForDay(DateTime day) => ['HI'];
 
   //todo add onError in getshedule as in getmeeting
 
