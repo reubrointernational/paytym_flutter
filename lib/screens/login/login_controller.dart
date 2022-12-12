@@ -133,7 +133,7 @@ class LoginController extends GetxController with BaseController {
     if (isSuccess) {
       //isFirst = 1 => first time login
       if (loginResponseModel?.employee?.isFirst == '1') {
-        Get.offAndToNamed(Routes.otp);
+        Get.toNamed(Routes.otp);
       } else if (loginResponseModel?.employee?.isFirst == '0') {
         Get.offAndToNamed(Routes.bottomNav);
       }
@@ -158,7 +158,7 @@ class LoginController extends GetxController with BaseController {
           userModel.password == userModel.confirmPassword) {
         MessageOnlyResponseModel? confirmModel = await updatePassword();
         if (confirmModel != null) {
-          Get.toNamed(Routes.login);
+          Get.offAllNamed(Routes.login);
         }
       } else {
         //todo toast password mismatch

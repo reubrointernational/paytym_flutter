@@ -41,7 +41,7 @@ class CalendarCard extends StatelessWidget {
                 selectedDayPredicate: (day) => isSameDay(selectedDay, day),
                 rowHeight: 65,
                 daysOfWeekHeight: 20,
-                firstDay: DateTime.utc(2010, 10, 16),
+                firstDay: DateTime.utc(2022, 12, 12),
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: Get.find<CalendarController>().selectedDay.value,
                 calendarFormat: CalendarFormat.week,

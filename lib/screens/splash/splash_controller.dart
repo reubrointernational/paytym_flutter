@@ -17,8 +17,7 @@ class SplashController extends GetxController {
           await Get.find<SharedPreferenceHelper>().getUserDetails();
       if (storageMap['loginDetails'] != null) {
         Get.find<LoginController>().loginResponseModel =
-            loginRequestModelFromJson(storageMap['loginDetails']!)
-                as LoginResponseModel?;
+            loginResponseModelFromJson(storageMap['loginDetails']!);
         Get.find<LoginController>().goToMainOrOtpPage();
       } else {
         Get.offAndToNamed(Routes.login);

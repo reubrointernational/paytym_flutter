@@ -14,7 +14,7 @@ import '../../models/message_only_response_model.dart';
 import '../../network/base_client.dart';
 import '../../network/end_points.dart';
 import 'all_tab.dart';
-import 'casual_tab.dart';
+import 'other_tab.dart';
 import 'sick_tab.dart';
 
 class LeavesController extends GetxController with BaseController {
@@ -37,8 +37,8 @@ class LeavesController extends GetxController with BaseController {
   Widget selectLeave() {
     if (leavesTab.value == LeavesTab.all) {
       return const AllLeavesPage();
-    } else if (leavesTab.value == LeavesTab.casual) {
-      return const CasualLeavesPage();
+    } else if (leavesTab.value == LeavesTab.other) {
+      return const OtherLeavesPage();
     } else if (leavesTab.value == LeavesTab.sick) {
       return const SickLeavesPage();
     }

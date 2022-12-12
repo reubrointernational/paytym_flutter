@@ -169,7 +169,7 @@ const kAllString = 'All';
 
 const kcasualString = 'casual';
 
-const kCasualString = 'Casual';
+const kOtherString = 'Other';
 
 const kSickString = 'Sick';
 

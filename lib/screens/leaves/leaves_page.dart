@@ -40,12 +40,12 @@ class LeavesPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    LeavesTab.casual: Text(
-                      kCasualString,
-                      style: kTextStyleS14W600LS0p2,
-                    ),
                     LeavesTab.sick: Text(
                       kSickString,
+                      style: kTextStyleS14W600LS0p2,
+                    ),
+                    LeavesTab.other: Text(
+                      kOtherString,
                       style: kTextStyleS14W600LS0p2,
                     ),
                   },

@@ -85,7 +85,7 @@ class Employee {
   String? branch;
   String? email;
   String? phone;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String? street;
   String? city;
   String? town;
@@ -110,7 +110,7 @@ class Employee {
         branch: json["branch"],
         email: json["email"],
         phone: json["phone"],
-        dateOfBirth: DateTime.parse(json["date_of_birth"]),
+        dateOfBirth: json["date_of_birth"],
         street: json["street"],
         city: json["city"],
         town: json["town"],
