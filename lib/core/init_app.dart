@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-
 import '../firebase_options.dart';
 import 'init_fcm.dart';
 

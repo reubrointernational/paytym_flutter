@@ -42,16 +42,11 @@ class DialogHelper {
                 onPressed: () {
                   if (Get.find<BaseClient>().onError != null) {
                     Get.find<BaseClient>().onError!();
-                  } else if (Get.find<BaseClient>().onErrorBool != null) {
-                    Get.find<BaseClient>().onErrorBool!(false);
                   }
                   if (Get.isDialogOpen ?? false) Get.back();
                 },
                 child: Text(
-                  Get.find<BaseClient>().onError != null ||
-                          Get.find<BaseClient>().onErrorBool != null
-                      ? 'Retry'
-                      : 'OK',
+                  Get.find<BaseClient>().onError != null ? 'Retry' : 'OK',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,

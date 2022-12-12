@@ -6,11 +6,11 @@ import 'package:paytym/models/login/otp_request_model.dart';
 import 'package:paytym/models/login/password_reset_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paytym/network/shared_preference_helper.dart';
 
 import '../../network/base_client.dart';
 import '../../network/base_controller.dart';
 import '../../network/end_points.dart';
+import '../../network/shared_preference_helper.dart';
 import '../../routes/app_routes.dart';
 
 class LoginController extends GetxController with BaseController {
@@ -24,30 +24,34 @@ class LoginController extends GetxController with BaseController {
   Map<String, String>? getHeader() {
     return {
       'content-type': 'application/json',
-      'Authorization': 'Bearer ${userModel.token}'
+      'Authorization': 'Bearer ${loginResponseModel?.token}'
     };
   }
 
-  Future<bool> fetchLoginData(bool isloadingOn) async {
-    if (isloadingOn) showLoading();
+  Future<bool> fetchLoginData() async {
+    /// if login data is already present in storage it will not connect to server.
+    /// login data is stored in after password reset is complete for the first time
+    /// loginResponseModel is filled in splash screen from sharedPreferences if available
+    if (loginResponseModel == null) {
+      showLoading();
 
-    if (!isloadingOn) Get.find<BaseClient>().onErrorBool = goToMainOrOtpPage;
+      LoginRequestModel loginRequestModel = LoginRequestModel(
+          email: userModel.email, password: userModel.password);
 
-    LoginRequestModel loginRequestModel =
-        LoginRequestModel(email: userModel.email, password: userModel.password);
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.login, loginRequestModelToJson(loginRequestModel))
+          .catchError(handleError);
 
-    var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.login, loginRequestModelToJson(loginRequestModel))
-        .catchError(handleError);
-
-    if (responseString == null) {
-      return false;
-    } else {
-      hideLoading();
-      loginResponseModel = loginResponseModelFromJson(responseString);
-      if (!isloadingOn) Get.find<BaseClient>().onErrorBool = null;
-      return true;
+      if (responseString == null) {
+        return false;
+      } else {
+        hideLoading();
+        loginResponseModel = loginResponseModelFromJson(responseString);
+        return true;
+      }
     }
+
+    return true;
   }
 
   Future<MessageOnlyResponseModel?> sendOtp() async {
@@ -96,6 +100,12 @@ class LoginController extends GetxController with BaseController {
       return null;
     } else {
       hideLoading();
+
+      /// store loginResponseModel to sharedPreferences
+      //isFirst = 1 => first time login
+      loginResponseModel?.employee?.isFirst = '0';
+      await Get.find<SharedPreferenceHelper>()
+          .addUserDetails(loginResponseModel);
       return messageOnlyResponseModelFromJson(responseString);
     }
   }
@@ -118,12 +128,9 @@ class LoginController extends GetxController with BaseController {
     }
   }
 
-  goToMainOrOtpPage([bool showLoading = true]) async {
-    bool isSuccess = await fetchLoginData(showLoading);
+  goToMainOrOtpPage() async {
+    bool isSuccess = await fetchLoginData();
     if (isSuccess) {
-      await Get.find<SharedPreferenceHelper>()
-          .addUserLoginCredentials(userModel.email, userModel.password);
-      userModel.token = loginResponseModel?.token;
       //isFirst = 1 => first time login
       if (loginResponseModel?.employee?.isFirst == '1') {
         Get.offAndToNamed(Routes.otp);
