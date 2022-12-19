@@ -14,7 +14,7 @@ class SplashController extends GetxController {
     super.onReady();
     Timer(const Duration(seconds: 4), () async {
       Map<String, String> storageMap =
-          await Get.find<SharedPreferenceHelper>().getUserDetails();
+          await Get.find<SharedPreferenceHelper>().getStorageData();
       if (storageMap['loginDetails'] != null) {
         Get.find<LoginController>().loginResponseModel =
             loginResponseModelFromJson(storageMap['loginDetails']!);

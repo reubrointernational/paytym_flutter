@@ -36,6 +36,49 @@ class CheckInOutCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Obx(() => Slider(
+                        value:
+                            Get.find<DashboardController>().sliderValue.value,
+                        max: 100,
+                        onChanged: (double value) {
+                          Get.find<DashboardController>().sliderValue.value =
+                              value;
+                        },
+                        onChangeEnd: (double value) =>
+                            Get.find<DashboardController>()
+                                .sliderController(value),
+                      )),
+                  // Obx(
+                  //   () => SizedBox(
+                  //     height: 32,
+                  //     width: 70,
+                  //     child: ElevatedButton(
+                  //       onPressed: () {
+                  //         Get.find<DashboardController>().updateTimer();
+                  //       },
+                  //       style: ElevatedButton.styleFrom(
+                  //         backgroundColor: CustomColors.blueCardColor,
+                  //         // padding: const EdgeInsets.symmetric(
+                  //         //     horizontal: 10, vertical: 20),
+                  //         shape: const RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.horizontal(
+                  //             right: Radius.circular(20),
+                  //             left: Radius.circular(20),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       child: Text(
+                  //         Get.find<DashboardController>().isTimerOn.value
+                  //             ? kStopString
+                  //             : kStartString,
+                  //         style: const TextStyle(
+                  //           fontWeight: FontWeight.w400,
+                  //           fontSize: 12,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Obx(
                     () => RichText(
                       text: TextSpan(
@@ -54,37 +97,6 @@ class CheckInOutCard extends StatelessWidget {
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                  Obx(
-                    () => SizedBox(
-                      height: 32,
-                      width: 70,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Get.find<DashboardController>().updateTimer();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: CustomColors.blueCardColor,
-                          // padding: const EdgeInsets.symmetric(
-                          //     horizontal: 10, vertical: 20),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.horizontal(
-                              right: Radius.circular(20),
-                              left: Radius.circular(20),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          Get.find<DashboardController>().isTimerOn.value
-                              ? kStopString
-                              : kStartString,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                          ),
-                        ),
                       ),
                     ),
                   ),

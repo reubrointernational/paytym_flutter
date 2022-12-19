@@ -7,15 +7,18 @@ import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
+import '../../core/constants/enums.dart';
 import '../../network/base_client.dart';
 import '../../network/end_points.dart';
+import '../../network/shared_preference_helper.dart';
 
 class DashboardController extends GetxController with BaseController {
   final time = '00:00 AM'.obs;
-  late Timer? timer;
+  late Timer? nowIsTimer;
   late Timer? checkInOutTimer;
   final seconds = 0.obs;
-  final isTimerOn = false.obs;
+  final sliderValue = 0.0.obs;
+  bool checkInStatus = false;
 
   getWish() {
     DateTime now = DateTime.now();
@@ -32,19 +35,46 @@ class DashboardController extends GetxController with BaseController {
     return '';
   }
 
+  sliderController(double value) {
+    sliderValue.value = value < 95 ? 0 : 100;
+    sliderValue.value == 100
+        ? updateCheckInOut(CheckInOutStatus.checkIn)
+        : updateCheckInOut(CheckInOutStatus.checkOut);
+  }
+
   @override
   void onClose() {
-    timer?.cancel;
+    nowIsTimer?.cancel;
     super.onClose();
   }
 
   @override
   void onReady() {
+    super.onReady();
     updateTime();
-    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    nowIsTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
       updateTime();
     });
-    super.onReady();
+    //update check-in data when app starts
+    updateCheckInData();
+  }
+
+  updateCheckInData() async {
+    Map<String, String> storageMap =
+        await Get.find<SharedPreferenceHelper>().getStorageData();
+
+    DateTime now = DateTime.now();
+
+    if (storageMap['checkIn'] != null) {
+      //already checked-in
+      sliderValue.value = 100;
+      DateTime startTime = DateTime.parse(storageMap['checkIn']!);
+      seconds.value = now.difference(startTime).inMinutes;
+    } else if (storageMap['checkInQr'] != null) {
+      sliderValue.value = 100;
+      DateTime startTime = DateTime.parse(storageMap['checkInQr']!);
+      seconds.value = now.difference(startTime).inMinutes;
+    }
   }
 
   updateTime() {
@@ -57,30 +87,63 @@ class DashboardController extends GetxController with BaseController {
     return DateFormat('EEEE, dd MMM yyyy').format(now);
   }
 
-  updateTimer([String? qrCode]) async {
-    if (isTimerOn.isFalse) {
-      bool isSuccess = qrCode == null
-          ? await serverCheckInOut(true)
-          : await serverCheckInOutByScan(true);
-      if (isSuccess) {
-        try {
-          checkInOutTimer =
-              Timer.periodic(const Duration(minutes: 1), (timer) async {
-            seconds.value++;
-          });
-        } finally {
-          isTimerOn.value = true;
+  startCheckInTimer(bool success) {
+    if (success) {
+      try {
+        checkInOutTimer =
+            Timer.periodic(const Duration(minutes: 1), (timer) async {
+          seconds.value++;
+        });
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+  }
+
+  cancelCheckInTimer(bool success) {
+    if (success) {
+      checkInOutTimer?.cancel();
+      seconds.value = 0;
+    }
+  }
+
+  updateCheckInOut(checkInOutStatus) async {
+    switch (checkInOutStatus) {
+      case CheckInOutStatus.checkIn:
+        if (!checkInStatus) {
+          bool status = await serverCheckInOut(true);
+          if (status) Get.find<SharedPreferenceHelper>().addCheckInDetails();
+          startCheckInTimer(status);
+          checkInStatus = true;
         }
-      }
-    } else {
-      bool isSuccess = qrCode == null
-          ? await serverCheckInOut(false)
-          : await serverCheckInOutByScan(false);
-      if (isSuccess) {
-        checkInOutTimer?.cancel();
-        seconds.value = 0;
-        isTimerOn.value = false;
-      }
+        break;
+      case CheckInOutStatus.checkOut:
+        if (checkInStatus) {
+          bool status = await serverCheckInOut(false);
+          if (status) Get.find<SharedPreferenceHelper>().deleteAllCheckInData();
+          cancelCheckInTimer(status);
+          checkInStatus = false;
+        }
+        break;
+      case CheckInOutStatus.qrCheckIn:
+        if (!checkInStatus) {
+          bool status = await serverCheckInOutByScan(true);
+          if (status) {
+            Get.find<SharedPreferenceHelper>().addCheckInDetails(true);
+          }
+          startCheckInTimer(status);
+          checkInStatus = true;
+        }
+        break;
+      case CheckInOutStatus.qrCheckOut:
+        if (checkInStatus) {
+          bool status = await serverCheckInOutByScan(false);
+          if (status) Get.find<SharedPreferenceHelper>().deleteAllCheckInData();
+          cancelCheckInTimer(status);
+          checkInStatus = false;
+        }
+        break;
+      default:
     }
   }
 
@@ -91,6 +154,7 @@ class DashboardController extends GetxController with BaseController {
     var responseString = await Get.find<BaseClient>()
         .post(endPoint, null, Get.find<LoginController>().getHeader())
         .catchError(handleError);
+
     return handleResponseForMessageOnlyResponse(responseString);
   }
 

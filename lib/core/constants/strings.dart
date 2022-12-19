@@ -123,8 +123,6 @@ const ktymString = 'tym';
 //Calendar
 const kRescheduleString = 'Reschedule';
 
-const k8amString = '08:00 AM';
-
 const kCalendarString = 'Calendar';
 
 const kOctober2022String = 'October 2022';

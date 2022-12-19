@@ -37,7 +37,7 @@ class _ScanTimeState extends State<ScanTime> {
                     } else {
                       code = barcode.rawValue!;
                       debugPrint('success to scan Barcode $code');
-                      Get.find<DashboardController>().updateTimer(code);
+                      Get.find<DashboardController>().updateCheckInOut(code);
                       setState(() {
                         code;
                       });

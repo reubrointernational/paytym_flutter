@@ -9,3 +9,5 @@ enum Reports { payslip, deduction, attendance }
 enum LeavesTab { all, sick, other }
 
 enum PaySlipType { image, pdf }
+
+enum CheckInOutStatus { checkIn, checkOut, qrCheckIn, qrCheckOut, idle }

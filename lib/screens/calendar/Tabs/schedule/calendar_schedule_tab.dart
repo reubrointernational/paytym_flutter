@@ -21,7 +21,7 @@ class CalendarSchedule extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
-                k8amString,
+                '08 : 00 AM',
                 style: kTextStyleS13W600CustomGrey,
               ),
             ),
