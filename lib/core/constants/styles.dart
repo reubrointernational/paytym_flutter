@@ -23,15 +23,15 @@ const kTextStyleS13W600CustomGrey = TextStyle(
   color: CustomColors.customGreyTextColor,
 );
 
+/// Font size 14, font weight w600, letter spacing 0.2
 const kTextStyleS14W600LS0p2 = TextStyle(
   fontSize: 14,
   fontWeight: FontWeight.w600,
   letterSpacing: 0.2,
 );
 
-const kTextStyleS11W600C255140x3 = TextStyle(
-  fontSize: 11,
-  fontWeight: FontWeight.w600,
+const kTextStyleS14C255140x3 = TextStyle(
+  fontSize: 14,
   color: Color.fromARGB(255, 140, 140, 140),
 );
 
@@ -74,12 +74,12 @@ final kTextStyleS14W600Cgrey300LS0p2 = TextStyle(
   letterSpacing: 0.2,
 );
 
-const kTextStyleS14W600Cblack300LS0p2 = TextStyle(
-  fontSize: 14,
-  color: Colors.black,
-  fontWeight: FontWeight.w600,
-  letterSpacing: 0.2,
-);
+// const kTextStyleS14W600Cblack300LS0p2 = TextStyle(
+//   fontSize: 14,
+//   color: Colors.black,
+//   fontWeight: FontWeight.w600,
+//   letterSpacing: 0.2,
+// );
 
 final kInputBorderNone = OutlineInputBorder(
   borderRadius: BorderRadius.circular(12),

@@ -40,7 +40,7 @@ class LeaveRequest {
     this.title,
     this.startDate,
     this.endDate,
-    this.status,
+    this.status = 'Awaiting',
     this.type,
     this.createdAt,
     this.updatedAt,
@@ -54,7 +54,7 @@ class LeaveRequest {
   String? type;
   DateTime? createdAt;
   DateTime? updatedAt;
-  String? status;
+  String status;
 
   factory LeaveRequest.fromJson(Map<String, dynamic> json) => LeaveRequest(
         id: json["id"],

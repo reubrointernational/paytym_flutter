@@ -9,4 +9,5 @@ abstract class Routes {
   static const reports = '/reports';
   static const dashboard = '/dashboard';
   static const scanTime = '/scan';
+  static const webview = '/webview';
 }

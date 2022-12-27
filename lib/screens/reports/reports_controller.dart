@@ -32,7 +32,6 @@ class ReportsController extends GetxController with BaseController {
   String sharePath = '';
   final isDownloading = false.obs;
   final isSharing = false.obs;
-  final reportTab = Reports.payslip.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
@@ -249,17 +248,6 @@ class ReportsController extends GetxController with BaseController {
   void onClose() {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
     super.onClose();
-  }
-
-  getTab() {
-    if (reportTab.value == Reports.payslip) {
-      return const PaySlipPage();
-    } else if (reportTab.value == Reports.deduction) {
-      return const DeductionPage();
-    } else if (reportTab.value == Reports.attendance) {
-      return const AttendancePage();
-    }
-    return Container();
   }
 
   onClickMenuItem(ReportsDropDown value) {

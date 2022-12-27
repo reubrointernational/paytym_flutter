@@ -22,11 +22,11 @@ class DashboardColoredCard extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 6),
                   child: Text(
                     leaves["total"].toString(),
                     style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 25,
                         fontWeight: FontWeight.w600,
                         color: CustomColors.whiteTextColor),
                   ),
@@ -38,27 +38,28 @@ class DashboardColoredCard extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor:
                         CustomColors.whiteCircleAvatarBackgroundColor,
-                    radius: 15,
+                    radius: 20,
                     child: Icon(
                       leaves["icon"],
-                      size: 18,
+                      size: 25,
                       color: leaves["bgColor"],
                     ),
                   ),
-                  kSizedBoxH2,
+                  kSizedBoxH10,
                   Text(
                     leaves["title"],
                     style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         overflow: TextOverflow.ellipsis,
                         letterSpacing: 0.5,
                         fontWeight: FontWeight.w600,
                         color: CustomColors.whiteTextColor),
                   ),
+                  kSizedBoxH4,
                   Text(
                     "${leaves["attendance_percentage"]}% attendance",
                     style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         letterSpacing: 0.5,
                         color: CustomColors.whiteWithOpacityTextColor),
                   ),
@@ -68,11 +69,11 @@ class DashboardColoredCard extends StatelessWidget {
           ),
         ),
         const Positioned(
-          right: -30,
+          right: -40,
           top: -20,
           child: CircleAvatar(
             backgroundColor: CustomColors.cardBackgroundCircleColor,
-            radius: 50,
+            radius: 60,
           ),
         ),
         const Positioned(
@@ -80,7 +81,7 @@ class DashboardColoredCard extends StatelessWidget {
           bottom: -20,
           child: CircleAvatar(
             backgroundColor: CustomColors.cardBackgroundCircleColor,
-            radius: 50,
+            radius: 60,
           ),
         ),
       ],

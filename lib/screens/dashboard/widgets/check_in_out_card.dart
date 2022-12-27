@@ -1,10 +1,14 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/core/custom_slider_thumb.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
+
 import '../dashboard_controller.dart';
 
 class CheckInOutCard extends StatelessWidget {
@@ -13,7 +17,7 @@ class CheckInOutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 130,
+      height: 158,
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
@@ -28,25 +32,65 @@ class CheckInOutCard extends StatelessWidget {
               const Text(
                 kCheckInOutString,
                 style: TextStyle(
-                  fontSize: 9,
                   fontWeight: FontWeight.w700,
                   color: CustomColors.blueTextColor,
                 ),
               ),
+              kSizedBoxH10,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Obx(() => Slider(
-                        value:
-                            Get.find<DashboardController>().sliderValue.value,
-                        max: 100,
-                        onChanged: (double value) {
-                          Get.find<DashboardController>().sliderValue.value =
-                              value;
-                        },
-                        onChangeEnd: (double value) =>
-                            Get.find<DashboardController>()
-                                .sliderController(value),
+                  Obx(() => Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    height: 15,
+                                    decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Color.fromARGB(255, 28, 41, 226),
+                                              Color.fromARGB(255, 14, 130, 238)
+                                            ]),
+                                        borderRadius:
+                                            BorderRadius.circular(7.5)),
+                                  ),
+                                ),
+                              ),
+                              SliderTheme(
+                                data: SliderThemeData(
+                                  trackHeight: 0,
+                                  activeTrackColor: Colors.red,
+                                  inactiveTrackColor:
+                                      const Color.fromARGB(255, 2, 69, 124),
+                                  overlayShape: SliderComponentShape.noOverlay,
+                                  thumbShape: const CustomRoundSliderThumbShape(
+                                    enabledThumbRadius: 18.0,
+                                  ),
+                                ),
+                                child: Slider(
+                                  value: Get.find<DashboardController>()
+                                      .sliderValue
+                                      .value,
+                                  max: 100,
+                                  onChanged: (double value) {
+                                    Get.find<DashboardController>()
+                                        .changeSliderPosition(value);
+                                  },
+                                  onChangeEnd: (double value) =>
+                                      Get.find<DashboardController>()
+                                          .sliderController(value),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       )),
                   // Obx(
                   //   () => SizedBox(
@@ -102,13 +146,14 @@ class CheckInOutCard extends StatelessWidget {
                   ),
                 ],
               ),
+              kSizedBoxH10,
               IntrinsicHeight(
                 child: Row(
                   children: [
                     Obx(
                       () => Text(
                         "$kNowIsString ${Get.find<DashboardController>().time.value}",
-                        style: kTextStyleS11W600C255140x3,
+                        style: kTextStyleS14C255140x3,
                       ),
                     ),
                     const VerticalDivider(
@@ -119,18 +164,19 @@ class CheckInOutCard extends StatelessWidget {
                     ),
                     Text(
                       Get.find<DashboardController>().getDate(),
-                      style: kTextStyleS11W600C255140x3,
+                      style: kTextStyleS14C255140x3,
                     ),
                   ],
                 ),
               ),
+              kSizedBoxH10,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     kNextShiftString,
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -144,7 +190,7 @@ class CheckInOutCard extends StatelessWidget {
                       kSizedBoxW4,
                       Text(
                         kSep20String,
-                        style: kTextStyleS11W600C255140x3,
+                        style: kTextStyleS14C255140x3,
                       ),
                     ],
                   ),
@@ -158,7 +204,7 @@ class CheckInOutCard extends StatelessWidget {
                       kSizedBoxW4,
                       Text(
                         k08PMString,
-                        style: kTextStyleS11W600C255140x3,
+                        style: kTextStyleS14C255140x3,
                       ),
                     ],
                   ),

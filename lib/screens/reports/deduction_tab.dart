@@ -15,6 +15,7 @@ class DeductionPage extends StatelessWidget {
         (_) => Get.find<ReportsController>().getDeduction());
     return Obx(
       () => ListView.builder(
+        physics: const BouncingScrollPhysics(),
         itemCount: Get.find<ReportsController>()
                 .deductionResponseModel
                 .value

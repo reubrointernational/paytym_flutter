@@ -15,69 +15,73 @@ class ForgetPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const PaytymLogo(),
-            const Spacer(),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: const Text(
-                kForgotPasswordString,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: CustomColors.blueTextColor,
-                ),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const PaytymLogo(),
+              SizedBox(
+                height: h * 0.16,
               ),
-            ),
-            kSizedBoxH10,
-            const Text(
-              kDontWorryString,
-              style: TextStyle(
-                height: 1.5,
-                fontSize: 12.5,
-                color: CustomColors.darkGreyTextColor,
-              ),
-            ),
-            kSizedBoxH35,
-            Form(
-              key: Get.find<LoginController>().formKeyForgotPassword,
-              child: CustomTextFormField(
-                onSaved: (value) =>
-                    Get.find<LoginController>().userModel.email = value!,
-                hintText: kEmailString,
-                inputType: TextInputType.emailAddress,
-                validator: (value) =>
-                    Get.find<LoginController>().emailValidator(value!),
-              ),
-            ),
-            kSizedBoxH40,
-            SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Get.find<LoginController>().goToOTPPage();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.blueTextColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+              Container(
+                alignment: Alignment.centerLeft,
                 child: const Text(
-                  kSendString,
+                  kForgotPasswordString,
                   style: TextStyle(
-                    color: CustomColors.whiteTextColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: CustomColors.blueTextColor,
                   ),
                 ),
               ),
-            ),
-            const Spacer(),
-          ],
+              kSizedBoxH10,
+              const Text(
+                kDontWorryString,
+                style: TextStyle(
+                  height: 1.5,
+                  fontSize: 12.5,
+                  color: CustomColors.darkGreyTextColor,
+                ),
+              ),
+              kSizedBoxH35,
+              Form(
+                key: Get.find<LoginController>().formKeyForgotPassword,
+                child: CustomTextFormField(
+                  onSaved: (value) =>
+                      Get.find<LoginController>().userModel.email = value!,
+                  hintText: kEmailString,
+                  inputType: TextInputType.emailAddress,
+                  validator: (value) =>
+                      Get.find<LoginController>().emailValidator(value!),
+                ),
+              ),
+              kSizedBoxH40,
+              SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.find<LoginController>().goToOTPPage();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: CustomColors.blueTextColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    kSendString,
+                    style: TextStyle(
+                      color: CustomColors.whiteTextColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

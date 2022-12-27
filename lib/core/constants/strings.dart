@@ -114,6 +114,40 @@ Map<String, double> datamap = {
   "EarlyOut": 1,
 };
 
+List<Map<String, dynamic>> medicalDetails = [
+  {
+    'title': 'Medical Condition',
+    'subtitle': 'Hypertension',
+  },
+  {
+    'title': 'Allergies & Reaction',
+    'subtitle': 'Peanuts',
+  },
+  {
+    'title': 'Medications',
+    'subtitle': 'Medicine name',
+  },
+  {
+    'title': 'Blood type',
+    'subtitle': 'o+',
+  },
+  {
+    'title': 'Weight',
+    'subtitle': '170 lb',
+  },
+  {
+    'title': 'Height',
+    'subtitle': "6'2''",
+  },
+  {
+    'title': 'Contacts',
+    'subtitle': 'spouse: 9876543232 \ndoctor: 8790695343',
+  },
+];
+
+List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
+List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];
+
 const kAppNameString = 'Paytym';
 
 const kPayString = 'Pay';

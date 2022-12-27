@@ -38,6 +38,11 @@ abstract class IconPath {
   //payslip
   static const String downloadingJson = 'assets/json/downloading.json';
 
+  //splitPayment
+  static const String mPesaPng = 'assets/png/mpesa.png';
+  static const String myCashPng = 'assets/png/mycash.png';
+  static const String windcavePng = 'assets/png/windcave.png';
+
   //todo remove pdf
   static const String salarySlipPdf = 'assets/pdf/salarySlip.pdf';
   static const String shareIconSvg = 'assets/svg/shareIcon.svg';

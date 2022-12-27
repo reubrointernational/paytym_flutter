@@ -8,7 +8,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
 import '../calendar_controller.dart';
-import 'calendar_app_bar.dart';
 
 class CalendarCard extends StatelessWidget {
   const CalendarCard({super.key});
@@ -20,8 +19,6 @@ class CalendarCard extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       child: Column(
         children: [
-          const CalendarAppBar(),
-          kSizedBoxH12,
           Container(
             decoration: const BoxDecoration(
               color: CustomColors.blueCardColor,

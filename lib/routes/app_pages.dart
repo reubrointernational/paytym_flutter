@@ -1,9 +1,13 @@
+import 'package:paytym/screens/leaves/leaves_page.dart';
 import 'package:paytym/screens/login/login_page.dart';
 import 'package:paytym/screens/login/otp_page.dart';
 import 'package:paytym/screens/reports/reports_page.dart';
 import 'package:paytym/screens/scan_time/scanner_page.dart';
+import 'package:paytym/screens/schedules/schedule_page.dart';
 import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/split_payment/payments_page.dart';
+import 'package:paytym/screens/webview/custom_webview_page.dart';
 
 import '../screens/bottom_nav/bottom_nav_page.dart';
 import '../screens/dashboard/dashboard.dart';
@@ -18,6 +22,7 @@ class AppPages {
     GetPage(
       name: Routes.splash,
       page: () => const SplashScreen(),
+      // page: () => const PaymentsPage(),
     ),
     GetPage(
       name: Routes.login,
@@ -26,6 +31,7 @@ class AppPages {
     GetPage(
       name: Routes.bottomNav,
       page: () => const BottomNavigationPage(),
+      // page: () => const PaymentsPage(),
     ),
     GetPage(
       name: Routes.resetPassword,
@@ -51,6 +57,10 @@ class AppPages {
     GetPage(
       name: Routes.scanTime,
       page: () => const ScanTime(),
+    ),
+    GetPage(
+      name: Routes.webview,
+      page: () => const CustomWebViewPage(),
     ),
   ];
 }

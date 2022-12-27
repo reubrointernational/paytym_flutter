@@ -4,6 +4,7 @@ import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/screens/calendar/widgets/calendar_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:paytym/screens/widgets/custom_app_bar.dart';
 import '../../core/constants/strings.dart';
 import '../../core/constants/styles.dart';
 import 'Tabs/meeting/calendar_meeting_tab.dart';
@@ -17,9 +18,14 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final CalendarController calendarController = Get.put(CalendarController());
     return Scaffold(
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(),
+      ),
       backgroundColor: CustomColors.calendarPageBackgroundColor,
       body: SafeArea(
         child: ListView(
+          physics: const BouncingScrollPhysics(),
           children: [
             const CalendarCard(),
             Padding(

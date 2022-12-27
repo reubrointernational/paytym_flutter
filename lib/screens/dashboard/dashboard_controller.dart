@@ -19,6 +19,7 @@ class DashboardController extends GetxController with BaseController {
   final seconds = 0.obs;
   final sliderValue = 0.0.obs;
   bool checkInStatus = false;
+  bool sliderValueChanged = false;
 
   getWish() {
     DateTime now = DateTime.now();
@@ -35,11 +36,28 @@ class DashboardController extends GetxController with BaseController {
     return '';
   }
 
+  changeSliderPosition(double value) {
+    if ((sliderValue.value - value).abs() < 20) {
+      sliderValue.value = value;
+      sliderValueChanged = true;
+    }
+  }
+
   sliderController(double value) {
-    sliderValue.value = value < 95 ? 0 : 100;
-    sliderValue.value == 100
-        ? updateCheckInOut(CheckInOutStatus.checkIn)
-        : updateCheckInOut(CheckInOutStatus.checkOut);
+    if (sliderValueChanged) {
+      if (value > 95) {
+        sliderValue.value = 100;
+      } else if (value < 5) {
+        sliderValue.value = 0;
+      } else {
+        sliderValue.value = checkInStatus ? 100 : 0;
+      }
+      sliderValue.value == 100
+          ? updateCheckInOut(CheckInOutStatus.checkIn)
+          : updateCheckInOut(CheckInOutStatus.checkOut);
+
+      sliderValueChanged = false;
+    }
   }
 
   @override

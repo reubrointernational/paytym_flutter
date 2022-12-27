@@ -13,13 +13,9 @@ import '../../core/dialog_helper.dart';
 import '../../models/message_only_response_model.dart';
 import '../../network/base_client.dart';
 import '../../network/end_points.dart';
-import 'all_tab.dart';
-import 'other_tab.dart';
-import 'sick_tab.dart';
 
 class LeavesController extends GetxController with BaseController {
   final leaveResponseModel = LeaveResponseModel().obs;
-  final leavesTab = LeavesTab.all.obs;
   final formKey = GlobalKey<FormState>();
   LeaveRequestModel leaveRequestModel = LeaveRequestModel();
   final selectedItem = 'annual'.obs;
@@ -29,20 +25,14 @@ class LeavesController extends GetxController with BaseController {
   final TextEditingController endDateController = TextEditingController();
 
   @override
+  void onInit() {
+    super.onInit();
+  }
+
+  @override
   void onReady() {
     super.onReady();
     fetchLeaveData();
-  }
-
-  Widget selectLeave() {
-    if (leavesTab.value == LeavesTab.all) {
-      return const AllLeavesPage();
-    } else if (leavesTab.value == LeavesTab.other) {
-      return const OtherLeavesPage();
-    } else if (leavesTab.value == LeavesTab.sick) {
-      return const SickLeavesPage();
-    }
-    return Container();
   }
 
   fetchLeaveData() async {
@@ -51,7 +41,6 @@ class LeavesController extends GetxController with BaseController {
     var responseString = await Get.find<BaseClient>()
         .get(ApiEndPoints.leave, Get.find<LoginController>().getHeader())
         .catchError(handleError);
-
     if (responseString == null) {
       return;
     } else {
@@ -163,10 +152,6 @@ class LeavesController extends GetxController with BaseController {
 
   LeaveStatusModel getLeaveStatusModel(String? status) {
     switch (status) {
-      case '0':
-        //0 => status - awaiting
-        return LeaveStatusModel('Awaiting', CustomColors.orangeLabelColor,
-            CustomColors.lightOrangeColor);
       case '1':
         //1 => status - approved
         return LeaveStatusModel(
@@ -175,8 +160,11 @@ class LeavesController extends GetxController with BaseController {
         //2 => status - declined
         return LeaveStatusModel(
             'Declined', CustomColors.redColor, CustomColors.lightRedColor);
+      case '0':
       default:
-        return LeaveStatusModel();
+        //0 => status - awaiting
+        return LeaveStatusModel('Awaiting', CustomColors.orangeLabelColor,
+            CustomColors.lightOrangeColor);
     }
   }
 }

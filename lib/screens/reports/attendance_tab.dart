@@ -11,35 +11,38 @@ class AttendancePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        PieChart(
-            dataMap: datamap,
-            chartRadius: MediaQuery.of(context).size.width / 3.2,
-            chartLegendSpacing: 60,
-            colorList: CustomColors.cardColorList,
-            chartValuesOptions: const ChartValuesOptions(
-              showChartValues: false,
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PieChart(
+              dataMap: datamap,
+              chartRadius: MediaQuery.of(context).size.width / 3.2,
+              chartLegendSpacing: 60,
+              colorList: CustomColors.cardColorList,
+              chartValuesOptions: const ChartValuesOptions(
+                showChartValues: false,
+              ),
+              legendLabels: <String, String>{
+                "OnTime": "On Time : ${datamap["OnTime"]}",
+                "Leaves": "Leaves : ${datamap["Leaves"]}",
+                "Late": "Late : ${datamap["Late"]}",
+                "EarlyOut": "Early Out : ${datamap["EarlyOut"]}"
+              }),
+          kSizedBoxH10,
+          const Text(
+            kHistoryString,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
             ),
-            legendLabels: <String, String>{
-              "OnTime": "On Time : ${datamap["OnTime"]}",
-              "Leaves": "Leaves : ${datamap["Leaves"]}",
-              "Late": "Late : ${datamap["Late"]}",
-              "EarlyOut": "Early Out : ${datamap["EarlyOut"]}"
-            }),
-        kSizedBoxH10,
-        const Text(
-          kHistoryString,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
           ),
-        ),
-        kSizedBoxH8,
-        Expanded(
-          child: ListView.builder(
-            itemCount: 2,
+          kSizedBoxH8,
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 3,
             itemBuilder: (context, index) {
               return Card(
                 elevation: 10,
@@ -103,8 +106,8 @@ class AttendancePage extends StatelessWidget {
               );
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
