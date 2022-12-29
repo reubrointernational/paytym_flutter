@@ -158,7 +158,7 @@ class LoginController extends GetxController with BaseController {
           userModel.password == userModel.confirmPassword) {
         MessageOnlyResponseModel? confirmModel = await updatePassword();
         if (confirmModel != null) {
-          Get.offAllNamed(Routes.login);
+          Get.offAllNamed(Routes.bottomNav);
         }
       } else {
         //todo toast password mismatch

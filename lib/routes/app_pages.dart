@@ -11,6 +11,7 @@ import 'package:paytym/screens/webview/custom_webview_page.dart';
 
 import '../screens/bottom_nav/bottom_nav_page.dart';
 import '../screens/dashboard/dashboard.dart';
+import '../screens/hr/calendar/calendar_page.dart';
 import '../screens/login/forgot_password.dart';
 import '../screens/login/reset_password_page.dart';
 import 'app_routes.dart';
@@ -22,7 +23,7 @@ class AppPages {
     GetPage(
       name: Routes.splash,
       page: () => const SplashScreen(),
-      // page: () => const PaymentsPage(),
+      // page: () => const CalendarPage(),
     ),
     GetPage(
       name: Routes.login,

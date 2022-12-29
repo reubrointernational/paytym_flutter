@@ -50,22 +50,5 @@ abstract class IconPath {
 
   //report
   //menusvg//
-  
-  //hr 
-  static const String iconDeductionPng = 'assets/png/icon_deduction.png';
-  static const String iconBenefitsPng = 'assets/png/icon_benefits.png';
-  static const String iconProjectPng = 'assets/png/icon_project.png';
-  static const String iconAccountPng = 'assets/png/icon_account.png';
 
-  // settings
-  static const String businessPng = 'assets/png/briefcase.png';
-  static const String branchPng = 'assets/png/branch.png';
-  static const String departmentPng = 'assets/png/department.png';
-  static const String paymentPng = 'assets/png/credit_card.png';
-  static const String projectsPng = 'assets/png/projects.png';
-  static const String ratesPng = 'assets/png/rating.png';
-  static const String letterPng = 'assets/png/letter.png';
-  static const String contractsPng = 'assets/png/agreement.png';
-  static const String terminationsPng = 'assets/png/termination.png';
-  static const String reminderPng = 'assets/png/reminder.png';
 }

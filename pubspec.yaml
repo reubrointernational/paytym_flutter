@@ -54,6 +54,12 @@ flutter:
     - assets/pdf/
     - assets/png/
   #   - images/a_dot_ham.jpeg
+
+fonts:
+    - family: DMSerif
+      fonts:
+        - asset: assets/fonts/dm_serif/DMSerifDisplay-Regular.ttf
+        - asset: assets/fonts/dm_serif/DMSerifDisplay-Italic.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
