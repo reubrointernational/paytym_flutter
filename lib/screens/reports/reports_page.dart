@@ -13,6 +13,7 @@ import '../../core/constants/styles.dart';
 import '../widgets/custom_cached_network_image.dart';
 import 'attendance_tab.dart';
 import 'deduction_tab.dart';
+import 'medical_tab.dart';
 import 'payslip_tab.dart';
 import 'widgets/reports_app_bar.dart';
 
@@ -101,10 +102,10 @@ class ReportsPage extends StatelessWidget {
                           child: TabBarView(
                             physics: BouncingScrollPhysics(),
                             children: [
-                              PaySlipPage(),
-                              DeductionPage(),
-                              AttendancePage(),
-                              AttendancePage(),
+                              PaySlipTab(),
+                              DeductionTab(),
+                              AttendanceTab(),
+                              MedicalTab(),
                             ],
                           ),
                         ),

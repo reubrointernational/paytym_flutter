@@ -6,8 +6,8 @@ import '../../core/colors/colors.dart';
 import '../../core/constants/strings.dart';
 import '../../core/constants/styles.dart';
 
-class DeductionPage extends StatelessWidget {
-  const DeductionPage({Key? key}) : super(key: key);
+class DeductionTab extends StatelessWidget {
+  const DeductionTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

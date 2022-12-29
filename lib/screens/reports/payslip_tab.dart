@@ -11,8 +11,8 @@ import 'package:paytym/screens/reports/widgets/cached_image.dart';
 import 'package:paytym/screens/reports/widgets/pdf_viewer.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
 
-class PaySlipPage extends StatelessWidget {
-  const PaySlipPage({Key? key}) : super(key: key);
+class PaySlipTab extends StatelessWidget {
+  const PaySlipTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
