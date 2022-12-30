@@ -23,7 +23,7 @@ class AppPages {
     GetPage(
       name: Routes.splash,
       page: () => const SplashScreen(),
-      // page: () => const CalendarPage(),
+      // page: () => const CalendarPageHr(),
     ),
     GetPage(
       name: Routes.login,

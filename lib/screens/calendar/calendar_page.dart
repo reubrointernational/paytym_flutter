@@ -46,7 +46,7 @@ class CalendarPage extends StatelessWidget {
                       ),
                     ),
                     CalendarTabs.schedule: Text(
-                      kScheduleString,
+                      kEventString,
                       style: kTextStyleS14W600LS0p2,
                     ),
                   },

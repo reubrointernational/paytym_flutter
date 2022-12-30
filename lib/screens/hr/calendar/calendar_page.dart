@@ -1,27 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
-
+import 'package:paytym/screens/calendar/calendar_page.dart';
 import 'package:paytym/screens/hr/calendar/calendar_contents.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../calendar/widgets/custom_svg.dart';
 
-class CalendarPage extends StatefulWidget {
-  const CalendarPage({super.key});
+class CalendarPageHr extends StatefulWidget {
+  const CalendarPageHr({super.key});
 
   @override
-  State<CalendarPage> createState() => _CalendarPageState();
+  State<CalendarPageHr> createState() => _CalendarPageHrState();
 }
 
 enum CalendarTabs { meeting, event }
 
-class _CalendarPageState extends State<CalendarPage> {
+class _CalendarPageHrState extends State<CalendarPageHr> {
   CalendarTabs selectedTab = CalendarTabs.meeting;
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,9 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.to(const CalendarPage());
+        },
         backgroundColor: CustomColors.blueCardColor,
         child: Image.asset(
           'assets/png/filter_icon.png',
@@ -130,23 +132,26 @@ class _CalendarPageState extends State<CalendarPage> {
                     selectedTab = value!;
                   }),
                 ),
-                selectedTab == CalendarTabs.meeting ? const CalendarContents(
-                  time: '09:15 AM',
-                  name: 'Rhys Hawkins',
-                  subText: 'HR Manager',
-                  widget: Text(
-                    'Kochi',
-                    style: TextStyle(
-                      color: CustomColors.blueTextColor,
-                      fontSize: 13,
-                    ),
-                  ),
-                ) : const CalendarContents(
-                  time: '11:00 AM',
-                  name: 'BirthdayParty',
-                  subText: 'Krishna Palace Hotel, Chennai',
-                  widget: const Icon(Icons.add, color: CustomColors.blueTextColor),
-                ),
+                selectedTab == CalendarTabs.meeting
+                    ? const CalendarContents(
+                        time: '09:15 AM',
+                        name: 'Rhys Hawkins',
+                        subText: 'HR Manager',
+                        widget: Text(
+                          'Kochi',
+                          style: TextStyle(
+                            color: CustomColors.blueTextColor,
+                            fontSize: 13,
+                          ),
+                        ),
+                      )
+                    : const CalendarContents(
+                        time: '11:00 AM',
+                        name: 'BirthdayParty',
+                        subText: 'Krishna Palace Hotel, Chennai',
+                        widget: Icon(Icons.add,
+                            color: CustomColors.blueTextColor),
+                      ),
               ]),
         ),
       ),

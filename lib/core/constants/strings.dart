@@ -163,7 +163,7 @@ const kOctober2022String = 'October 2022';
 
 const kMeetingString = 'Meeting';
 
-const kScheduleString = 'Schedule';
+const kEventString = 'Event';
 
 //Chat
 
