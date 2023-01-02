@@ -7,8 +7,8 @@ import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../widgets/custom_svg.dart';
 
-class ScheduleRow extends StatelessWidget {
-  const ScheduleRow({super.key});
+class EventRow extends StatelessWidget {
+  const EventRow({super.key});
 
   @override
   Widget build(BuildContext context) {

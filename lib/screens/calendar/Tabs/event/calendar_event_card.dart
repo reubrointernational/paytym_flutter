@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'schedule_row.dart';
+import 'event_row.dart';
 
-class CalendarScheduleCard extends StatelessWidget {
-  const CalendarScheduleCard({super.key});
+class CalendarEventCard extends StatelessWidget {
+  const CalendarEventCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +14,12 @@ class CalendarScheduleCard extends StatelessWidget {
           padding: const EdgeInsets.all(18.0),
           child: Column(
             children: const [
-              ScheduleRow(),
+              EventRow(),
               Divider(
                 thickness: 2,
                 height: 40,
               ),
-              ScheduleRow(),
+              EventRow(),
             ],
           ),
         ));

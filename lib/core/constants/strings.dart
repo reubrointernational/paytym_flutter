@@ -144,7 +144,7 @@ List<Map<String, dynamic>> medicalDetails = [
     'subtitle': 'spouse: 9876543232 \ndoctor: 8790695343',
   },
 ];
-
+List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/screens/calendar/Tabs/schedule/calendar_schedule_card.dart';
+import 'package:paytym/screens/calendar/Tabs/schedule/timeline_child.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 
-import '../../../../core/constants/strings.dart';
-import '../../../../core/constants/styles.dart';
+import 'dummy_data.dart';
+import 'end_child.dart';
+import 'start_child.dart';
 
 class CalendarSchedule extends StatelessWidget {
   const CalendarSchedule({Key? key}) : super(key: key);
@@ -11,25 +12,36 @@ class CalendarSchedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      itemCount: calendarScheduleDetails.length,
-      itemBuilder: (context, index) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                '08 : 00 AM',
-                style: kTextStyleS13W600CustomGrey,
-              ),
+        physics: const BouncingScrollPhysics(),
+        itemCount: DummyDatas.schedule.length,
+        itemBuilder: (context, index) {
+          return TimelineTile(
+            alignment: TimelineAlign.manual,
+            lineXY: 0.25,
+            endChild: TimeLineChild(schedule: DummyDatas.schedule[index]),
+            startChild: TimeLineChild(
+              schedule: DummyDatas.schedule[index],
+              isStartChild: true,
             ),
-            CalendarScheduleCard(),
-            kSizedBoxH10,
-          ],
-        );
-      },
-    );
+            indicatorStyle: IndicatorStyle(
+                indicatorXY: 0,
+                drawGap: true,
+                height: 12,
+                width: 12,
+                indicator: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      width: 2,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
+                )),
+            beforeLineStyle:
+                LineStyle(thickness: 1, color: Colors.grey.shade300),
+            afterLineStyle:
+                LineStyle(thickness: 1, color: Colors.grey.shade300),
+          );
+        });
   }
 }

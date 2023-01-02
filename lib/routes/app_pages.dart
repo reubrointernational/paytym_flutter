@@ -3,7 +3,6 @@ import 'package:paytym/screens/login/login_page.dart';
 import 'package:paytym/screens/login/otp_page.dart';
 import 'package:paytym/screens/reports/reports_page.dart';
 import 'package:paytym/screens/scan_time/scanner_page.dart';
-import 'package:paytym/screens/schedules/schedule_page.dart';
 import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/split_payment/payments_page.dart';
@@ -23,7 +22,7 @@ class AppPages {
     GetPage(
       name: Routes.splash,
       page: () => const SplashScreen(),
-      // page: () => const CalendarPageHr(),
+      // page: () => const SchedulesPage(),
     ),
     GetPage(
       name: Routes.login,

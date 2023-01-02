@@ -27,7 +27,7 @@ class LeavesPage extends StatelessWidget {
                 const LeavesAppBar(),
                 kSizedBoxH15,
                 CustomTabBar(
-                  tabsList: leaveTabList,
+                  tabsList: calendarTabList,
                   backgroundColor: Colors.grey.shade200,
                 ),
                 kSizedBoxH10,
