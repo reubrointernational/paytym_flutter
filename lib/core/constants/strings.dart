@@ -165,6 +165,10 @@ const kMeetingString = 'Meeting';
 
 const kEventString = 'Event';
 
+const kAddMeetingString = 'Add Meeting';
+
+const kAddEventString = 'Add Event';
+
 //Chat
 
 const kTypeHereString = 'Type here...';

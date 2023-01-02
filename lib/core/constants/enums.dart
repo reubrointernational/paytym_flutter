@@ -1,4 +1,4 @@
-enum CalendarTabs { meeting, schedule }
+enum CalendarTabs { meeting, events }
 
 enum ChatType { hod, employee }
 
