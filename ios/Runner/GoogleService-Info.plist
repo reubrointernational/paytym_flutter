@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>653354822329-1sr03ergu9e1qe2h9jcp6r6e4r27t7kv.apps.googleusercontent.com</string>
+	<string>653354822329-eqgoj763ulqlmlc3n2o767sb2ul6f39n.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.653354822329-1sr03ergu9e1qe2h9jcp6r6e4r27t7kv</string>
+	<string>com.googleusercontent.apps.653354822329-eqgoj763ulqlmlc3n2o767sb2ul6f39n</string>
 	<key>API_KEY</key>
 	<string>AIzaSyC0xKZu2H6nmcdIRpneR8_2QBA0dJbTGyY</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.demoapp</string>
+	<string>com.vkjglobal.paytym</string>
 	<key>PROJECT_ID</key>
 	<string>paytym-cf0ed</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:653354822329:ios:7092bde8b56629a2c24968</string>
+	<string>1:653354822329:ios:a5173075078dfbc0c24968</string>
 </dict>
 </plist>
