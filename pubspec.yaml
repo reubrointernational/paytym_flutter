@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.3+1
+version: 1.0.4+1
 
 environment:
   sdk: ">=2.18.2 <3.3.6"
@@ -72,6 +72,6 @@ fonts:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   # Dependencies using target specific config
-  # *FCM
-  # *flutter_downloader
-  # *mobile_scanner
+  # *FCM 
+  # *flutter_downloader //completed
+  # *mobile_scanner //completed
