@@ -3,8 +3,7 @@ import 'package:paytym/screens/calendar/Tabs/schedule/timeline_child.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import 'dummy_data.dart';
-import 'end_child.dart';
-import 'start_child.dart';
+
 
 class CalendarSchedule extends StatelessWidget {
   const CalendarSchedule({Key? key}) : super(key: key);
