@@ -13,4 +13,6 @@ List<ReportDropDownModel> kReportDropDownItemList = [
 List<CalendarDropDownModel> kCalendarDropDownItemList = [
   CalendarDropDownModel(kAddMeetingString, CalendarTabs.meeting),
   CalendarDropDownModel(kAddEventString, CalendarTabs.events),
+  CalendarDropDownModel(kAddScheduleString, CalendarTabs.schedule),
+  CalendarDropDownModel(kAddHolidayString, CalendarTabs.holiday),
 ];

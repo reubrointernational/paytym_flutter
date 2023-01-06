@@ -13,16 +13,18 @@ import 'Tabs/meeting/calendar_meeting_tab.dart';
 import 'Tabs/event/calendar_event_tab.dart';
 import 'Tabs/schedule/calendar_schedule_tab.dart';
 import 'calendar_controller.dart';
+import 'widgets/custom_floating_action_button.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final CalendarController calendarController = Get.put(CalendarController());
+    Get.put(CalendarController());
     return DefaultTabController(
       length: calendarTabList.length,
       child: Scaffold(
+        floatingActionButton: const CustomFloatingActionButton(),
         appBar: const PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: CustomAppBar(),

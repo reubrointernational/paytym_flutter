@@ -87,7 +87,7 @@ class CalendarMeeting extends StatelessWidget {
                             ),
                             kSizedBoxH4,
                             Text(
-                              meeting?.user?.position ?? '',
+                              meeting?.user?.position ?? 'HR Manager',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontSize: 14,
@@ -113,26 +113,26 @@ class CalendarMeeting extends StatelessWidget {
                     children: [
                       Row(
                         children: const [
-                          CustomSVG(
-                            IconPath.scheduleSvg,
-                            size: 22,
+                          Icon(
+                            Icons.edit,
+                            color: CustomColors.greenColor,
                           ),
                           kSizedBoxW10,
                           Text(
-                            kRescheduleString,
+                            kEditString,
                             style: kTextStyleS13W600,
                           ),
                         ],
                       ),
                       Row(
                         children: const [
-                          CustomSVG(
-                            IconPath.talkSvg,
-                            size: 22,
+                          Icon(
+                            Icons.delete_sharp,
+                            color: CustomColors.redColor,
                           ),
                           kSizedBoxW10,
                           Text(
-                            "Let's talk",
+                            kDeleteString,
                             style: kTextStyleS13W600,
                           ),
                         ],

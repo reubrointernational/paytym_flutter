@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget {
           onSelected: (CalendarTabs value) =>
               Get.find<CalendarController>().onClickMenuItem(value, context),
           itemBuilder: (BuildContext context) => List.generate(
-            2,
+            kCalendarDropDownItemList.length,
             (index) => PopupMenuItem(
               value: kCalendarDropDownItemList[index].dropDownItem,
               child: Text(

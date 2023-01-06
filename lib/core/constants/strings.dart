@@ -155,7 +155,9 @@ const kPayString = 'Pay';
 const ktymString = 'tym';
 
 //Calendar
-const kRescheduleString = 'Reschedule';
+const kEditString = 'Edit';
+
+const kDeleteString = 'Delete';
 
 const kCalendarString = 'Calendar';
 
@@ -168,6 +170,10 @@ const kEventString = 'Event';
 const kAddMeetingString = 'Add Meeting';
 
 const kAddEventString = 'Add Event';
+
+const kAddScheduleString = 'Add Schedule';
+
+const kAddHolidayString = 'Add Holiday';
 
 //Chat
 
