@@ -57,6 +57,14 @@ abstract class CustomColors {
   static const Color whiteIconColor = Colors.white;
   static const Color disabledButtonColor = Color.fromARGB(255, 124, 188, 240);
 
+  static const Color pinkColor = Colors.pink;
+  static Color orangeWithOpacity = Colors.orange.withOpacity(0.2);
+  static Color pinkWithOpacity = Colors.pinkAccent.withOpacity(0.2);
+  static const Color orangeColor = Colors.orange;
+  static Color greenWithOpacity = Colors.greenAccent.withOpacity(0.2);
+  static Color greenColorShade700 = Colors.green.shade700;
+
+
   //color list
   static const List<Color> cardColorList = [
     Colors.green,

@@ -10,4 +10,5 @@ abstract class Routes {
   static const dashboard = '/dashboard';
   static const scanTime = '/scan';
   static const webview = '/webview';
+  static const settings = '/settings';
 }

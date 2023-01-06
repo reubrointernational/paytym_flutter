@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:paytym/core/colors/colors.dart';
 
-import 'approve_decline_btn.dart';
-
-class LeavesTabDetails extends StatelessWidget {
-  const LeavesTabDetails({super.key});
+class EmployeeProjectsTab extends StatelessWidget {
+  const EmployeeProjectsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class LeavesTabDetails extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 85),
+              constraints: const BoxConstraints(maxHeight: 120),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -29,22 +28,29 @@ class LeavesTabDetails extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            'Rhys Hawkins',
+                          Text(
+                            'Paytym',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            '004579942',
-                            style: TextStyle(
                               color: Colors.grey.shade600,
                             ),
                           ),
                           const Text(
-                            'Casual',
+                            'Robin Reubro',
                             style: TextStyle(
-                              color: Colors.orange,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const Flexible(
+                            child: Text(
+                              'Akhil, Noushad, Sreejith, Sreehari',
+                              style: TextStyle(),
+                            ),
+                          ),
+                          Text(
+                            'Status: Progressing',
+                            style: TextStyle(
+                              color: CustomColors.greyShade600TextColor,
                             ),
                           ),
                         ],
@@ -52,12 +58,16 @@ class LeavesTabDetails extends StatelessWidget {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ApproveDeclineButton(buttonText: 'Decline',color: Colors.pink,
-                             bgColor: Colors.pinkAccent.withOpacity(0.2)),
-                          ApproveDeclineButton(
-                              buttonText: 'Approve',
-                              color: Colors.green.shade700,
-                              bgColor: Colors.greenAccent.withOpacity(0.5)),
+                          Text(
+                            'Branch',
+                            style: TextStyle(
+                              color: CustomColors.greyShade600TextColor,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.download,
+                            color: Colors.orange,
+                          ),
                         ],
                       ),
                     ]),

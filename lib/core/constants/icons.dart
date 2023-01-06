@@ -50,8 +50,8 @@ abstract class IconPath {
 
   //report
   //menusvg//
-  
-  //hr 
+
+  //hr
   static const String iconDeductionPng = 'assets/png/icon_deduction.png';
   static const String iconBenefitsPng = 'assets/png/icon_benefits.png';
   static const String iconProjectPng = 'assets/png/icon_project.png';
@@ -68,4 +68,7 @@ abstract class IconPath {
   static const String contractsPng = 'assets/png/agreement.png';
   static const String terminationsPng = 'assets/png/termination.png';
   static const String reminderPng = 'assets/png/reminder.png';
+
+  //HR/admin
+  static const String filterIconPng = 'assets/png/filter_icon.png';
 }
