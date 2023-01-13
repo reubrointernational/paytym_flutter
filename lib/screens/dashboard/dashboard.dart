@@ -35,7 +35,7 @@ class DashboardPage extends StatelessWidget {
             Container(
               color: CustomColors.backgroundColor,
               child: const Padding(
-                padding: EdgeInsets.all(18.0),
+                padding: EdgeInsets.fromLTRB(18, 0, 18, 18),
                 child: DashboardAppBar(),
               ),
             ),

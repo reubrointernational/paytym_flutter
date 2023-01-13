@@ -1,13 +1,9 @@
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
-import 'package:paytym/core/constants/enums.dart';
-import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/calendar/widgets/calendar_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/widgets/custom_app_bar.dart';
 import '../../core/constants/strings.dart';
-import '../../core/constants/styles.dart';
 import '../widgets/custom_tab_bar.dart';
 import 'Tabs/meeting/calendar_meeting_tab.dart';
 import 'Tabs/event/calendar_event_tab.dart';

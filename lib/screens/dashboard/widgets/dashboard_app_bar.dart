@@ -23,7 +23,7 @@ class DashboardAppBar extends StatelessWidget {
             CustomSVG(IconPath.menuSvg, size: 20),
             kSizedBoxW15,
             PaytymLogo(
-              size: 18,
+              size: 60,
             )
           ],
         ),

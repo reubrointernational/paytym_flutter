@@ -5,29 +5,13 @@ import '../../core/constants/strings.dart';
 
 class PaytymLogo extends StatelessWidget {
   final double size;
-  const PaytymLogo({super.key, this.size = 40});
+  const PaytymLogo({super.key, this.size = 100});
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        text: kPayString,
-        style: TextStyle(
-          fontSize: size,
-          fontWeight: FontWeight.w700,
-          color: CustomColors.blueTextColor,
-        ),
-        children: [
-          TextSpan(
-            text: ktymString,
-            style: TextStyle(
-              fontSize: size,
-              fontWeight: FontWeight.w700,
-              color: CustomColors.blackTextColor,
-            ),
-          ),
-        ],
-      ),
+    return Image.asset(
+      'assets/png/logo.png',
+      height: size,
     );
   }
 }
