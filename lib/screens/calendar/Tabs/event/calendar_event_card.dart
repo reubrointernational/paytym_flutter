@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'event_row.dart';
 
 class CalendarEventCard extends StatelessWidget {
-  const CalendarEventCard({super.key});
+  final int index;
+  const CalendarEventCard({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +14,13 @@ class CalendarEventCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(18.0),
           child: Column(
-            children: const [
-              EventRow(),
-              Divider(
-                thickness: 2,
-                height: 40,
-              ),
-              EventRow(),
+            children: [
+              EventRow(index: index,),
+              // Divider(
+              //   thickness: 2,
+              //   height: 40,
+              // ),
+              // EventRow(),
             ],
           ),
         ));

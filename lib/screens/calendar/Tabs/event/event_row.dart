@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/strings.dart';
 
 import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../calendar_controller.dart';
 import '../../widgets/custom_svg.dart';
 
 class EventRow extends StatelessWidget {
-  const EventRow({super.key});
+  final int index;
+  const EventRow({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +19,24 @@ class EventRow extends StatelessWidget {
       child: Row(
         children: [
           Column(
-            children: const [
+            children: [
               Text(
-                '09:15 AM',
+                Get.find<CalendarController>()
+                        .eventsResponseModel
+                        .value
+                        .events?[index]
+                        ?.startTime ??
+                    '',
                 style: kTextStyleS13W600CustomGrey,
               ),
               kSizedBoxH3,
               Text(
-                '09:45 AM',
+                Get.find<CalendarController>()
+                        .eventsResponseModel
+                        .value
+                        .events?[index]
+                        ?.endTime ??
+                    '',
                 style: kTextStyleS13W600CustomGrey,
               ),
             ],
@@ -36,18 +49,28 @@ class EventRow extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  'Registration',
+                  Get.find<CalendarController>()
+                          .eventsResponseModel
+                          .value
+                          .events?[index]
+                          ?.name ??
+                      '',
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 kSizedBoxH3,
                 Text(
-                  'Entrance Hall',
+                  Get.find<CalendarController>()
+                          .eventsResponseModel
+                          .value
+                          .events?[index]
+                          ?.description ??
+                      '',
                   overflow: TextOverflow.ellipsis,
                   style: kTextStyleS13W600CustomGrey,
                 ),

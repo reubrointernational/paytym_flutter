@@ -10,7 +10,6 @@ import 'constants/strings.dart';
 
 class DialogHelper {
   //UI for all dialogs, loadings, snackbars and toasts using getx library
-
   //show dialog
 
   static void showErrorDialog({

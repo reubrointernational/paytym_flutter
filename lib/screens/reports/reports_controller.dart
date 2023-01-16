@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
@@ -25,6 +26,7 @@ import '../../routes/app_routes.dart';
 import 'attendance_tab.dart';
 import 'deduction_tab.dart';
 import 'payslip_tab.dart';
+import 'widgets/quit_company_bottomsheet.dart';
 import 'widgets/reports_bottomsheet.dart';
 
 class ReportsController extends GetxController with BaseController {
@@ -36,6 +38,7 @@ class ReportsController extends GetxController with BaseController {
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   final deductionResponseModel = DeductionResponseModel().obs;
+  String quitCompanyReason = '';
 
   showLogoutDialog() {
     DialogHelper.showConfirmDialog(
@@ -176,10 +179,35 @@ class ReportsController extends GetxController with BaseController {
     return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
   }
 
+  String? notEmptyValidator(String value) {
+    return (value.isEmpty) ? 'Value cannot be empty' : null;
+  }
+
   void requestAdvance() {
     if (requestAdvanceFormKey.currentState!.validate()) {
       requestAdvanceFormKey.currentState!.save();
       requestAdvanceOrSalary(false);
+    }
+  }
+
+  Future<void> requestQuitFromCompany() async {
+    Map<String, String> map = {'requests': quitCompanyReason};
+    if (requestAdvanceFormKey.currentState!.validate()) {
+      requestAdvanceFormKey.currentState!.save();
+      if (quitCompanyReason.isNotEmpty) {
+        showLoading();
+        var responseString = await Get.find<BaseClient>()
+            .post(ApiEndPoints.quitCompany, jsonEncode(map),
+                Get.find<LoginController>().getHeader())
+            .catchError(handleError);
+        if (responseString == null) {
+          return;
+        } else {
+          hideLoading();
+          DialogHelper.showToast(desc: 'Request submitted successfully');
+          Get.back();
+        }
+      }
     }
   }
 
@@ -251,16 +279,14 @@ class ReportsController extends GetxController with BaseController {
   }
 
   onClickMenuItem(ReportsDropDown value) {
-    if (value == ReportsDropDown.payment) {
-      DialogHelper.showBottomSheet(const ReportsBottomsheet(
-        isSalary: true,
-      ));
-    } else if (value == ReportsDropDown.advance) {
-      DialogHelper.showBottomSheet(const ReportsBottomsheet(
-        isSalary: false,
+    if (value == ReportsDropDown.payment || value == ReportsDropDown.advance) {
+      DialogHelper.showBottomSheet(ReportsBottomsheet(
+        isSalary: value == ReportsDropDown.payment,
       ));
     } else if (value == ReportsDropDown.logout) {
       showLogoutDialog();
+    } else {
+      DialogHelper.showBottomSheet(const QuitCompanyBottomSheet());
     }
   }
 }

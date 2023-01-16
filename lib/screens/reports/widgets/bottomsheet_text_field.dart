@@ -12,6 +12,7 @@ class BottomsheetTextField extends StatelessWidget {
   final void Function(String?)? onSaved;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final int maxLines;
   const BottomsheetTextField(
       {super.key,
       this.hintText,
@@ -20,20 +21,23 @@ class BottomsheetTextField extends StatelessWidget {
       this.keyboardType,
       this.validator,
       this.onSaved,
-      this.inputFormatters});
+      this.inputFormatters,
+      this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       initialValue: text,
       validator: validator,
+      maxLines: maxLines,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onSaved: onSaved,
       enabled: enabled,
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        contentPadding:
+            const EdgeInsets.all(10),
         hintText: hintText,
         hintStyle: const TextStyle(
           color: CustomColors.greyTextColor,

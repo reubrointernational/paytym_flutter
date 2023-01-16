@@ -274,6 +274,8 @@ const kRequestPaymentString = 'Request Payment';
 
 const kQuitCompanyString = 'Quit Company';
 
+const kWhyDoYouWantToQuitTheCompany = 'Why do you want to quit the company?';
+
 const kRequestAdvanceString = 'Request Advance';
 
 const kLogoutString = 'Logout';
