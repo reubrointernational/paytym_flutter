@@ -69,7 +69,7 @@ class EventRow extends StatelessWidget {
                           .eventsResponseModel
                           .value
                           .events?[index]
-                          ?.description ??
+                          ?.place ??
                       '',
                   overflow: TextOverflow.ellipsis,
                   style: kTextStyleS13W600CustomGrey,

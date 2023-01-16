@@ -22,4 +22,5 @@ class ApiEndPoints {
   static const sendChat = '$kBaseUrl/send-chat';
   static const quitCompany = '$kBaseUrl/quit_company';
   static const events = '$kBaseUrl/events_list';
+  static const sendOtpToEmail = '$kBaseUrl/forgot-password';
 }

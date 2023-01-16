@@ -40,6 +40,7 @@ class Event {
     this.id,
     this.name,
     this.description,
+    this.place,
     this.startDate,
     this.startTime,
     this.endDate,
@@ -52,6 +53,7 @@ class Event {
   int? id;
   String? name;
   String? description;
+  String? place;
   String? startDate;
   String? startTime;
   String? endDate;
@@ -64,6 +66,7 @@ class Event {
         id: json["id"],
         name: json["name"],
         description: json["description"],
+        place: json["place"],
         startDate: json["start_date"],
         startTime: json["start_time"],
         endDate: json["end_date"],
@@ -77,6 +80,7 @@ class Event {
         "id": id,
         "name": name,
         "description": description,
+        "place": place,
         "start_date":
             startDate,
         "start_time": startTime,

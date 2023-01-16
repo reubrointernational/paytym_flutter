@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:paytym/models/login/login_request_model.dart';
 import 'package:paytym/models/login/login_response_model.dart';
 import 'package:paytym/models/login/user_model.dart';
@@ -55,14 +57,19 @@ class LoginController extends GetxController with BaseController {
   }
 
   Future<MessageOnlyResponseModel?> sendOtp() async {
-    var responseString = await Get.find<BaseClient>()
+    
+    var responseString = loginResponseModel?.token != null ? await Get.find<BaseClient>()
         .post(ApiEndPoints.sendOtp, null, getHeader())
-        .catchError(handleError);
+        .catchError(handleError): await Get.find<BaseClient>()
+            .post(ApiEndPoints.sendOtpToEmail, jsonEncode({"email": userModel.email}), null)
+            .catchError(handleError);
 
     return responseString == null
         ? null
         : messageOnlyResponseModelFromJson(responseString);
   }
+
+  
 
   Future<MessageOnlyResponseModel?> confirmOtp(String otp) async {
     showLoading();
@@ -166,16 +173,11 @@ class LoginController extends GetxController with BaseController {
     }
   }
 
-//todo need to complete once otp api without authorization is finished
+
   goToOTPPage() async {
     if (formKeyForgotPassword.currentState!.validate()) {
       formKeyForgotPassword.currentState!.save();
-      //todo send otp with email id
-      final model = await sendOtp();
-      if (model != null) {
-        Get.toNamed(Routes.otp);
-// check mail toast
-      }
+      Get.toNamed(Routes.otp);
     }
   }
 }
