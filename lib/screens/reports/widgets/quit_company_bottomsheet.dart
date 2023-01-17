@@ -38,7 +38,6 @@ class QuitCompanyBottomSheet extends StatelessWidget {
               children: [
                 BottomsheetTextField(
                   hintText: kWhyDoYouWantToQuitTheCompany,
-                  
                   maxLines: 8,
                   validator: (value) =>
                       Get.find<ReportsController>().notEmptyValidator(value!),

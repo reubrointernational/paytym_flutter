@@ -57,19 +57,19 @@ class LoginController extends GetxController with BaseController {
   }
 
   Future<MessageOnlyResponseModel?> sendOtp() async {
-    
-    var responseString = loginResponseModel?.token != null ? await Get.find<BaseClient>()
-        .post(ApiEndPoints.sendOtp, null, getHeader())
-        .catchError(handleError): await Get.find<BaseClient>()
-            .post(ApiEndPoints.sendOtpToEmail, jsonEncode({"email": userModel.email}), null)
+    String json = jsonEncode({"email": userModel.email});
+    var responseString = loginResponseModel?.token != null
+        ? await Get.find<BaseClient>()
+            .post(ApiEndPoints.sendOtp, null, getHeader())
+            .catchError(handleError)
+        : await Get.find<BaseClient>()
+            .post(ApiEndPoints.sendOtpToEmail,
+                json, null)
             .catchError(handleError);
-
     return responseString == null
         ? null
         : messageOnlyResponseModelFromJson(responseString);
   }
-
-  
 
   Future<MessageOnlyResponseModel?> confirmOtp(String otp) async {
     showLoading();
@@ -173,10 +173,10 @@ class LoginController extends GetxController with BaseController {
     }
   }
 
-
   goToOTPPage() async {
     if (formKeyForgotPassword.currentState!.validate()) {
       formKeyForgotPassword.currentState!.save();
+      loginResponseModel?.token = null;
       Get.toNamed(Routes.otp);
     }
   }

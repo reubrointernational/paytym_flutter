@@ -191,13 +191,15 @@ class ReportsController extends GetxController with BaseController {
   }
 
   Future<void> requestQuitFromCompany() async {
-    Map<String, String> map = {'requests': quitCompanyReason};
     if (requestAdvanceFormKey.currentState!.validate()) {
       requestAdvanceFormKey.currentState!.save();
       if (quitCompanyReason.isNotEmpty) {
         showLoading();
+        String json = jsonEncode({'requests': quitCompanyReason});
         var responseString = await Get.find<BaseClient>()
-            .post(ApiEndPoints.quitCompany, jsonEncode(map),
+            .post(
+                ApiEndPoints.quitCompany,
+                json,
                 Get.find<LoginController>().getHeader())
             .catchError(handleError);
         if (responseString == null) {
