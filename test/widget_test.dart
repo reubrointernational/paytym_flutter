@@ -30,23 +30,19 @@ void main() {
   // });
 
   group('LoginController', () {
-    test('value should start with null', () {
+    test('loginResponseModel should start with null', () {
       expect(LoginController().loginResponseModel, null);
     });
 
     test('email validator should return null', () {
       final loginController = LoginController();
-
       var value = loginController.emailValidator('akhil@gmail.com');
-
       expect(value, null);
     });
 
     test('email validator should return enter valid email message', () {
       final loginController = LoginController();
-
       var value = loginController.emailValidator('akhil@gmail');
-
       expect(value, 'Enter a valid email');
     });
   });

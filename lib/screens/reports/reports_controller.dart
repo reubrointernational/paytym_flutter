@@ -140,7 +140,7 @@ class ReportsController extends GetxController with BaseController {
       await FlutterDownloader.enqueue(
         url: url,
         savedDir: '/storage/emulated/0/Download',
-        showNotification: false,
+        showNotification: true,
         openFileFromNotification: false,
         // fileName: 'payslip.pdf',
       );
@@ -197,9 +197,7 @@ class ReportsController extends GetxController with BaseController {
         showLoading();
         String json = jsonEncode({'requests': quitCompanyReason});
         var responseString = await Get.find<BaseClient>()
-            .post(
-                ApiEndPoints.quitCompany,
-                json,
+            .post(ApiEndPoints.quitCompany, json,
                 Get.find<LoginController>().getHeader())
             .catchError(handleError);
         if (responseString == null) {

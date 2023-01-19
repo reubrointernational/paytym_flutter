@@ -8,19 +8,8 @@ import 'package:get/get.dart';
 
 import '../../core/constants/strings.dart';
 
-class OTPPage extends StatefulWidget {
+class OTPPage extends StatelessWidget {
   const OTPPage({super.key});
-
-  @override
-  State<OTPPage> createState() => _OTPPageState();
-}
-
-class _OTPPageState extends State<OTPPage> {
-  @override
-  void initState() {
-    Get.find<LoginController>().sendOtp();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

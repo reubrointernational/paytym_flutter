@@ -23,4 +23,6 @@ class ApiEndPoints {
   static const quitCompany = '$kBaseUrl/quit_company';
   static const events = '$kBaseUrl/events_list';
   static const sendOtpToEmail = '$kBaseUrl/forgot-password';
+  static const confirmOtpWithEmail = '$kBaseUrl/forgotpwd-confirm-otp';
+  static const resetPasswordWithEmail = '$kBaseUrl/forgotpwd-password-update';
 }

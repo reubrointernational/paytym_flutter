@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/models/login/login_request_model.dart';
 import 'package:paytym/models/login/login_response_model.dart';
+import 'package:paytym/models/login/otp_request_with_email_model.dart';
+import 'package:paytym/models/login/password_reset_request_with_email_model.dart';
 import 'package:paytym/models/login/user_model.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/models/login/otp_request_model.dart';
@@ -56,29 +59,40 @@ class LoginController extends GetxController with BaseController {
     return true;
   }
 
+  //if otp is send from forgot password page token is not needed, instead email is provided to identify the user
   Future<MessageOnlyResponseModel?> sendOtp() async {
+    showLoading();
     String json = jsonEncode({"email": userModel.email});
     var responseString = loginResponseModel?.token != null
         ? await Get.find<BaseClient>()
             .post(ApiEndPoints.sendOtp, null, getHeader())
             .catchError(handleError)
         : await Get.find<BaseClient>()
-            .post(ApiEndPoints.sendOtpToEmail,
-                json, null)
+            .post(ApiEndPoints.sendOtpToEmail, json, null)
             .catchError(handleError);
+    hideLoading();
     return responseString == null
         ? null
         : messageOnlyResponseModelFromJson(responseString);
   }
 
+  //if otp is send from forgot password page token is not needed, instead email is provided to identify the user
   Future<MessageOnlyResponseModel?> confirmOtp(String otp) async {
     showLoading();
     OtpRequestModel otpRequestModel = OtpRequestModel(otp: otp);
 
-    var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.confirmOtp, otpRequestModelToJson(otpRequestModel),
-            getHeader())
-        .catchError(handleError);
+    OtpRequestWithEmailModel otpRequestWithEmailModel =
+        OtpRequestWithEmailModel(otp: otp, email: userModel.email);
+
+    var responseString = loginResponseModel?.token != null
+        ? await Get.find<BaseClient>()
+            .post(ApiEndPoints.confirmOtp,
+                otpRequestModelToJson(otpRequestModel), getHeader())
+            .catchError(handleError)
+        : await Get.find<BaseClient>()
+            .post(ApiEndPoints.confirmOtpWithEmail,
+                otpRequestWithEmailModelToJson(otpRequestWithEmailModel), null)
+            .catchError(handleError);
 
     if (responseString == null) {
       return null;
@@ -89,6 +103,7 @@ class LoginController extends GetxController with BaseController {
   }
 
 //endpoint: password-update
+//if otp is send from forgot password page token is not needed, instead email is provided to identify the user
   Future<MessageOnlyResponseModel?> updatePassword() async {
     showLoading();
     PasswordResetRequestModel passwordResetRequestModel =
@@ -96,12 +111,25 @@ class LoginController extends GetxController with BaseController {
             password: userModel.password,
             passwordConfirmation: userModel.confirmPassword);
 
-    var responseString = await Get.find<BaseClient>()
-        .post(
-            ApiEndPoints.updatePassword,
-            passwordResetRequestModelToJson(passwordResetRequestModel),
-            getHeader())
-        .catchError(handleError);
+    PasswordResetWithEmailModel passwordResetWithEmailModel =
+        PasswordResetWithEmailModel(
+            password: userModel.password,
+            cPassword: userModel.confirmPassword,
+            email: userModel.email);
+
+    var responseString = loginResponseModel?.token != null
+        ? await Get.find<BaseClient>()
+            .post(
+                ApiEndPoints.updatePassword,
+                passwordResetRequestModelToJson(passwordResetRequestModel),
+                getHeader())
+            .catchError(handleError)
+        : await Get.find<BaseClient>()
+            .post(
+                ApiEndPoints.resetPasswordWithEmail,
+                passwordResetWithEmailModelToJson(passwordResetWithEmailModel),
+                null)
+            .catchError(handleError);
 
     if (responseString == null) {
       return null;
@@ -140,6 +168,7 @@ class LoginController extends GetxController with BaseController {
     if (isSuccess) {
       //isFirst = 1 => first time login
       if (loginResponseModel?.employee?.isFirst == '1') {
+        await Get.find<LoginController>().sendOtp();
         Get.toNamed(Routes.otp);
       } else if (loginResponseModel?.employee?.isFirst == '0') {
         Get.offAndToNamed(Routes.bottomNav);
@@ -152,8 +181,6 @@ class LoginController extends GetxController with BaseController {
       MessageOnlyResponseModel? model = await confirmOtp(otp);
       if (model != null) {
         Get.toNamed(Routes.resetPassword);
-        //todo show toast if otp is not confirmed
-
       }
     }
   }
@@ -167,8 +194,6 @@ class LoginController extends GetxController with BaseController {
         if (confirmModel != null) {
           Get.offAllNamed(Routes.bottomNav);
         }
-      } else {
-        //todo toast password mismatch
       }
     }
   }
@@ -177,6 +202,7 @@ class LoginController extends GetxController with BaseController {
     if (formKeyForgotPassword.currentState!.validate()) {
       formKeyForgotPassword.currentState!.save();
       loginResponseModel?.token = null;
+      await Get.find<LoginController>().sendOtp();
       Get.toNamed(Routes.otp);
     }
   }
