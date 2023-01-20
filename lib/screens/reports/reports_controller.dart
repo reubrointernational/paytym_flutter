@@ -23,17 +23,15 @@ import '../../models/message_only_response_model.dart';
 import '../../network/base_client.dart';
 import '../../network/end_points.dart';
 import '../../routes/app_routes.dart';
-import 'attendance_tab.dart';
-import 'deduction_tab.dart';
-import 'payslip_tab.dart';
 import 'widgets/quit_company_bottomsheet.dart';
 import 'widgets/reports_bottomsheet.dart';
 
 class ReportsController extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
-  final isDownloading = false.obs;
-  final isSharing = false.obs;
+
+  //Sharing or downloading enum will be idle at the start
+  final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
@@ -136,9 +134,10 @@ class ReportsController extends GetxController with BaseController {
   downloadPdf(String? url) async {
     if (url != null && url.isNotEmpty) {
       sharePath = '';
-      isDownloading.value = true;
+      isSharingOrDownloading.value = SharingOrDownloading.downloading;
       await FlutterDownloader.enqueue(
         url: url,
+        saveInPublicStorage: true,
         savedDir: '/storage/emulated/0/Download',
         showNotification: true,
         openFileFromNotification: false,
@@ -149,13 +148,13 @@ class ReportsController extends GetxController with BaseController {
 
   sharePdf(String? url, String? type) async {
     if (type == 'pdf' || type == 'png') {
+      isSharingOrDownloading.value = SharingOrDownloading.sharing;
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path;
       if (File('$tempPath/payslip.$type').existsSync()) {
         File('$tempPath/payslip.$type').deleteSync();
       }
       sharePath = '$tempPath/payslip.$type';
-      isSharing.value = true;
       await FlutterDownloader.enqueue(
         url: url!,
         savedDir: tempPath,
@@ -247,17 +246,21 @@ class ReportsController extends GetxController with BaseController {
       DownloadTaskStatus status = data[1];
       // int progress = data[2];
 
-      if (status == DownloadTaskStatus.complete && sharePath.isNotEmpty) {
-        Share.shareXFiles([XFile(sharePath)]);
-        sharePath = '';
-        isSharing.value = false;
-      } else if (status == DownloadTaskStatus.complete && sharePath.isEmpty) {
-        isDownloading.value = false;
-        DialogHelper.showToast(desc: 'Download completed');
+      //download completed
+      if (status == DownloadTaskStatus.complete) {
+        //Download completed from Share button
+        if (isSharingOrDownloading.value == SharingOrDownloading.sharing) {
+          Share.shareXFiles([XFile(sharePath)]);
+          sharePath = '';
+          //Download completed from download button
+        } else if (isSharingOrDownloading.value ==
+            SharingOrDownloading.downloading) {
+          DialogHelper.showToast(desc: 'Download completed');
+        }
+        isSharingOrDownloading.value = SharingOrDownloading.idle;
       } else if (status == DownloadTaskStatus.failed) {
         sharePath = '';
-        isSharing.value = false;
-        isDownloading.value = false;
+        isSharingOrDownloading.value = SharingOrDownloading.idle;
       }
     });
 

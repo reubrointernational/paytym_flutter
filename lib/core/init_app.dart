@@ -23,7 +23,7 @@ Future<void> initApp() async {
       debug:
           true, // optional: set to false to disable printing logs to console (default: true) //todo set to false
       ignoreSsl: true //todo delete if server is https
-
+      
       );
 
   initFcm();

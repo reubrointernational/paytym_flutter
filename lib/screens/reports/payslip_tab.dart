@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/reports/reports_controller.dart';
@@ -51,12 +52,15 @@ class PaySlipTab extends StatelessWidget {
                 icon: CircleAvatar(
                   backgroundColor: CustomColors.fabColor,
                   child: Obx(
-                    () => Get.find<ReportsController>().isSharing.isFalse
-                        ? SvgPicture.asset(
-                            IconPath.shareIconSvg,
-                          )
-                        : const SpinKitPulse(
+                    () => Get.find<ReportsController>()
+                                .isSharingOrDownloading
+                                .value ==
+                            SharingOrDownloading.sharing
+                        ? const SpinKitPulse(
                             color: Colors.white,
+                          )
+                        : SvgPicture.asset(
+                            IconPath.shareIconSvg,
                           ),
                   ),
                 ),
@@ -66,11 +70,14 @@ class PaySlipTab extends StatelessWidget {
                 icon: CircleAvatar(
                   backgroundColor: CustomColors.fabColor,
                   child: Obx(
-                    () => Get.find<ReportsController>().isDownloading.isFalse
-                        ? SvgPicture.asset(
+                    () => Get.find<ReportsController>()
+                                .isSharingOrDownloading
+                                .value ==
+                            SharingOrDownloading.downloading
+                        ? Lottie.asset(IconPath.downloadingJson)
+                        : SvgPicture.asset(
                             IconPath.downloadIconSvg,
-                          )
-                        : Lottie.asset(IconPath.downloadingJson),
+                          ),
                   ),
                 ),
               )
