@@ -227,7 +227,7 @@ const kEmailString = 'Email';
 
 const kSendString = 'Send';
 
-const kLogInString = 'Login';
+const kLogInString = 'Log In';
 
 const kPasswordString = 'Password';
 

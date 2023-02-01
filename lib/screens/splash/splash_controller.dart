@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:paytym/models/login/login_request_model.dart';
 import 'package:paytym/models/login/login_response_model.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 

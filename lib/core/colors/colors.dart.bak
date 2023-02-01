@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 abstract class CustomColors {
   static const Color backgroundColor = Colors.white;
   static const Color bottomNavSelectedItemColor =
-      Color.fromRGBO(72, 13, 250, 1);
+      Color.fromRGBO(75, 103, 176, 1);
   static const Color bottomNavUnselectedItemColor =
       Color.fromRGBO(140, 140, 140, 1);
   static const Color calendarPageBackgroundColor =
       Color.fromRGBO(246, 247, 249, 1);
   static const Color chatPageBackgroundColor = Color.fromRGBO(221, 226, 239, 1);
-  static const Color fabColor = Color.fromRGBO(72, 13, 250, 1);
+  static const Color fabColor = Color.fromRGBO(75, 103, 176, 1);
   static const Color dashboardGreyBackgroundColor =
       Color.fromRGBO(236, 238, 240, 1);
 
@@ -17,8 +17,7 @@ abstract class CustomColors {
   static const Color whiteTabColor = Colors.white;
   static const Color selectedTabColor = Color.fromRGBO(243, 243, 243, 1);
   static const Color whiteCardColor = Colors.white;
-  //static const Color blueCardColor = Color.fromRGBO(75, 103, 176, 1);
-   static const Color blueCardColor = Color.fromRGBO(72, 13, 250, 1);
+  static const Color blueCardColor = Color.fromRGBO(75, 103, 176, 1);
   static const Color cardBackgroundCircleColor = Colors.white10;
   static const Color leaveAllCardColor = Color.fromRGBO(235, 235, 235, 1);
 
@@ -29,7 +28,7 @@ abstract class CustomColors {
   static const Color blackTextColor = Colors.black;
   static const Color whiteTextColor = Colors.white;
   static Color whiteWithOpacityTextColor = Colors.white.withOpacity(0.6);
-  static const Color blueTextColor = Color.fromRGBO(72, 13, 250, 1);
+  static const Color blueTextColor = Color.fromRGBO(75, 103, 176, 1);
   static const Color darkGreyTextColor = Color.fromARGB(255, 143, 143, 143);
   static const Color grey80x3TextColor = Color.fromARGB(255, 80, 80, 80);
   static const Color grey156x3TextColor = Color.fromARGB(255, 156, 156, 156);

@@ -33,7 +33,7 @@ class ForgetPasswordPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: CustomColors.blueTextColor,
+                    color: CustomColors.buttonColor,
                   ),
                 ),
               ),
@@ -67,9 +67,9 @@ class ForgetPasswordPage extends StatelessWidget {
                     Get.find<LoginController>().goToOTPPage();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomColors.blueTextColor,
+                    backgroundColor: CustomColors.buttonColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(50),
                     ),
                   ),
                   child: const Text(

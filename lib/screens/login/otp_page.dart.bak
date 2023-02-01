@@ -31,7 +31,7 @@ class OTPPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: CustomColors.buttonColor,
+                color: CustomColors.blueTextColor,
               ),
             ),
             kSizedBoxH10,
@@ -39,7 +39,7 @@ class OTPPage extends StatelessWidget {
               kEnterTheOTPString,
               style: TextStyle(
                 fontSize: 12.5,
-                color: CustomColors.blackTextColor,
+                color: CustomColors.darkGreyTextColor,
               ),
             ),
             kSizedBoxH35,
@@ -61,7 +61,6 @@ class OTPPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: CustomColors.greyFillTextFieldColor,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(width: 1.2, color: Color.fromRGBO(148, 148, 148, 0.37))
                       ),
                       child: TextField(
                         autofocus: index == 0 ? true : false,
@@ -112,9 +111,9 @@ class OTPPage extends StatelessWidget {
                                   .reduce((value, element) => value + element));
                         },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomColors.buttonColor,
+                    backgroundColor: CustomColors.blueTextColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     disabledBackgroundColor: CustomColors.disabledButtonColor,
                   ),
