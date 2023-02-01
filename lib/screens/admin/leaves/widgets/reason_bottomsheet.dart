@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
-import '../reports_controller.dart';
-import 'bottomsheet_text_field.dart';
+import '../../../employee/reports/widgets/bottomsheet_text_field.dart';
 
-class QuitCompanyBottomSheet extends StatelessWidget {
-  const QuitCompanyBottomSheet({super.key});
+class ReasonBottomSheetAdmin extends StatelessWidget {
+  const ReasonBottomSheetAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +33,16 @@ class QuitCompanyBottomSheet extends StatelessWidget {
           ),
           kSizedBoxH10,
           Form(
-            key: Get.find<ReportsController>().requestAdvanceFormKey,
+            key: Get.find<LeavesControllerAdmin>().requestAdvanceFormKey,
             child: Column(
               children: [
                 BottomsheetTextField(
                   hintText: kReasonString,
                   maxLines: 8,
-                  validator: (value) =>
-                      Get.find<ReportsController>().notEmptyValidator(value!),
-                  onSaved: (value) =>
-                      Get.find<ReportsController>().quitCompanyReason = value!,
+                  validator: (value) => Get.find<LeavesControllerAdmin>()
+                      .notEmptyValidator(value!),
+                  onSaved: (value) => Get.find<LeavesControllerAdmin>()
+                      .quitCompanyReason = value!,
                 ),
               ],
             ),
@@ -52,8 +52,7 @@ class QuitCompanyBottomSheet extends StatelessWidget {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () =>
-                  Get.find<ReportsController>().requestQuitFromCompany(),
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(

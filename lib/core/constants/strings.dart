@@ -272,9 +272,9 @@ const kReportsString = 'Reports';
 
 const kRequestPaymentString = 'Request Payment';
 
-const kQuitCompanyString = 'Quit Company';
+const kReasonString = 'Reason';
 
-const kWhyDoYouWantToQuitTheCompany = 'Why do you want to quit the company?';
+const kTypeTheReasonString = 'Type The Reason';
 
 const kRequestAdvanceString = 'Request Advance';
 

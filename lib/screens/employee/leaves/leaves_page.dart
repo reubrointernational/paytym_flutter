@@ -10,7 +10,7 @@ import 'widgets/leaves_app_bar.dart';
 
 class LeavesPage extends StatelessWidget {
   const LeavesPage({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     Get.put(LeavesController());

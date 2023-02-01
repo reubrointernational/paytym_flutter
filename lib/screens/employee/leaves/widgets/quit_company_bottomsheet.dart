@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
-import '../reports_controller.dart';
-import 'bottomsheet_text_field.dart';
+import '../../reports/reports_controller.dart';
+import '../../reports/widgets/bottomsheet_text_field.dart';
 
 class QuitCompanyBottomSheet extends StatelessWidget {
   const QuitCompanyBottomSheet({super.key});

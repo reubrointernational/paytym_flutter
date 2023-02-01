@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +15,9 @@ import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
+import 'widgets/reason_bottomsheet.dart';
 
-class LeavesController extends GetxController with BaseController {
+class LeavesControllerAdmin extends GetxController with BaseController {
   final leaveResponseModel = LeaveResponseModel().obs;
   final formKey = GlobalKey<FormState>();
   LeaveRequestModel leaveRequestModel = LeaveRequestModel();
@@ -24,15 +27,46 @@ class LeavesController extends GetxController with BaseController {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  //for bottomsheet
+  final requestAdvanceFormKey = GlobalKey<FormState>();
+  String quitCompanyReason = '';
 
   @override
   void onReady() {
     super.onReady();
     fetchLeaveData();
+  }
+
+  //for bottomsheet
+  onClickApproveButton() {
+    DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
+  }
+
+  //for bottomsheet validation
+  String? notEmptyValidator(String value) {
+    return (value.isEmpty) ? 'Value cannot be empty' : null;
+  }
+
+  //send reason (incomplete)
+  Future<void> sendReason() async {
+    // if (requestAdvanceFormKey.currentState!.validate()) {
+    //   requestAdvanceFormKey.currentState!.save();
+    //   if (quitCompanyReason.isNotEmpty) {
+    //     showLoading();
+    //     String json = jsonEncode({'requests': quitCompanyReason});
+    //     var responseString = await Get.find<BaseClient>()
+    //         .post(ApiEndPoints.quitCompany, json,
+    //             Get.find<LoginController>().getHeader())
+    //         .catchError(handleError);
+    //     if (responseString == null) {
+    //       return;
+    //     } else {
+    //       hideLoading();
+    //       DialogHelper.showToast(desc: 'Request submitted successfully');
+    //       Get.back();
+    //     }
+    //   }
+    // }
   }
 
   fetchLeaveData() async {

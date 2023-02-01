@@ -3,12 +3,15 @@ import 'package:paytym/screens/admin/leaves/leaves_page.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../employee/bottom_nav/bottom_nav_controller.dart';
+import '../calendar/calendar_page.dart';
+import '../reports/reports_page.dart';
 
 class BottomNavigationPageAdmin extends StatefulWidget {
   const BottomNavigationPageAdmin({super.key});
 
   @override
-  State<BottomNavigationPageAdmin> createState() => _BottomNavigationPageAdminState();
+  State<BottomNavigationPageAdmin> createState() =>
+      _BottomNavigationPageAdminState();
 }
 
 class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
@@ -17,15 +20,15 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
   Widget switchWidgets(index) {
     switch (index) {
       case 0:
-        return const LeavesPageAdmin();
+        return Container();
       case 1:
-        return Container();
+        return const LeavesPageAdmin();
       case 2:
-        return Container();
+        return const CalendarPageAdmin();
       case 3:
         return Container();
       case 4:
-        return Container();
+        return const ReportsPageAdmin();
     }
     return Container();
   }
@@ -35,6 +38,7 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
         backgroundColor: CustomColors.lightBlueColor,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: CustomColors.whiteCardColor,

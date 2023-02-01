@@ -9,8 +9,8 @@ import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../widgets/bordered_text_form_field.dart';
 
-class LeaveDialogue extends StatelessWidget {
-  const LeaveDialogue({
+class LeaveDialogueAdmin extends StatelessWidget {
+  const LeaveDialogueAdmin({
     Key? key,
   }) : super(key: key);
 

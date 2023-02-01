@@ -7,8 +7,6 @@ import 'package:paytym/models/leaves/leaves_response.dart';
 import 'package:paytym/models/leaves/leaves_status_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
-
-import '../../../core/constants/enums.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
@@ -23,11 +21,6 @@ class LeavesController extends GetxController with BaseController {
   DateTime endDate = DateTime.now();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onReady() {
@@ -52,7 +45,6 @@ class LeavesController extends GetxController with BaseController {
 
   Future<MessageOnlyResponseModel?> applyForLeave() async {
     showLoading();
-
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.leave, leaveRequestModelToJson(leaveRequestModel),
             Get.find<LoginController>().getHeader())
