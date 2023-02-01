@@ -3,13 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/list_maps.dart';
-import 'package:paytym/screens/calendar/calendar_controller.dart';
+import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 
 import '../../core/colors/colors.dart';
 import '../../core/constants/icons.dart';
 import '../../core/constants/strings.dart';
 import '../../core/constants/styles.dart';
-import '../leaves/widgets/leave_dialogue.dart';
+import '../employee/leaves/widgets/leave_dialogue.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({Key? key}) : super(key: key);

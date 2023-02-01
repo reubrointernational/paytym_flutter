@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paytym/screens/reports/reports_controller.dart';
+import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
 import '../../core/constants/enums.dart';
 import '../../core/constants/strings.dart';

@@ -21,6 +21,7 @@ abstract class CustomColors {
    static const Color blueCardColor = Color.fromRGBO(72, 13, 250, 1);
   static const Color cardBackgroundCircleColor = Colors.white10;
   static const Color leaveAllCardColor = Color.fromRGBO(235, 235, 235, 1);
+  static const Color lightBlueColor = Color(0xff02AAEB);
 
   //text colors
   static const Color customGreyTextColor = Color.fromRGBO(138, 138, 138, 1);

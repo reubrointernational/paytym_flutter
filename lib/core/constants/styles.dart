@@ -67,6 +67,11 @@ const kTextStyleS18W600 = TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+const kTextStyleS18W600white = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w600,
+);
+
 final kTextStyleS14W600Cgrey300LS0p2 = TextStyle(
   fontSize: 14,
   color: Colors.grey.shade300,

@@ -3,7 +3,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:paytym/screens/dashboard/dashboard_controller.dart';
+import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 
 import '../../core/constants/strings.dart';
 import 'scanner_app_bar.dart';

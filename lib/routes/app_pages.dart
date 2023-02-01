@@ -1,12 +1,13 @@
+import 'package:paytym/screens/admin/bottom_nav/bottom_nav_page.dart';
 import 'package:paytym/screens/login/login_page.dart';
 import 'package:paytym/screens/login/otp_page.dart';
-import 'package:paytym/screens/reports/reports_page.dart';
+import 'package:paytym/screens/employee/reports/reports_page.dart';
 import 'package:paytym/screens/scan_time/scanner_page.dart';
 import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/webview/custom_webview_page.dart';
-import '../screens/bottom_nav/bottom_nav_page.dart';
-import '../screens/dashboard/dashboard.dart';
+import '../screens/employee/bottom_nav/bottom_nav_page.dart';
+import '../screens/employee/dashboard/dashboard.dart';
 import '../screens/login/forgot_password.dart';
 import '../screens/login/reset_password_page.dart';
 import 'app_routes.dart';
@@ -26,7 +27,8 @@ class AppPages {
     ),
     GetPage(
       name: Routes.bottomNav,
-      page: () => const BottomNavigationPage(),
+      page: () => const BottomNavigationPageAdmin(),
+      //todo change to BottomNavigationPage
       // page: () => const PaymentsPage(),
     ),
     GetPage(
