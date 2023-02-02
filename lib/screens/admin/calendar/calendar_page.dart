@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/calendar/widgets/calendar_card.dart';
+import 'package:paytym/screens/admin/widgets/custom_tab_bar.dart';
 import 'package:paytym/screens/employee/calendar/widgets/calendar_card.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/widgets/custom_app_bar.dart';
@@ -37,7 +38,7 @@ class CalendarPageAdmin extends StatelessWidget {
           child: Column(
             children: [
               const CalendarCardAdmin(),
-              
+
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -48,13 +49,10 @@ class CalendarPageAdmin extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
-                        child: CustomTabBar(
+                        child: CustomTabBarAdmin(
                           tabsList: calendarTabList,
-                          width: 30,
-                          backgroundColor: Colors.grey.shade200,
                         ),
                       ),
-              
                       const Expanded(
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 18),

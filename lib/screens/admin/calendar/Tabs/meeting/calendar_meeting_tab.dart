@@ -30,115 +30,93 @@ class CalendarMeetingAdmin extends StatelessWidget {
               .meetingResponseModel
               .value
               .payroll?[index];
-          return Card(
-            color: CustomColors.whiteTabColor,
-            elevation: 10,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
+          return SizedBox(
+            height: 120,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 12, 18, 10),
-                  child: Row(
-                    children: [
-                      const CustomSVG(
-                        IconPath.timeSvg,
-                        size: 22,
-                      ),
-                      kSizedBoxW10,
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "${Get.find<CalendarControllerAdmin>().getTime(meeting?.startTime ?? '2022-11-23 06:26:47')} - ${Get.find<CalendarControllerAdmin>().getTime(meeting?.endTime ?? '2022-11-23 06:26:47')}  ${meeting?.location ?? ''}",
-                            overflow: TextOverflow.ellipsis,
-                            style: kTextStyleS13W600CustomGrey,
+                Column(
+                  children: [
+                    kSizedBoxH10,
+                    Text(
+                      'TUE',
+                      style: kTextStyleS18W600.copyWith(
+                          color: CustomColors.grey156x3TextColor),
+                    ),
+                    Text(
+                      '11',
+                      style: kTextStyleS18W600.copyWith(
+                          color: CustomColors.lightBlueColor),
+                    ),
+                  ],
+                ),
+                kSizedBoxW10,
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade200),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 25),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Meeting with Miller',
+                                style: kTextStyleS18W600.copyWith(
+                                    color: CustomColors.blackTextColor),
+                              ),
+                              kSizedBoxH4,
+                              Text(
+                                'HR Manager',
+                                style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
+                                    color: Colors.grey),
+                              ),
+                              const Spacer(),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.schedule,
+                                    size: 15,
+                                    color: Colors.grey,
+                                  ),
+                                  kSizedBoxW4,
+                                  Text(
+                                    '09:00 AM - 12:00 AM',
+                                    style: kTextStyleS14W600Cgrey300LS0p2
+                                        .copyWith(color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      kSizedBoxW10,
-                      const CustomSVG(
-                        IconPath.locationSvg,
-                        size: 22,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                  child: Row(
-                    children: [
-                      CustomCachedNetworkImage(
-                        imageUrl: meeting?.user?.image ?? '',
-                        radius: 25,
-                      ),
-                      kSizedBoxW12,
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${meeting?.user?.firstName} ${meeting?.user?.lastName}',
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            kSizedBoxH4,
-                            Text(
-                              meeting?.user?.position ?? 'HR Manager',
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: CustomColors.customGreyTextColor,
-                              ),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.edit_outlined,
+                                    color: CustomColors.lightBlueColor,
+                                  )),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.delete_outline_outlined,
+                                    color: CustomColors.redColor,
+                                  )),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(
-                  thickness: 3,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 5, 25, 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.edit,
-                            color: CustomColors.greenColor,
-                          ),
-                          kSizedBoxW10,
-                          Text(
-                            kEditString,
-                            style: kTextStyleS13W600,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.delete_sharp,
-                            color: CustomColors.redColor,
-                          ),
-                          kSizedBoxW10,
-                          Text(
-                            kDeleteString,
-                            style: kTextStyleS13W600,
-                          ),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],

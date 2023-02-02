@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/reports/deduction_tab.dart';
+import 'package:paytym/screens/admin/reports/projects_tab.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../widgets/custom_cached_network_image.dart';
-import '../custom_admin_scaffold.dart';
+import '../widgets/custom_admin_scaffold.dart';
 import '../leaves/leaves_controller.dart';
 import '../leaves/leaves_tab.dart';
 import 'reports_controller.dart';
@@ -25,8 +26,10 @@ class ReportsPageAdmin extends StatelessWidget {
     Get.put(ReportsControllerAdmin());
     return CustomAdminScaffold(
       tabList: leaveTabList,
-      title: kReportString,
-      children: leaveTabList.map((e) => const DeductionTabAdmin()).toList(),
+      title: kReportsString,
+      children: leaveTabList
+          .map((e) => e == 'All' ? DeductionTabAdmin() : ProjectsTabAdmin())
+          .toList(),
     );
   }
 }

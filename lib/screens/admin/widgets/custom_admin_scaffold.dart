@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:paytym/screens/admin/widgets/custom_tab_bar.dart';
 
-import '../../core/colors/colors.dart';
-import '../../core/constants/styles.dart';
-import '../../core/constants/widgets.dart';
-import '../widgets/custom_tab_bar.dart';
+import '../../../core/colors/colors.dart';
+import '../../../core/constants/styles.dart';
+import '../../../core/constants/widgets.dart';
+import '../../widgets/custom_tab_bar.dart';
 
 class CustomAdminScaffold extends StatelessWidget {
   final List<String> tabList;
@@ -37,9 +38,9 @@ class CustomAdminScaffold extends StatelessWidget {
               padding: const EdgeInsets.all(18.0),
               child: Column(
                 children: [
-                  CustomTabBar(
+                  CustomTabBarAdmin(
                     tabsList: tabList,
-                    backgroundColor: Colors.grey.shade200,
+                    
                   ),
                   kSizedBoxH10,
                   Expanded(
