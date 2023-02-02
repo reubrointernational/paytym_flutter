@@ -24,7 +24,7 @@ class ProjectsTabAdmin extends StatelessWidget {
             0,
         itemBuilder: (context, index) {
           return Container(
-            height: 150,
+            height: 170,
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade200),
                 borderRadius: BorderRadius.circular(10)),
@@ -42,6 +42,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                         style: kTextStyleS18W600.copyWith(
                             color: CustomColors.blackTextColor),
                       ),
+                      kSizedBoxH8,
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.grey.shade100,
@@ -64,12 +65,13 @@ class ProjectsTabAdmin extends StatelessWidget {
                           ],
                         ),
                       ),
-                      kSizedBoxH4,
+                      kSizedBoxH8,
                       Text(
                         '4 days left',
                         style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
                             color: Colors.black),
                       ),
+                      kSizedBoxH8,
                       SizedBox(
                         width: 200,
                         child: Stack(
@@ -115,7 +117,8 @@ class ProjectsTabAdmin extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 10),
+                  padding:
+                      const EdgeInsets.only(right: 10, bottom: 25, top: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -123,6 +126,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                         "Branch",
                         style: TextStyle(
                           color: CustomColors.blackTextColor,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       Padding(
@@ -146,7 +150,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                               color: Colors.lightBlue,
                             ),
                             const Text(
-                              "50%",
+                              "80%",
                               style: TextStyle(
                                   color: CustomColors.lightBlueColor,
                                   fontWeight: FontWeight.bold),

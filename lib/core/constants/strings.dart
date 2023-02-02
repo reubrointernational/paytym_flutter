@@ -146,6 +146,13 @@ List<Map<String, dynamic>> medicalDetails = [
 ];
 List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
+List<String> reportsTabListAdmin = [
+  'Projects',
+  'Attendance',
+  'Deduction',
+  'Medical',
+  'Duration'
+];
 List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];
 
 const kAppNameString = 'Paytym';

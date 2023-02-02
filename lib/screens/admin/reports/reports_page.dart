@@ -25,10 +25,12 @@ class ReportsPageAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ReportsControllerAdmin());
     return CustomAdminScaffold(
-      tabList: leaveTabList,
+      tabList: reportsTabListAdmin,
       title: kReportsString,
-      children: leaveTabList
-          .map((e) => e == 'All' ? DeductionTabAdmin() : ProjectsTabAdmin())
+      children: reportsTabListAdmin
+          .map((e) => e == 'Projects'
+              ? const ProjectsTabAdmin()
+              : const DeductionTabAdmin())
           .toList(),
     );
   }
