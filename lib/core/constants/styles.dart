@@ -112,5 +112,5 @@ final kInputBorderRedW1p2 = OutlineInputBorder(
 
 const kCalendarCard = TextStyle(
   fontWeight: FontWeight.w500,
-  color: CustomColors.whiteTextColor,
+  color: CustomColors.blackTextColor,
 );

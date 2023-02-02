@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/screens/reports/reports_controller.dart';
 
 import '../../core/constants/enums.dart';
@@ -25,22 +26,42 @@ class CustomTabBar extends StatelessWidget {
       height: 40,
       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 1),
       decoration: BoxDecoration(
-          color: backgroundColor, borderRadius: BorderRadius.circular(10)),
+          color: CustomColors.whiteTextColor,
+          borderRadius: BorderRadius.circular(10)),
       child: TabBar(
-          physics: const BouncingScrollPhysics(),
-          labelPadding: EdgeInsets.symmetric(horizontal: width),
-          indicator: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(9)),
-          labelColor: Colors.black,
-          unselectedLabelColor:
-              swapBlackWhiteText ? Colors.grey.shade300 : null,
-          labelStyle: kTextStyleS14W600LS0p2,
-          isScrollable: true,
-          tabs: tabsList
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.only(right: 10),
+        labelPadding: const EdgeInsets.symmetric(horizontal: 0),
+        indicatorColor: Colors.transparent,
+        /*indicator: BoxDecoration(
+            color: CustomColors.blueTextColor,
+            borderRadius: BorderRadius.circular(9)),*/
+        labelColor: CustomColors.blueTextColor,
+        unselectedLabelColor: swapBlackWhiteText ? Colors.grey.shade300 : null,
+        labelStyle: kTextStyleS14W600LS0p2,
+        isScrollable: true,
+        /*tabs: tabsList
               .map((e) => Tab(
                     text: e,
                   ))
-              .toList()),
+              .toList()*/
+        tabs: tabsList
+            .map((e) => Container(
+                  height: 50,
+                  width: 100,
+                  margin: const EdgeInsets.only(right: 6),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(
+                          width: 1, color: CustomColors.blueTextColor)),
+                  alignment: Alignment.center,
+                  child: Text(
+                    e,
+                  ),
+                ))
+            .toList(),
+      ),
     );
   }
 }

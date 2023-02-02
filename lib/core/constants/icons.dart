@@ -23,8 +23,8 @@ abstract class IconPath {
 
   //calendar card
 
-  static const String backArrowSvg = 'assets/svg/backArrow.svg';
-  static const String forwardArrowSvg = 'assets/svg/forwardArrow.svg';
+  static const String backArrowSvg = 'assets/svg/left_arrow.svg';
+  static const String forwardArrowSvg = 'assets/svg/right_arrow.svg';
 
   //chats page
 

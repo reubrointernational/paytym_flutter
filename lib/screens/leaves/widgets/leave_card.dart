@@ -28,7 +28,7 @@ class LeavesCard extends StatelessWidget {
             Get.find<LeavesController>().getMonthFromDate(leave?.startDate),
             style: const TextStyle(
               fontWeight: FontWeight.w600,
-              color: CustomColors.greyHeadingTextColor,
+              color: CustomColors.blueTextColor,
             ),
           ),
           Container(
@@ -38,7 +38,7 @@ class LeavesCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   width: 1,
-                  color: CustomColors.greyCardBorderColor,
+                  color: const Color.fromRGBO(200, 195, 226, 1),
                 )),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,14 +79,14 @@ class LeavesCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: leaveStatusModel.boxColor,
+                        color: leaveStatusModel.textColor,
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         leaveStatusModel.text,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 11,
-                          color: leaveStatusModel.textColor,
+                          color: CustomColors.whiteTextColor,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -95,13 +95,13 @@ class LeavesCard extends StatelessWidget {
                       height: 25,
                       width: 25,
                       decoration: BoxDecoration(
-                        color: CustomColors.leaveAllCardColor,
+                        color: CustomColors.blueTextColor,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
                         Icons.arrow_forward_ios,
                         size: 12,
-                        color: CustomColors.leaveAllIconColor,
+                        color: CustomColors.whiteTextColor,
                       ),
                     ),
                   ],

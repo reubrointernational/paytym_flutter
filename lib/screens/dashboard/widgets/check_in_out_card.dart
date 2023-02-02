@@ -19,6 +19,7 @@ class CheckInOutCard extends StatelessWidget {
     return SizedBox(
       height: 158,
       child: Card(
+        color: CustomColors.blueTextColor,
         elevation: 5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -33,7 +34,7 @@ class CheckInOutCard extends StatelessWidget {
                 kCheckInOutString,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  color: CustomColors.blueTextColor,
+                  color: CustomColors.whiteTextColor,
                 ),
               ),
               kSizedBoxH10,
@@ -67,14 +68,15 @@ class CheckInOutCard extends StatelessWidget {
                                 data: SliderThemeData(
                                   trackHeight: 0,
                                   activeTrackColor: Colors.red,
-                                  inactiveTrackColor:
-                                      const Color.fromARGB(255, 2, 69, 124),
+                                  /*inactiveTrackColor:
+                                      const Color.fromARGB(255, 2, 69, 124),*/
                                   overlayShape: SliderComponentShape.noOverlay,
                                   thumbShape: const CustomRoundSliderThumbShape(
                                     enabledThumbRadius: 18.0,
                                   ),
                                 ),
                                 child: Slider(
+                                  inactiveColor: CustomColors.whiteCardColor,
                                   value: Get.find<DashboardController>()
                                       .sliderValue
                                       .value,
@@ -131,13 +133,13 @@ class CheckInOutCard extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
-                            color: CustomColors.grey80x3TextColor),
+                            color: CustomColors.whiteTextColor),
                         children: const [
                           TextSpan(
                             text: khrsString,
                             style: TextStyle(
                               fontSize: 16,
-                              color: CustomColors.grey156x3TextColor,
+                              color: CustomColors.whiteTextColor,
                             ),
                           ),
                         ],
@@ -157,6 +159,7 @@ class CheckInOutCard extends StatelessWidget {
                       ),
                     ),
                     const VerticalDivider(
+                      color: CustomColors.whiteTextColor,
                       width: 20,
                       thickness: 2.5,
                       indent: 2,
@@ -176,6 +179,7 @@ class CheckInOutCard extends StatelessWidget {
                   const Text(
                     kNextShiftString,
                     style: TextStyle(
+                      color: CustomColors.whiteTextColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
@@ -185,7 +189,7 @@ class CheckInOutCard extends StatelessWidget {
                       Icon(
                         Icons.calendar_month,
                         size: 13,
-                        color: CustomColors.greyIconColor,
+                        color: CustomColors.lightBlueColor,
                       ),
                       kSizedBoxW4,
                       Text(
@@ -199,7 +203,7 @@ class CheckInOutCard extends StatelessWidget {
                       Icon(
                         Icons.schedule,
                         size: 13,
-                        color: CustomColors.greyIconColor,
+                        color: CustomColors.lightBlueColor,
                       ),
                       kSizedBoxW4,
                       Text(

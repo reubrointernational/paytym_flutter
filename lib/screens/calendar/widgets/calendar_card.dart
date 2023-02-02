@@ -21,7 +21,7 @@ class CalendarCard extends StatelessWidget {
         children: [
           Container(
             decoration: const BoxDecoration(
-              color: CustomColors.blueCardColor,
+              color: CustomColors.whiteTextColor,
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
             child: Obx(() {
@@ -35,6 +35,7 @@ class CalendarCard extends StatelessWidget {
                   Get.find<CalendarController>().selectedDay.value =
                       selectedDay;
                 },
+                
                 selectedDayPredicate: (day) => isSameDay(selectedDay, day),
                 rowHeight: 65,
                 daysOfWeekHeight: 20,
@@ -46,22 +47,25 @@ class CalendarCard extends StatelessWidget {
                   weekdayStyle: kCalendarCard,
                   weekendStyle: kCalendarCard,
                 ),
+                
                 headerStyle: HeaderStyle(
                   titleCentered: true,
                   formatButtonVisible: false,
-                  rightChevronIcon:
-                      const CustomSVG(IconPath.forwardArrowSvg, size: 25),
+                  rightChevronIcon: const CustomSVG(
+                    IconPath.forwardArrowSvg,
+                    size: 25,
+                  ),
                   leftChevronIcon:
                       const CustomSVG(IconPath.backArrowSvg, size: 25),
                   titleTextStyle: const TextStyle(
-                    color: CustomColors.whiteTextColor,
+                    color: CustomColors.blackTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                   ),
                   titleTextFormatter: (date, locale) =>
                       DateFormat('MMMM, yyyy').format(date),
                   decoration: const BoxDecoration(
-                    color: CustomColors.blueCardColor,
+                    color: CustomColors.whiteTabColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),

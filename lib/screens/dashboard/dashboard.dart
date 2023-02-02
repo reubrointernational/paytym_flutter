@@ -55,13 +55,13 @@ class DashboardPage extends StatelessWidget {
                             Text(
                               dashboardController.getWish(),
                               style: kTextStyleS13W600.copyWith(
-                                  color: CustomColors.darkGreyTextColor),
+                                  color: CustomColors.lightBlueColor),
                             ),
                             kSizedBoxH4,
                             Text(
                               '${Get.find<LoginController>().loginResponseModel?.employee?.firstName ?? ''} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName ?? ''}',
                               style: const TextStyle(
-                                color: CustomColors.blueTextColor,
+                                color: CustomColors.blackTextColor,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                               ),

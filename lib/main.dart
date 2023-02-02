@@ -11,7 +11,7 @@ import 'screens/hr_screens/employees_list.dart';
 import 'screens/splash/splash_screen.dart';
 
 void main() async {
-  // await initApp();
+  await initApp();
   runApp(const MyApp());
 }
 
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       //initialRoute: AppPages.initial,
-      home: const HRBottomNavigationPage(),
+      home: const SplashScreen(),
       getPages: AppPages.routes,
     );
   }
