@@ -4,7 +4,8 @@ import 'package:flutter_svg/svg.dart';
 class CustomSVG extends StatelessWidget {
   final String iconPath;
   final double? size;
-  const CustomSVG(this.iconPath, {super.key, this.size});
+  final Color? color;
+  const CustomSVG(this.iconPath, {super.key, this.size, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,7 @@ class CustomSVG extends StatelessWidget {
       iconPath,
       width: size,
       height: size,
+      color: color,
       fit: BoxFit.cover,
     );
   }

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../routes/app_routes.dart';
 import '../../calendar/widgets/custom_svg.dart';
 import '../../../login/login_controller.dart';
 import '../../../widgets/paytym_logo.dart';
@@ -41,22 +42,35 @@ class DashboardAppBar extends StatelessWidget {
               ),
             ]),
             kSizedBoxW15,
-            CachedNetworkImage(
-              imageUrl: Get.find<LoginController>()
-                      .loginResponseModel
-                      ?.employee
-                      ?.image ??
-                  '',
-              imageBuilder: (context, imageProvider) => CircleAvatar(
-                backgroundColor: Colors.grey.shade300,
-                radius: 15,
-                backgroundImage: imageProvider,
+            PopupMenuButton(
+              itemBuilder: (BuildContext context) {
+                return [
+                  const PopupMenuItem(
+                    value: 0,
+                    child: Text("Work Profile"),
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                Get.toNamed(Routes.bottomNavAdmin);
+              },
+              child: CachedNetworkImage(
+                imageUrl: Get.find<LoginController>()
+                        .loginResponseModel
+                        ?.employee
+                        ?.image ??
+                    '',
+                imageBuilder: (context, imageProvider) => CircleAvatar(
+                  backgroundColor: Colors.grey.shade300,
+                  radius: 15,
+                  backgroundImage: imageProvider,
+                ),
+                placeholder: (context, url) => const SpinKitDoubleBounce(
+                  color: Colors.white,
+                  size: 7.5,
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-              placeholder: (context, url) => const SpinKitDoubleBounce(
-                color: Colors.white,
-                size: 7.5,
-              ),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ],
         ),

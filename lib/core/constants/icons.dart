@@ -71,4 +71,13 @@ abstract class IconPath {
 
   //HR/admin
   static const String filterIconPng = 'assets/png/filter_icon.png';
+
+  static const String floatingActionFilterIconPng =
+      'assets/png/filter_icon.png';
+  static const String searchIconPng = 'assets/png/search_img.png';
+  static const String dropdownIconPng = 'assets/png/dropdown_img.png';
+  static const String projectIconPng = 'assets/png/group_icon.png';
+  static const String attendanceIconPng = 'assets/png/attendance_icon.png';
+  static const String absenteesIconPng = 'assets/png/absentees_icon.png';
+  static const String meetingsIconPng = 'assets/png/meetings_icon.png';
 }

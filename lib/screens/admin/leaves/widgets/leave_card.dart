@@ -41,14 +41,16 @@ class LeavesCardAdmin extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        leave?.title ?? '',
+                      const Text(
+                        'Smith',
+                        // leave?.title ?? '',
                         overflow: TextOverflow.ellipsis,
                         style: kTextStyleS18W600,
                       ),
-                      Text(
-                        '${Get.find<LeavesControllerAdmin>().formatDate(leave?.startDate)}-${Get.find<LeavesControllerAdmin>().formatDate(leave?.endDate)}',
-                        style: const TextStyle(
+                      const Text(
+                        '004578457',
+                        // '${Get.find<LeavesControllerAdmin>().formatDate(leave?.startDate)}-${Get.find<LeavesControllerAdmin>().formatDate(leave?.endDate)}',
+                        style: TextStyle(
                           color: CustomColors.greyHeadingTextColor,
                         ),
                       ),

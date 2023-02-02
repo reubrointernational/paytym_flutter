@@ -13,6 +13,7 @@ abstract class CustomColors {
   static const Color dashboardGreyBackgroundColor =
       Color.fromRGBO(236, 238, 240, 1);
 
+
   //card/tab colors
   static const Color whiteTabColor = Colors.white;
   static const Color selectedTabColor = Color.fromRGBO(243, 243, 243, 1);

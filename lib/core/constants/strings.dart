@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../screens/login/login_controller.dart';
+import 'icons.dart';
 
 double w = Get.width;
 double h = Get.height;
@@ -64,7 +65,7 @@ List<Map<String, dynamic>> calendarScheduleDetails = [
 List<Map<String, dynamic>> employeeLeaves = [
   {
     //todo change percentage by calculating
-    "bgColor": Colors.green,
+    "bgColor": const Color.fromRGBO(0, 148, 66, 1),
     'total':
         "${Get.find<LoginController>().loginResponseModel?.absence ?? '0'}",
     'icon': Icons.people_outline,
@@ -72,7 +73,7 @@ List<Map<String, dynamic>> employeeLeaves = [
     "attendance_percentage": 98,
   },
   {
-    "bgColor": Colors.red,
+    "bgColor": const Color.fromRGBO(250, 42, 20, 1),
     //todo change casual to sick leave in api
     'total': "${Get.find<LoginController>().loginResponseModel?.casual ?? '0'}",
     'icon': Icons.text_snippet_outlined,
@@ -80,14 +81,14 @@ List<Map<String, dynamic>> employeeLeaves = [
     "attendance_percentage": 98,
   },
   {
-    "bgColor": Colors.orange,
+    "bgColor": const Color.fromRGBO(255, 92, 17, 1),
     'total': "${Get.find<LoginController>().loginResponseModel?.annual ?? '0'}",
     'icon': Icons.event,
     "title": 'Annual Leave',
     "attendance_percentage": 98,
   },
   {
-    "bgColor": Colors.blue,
+    "bgColor": const Color.fromRGBO(18, 115, 205, 1),
     'total':
         "${Get.find<LoginController>().loginResponseModel?.halfday ?? '0'}",
     'icon': Icons.schedule,
@@ -144,6 +145,78 @@ List<Map<String, dynamic>> medicalDetails = [
     'subtitle': 'spouse: 9876543232 \ndoctor: 8790695343',
   },
 ];
+
+List<String> departments = [
+  'HR',
+  'Sales and marketing',
+  'research and development',
+  'It services',
+  'product development',
+  'Accounts and finance'
+];
+
+List<String> branches = [
+  'Web development',
+  'App development',
+  'Software testing',
+  'Game development',
+  'Deployment'
+];
+
+List<Map<String, dynamic>> hrDetails = [
+  {
+    'icon': IconPath.projectIconPng,
+    'title': 'Absentees',
+    'count': 8,
+    'color': Colors.green,
+  },
+  {
+    'icon': IconPath.attendanceIconPng,
+    'title': 'Sick leave',
+    'count': 2,
+    'color': Colors.red,
+  },
+  {
+    'icon': IconPath.absenteesIconPng,
+    'title': 'Annual leave',
+    'count': 3,
+    'color': Colors.orange,
+  },
+  {
+    'icon': IconPath.meetingsIconPng,
+    'title': 'Late Arrival',
+    'count': 5,
+    'color': Colors.blue,
+  },
+];
+
+List<Map<String, dynamic>> totalEmployeesDetails = [
+  {
+    'icon': IconPath.projectIconPng,
+    'title': 'Total Projects',
+    'count': 200,
+    'color': Colors.pink,
+  },
+  {
+    'icon': IconPath.attendanceIconPng,
+    'title': 'Total Attendance',
+    'count': 400,
+    'color': Colors.purple,
+  },
+  {
+    'icon': IconPath.absenteesIconPng,
+    'title': 'Total Absentees',
+    'count': 80,
+    'color': Colors.red,
+  },
+  {
+    'icon': IconPath.meetingsIconPng,
+    'title': 'Total Meetings',
+    'count': 10,
+    'color': Colors.orange,
+  },
+];
+
 List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> reportsTabListAdmin = [

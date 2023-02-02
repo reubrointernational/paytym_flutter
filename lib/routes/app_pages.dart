@@ -27,8 +27,14 @@ class AppPages {
     ),
     GetPage(
       name: Routes.bottomNav,
+      page: () => const BottomNavigationPage(),
+      
+      // page: () => const PaymentsPage(),
+    ),
+    GetPage(
+      name: Routes.bottomNavAdmin,
       page: () => const BottomNavigationPageAdmin(),
-      //todo change to BottomNavigationPage
+      
       // page: () => const PaymentsPage(),
     ),
     GetPage(

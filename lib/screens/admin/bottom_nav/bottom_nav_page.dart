@@ -4,6 +4,7 @@ import 'package:paytym/screens/admin/leaves/leaves_page.dart';
 import '../../../core/colors/colors.dart';
 import '../../employee/bottom_nav/bottom_nav_controller.dart';
 import '../calendar/calendar_page.dart';
+import '../dashboard/hr_dashboard.dart';
 import '../reports/reports_page.dart';
 
 class BottomNavigationPageAdmin extends StatefulWidget {
@@ -20,7 +21,7 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
   Widget switchWidgets(index) {
     switch (index) {
       case 0:
-        return Container();
+        return const HRDashboard();
       case 1:
         return const LeavesPageAdmin();
       case 2:
@@ -35,34 +36,39 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomColors.backgroundColor,
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        backgroundColor: CustomColors.lightBlueColor,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: CustomColors.whiteCardColor,
-        unselectedItemColor: CustomColors.whiteCardColor,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        currentIndex: _currentIndex,
-        onTap: (value) {
-          setState(() {
-            _currentIndex = value;
-          });
-        },
-        items: List.generate(
-          BottomNavController.bottomNavModelList.length,
-          (index) => BottomNavigationBarItem(
-            icon: Icon(
-              BottomNavController.bottomNavModelList[index].icon,
-              size: 20,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: CustomColors.backgroundColor,
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 0,
+          backgroundColor: CustomColors.lightBlueColor,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: CustomColors.whiteCardColor,
+          unselectedItemColor: CustomColors.whiteCardColor,
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          currentIndex: _currentIndex,
+          onTap: (value) {
+            setState(() {
+              _currentIndex = value;
+            });
+          },
+          items: List.generate(
+            BottomNavController.bottomNavModelList.length,
+            (index) => BottomNavigationBarItem(
+              icon: Icon(
+                BottomNavController.bottomNavModelList[index].icon,
+                size: 20,
+              ),
+              label: BottomNavController.bottomNavModelList[index].label,
             ),
-            label: BottomNavController.bottomNavModelList[index].label,
           ),
         ),
+        body: switchWidgets(_currentIndex),
       ),
-      body: switchWidgets(_currentIndex),
     );
   }
 }
