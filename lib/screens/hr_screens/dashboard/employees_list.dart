@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/screens/employees_screens/dashboard/dashboard_controller.dart';
-import 'package:paytym/screens/hr_screens/widgets/app_bar.dart';
-import 'package:paytym/screens/hr_screens/widgets/custom_dropdown.dart';
-import 'package:paytym/screens/hr_screens/widgets/custom_floating_button.dart';
-import 'package:paytym/screens/hr_screens/widgets/custom_text_form_field.dart';
+import 'package:paytym/screens/hr_screens/dashboard/widgets/app_bar.dart';
+import 'package:paytym/screens/hr_screens/dashboard/widgets/custom_dropdown.dart';
+import 'package:paytym/screens/hr_screens/dashboard/widgets/custom_floating_button.dart';
+import 'package:paytym/screens/hr_screens/dashboard/widgets/custom_text_form_field.dart';
 
-import '../../core/constants/strings.dart';
+import '../../../core/constants/strings.dart';
 import 'dashboard_controller.dart';
 
 class HrEmployeesList extends StatelessWidget {

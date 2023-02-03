@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/colors/colors.dart';
-import '../../../core/constants/icons.dart';
+import '../../../../core/colors/colors.dart';
+import '../../../../core/constants/icons.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
   final void Function()? onPressed;

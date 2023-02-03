@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/employees_screens/dashboard/dashboard.dart';
 import 'package:paytym/screens/employees_screens/dashboard/widgets/dashboard_app_bar.dart';
+import 'package:paytym/screens/hr_screens/chat/chat_lists.dart';
 import 'package:paytym/screens/hr_screens/hr_bottom_nav/bottom_nav.dart';
-import 'package:paytym/screens/hr_screens/hr_dashboard.dart';
+import 'package:paytym/screens/hr_screens/dashboard/hr_dashboard.dart';
 import 'package:paytym/screens/employees_screens/split_payment/payments_page.dart';
 
 import 'core/init_app.dart';
 import 'routes/app_pages.dart';
-import 'screens/hr_screens/employees_list.dart';
+import 'screens/hr_screens/dashboard/employees_list.dart';
 import 'screens/splash/splash_screen.dart';
 
 void main() async {
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       //initialRoute: AppPages.initial,
-      home: const SplashScreen(),
+      home: const HRBottomNavigationPage(),
       getPages: AppPages.routes,
     );
   }

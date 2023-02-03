@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:paytym/screens/hr_screens/employees_list.dart';
+import 'package:paytym/screens/hr_screens/chat/chat_lists.dart';
+import 'package:paytym/screens/hr_screens/dashboard/employees_list.dart';
 import 'package:paytym/screens/hr_screens/hr_bottom_nav/bottom_nav_controller.dart';
-import 'package:paytym/screens/hr_screens/hr_dashboard.dart';
+import 'package:paytym/screens/hr_screens/dashboard/hr_dashboard.dart';
 
 import '../../../core/colors/colors.dart';
 
@@ -24,7 +25,7 @@ class _HRBottomNavigationPageState extends State<HRBottomNavigationPage> {
       case 2:
         return Container();
       case 3:
-        return Container();
+        return const HRChatLists();
       case 4:
         return Container();
     }

@@ -7,10 +7,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 
-import '../../../core/constants/icons.dart';
-import '../../../core/constants/widgets.dart';
-import '../../employees_screens/calendar/widgets/custom_svg.dart';
-import '../../widgets/paytym_logo.dart';
+import '../../../../core/constants/icons.dart';
+import '../../../../core/constants/widgets.dart';
+import '../../../employees_screens/calendar/widgets/custom_svg.dart';
+import '../../../widgets/paytym_logo.dart';
 
 class HrAppBar extends StatelessWidget {
   const HrAppBar({super.key});

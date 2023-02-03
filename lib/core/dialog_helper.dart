@@ -1,3 +1,4 @@
+import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -70,6 +71,10 @@ class DialogHelper {
         middleText: desc,
         onConfirm: onConfirm,
         onCancel: onCancel,
+        titlePadding: const EdgeInsets.only(top: 30),
+        contentPadding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
+        buttonColor: CustomColors.blueTextColor,
+        cancelTextColor: CustomColors.blueTextColor,
         textConfirm: 'YES',
         confirmTextColor: Colors.white,
         textCancel: 'NO');

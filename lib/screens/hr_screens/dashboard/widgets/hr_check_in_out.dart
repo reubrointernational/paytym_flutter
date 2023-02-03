@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/custom_slider_thumb.dart';
 
-import '../../../core/colors/colors.dart';
-import '../../../core/constants/strings.dart';
-import '../../../core/constants/styles.dart';
-import '../../../core/constants/widgets.dart';
+import '../../../../core/colors/colors.dart';
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/styles.dart';
+import '../../../../core/constants/widgets.dart';
 
 import '../dashboard_controller.dart';
 

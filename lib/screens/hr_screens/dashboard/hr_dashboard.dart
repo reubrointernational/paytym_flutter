@@ -4,8 +4,8 @@ import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/screens/hr_screens/widgets/app_bar.dart';
-import 'package:paytym/screens/hr_screens/widgets/custom_cards.dart';
+import 'package:paytym/screens/hr_screens/dashboard/widgets/app_bar.dart';
+import 'package:paytym/screens/hr_screens/dashboard/widgets/custom_cards.dart';
 
 import 'widgets/hr_check_in_out.dart';
 

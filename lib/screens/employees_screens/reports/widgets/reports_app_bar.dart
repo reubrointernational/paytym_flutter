@@ -33,7 +33,7 @@ class ReportsAppBar extends StatelessWidget {
           onSelected: (ReportsDropDown value) =>
               Get.find<ReportsController>().onClickMenuItem(value),
           itemBuilder: (BuildContext context) => List.generate(
-            4,
+            2,
             (index) => PopupMenuItem(
               value: kReportDropDownItemList[index].dropDownItem,
               child: Text(
