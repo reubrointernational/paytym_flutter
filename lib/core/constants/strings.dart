@@ -224,7 +224,7 @@ List<String> reportsTabListAdmin = [
   'Attendance',
   'Deduction',
   'Medical',
-  'Duration'
+  'Contract period'
 ];
 List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];
 

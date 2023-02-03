@@ -19,6 +19,7 @@ class CustomAdminScaffold extends StatelessWidget {
       length: tabList.length,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             title,
             style: kTextStyleS18W600white,
