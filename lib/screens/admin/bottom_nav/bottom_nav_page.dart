@@ -4,6 +4,7 @@ import 'package:paytym/screens/admin/leaves/leaves_page.dart';
 import '../../../core/colors/colors.dart';
 import '../../employee/bottom_nav/bottom_nav_controller.dart';
 import '../calendar/calendar_page.dart';
+import '../chat/chat_lists.dart';
 import '../dashboard/hr_dashboard.dart';
 import '../reports/reports_page.dart';
 
@@ -27,7 +28,7 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
       case 2:
         return const CalendarPageAdmin();
       case 3:
-        return Container();
+        return const HRChatLists();
       case 4:
         return const ReportsPageAdmin();
     }

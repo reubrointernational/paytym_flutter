@@ -45,7 +45,8 @@ class AttendanceTabAdmin extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: Get.find<ReportsControllerAdmin>()
+                            .showBottomSheetForReason,
                       icon: RoundedIcon(
                         iconPath: Icons.edit_outlined,
                         iconColor: Colors.blue,
@@ -53,9 +54,8 @@ class AttendanceTabAdmin extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        
-                      },
+                      onPressed: Get.find<ReportsControllerAdmin>()
+                          .showBottomSheetForReason,
                       icon: RoundedIcon(
                         iconPath: Icons.close,
                         iconColor: Colors.red,

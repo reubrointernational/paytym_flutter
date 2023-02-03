@@ -23,6 +23,7 @@ import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../../routes/app_routes.dart';
+import '../widgets/reason_bottomsheet.dart';
 
 
 class ReportsControllerAdmin extends GetxController with BaseController {
@@ -43,7 +44,10 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     );
   }
 
-
+//for bottomsheet
+  showBottomSheetForReason() {
+    DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
+  }
 
   logout() async {
     showLoading();
