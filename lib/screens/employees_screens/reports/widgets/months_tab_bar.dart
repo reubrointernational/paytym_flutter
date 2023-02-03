@@ -3,17 +3,15 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/screens/employees_screens/reports/reports_controller.dart';
 
-import '../../core/constants/enums.dart';
-import '../../core/constants/strings.dart';
-import '../../core/constants/styles.dart';
+import '../../../../core/constants/styles.dart';
 
-class CustomTabBar extends StatelessWidget {
+class CustomMonthsTabBar extends StatelessWidget {
   final List<String> tabsList;
   final Color backgroundColor;
   final double width;
   final bool swapBlackWhiteText;
   final TabController? controller;
-  const CustomTabBar(
+  const CustomMonthsTabBar(
       {Key? key,
       required this.tabsList,
       required this.backgroundColor,
@@ -25,7 +23,7 @@ class CustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: 36,
       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 1),
       decoration: BoxDecoration(
           color: CustomColors.whiteTextColor,
@@ -50,18 +48,20 @@ class CustomTabBar extends StatelessWidget {
               .toList()*/
         tabs: tabsList
             .map((e) => Container(
-                  height: 50,
-                  width: 100,
+                  //height: 40,
+                  width: 60,
                   margin: const EdgeInsets.only(right: 6),
                   decoration: BoxDecoration(
-                    color: const Color.fromRGBO(231, 238, 254, 1),
+                    color: CustomColors.whiteTabColor,
                     borderRadius: BorderRadius.circular(40),
+                    border:
+                        Border.all(width: 1, color: CustomColors.blueTextColor),
                   ),
                   alignment: Alignment.center,
                   child: Text(
                     e,
                     style: const TextStyle(
-                      color: Color.fromRGBO(47, 77, 144, 1),
+                      color: CustomColors.blueTextColor,
                     ),
                   ),
                 ))

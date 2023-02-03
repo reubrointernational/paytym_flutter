@@ -68,10 +68,10 @@ abstract class CustomColors {
   static Color greenColorShade700 = Colors.green.shade700;
 
   //color list
-  static const List<Color> cardColorList = [
-    Colors.green,
-    Colors.red,
-    Colors.blue,
-    Colors.yellow,
+  static List<Color> cardColorList = [
+    const Color.fromRGBO(0, 148, 66, 1),
+    const Color.fromRGBO(250, 42, 20, 1),
+    const Color.fromRGBO(18, 115, 205, 1),
+    const Color.fromARGB(255, 253, 241, 4),
   ];
 }

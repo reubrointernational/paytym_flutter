@@ -217,6 +217,31 @@ List<Map<String, dynamic>> totalEmployeesDetails = [
   },
 ];
 
+List<String> years = [
+  '2018 - 19',
+  '2019 - 20',
+  '2020 - 21',
+  '2021 - 22',
+  '2022 - 23',
+  '2023 - 24',
+  '2024 - 25'
+];
+
+List<String> monthsTabList = [
+  'Jan',
+  'Fre',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+];
+
 List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];

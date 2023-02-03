@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paytym/screens/dashboard/dashboard.dart';
-import 'package:paytym/screens/dashboard/widgets/dashboard_app_bar.dart';
+import 'package:paytym/screens/employees_screens/dashboard/dashboard.dart';
+import 'package:paytym/screens/employees_screens/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:paytym/screens/hr_screens/hr_bottom_nav/bottom_nav.dart';
 import 'package:paytym/screens/hr_screens/hr_dashboard.dart';
+import 'package:paytym/screens/employees_screens/split_payment/payments_page.dart';
 
 import 'core/init_app.dart';
 import 'routes/app_pages.dart';

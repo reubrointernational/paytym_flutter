@@ -9,7 +9,7 @@ import 'package:paytym/core/colors/colors.dart';
 
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/widgets.dart';
-import '../../calendar/widgets/custom_svg.dart';
+import '../../employees_screens/calendar/widgets/custom_svg.dart';
 import '../../widgets/paytym_logo.dart';
 
 class HrAppBar extends StatelessWidget {

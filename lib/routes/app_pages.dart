@@ -1,12 +1,12 @@
 import 'package:paytym/screens/login/login_page.dart';
 import 'package:paytym/screens/login/otp_page.dart';
-import 'package:paytym/screens/reports/reports_page.dart';
-import 'package:paytym/screens/scan_time/scanner_page.dart';
+import 'package:paytym/screens/employees_screens/reports/reports_page.dart';
+import 'package:paytym/screens/employees_screens/scan_time/scanner_page.dart';
 import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/webview/custom_webview_page.dart';
-import '../screens/bottom_nav/bottom_nav_page.dart';
-import '../screens/dashboard/dashboard.dart';
+import '../screens/employees_screens/bottom_nav/bottom_nav_page.dart';
+import '../screens/employees_screens/dashboard/dashboard.dart';
 import '../screens/login/forgot_password.dart';
 import '../screens/login/reset_password_page.dart';
 import 'app_routes.dart';

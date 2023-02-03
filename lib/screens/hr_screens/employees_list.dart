@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
-import 'package:paytym/screens/dashboard/dashboard_controller.dart';
+import 'package:paytym/screens/employees_screens/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/hr_screens/widgets/app_bar.dart';
 import 'package:paytym/screens/hr_screens/widgets/custom_dropdown.dart';
 import 'package:paytym/screens/hr_screens/widgets/custom_floating_button.dart';
@@ -221,8 +221,8 @@ class HrEmployeesList extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text(
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
+                  Text(
                     'Search',
                     style: TextStyle(
                       fontWeight: FontWeight.w500,

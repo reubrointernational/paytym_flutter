@@ -38,7 +38,7 @@ const kTextStyleS14C255140x3 = TextStyle(
 const kTextStyleS12W600Cblue = TextStyle(
   fontSize: 12,
   fontWeight: FontWeight.w600,
-  color: CustomColors.blueTextColor,
+  color: CustomColors.customGreyTextColor,
 );
 
 const kTextStyleS12W600CcustomGrey = TextStyle(

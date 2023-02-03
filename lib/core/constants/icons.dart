@@ -49,6 +49,8 @@ abstract class IconPath {
   static const String downloadIconSvg = 'assets/svg/downloadIcon.svg';
 
   //report
+  static const String dropdownYearIconSvg = 'assets/svg/year_dropdown_icon.svg';
+
   //menusvg//
 
   //hr
