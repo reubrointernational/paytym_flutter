@@ -41,7 +41,7 @@ class CalendarCardAdmin extends StatelessWidget {
                 weekendStyle: kCalendarCard,
               ),
               headerStyle: HeaderStyle(
-                headerPadding: EdgeInsets.only(bottom: 8),
+                headerPadding: const EdgeInsets.only(bottom: 8),
                 titleCentered: true,
                 formatButtonVisible: false,
                 rightChevronIcon:

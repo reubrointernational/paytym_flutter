@@ -26,6 +26,7 @@ class CalendarPageAdmin extends StatelessWidget {
       child: Scaffold(
         floatingActionButton: const CustomFloatingActionButton(),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           elevation: 0,
           backgroundColor: CustomColors.lightBlueColor,
           title: const Text(

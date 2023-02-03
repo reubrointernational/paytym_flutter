@@ -171,6 +171,8 @@ class LoginController extends GetxController with BaseController {
         await Get.find<LoginController>().sendOtp();
         Get.toNamed(Routes.otp);
       } else if (loginResponseModel?.employee?.isFirst == '0') {
+        await Get.find<SharedPreferenceHelper>()
+            .addUserDetails(loginResponseModel);
         Get.offAndToNamed(Routes.bottomNav);
       }
     }

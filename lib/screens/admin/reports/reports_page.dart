@@ -16,6 +16,9 @@ import '../../widgets/custom_cached_network_image.dart';
 import '../widgets/custom_admin_scaffold.dart';
 import '../leaves/leaves_controller.dart';
 import '../leaves/leaves_tab.dart';
+import 'attendance_tab.dart';
+import 'duration_tab.dart';
+import 'medical_tab.dart';
 import 'reports_controller.dart';
 
 class ReportsPageAdmin extends StatelessWidget {
@@ -27,11 +30,13 @@ class ReportsPageAdmin extends StatelessWidget {
     return CustomAdminScaffold(
       tabList: reportsTabListAdmin,
       title: kReportsString,
-      children: reportsTabListAdmin
-          .map((e) => e == 'Projects'
-              ? const ProjectsTabAdmin()
-              : const DeductionTabAdmin())
-          .toList(),
+      children: const [
+        ProjectsTabAdmin(),
+        AttendanceTabAdmin(),
+        DeductionTabAdmin(),
+        MedicalTabAdmin(),
+        DurationTabAdmin(),
+      ],
     );
   }
 }

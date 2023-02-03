@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
-
 import '../../../core/constants/strings.dart';
-
 import 'dashboard_controller.dart';
-import 'widgets/app_bar.dart';
 import 'widgets/custom_floating_button.dart';
 import 'widgets/custom_text_form_field.dart';
 
@@ -63,6 +60,13 @@ class HrEmployeesList extends StatelessWidget {
     dashboardController.selectedDepartment.value = departments.first;
     dashboardController.selectedBranch.value = branches.first;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: CustomColors.lightBlueColor,
+        elevation: 0,
+        title: const Text(
+          'Employee details',
+        ),
+      ),
       backgroundColor: CustomColors.lightBlueColor,
       floatingActionButton: CustomFloatingActionButton(
         onPressed: () {
@@ -70,142 +74,127 @@ class HrEmployeesList extends StatelessWidget {
         },
       ),
       body: SafeArea(
-        child: Column(children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(18, 0, 18, 8),
-            child: HrAppBar(),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.8,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                decoration: BoxDecoration(
-                  color: CustomColors.whiteCardColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListView.builder(
-                  itemCount: employeesLists.length,
-                  itemBuilder: (context, index) {
-                    final employees = employeesLists[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 2),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          side:
-                              BorderSide(width: 1, color: Colors.grey.shade300),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxHeight: 90),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 12),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+        child: Container(
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+            child: ListView.builder(
+              itemCount: employeesLists.length,
+              itemBuilder: (context, index) {
+                final employees = employeesLists[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 2),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 1, color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 90),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "ID: ${employees['id']!}",
-                                      style: TextStyle(
-                                        color: Colors.grey.shade600,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    Text(
-                                      employees['name']!,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    RichText(
-                                        text: TextSpan(
-                                            text: 'Project: ',
-                                            style: const TextStyle(
-                                              fontSize: 11.8,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                            children: [
-                                          TextSpan(
-                                            text: '${employees['project']!}',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey.shade600,
-                                            ),
-                                          ),
-                                        ])),
-                                  ],
+                                Text(
+                                  "ID: ${employees['id']!}",
+                                  style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 13,
+                                  ),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      employees['branch']!,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.grey.shade600,
-                                      ),
-                                    ),
-                                    RichText(
-                                        text: TextSpan(
-                                            text: 'IN: ',
-                                            style: const TextStyle(
-                                              fontSize: 11.8,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                                  CustomColors.lightBlueColor,
-                                            ),
-                                            children: [
-                                          TextSpan(
-                                            text: employees['check_in']!,
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ])),
-                                    RichText(
-                                        text: TextSpan(
-                                            text: 'OUT: ',
-                                            style: const TextStyle(
-                                              fontSize: 11.8,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                                  CustomColors.lightBlueColor,
-                                            ),
-                                            children: [
-                                          TextSpan(
-                                            text: employees['check_out']!,
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ])),
-                                  ],
+                                Text(
+                                  employees['name']!,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
+                                RichText(
+                                    text: TextSpan(
+                                        text: 'Project: ',
+                                        style: const TextStyle(
+                                          fontSize: 11.8,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                        children: [
+                                      TextSpan(
+                                        text: '${employees['project']!}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey.shade600,
+                                        ),
+                                      ),
+                                    ])),
                               ],
                             ),
-                          ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  employees['branch']!,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                                RichText(
+                                    text: TextSpan(
+                                        text: 'IN: ',
+                                        style: const TextStyle(
+                                          fontSize: 11.8,
+                                          fontWeight: FontWeight.w500,
+                                          color: CustomColors.lightBlueColor,
+                                        ),
+                                        children: [
+                                      TextSpan(
+                                        text: employees['check_in']!,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ])),
+                                RichText(
+                                    text: TextSpan(
+                                        text: 'OUT: ',
+                                        style: const TextStyle(
+                                          fontSize: 11.8,
+                                          fontWeight: FontWeight.w500,
+                                          color: CustomColors.lightBlueColor,
+                                        ),
+                                        children: [
+                                      TextSpan(
+                                        text: employees['check_out']!,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ])),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
-        ]),
+        ),
       ),
     );
   }
@@ -313,8 +302,7 @@ class HrEmployeesList extends StatelessWidget {
                         child: DropdownButton<String>(
                           value: dashboardController.selectedBranch.value,
                           onChanged: (String? value) {
-                            dashboardController.selectedBranch.value =
-                                value!;
+                            dashboardController.selectedBranch.value = value!;
                           },
                           hint: const Text('branches'),
                           isExpanded: true,
@@ -336,17 +324,17 @@ class HrEmployeesList extends StatelessWidget {
                 SizedBox(
                   height: 50,
                   width: double.infinity,
-                  child: ElevatedButton(onPressed: (){}, 
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomColors.lightBlueColor,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(50),
-                        right: Radius.circular(50),
-                      )
-                    ),
-                  ),
-                  child: const Text('Search')),
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.lightBlueColor,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.horizontal(
+                          left: Radius.circular(50),
+                          right: Radius.circular(50),
+                        )),
+                      ),
+                      child: const Text('Search')),
                 )
               ],
             ),

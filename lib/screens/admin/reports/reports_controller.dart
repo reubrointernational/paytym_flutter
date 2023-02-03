@@ -43,6 +43,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     );
   }
 
+
+
   logout() async {
     showLoading();
     var responseString = await Get.find<BaseClient>()
