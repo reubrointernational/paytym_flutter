@@ -122,7 +122,7 @@ class ReportsPage extends StatelessWidget {
                       const Expanded(
                         flex: 10,
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(15, 4, 15, 0),
+                          padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                           child: TabBarView(
                             physics: BouncingScrollPhysics(),
                             children: [

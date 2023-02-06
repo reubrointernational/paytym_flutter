@@ -1,3 +1,5 @@
+
+
 abstract class Routes {
   // Main Menu Route
   static const login = '/login';
@@ -7,11 +9,12 @@ abstract class Routes {
   static const splash = '/splash';
   static const forgotPassword = '/forgotPassword';
   static const otp = '/otp';
+  static const chat = '/chat';
   static const reports = '/reports';
   static const dashboard = '/dashboard';
   static const scanTime = '/scan';
   static const webview = '/webview';
   static const settings = '/settings';
   static const adminChat = '/adminChat';
-  
+  static const projectEmployeeList = '/projectEmployeeList';
 }

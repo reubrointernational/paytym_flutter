@@ -4,58 +4,47 @@ import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:paytym/core/constants/styles.dart';
-import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/employee/chats/chat_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
-
-import '../../widgets/custom_cached_network_image.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final chatController = Get.put(ChatController());
     return Scaffold(
+      appBar: AppBar(
+        foregroundColor: Colors.black,
+        elevation: 0,
+        title: Obx(() => Text(
+              Get.find<ChatController>().chatResponseModel.value.hod ?? '',
+            )),
+        backgroundColor: CustomColors.backgroundColor,
+      ),
       backgroundColor: CustomColors.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-              child: Row(
-                children: [
-                  Obx(() => CustomCachedNetworkImage(
-                        imageUrl:
-                            chatController.chatResponseModel.value.hodImage ??
-                                '',
-                        radius: 24,
-                      )),
-                  kSizedBoxW10,
-                  Obx(() => Text(
-                        chatController.chatResponseModel.value.hod ?? '',
-                        style: kTextStyleS13W600.copyWith(
-                            color: CustomColors.blueTextColor),
-                      )),
-                ],
-              ),
-            ),
             Expanded(
               child: Container(
                 color: CustomColors.chatPageBackgroundColor,
                 padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
                 child: Obx(
                   () => ListView.builder(
-                    controller: chatController.scrollController,
+                    controller: Get.find<ChatController>().scrollController,
                     physics: const BouncingScrollPhysics(),
-                    itemCount:
-                        chatController.chatResponseModel.value.chats?.length ??
-                            0,
+                    itemCount: Get.find<ChatController>()
+                            .chatResponseModel
+                            .value
+                            .chats
+                            ?.length ??
+                        0,
                     itemBuilder: (context, index) {
-                      final chat =
-                          chatController.chatResponseModel.value.chats![index];
+                      final chat = Get.find<ChatController>()
+                          .chatResponseModel
+                          .value
+                          .chats![index];
                       final userId = Get.find<LoginController>()
                           .loginResponseModel!
                           .employee!
@@ -110,7 +99,8 @@ class ChatPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
-                        controller: chatController.chatTextController,
+                        controller:
+                            Get.find<ChatController>().chatTextController,
                         decoration: const InputDecoration(
                           hintText: kTypeHereString,
                           hintStyle: TextStyle(
@@ -121,10 +111,14 @@ class ChatPage extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                        onPressed: () => chatController.sendChat(
-                            chatController.chatTextController.text,
-                            chatController.chatResponseModel.value.chatHistory
-                                ?.first.employerId),
+                        onPressed: () => Get.find<ChatController>().sendChat(
+                            Get.find<ChatController>().chatTextController.text,
+                            Get.find<ChatController>()
+                                .chatResponseModel
+                                .value
+                                .chatHistory
+                                ?.first
+                                .employerId),
                         icon: SvgPicture.asset(
                           IconPath.sendSvg,
                           color: CustomColors.blueTextColor,

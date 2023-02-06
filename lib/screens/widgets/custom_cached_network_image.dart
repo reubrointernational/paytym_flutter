@@ -22,7 +22,7 @@ class CustomCachedNetworkImage extends StatelessWidget {
       placeholder: (context, url) => const SpinKitDoubleBounce(
         color: CustomColors.whiteCircleAvatarBackgroundColor,
       ),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
+      errorWidget: (context, url, error) => const Icon(Icons.person),
     );
   }
 }

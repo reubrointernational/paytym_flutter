@@ -8,6 +8,7 @@ import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
 import '../../employee/calendar/widgets/custom_floating_action_button.dart';
 import '../../widgets/custom_tab_bar.dart';
+import 'Tabs/holiday/calendar_holiday_tab.dart';
 import 'Tabs/meeting/calendar_meeting_tab.dart';
 import 'Tabs/event/calendar_event_tab.dart';
 import 'Tabs/schedule/calendar_schedule_tab.dart';
@@ -61,8 +62,8 @@ class CalendarPageAdmin extends StatelessWidget {
                             children: [
                               CalendarMeetingAdmin(),
                               CalendarEventAdmin(),
-                              CalendarScheduleAdmin(),
-                              CalendarEventAdmin()
+                              // CalendarScheduleAdmin(),
+                              CalendarHolidayTabAdmin()
                             ],
                           ),
                         ),

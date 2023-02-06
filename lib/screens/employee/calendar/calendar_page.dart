@@ -50,7 +50,7 @@ class CalendarPage extends StatelessWidget {
                     children: [
                       CalendarMeeting(),
                       CalendarEvent(),
-                      CalendarSchedule(),
+                      // CalendarSchedule(),
                       CalendarHolidayTab()
                     ],
                   ),

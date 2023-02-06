@@ -13,11 +13,11 @@ import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../widgets/custom_cached_network_image.dart';
-import '../widgets/custom_admin_scaffold.dart';
+import '../widgets/custom_admin_scaffold_with_tabbar.dart';
 import '../leaves/leaves_controller.dart';
 import '../leaves/leaves_tab.dart';
 import 'attendance_tab.dart';
-import 'duration_tab.dart';
+import 'contract_period_tab.dart';
 import 'medical_tab.dart';
 import 'reports_controller.dart';
 
@@ -27,7 +27,7 @@ class ReportsPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ReportsControllerAdmin());
-    return CustomAdminScaffold(
+    return CustomAdminScaffoldWithTabBar(
       tabList: reportsTabListAdmin,
       title: kReportsString,
       children: const [
@@ -35,7 +35,7 @@ class ReportsPageAdmin extends StatelessWidget {
         AttendanceTabAdmin(),
         DeductionTabAdmin(),
         MedicalTabAdmin(),
-        DurationTabAdmin(),
+        ContractPeriodTabAdmin(),
       ],
     );
   }

@@ -8,7 +8,8 @@ class MedicalTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(10)),
       child: ListView.separated(
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {

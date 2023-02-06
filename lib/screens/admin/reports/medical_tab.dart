@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import '../../../core/colors/colors.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
+import 'dummy_data.dart';
 import 'reports_controller.dart';
-import 'widgets/medical_card_column.dart';
+import 'widgets/medical_title_tag.dart';
 
 class MedicalTabAdmin extends StatelessWidget {
   const MedicalTabAdmin({Key? key}) : super(key: key);
@@ -29,25 +29,50 @@ class MedicalTabAdmin extends StatelessWidget {
                 border: Border.all(color: Colors.grey.shade200),
                 borderRadius: BorderRadius.circular(10)),
             padding: const EdgeInsets.all(15),
-            child: Row(
-              children: const [
-                Expanded(
-                  flex: 2,
-                  child: MedicalCardColumn(
-                    branch: 'Branch',
-                    name: 'Akhil Reubro',
-                    heading: 'Medical Condition',
-                    condition: 'Hypertension,\nDepression',
-                  ),
+            child: Column(
+              children: [
+                Row(
+                  children: const [
+                    Expanded(
+                      flex: 2,
+                      child: MedicalTitleTag(
+                        branch: 'Branch',
+                        name: 'Akhil Reubro',
+                        employmentId: '0045786',
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: MedicalCardColumn(
-                    isNameGrey: true,
-                    branch: '',
-                    name: '004578',
-                    heading: 'Medication',
-                    condition: 'Medicines\n',
-                  ),
+                Column(
+                  children: [
+                    ...List.generate(
+                      medicalDetails.length,
+                      ((index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  medicalKeys[index],
+                                  style: kTextStyleS14W600Cgrey300LS0p2
+                                      .copyWith(color: Colors.black),
+                                ),
+                              ),
+                              kSizedBoxW12,
+                              Expanded(
+                                child: Text(
+                                  medicalValues[index],
+                                  style: kTextStyleS14C255140x3.copyWith(
+                                      color: Colors.lightBlue),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
               ],
             ),

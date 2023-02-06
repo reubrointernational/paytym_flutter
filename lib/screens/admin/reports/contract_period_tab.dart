@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/colors/colors.dart';
 import '../../../core/constants/styles.dart';
-import '../../../core/constants/widgets.dart';
 import 'reports_controller.dart';
-import 'widgets/medical_card_column.dart';
+import 'widgets/medical_title_tag.dart';
 
-class DurationTabAdmin extends StatelessWidget {
-  const DurationTabAdmin({Key? key}) : super(key: key);
+class ContractPeriodTabAdmin extends StatelessWidget {
+  const ContractPeriodTabAdmin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,27 +27,24 @@ class DurationTabAdmin extends StatelessWidget {
                 border: Border.all(color: Colors.grey.shade200),
                 borderRadius: BorderRadius.circular(10)),
             padding: const EdgeInsets.all(15),
-            child: Row(
-              children: const [
-                Expanded(
-                  flex: 2,
-                  child: MedicalCardColumn(
-                    branch: 'Branch',
-                    name: 'Akhil Reubro',
-                    heading: 'Employment Period',
-                    condition: '',
-                  ),
+            child: Column(
+              children: [
+                const MedicalTitleTag(
+                  branch: 'Branch',
+                  name: 'Akhil Reubro',
+                  employmentId: '0045786',
                 ),
-                Expanded(
-                  child: MedicalCardColumn(
-                    isNameGrey: true,
-                    isHeadingBlue: true,
-                    branch: '',
-                    name: '004578',
-                    heading: '6 Months',
-                    condition: '',
-                  ),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Employment Period',
+                        style: kTextStyleS14C255140x3.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.black)),
+                    Text('6 months',
+                        style: kTextStyleS14C255140x3.copyWith(
+                            color: Colors.lightBlue)),
+                  ],
+                )
               ],
             ),
           );
