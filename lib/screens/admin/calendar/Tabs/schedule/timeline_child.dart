@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paytym/core/constants/widgets.dart';
 
 class TimeLineChildAdmin extends StatelessWidget {
   final Map<String, dynamic> schedule;
@@ -9,7 +10,7 @@ class TimeLineChildAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 100,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,6 +28,30 @@ class TimeLineChildAdmin extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              isStartChild
+                  ? const SizedBox()
+                  : IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add_circle_outline,
+                        color: Colors.green,
+                      ),
+                    ),
+              isStartChild
+                  ? const SizedBox()
+                  : IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.delete_outline_outlined,
+                        color: Colors.red,
+                      ),
+                    ),
+            ],
+          ),
+          kSizedBoxH20
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
+import '../../../routes/app_routes.dart';
 import 'reports_controller.dart';
 import 'widgets/custom_progress_indicator.dart';
 
@@ -52,45 +53,57 @@ class ProjectsTabAdmin extends StatelessWidget {
                                   color: Colors.black),
                             ),
                             kSizedBoxH8,
-                            SizedBox(
-                              width: 100,
-                              child: Stack(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 19,
-                                    backgroundColor: Colors.white,
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.grey.shade300,
-                                      radius: 18,
-                                    ),
-                                  ),
-                                  ...List.generate(
-                                    3,
-                                    (index) => Positioned(
-                                      left: 20 * (index + 1),
+                            GestureDetector(
+                              onTap: () {
+                                Get.toNamed(Routes.projectEmployeeList);
+                              },
+                              child: SizedBox(
+                                width: 100,
+                                child: Stack(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 19,
+                                      backgroundColor: Colors.white,
                                       child: CircleAvatar(
-                                        radius: 19,
-                                        backgroundColor: index == 2
-                                            ? Colors.grey.shade300
-                                            : Colors.white,
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            CircleAvatar(
-                                              backgroundColor: index == 2
-                                                  ? Colors.white
-                                                  : Colors.grey.shade300,
-                                              radius: 18,
-                                            ),
-                                            index == 2
-                                                ? const Text('+5', style: TextStyle(color: CustomColors.lightBlueColor, fontWeight: FontWeight.bold),)
-                                                : const SizedBox(),
-                                          ],
-                                        ),
+                                        backgroundColor: Colors.grey.shade300,
+                                        radius: 18,
                                       ),
                                     ),
-                                  ).toList(),
-                                ],
+                                    ...List.generate(
+                                      3,
+                                      (index) => Positioned(
+                                        left: 20 * (index + 1),
+                                        child: CircleAvatar(
+                                          radius: 19,
+                                          backgroundColor: index == 2
+                                              ? Colors.grey.shade300
+                                              : Colors.white,
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundColor: index == 2
+                                                    ? Colors.white
+                                                    : Colors.grey.shade300,
+                                                radius: 18,
+                                              ),
+                                              index == 2
+                                                  ? const Text(
+                                                      '+5',
+                                                      style: TextStyle(
+                                                          color: CustomColors
+                                                              .lightBlueColor,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  : const SizedBox(),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ).toList(),
+                                  ],
+                                ),
                               ),
                             ),
                             kSizedBoxH15,

@@ -7,6 +7,7 @@ import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/webview/custom_webview_page.dart';
 import '../screens/admin/chat/chat_page.dart';
+import '../screens/admin/reports/project_employee_list.dart';
 import '../screens/employee/bottom_nav/bottom_nav_page.dart';
 import '../screens/employee/dashboard/dashboard.dart';
 import '../screens/login/forgot_password.dart';
@@ -70,6 +71,10 @@ class AppPages {
     GetPage(
       name: Routes.adminChat,
       page: () => const ChatPageAdmin(),
+    ),
+    GetPage(
+      name: Routes.projectEmployeeList,
+      page: () => const ProjectEmployeeList(),
     ),
   ];
 }
