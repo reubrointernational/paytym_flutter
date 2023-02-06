@@ -9,6 +9,7 @@ abstract class Routes {
   static const splash = '/splash';
   static const forgotPassword = '/forgotPassword';
   static const otp = '/otp';
+  static const chat = '/chat';
   static const reports = '/reports';
   static const dashboard = '/dashboard';
   static const scanTime = '/scan';

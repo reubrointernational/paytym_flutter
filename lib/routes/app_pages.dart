@@ -1,4 +1,6 @@
+import 'package:paytym/models/chat/chat_response_model.dart';
 import 'package:paytym/screens/admin/bottom_nav/bottom_nav_page.dart';
+import 'package:paytym/screens/employee/chats/chats_page.dart';
 import 'package:paytym/screens/login/login_page.dart';
 import 'package:paytym/screens/login/otp_page.dart';
 import 'package:paytym/screens/employee/reports/reports_page.dart';
@@ -75,6 +77,10 @@ class AppPages {
     GetPage(
       name: Routes.projectEmployeeList,
       page: () => const ProjectEmployeeList(),
+    ),
+    GetPage(
+      name: Routes.chat,
+      page: () => const ChatPage(),
     ),
   ];
 }

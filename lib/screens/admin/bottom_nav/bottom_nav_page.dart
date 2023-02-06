@@ -47,7 +47,7 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
           elevation: 0,
           backgroundColor: CustomColors.lightBlueColor,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: CustomColors.whiteCardColor,
+          selectedItemColor: Colors.red,
           unselectedItemColor: CustomColors.whiteCardColor,
           selectedFontSize: 10,
           unselectedFontSize: 10,

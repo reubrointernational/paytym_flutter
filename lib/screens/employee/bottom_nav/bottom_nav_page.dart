@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/colors/colors.dart';
 import '../calendar/calendar_page.dart';
+import '../chats/chats_listing.dart';
 import '../dashboard/dashboard.dart';
 import 'bottom_nav_controller.dart';
 
@@ -27,7 +28,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       case 2:
         return const CalendarPage();
       case 3:
-        return const ChatPage();
+        return const ChatListingPage();
       case 4:
         return const ReportsPage();
     }

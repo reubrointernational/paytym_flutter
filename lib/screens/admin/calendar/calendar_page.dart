@@ -62,7 +62,7 @@ class CalendarPageAdmin extends StatelessWidget {
                             children: [
                               CalendarMeetingAdmin(),
                               CalendarEventAdmin(),
-                              CalendarScheduleAdmin(),
+                              // CalendarScheduleAdmin(),
                               CalendarHolidayTabAdmin()
                             ],
                           ),

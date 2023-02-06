@@ -15,14 +15,14 @@ class ChatResponseModel {
     this.message,
     this.chats,
     this.hod,
-    this.hodImage,
+    
     this.chatHistory,
   });
 
   String? message;
   List<Chat>? chats;
   String? hod;
-  String? hodImage;
+  
   List<Chat>? chatHistory;
 
   factory ChatResponseModel.fromJson(Map<String, dynamic> json) =>
@@ -32,7 +32,7 @@ class ChatResponseModel {
             ? List<Chat>.from(json["chats"].map((x) => Chat.fromJson(x)))
             : null,
         hod: json["hod"],
-        hodImage: json["hod_image"],
+        
         chatHistory: json["chat_history"] != null
             ? List<Chat>.from(json["chat_history"].map((x) => Chat.fromJson(x)))
             : null,
@@ -41,7 +41,7 @@ class ChatResponseModel {
         "message": message,
         "chats": List<dynamic>.from(chats!.map((x) => x.toJson())),
         "hod": hod,
-        "hod_image": hodImage,
+        
         "chat_history": List<dynamic>.from(chatHistory!.map((x) => x.toJson())),
       };
 }

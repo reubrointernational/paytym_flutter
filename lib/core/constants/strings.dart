@@ -207,7 +207,8 @@ List<String> monthsTabList = [
   'Dec'
 ];
 
-List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
+// List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
+List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> reportsTabListAdmin = [
   'Projects',

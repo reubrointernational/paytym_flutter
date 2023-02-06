@@ -1,69 +1,59 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
-import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/routes/app_routes.dart';
 
-import '../../../core/colors/colors.dart';
+import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
-import '../dashboard/widgets/custom_text_form_field.dart';
+import '../../admin/dashboard/widgets/custom_text_form_field.dart';
+import '../calendar/widgets/custom_svg.dart';
+import 'chat_controller.dart';
+import 'chats_page.dart';
 
-class ChatListingPageAdmin extends StatelessWidget {
-  const ChatListingPageAdmin({super.key});
+class ChatListingPage extends StatelessWidget {
+  const ChatListingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ChatController());
     return Scaffold(
-      backgroundColor: CustomColors.lightBlueColor,
+      appBar: AppBar(
+        leading: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: CustomSVG(
+            IconPath.menuSvg,
+          ),
+        ),
+        elevation: 0,
+        title: const Text(
+          'Chat',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+      ),
+      backgroundColor: CustomColors.backgroundColor,
       body: SafeArea(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-            padding: const EdgeInsets.all(18),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Chat',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: CustomColors.whiteTextColor,
-                  ),
-                ),
-                SvgPicture.asset(
-                  IconPath.editIconSvg,
-                  height: 20,
-                  width: 20,
-                  color: CustomColors.whiteTextColor,
-                )
-              ],
-            ),
-          ),
           Expanded(
             child: Container(
-              height: h,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              decoration: BoxDecoration(
-                color: CustomColors.whiteCardColor,
-                borderRadius: BorderRadius.circular(30),
-              ),
+              color: const Color.fromRGBO(231, 238, 254, 1),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               child: Column(children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: CustomSearchTextField(
-                    iconImg: IconPath.searchIconPng,
-                    hintText: 'Search for chats & messages',
-                  ),
+                const CustomSearchTextField(
+                  iconImg: IconPath.searchIconPng,
+                  hintText: 'Search',
                 ),
                 kSizedBoxH8,
                 Expanded(
                   child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
                     itemCount: 6,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () => Get.toNamed(Routes.adminChat),
+                        onTap: () {
+                          Get.toNamed(Routes.chat);
+                        },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 12),

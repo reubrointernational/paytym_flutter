@@ -57,7 +57,7 @@ class DashboardAdmin extends StatelessWidget {
                             horizontal: 10, vertical: 20),
                         decoration: BoxDecoration(
                           color: CustomColors.whiteCardColor,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         child: ListView(
                           physics: const BouncingScrollPhysics(),
