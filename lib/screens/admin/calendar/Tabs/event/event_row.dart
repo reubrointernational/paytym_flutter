@@ -8,7 +8,6 @@ import '../../../../../core/constants/styles.dart';
 import '../../../../../core/constants/widgets.dart';
 import '../../../../employee/calendar/widgets/custom_svg.dart';
 import '../../calendar_controller.dart';
- 
 
 class EventRow extends StatelessWidget {
   final int index;
@@ -78,33 +77,6 @@ class EventRow extends StatelessWidget {
               ],
             ),
           ),
-          Stack(
-            children: const [
-              Positioned(
-                top: 4,
-                left: 5,
-                child: CustomSVG(
-                  IconPath.add1Svg,
-                  size: 10,
-                ),
-              ),
-              CustomSVG(
-                IconPath.add2Svg,
-                size: 18,
-              ),
-            ],
-          ),
-
-          // Stack(
-          //   children: const [
-          //     CustomSVG(IconPath.tick1Svg, size: 18),
-          //     Positioned(
-          //       top: 1.6,
-          //       left: 4,
-          //       child: CustomSVG(IconPath.tick2Svg, size: 11),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );

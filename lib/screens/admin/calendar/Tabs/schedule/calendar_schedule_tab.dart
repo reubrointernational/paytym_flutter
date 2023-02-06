@@ -15,6 +15,7 @@ class CalendarScheduleAdmin extends StatelessWidget {
         itemCount: DummyDatas.schedule.length,
         itemBuilder: (context, index) {
           return TimelineTile(
+            isLast: index == DummyDatas.schedule.length-1 ? true: false,
             alignment: TimelineAlign.manual,
             lineXY: 0.25,
             endChild: TimeLineChild(schedule: DummyDatas.schedule[index]),
@@ -36,8 +37,8 @@ class CalendarScheduleAdmin extends StatelessWidget {
                     ),
                   ),
                 )),
-            beforeLineStyle:
-                LineStyle(thickness: 1, color: Colors.grey.shade300),
+            // beforeLineStyle:
+            //     LineStyle(thickness: 1, color: Colors.grey.shade300),
             afterLineStyle:
                 LineStyle(thickness: 1, color: Colors.grey.shade300),
           );

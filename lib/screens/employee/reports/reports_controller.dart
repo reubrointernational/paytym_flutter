@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -23,12 +24,16 @@ import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../../routes/app_routes.dart';
-import 'widgets/quit_company_bottomsheet.dart';
-import 'widgets/reports_bottomsheet.dart';
 
-class ReportsController extends GetxController with BaseController {
+import '../dashboard/widgets/dashboard_bottomsheet.dart';
+
+class ReportsController extends GetxController
+    with BaseController, GetTickerProviderStateMixin {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
+
+  late TabController controller;
+  late TabController subTabController;
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
@@ -38,26 +43,9 @@ class ReportsController extends GetxController with BaseController {
   final deductionResponseModel = DeductionResponseModel().obs;
   String quitCompanyReason = '';
 
-  showLogoutDialog() {
-    DialogHelper.showConfirmDialog(
-      onConfirm: logout,
-    );
-  }
+  final selectedDropdownYear = ''.obs;
 
-  logout() async {
-    showLoading();
-    var responseString = await Get.find<BaseClient>()
-        .post(
-            ApiEndPoints.logout, null, Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-
-    if (responseString == null) {
-      return;
-    } else {
-      hideLoading();
-      resetControllerAndGoToLogin();
-    }
-  }
+  
 
   fetchPayslip() async {
     showLoading();
@@ -124,12 +112,7 @@ class ReportsController extends GetxController with BaseController {
     return formatNum.format(int.parse(value));
   }
 
-  resetControllerAndGoToLogin() {
-    Get.find<LoginController>().loginResponseModel = null;
-    Get.find<LoginController>().userModel = UserModel();
-    Get.find<SharedPreferenceHelper>().deleteAll();
-    Get.offAllNamed(Routes.login);
-  }
+
 
   downloadPdf(String? url) async {
     if (url != null && url.isNotEmpty) {
@@ -189,27 +172,6 @@ class ReportsController extends GetxController with BaseController {
     }
   }
 
-  Future<void> requestQuitFromCompany() async {
-    if (requestAdvanceFormKey.currentState!.validate()) {
-      requestAdvanceFormKey.currentState!.save();
-      if (quitCompanyReason.isNotEmpty) {
-        showLoading();
-        String json = jsonEncode({'requests': quitCompanyReason});
-        var responseString = await Get.find<BaseClient>()
-            .post(ApiEndPoints.quitCompany, json,
-                Get.find<LoginController>().getHeader())
-            .catchError(handleError);
-        if (responseString == null) {
-          return;
-        } else {
-          hideLoading();
-          DialogHelper.showToast(desc: 'Request submitted successfully');
-          Get.back();
-        }
-      }
-    }
-  }
-
   void requestPayment() {
     requestAdvanceModel = RequestAdvanceModel(
         amount: payslipResponseModel.value.payroll?.salary ?? '0');
@@ -238,6 +200,9 @@ class ReportsController extends GetxController with BaseController {
   @override
   void onInit() {
     super.onInit();
+
+    controller = TabController(length: 4, vsync: this);
+    subTabController = TabController(length: 12, vsync: this);
 
     IsolateNameServer.registerPortWithName(
         _port.sendPort, 'downloader_send_port');
@@ -277,19 +242,10 @@ class ReportsController extends GetxController with BaseController {
 
   @override
   void onClose() {
+    controller.dispose();
+    subTabController.dispose();
+
     IsolateNameServer.removePortNameMapping('downloader_send_port');
     super.onClose();
-  }
-
-  onClickMenuItem(ReportsDropDown value) {
-    if (value == ReportsDropDown.payment || value == ReportsDropDown.advance) {
-      DialogHelper.showBottomSheet(ReportsBottomsheet(
-        isSalary: value == ReportsDropDown.payment,
-      ));
-    } else if (value == ReportsDropDown.logout) {
-      showLogoutDialog();
-    } else {
-      DialogHelper.showBottomSheet(const QuitCompanyBottomSheet());
-    }
   }
 }

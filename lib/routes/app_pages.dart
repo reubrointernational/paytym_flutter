@@ -6,6 +6,7 @@ import 'package:paytym/screens/scan_time/scanner_page.dart';
 import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/webview/custom_webview_page.dart';
+import '../screens/admin/chat/chat_page.dart';
 import '../screens/employee/bottom_nav/bottom_nav_page.dart';
 import '../screens/employee/dashboard/dashboard.dart';
 import '../screens/login/forgot_password.dart';
@@ -28,13 +29,13 @@ class AppPages {
     GetPage(
       name: Routes.bottomNav,
       page: () => const BottomNavigationPage(),
-      
+
       // page: () => const PaymentsPage(),
     ),
     GetPage(
       name: Routes.bottomNavAdmin,
       page: () => const BottomNavigationPageAdmin(),
-      
+
       // page: () => const PaymentsPage(),
     ),
     GetPage(
@@ -66,6 +67,9 @@ class AppPages {
       name: Routes.webview,
       page: () => const CustomWebViewPage(),
     ),
-    
+    GetPage(
+      name: Routes.adminChat,
+      page: () => const ChatPageAdmin(),
+    ),
   ];
 }

@@ -15,7 +15,7 @@ import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
-import 'widgets/reason_bottomsheet.dart';
+import '../widgets/reason_bottomsheet.dart';
 
 class LeavesControllerAdmin extends GetxController with BaseController {
   final leaveResponseModel = LeaveResponseModel().obs;
@@ -38,7 +38,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   }
 
   //for bottomsheet
-  onClickApproveButton() {
+  showBottomSheetForReason() {
     DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
   }
 

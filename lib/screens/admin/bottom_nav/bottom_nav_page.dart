@@ -4,7 +4,8 @@ import 'package:paytym/screens/admin/leaves/leaves_page.dart';
 import '../../../core/colors/colors.dart';
 import '../../employee/bottom_nav/bottom_nav_controller.dart';
 import '../calendar/calendar_page.dart';
-import '../dashboard/hr_dashboard.dart';
+import '../chat/chat_listing.dart';
+import '../dashboard/dashboard_admin.dart';
 import '../reports/reports_page.dart';
 
 class BottomNavigationPageAdmin extends StatefulWidget {
@@ -21,13 +22,13 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
   Widget switchWidgets(index) {
     switch (index) {
       case 0:
-        return const HRDashboard();
+        return const DashboardAdmin();
       case 1:
         return const LeavesPageAdmin();
       case 2:
         return const CalendarPageAdmin();
       case 3:
-        return Container();
+        return const ChatListingPageAdmin();
       case 4:
         return const ReportsPageAdmin();
     }

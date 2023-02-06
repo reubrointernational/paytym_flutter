@@ -18,7 +18,7 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashboardController = Get.put(DashboardController());
+    Get.lazyPut(()=>DashboardController(),fenix: true);
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       floatingActionButton: FloatingActionButton(
@@ -53,7 +53,7 @@ class DashboardPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              dashboardController.getWish(),
+                              Get.find<DashboardController>().getWish(),
                               style: kTextStyleS13W600.copyWith(
                                   color: CustomColors.lightBlueColor),
                             ),

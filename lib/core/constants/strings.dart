@@ -163,33 +163,6 @@ List<String> branches = [
   'Deployment'
 ];
 
-List<Map<String, dynamic>> hrDetails = [
-  {
-    'icon': IconPath.projectIconPng,
-    'title': 'Absentees',
-    'count': 8,
-    'color': Colors.green,
-  },
-  {
-    'icon': IconPath.attendanceIconPng,
-    'title': 'Sick leave',
-    'count': 2,
-    'color': Colors.red,
-  },
-  {
-    'icon': IconPath.absenteesIconPng,
-    'title': 'Annual leave',
-    'count': 3,
-    'color': Colors.orange,
-  },
-  {
-    'icon': IconPath.meetingsIconPng,
-    'title': 'Late Arrival',
-    'count': 5,
-    'color': Colors.blue,
-  },
-];
-
 List<Map<String, dynamic>> totalEmployeesDetails = [
   {
     'icon': IconPath.projectIconPng,
@@ -217,6 +190,23 @@ List<Map<String, dynamic>> totalEmployeesDetails = [
   },
 ];
 
+List<String> years = ['2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+
+List<String> monthsTabList = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+];
+
 List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> reportsTabListAdmin = [
@@ -235,7 +225,7 @@ const kPayString = 'Pay';
 const ktymString = 'tym';
 
 //Calendar
-const kEditString = 'Edit';
+const kAddString = 'Add';
 
 const kDeleteString = 'Delete';
 
@@ -246,14 +236,6 @@ const kOctober2022String = 'October 2022';
 const kMeetingString = 'Meeting';
 
 const kEventString = 'Event';
-
-const kAddMeetingString = 'Add Meeting';
-
-const kAddEventString = 'Add Event';
-
-const kAddScheduleString = 'Add Schedule';
-
-const kAddHolidayString = 'Add Holiday';
 
 //Chat
 
@@ -350,7 +332,9 @@ const kAttendanceString = 'Attendance';
 
 const kReportsString = 'Reports';
 
-const kRequestPaymentString = 'Request Payment';
+const kWorkProfileString = 'Work Profile';
+
+const kEmployeeProfileString = 'Employee Profile';
 
 const kReasonString = 'Reason';
 

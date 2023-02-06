@@ -127,6 +127,7 @@ class ChatPage extends StatelessWidget {
                                 ?.first.employerId),
                         icon: SvgPicture.asset(
                           IconPath.sendSvg,
+                          color: CustomColors.blueTextColor,
                         )),
                   ],
                 ),

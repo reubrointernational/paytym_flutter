@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paytym/screens/admin/widgets/custom_tab_bar.dart';
-
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
@@ -39,10 +37,8 @@ class CustomAdminScaffold extends StatelessWidget {
               padding: const EdgeInsets.all(18.0),
               child: Column(
                 children: [
-                  CustomTabBarAdmin(
-                    tabsList: tabList,
-                    
-                  ),
+                  CustomTabBar(tabsList: tabList),
+                  
                   kSizedBoxH10,
                   Expanded(
                     child: TabBarView(

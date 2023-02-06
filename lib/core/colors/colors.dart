@@ -13,16 +13,16 @@ abstract class CustomColors {
   static const Color dashboardGreyBackgroundColor =
       Color.fromRGBO(236, 238, 240, 1);
 
+  static const Color lightBlueColor = Color.fromRGBO(2, 170, 235, 1);
 
   //card/tab colors
   static const Color whiteTabColor = Colors.white;
   static const Color selectedTabColor = Color.fromRGBO(243, 243, 243, 1);
   static const Color whiteCardColor = Colors.white;
   //static const Color blueCardColor = Color.fromRGBO(75, 103, 176, 1);
-   static const Color blueCardColor = Color.fromRGBO(72, 13, 250, 1);
+  static const Color blueCardColor = Color.fromRGBO(72, 13, 250, 1);
   static const Color cardBackgroundCircleColor = Colors.white10;
   static const Color leaveAllCardColor = Color.fromRGBO(235, 235, 235, 1);
-  static const Color lightBlueColor = Color(0xff02AAEB);
 
   //text colors
   static const Color customGreyTextColor = Color.fromRGBO(138, 138, 138, 1);
@@ -68,12 +68,11 @@ abstract class CustomColors {
   static Color greenWithOpacity = Colors.greenAccent.withOpacity(0.2);
   static Color greenColorShade700 = Colors.green.shade700;
 
-
   //color list
-  static const List<Color> cardColorList = [
-    Colors.green,
-    Colors.red,
-    Colors.blue,
-    Colors.yellow,
+  static List<Color> cardColorList = [
+    const Color.fromRGBO(0, 148, 66, 1),
+    const Color.fromRGBO(250, 42, 20, 1),
+    const Color.fromRGBO(18, 115, 205, 1),
+    const Color.fromARGB(255, 253, 241, 4),
   ];
 }

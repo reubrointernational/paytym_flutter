@@ -10,9 +10,9 @@ import '../../../core/constants/enums.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
+import '../../employee/dashboard/widgets/dashboard_bottomsheet.dart';
 import '../../employee/reports/widgets/reports_bottomsheet.dart';
 import '../../login/login_controller.dart';
-
 
 class CalendarControllerAdmin extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
@@ -78,9 +78,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       //       return const AddMeetingDialogue();
       //     });
     } else if (value == CalendarTabs.events) {
-      DialogHelper.showBottomSheet(const ReportsBottomsheet(
-        isSalary: false,
-      ));
+      DialogHelper.showBottomSheet(const ReportsBottomsheet());
     }
   }
 }

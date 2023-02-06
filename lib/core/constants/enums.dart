@@ -2,7 +2,7 @@ enum CalendarTabs { meeting, events, schedule, holiday }
 
 enum ChatType { hod, employee }
 
-enum ReportsDropDown { payment, advance, quit, logout }
+enum DashboardDropDown { workProfile, advance, logout, employeeProfile }
 
 enum PaySlipType { image, pdf }
 

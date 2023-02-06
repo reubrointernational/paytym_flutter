@@ -5,12 +5,15 @@ import 'package:intl/intl.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
+import 'package:paytym/screens/employee/dashboard/widgets/dashboard_bottomsheet.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../models/login/user_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../../network/shared_preference_helper.dart';
+import '../../../routes/app_routes.dart';
 
 class DashboardController extends GetxController with BaseController {
   final time = '00:00 AM'.obs;
@@ -58,6 +61,46 @@ class DashboardController extends GetxController with BaseController {
 
       sliderValueChanged = false;
     }
+  }
+
+  onClickMenuItem(DashboardDropDown value) {
+    if (value == DashboardDropDown.advance) {
+      DialogHelper.showBottomSheet(const DashboardBottomsheet());
+    } else if (value == DashboardDropDown.logout) {
+      showLogoutDialog();
+    } else if (value == DashboardDropDown.workProfile) {
+      Get.toNamed(Routes.bottomNavAdmin);
+    } else {
+      Get.back();
+    }
+  }
+
+  showLogoutDialog() {
+    DialogHelper.showConfirmDialog(
+      onConfirm: logout,
+    );
+  }
+
+  logout() async {
+    showLoading();
+    var responseString = await Get.find<BaseClient>()
+        .post(
+            ApiEndPoints.logout, null, Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      resetControllerAndGoToLogin();
+    }
+  }
+
+  resetControllerAndGoToLogin() {
+    Get.find<LoginController>().loginResponseModel = null;
+    Get.find<LoginController>().userModel = UserModel();
+    Get.find<SharedPreferenceHelper>().deleteAll();
+    Get.offAllNamed(Routes.login);
   }
 
   @override

@@ -1,13 +1,11 @@
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
-import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/calendar/widgets/calendar_card.dart';
-import 'package:paytym/screens/admin/widgets/custom_tab_bar.dart';
-import 'package:paytym/screens/employee/calendar/widgets/calendar_card.dart';
+
 import 'package:flutter/material.dart';
-import 'package:paytym/screens/widgets/custom_app_bar.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
+import '../../../core/constants/widgets.dart';
 import '../../employee/calendar/widgets/custom_floating_action_button.dart';
 import '../../widgets/custom_tab_bar.dart';
 import 'Tabs/meeting/calendar_meeting_tab.dart';
@@ -50,10 +48,11 @@ class CalendarPageAdmin extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
-                        child: CustomTabBarAdmin(
+                        child: CustomTabBar(
                           tabsList: calendarTabList,
                         ),
                       ),
+                      kSizedBoxH15,
                       const Expanded(
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 18),

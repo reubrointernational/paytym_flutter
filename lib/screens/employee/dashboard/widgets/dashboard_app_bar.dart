@@ -2,9 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 
 import '../../../../core/colors/colors.dart';
+import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/icons.dart';
+import '../../../../core/constants/list_maps.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../routes/app_routes.dart';
 import '../../calendar/widgets/custom_svg.dart';
@@ -42,18 +45,23 @@ class DashboardAppBar extends StatelessWidget {
               ),
             ]),
             kSizedBoxW15,
-            PopupMenuButton(
-              itemBuilder: (BuildContext context) {
-                return [
-                  const PopupMenuItem(
-                    value: 0,
-                    child: Text("Work Profile"),
+            
+            PopupMenuButton<DashboardDropDown>(
+               color: CustomColors.blueTextColor,
+              itemBuilder: (BuildContext context) => List.generate(
+                3,
+                (index) => PopupMenuItem(
+                  value: kReportDropDownItemList[index].dropDownItem,
+                  child: Text(
+                    kReportDropDownItemList[index].label,
+                    style: const TextStyle(
+                      color: CustomColors.whiteTextColor,
+                    ),
                   ),
-                ];
-              },
-              onSelected: (value) {
-                Get.toNamed(Routes.bottomNavAdmin);
-              },
+                ),
+              ).toList(),
+              onSelected: (DashboardDropDown value) =>
+                  Get.find<DashboardController>().onClickMenuItem(value),
               child: CachedNetworkImage(
                 imageUrl: Get.find<LoginController>()
                         .loginResponseModel

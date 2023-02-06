@@ -5,10 +5,13 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/screens/employee/bottom_nav/bottom_nav_page.dart';
 
+import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/icons.dart';
+import '../../../../core/constants/list_maps.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../employee/calendar/widgets/custom_svg.dart';
+import '../../../employee/dashboard/dashboard_controller.dart';
 import '../../../widgets/paytym_logo.dart';
 import '../../bottom_nav/bottom_nav_page.dart';
 
@@ -35,17 +38,21 @@ class HrAppBar extends StatelessWidget {
           ],
         ),
         PopupMenuButton(
-          itemBuilder: (BuildContext context) {
-            return [
-              const PopupMenuItem(
-                value: 0,
-                child: Text("Employee Profile"),
+          color: CustomColors.lightBlueColor,
+          itemBuilder: (BuildContext context) => List.generate(
+            2,
+            (index) => PopupMenuItem(
+              value: kReportDropDownItemListWithoutAdvance[index].dropDownItem,
+              child: Text(
+                kReportDropDownItemListWithoutAdvance[index].label,
+                style: const TextStyle(
+                  color: CustomColors.whiteTextColor,
+                ),
               ),
-            ];
-          },
-          onSelected: (value) {
-            Get.back();
-          },
+            ),
+          ).toList(),
+          onSelected: (DashboardDropDown value) =>
+              Get.find<DashboardController>().onClickMenuItem(value),
           child: const CircleAvatar(
             radius: 20,
             backgroundColor: CustomColors.whiteCardColor,

@@ -103,7 +103,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
                               IconButton(
                                   onPressed: () {},
                                   icon: const Icon(
-                                    Icons.edit_outlined,
+                                    Icons.add_circle_outline,
                                     color: CustomColors.lightBlueColor,
                                   )),
                               IconButton(
