@@ -173,7 +173,7 @@ class LoginController extends GetxController with BaseController {
       } else if (loginResponseModel?.employee?.isFirst == '0') {
         await Get.find<SharedPreferenceHelper>()
             .addUserDetails(loginResponseModel);
-        Get.offAndToNamed(Routes.bottomNav);
+        Get.offAndToNamed(Routes.financeBottomNav);
       }
     }
   }

@@ -12,6 +12,7 @@ import '../../../core/colors/colors.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
+import '../../../dummy_status.dart';
 import '../../widgets/custom_cached_network_image.dart';
 import '../widgets/custom_admin_scaffold.dart';
 import '../leaves/leaves_controller.dart';
@@ -28,15 +29,21 @@ class ReportsPageAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ReportsControllerAdmin());
     return CustomAdminScaffold(
-      tabList: reportsTabListAdmin,
+      tabList: Status.isHrSession ? reportsTabListAdmin : financeReportsTabList,
       title: kReportsString,
-      children: const [
-        ProjectsTabAdmin(),
-        AttendanceTabAdmin(),
-        DeductionTabAdmin(),
-        MedicalTabAdmin(),
-        DurationTabAdmin(),
-      ],
+      children: Status.isHrSession
+          ? const [
+              ProjectsTabAdmin(),
+              AttendanceTabAdmin(),
+              DeductionTabAdmin(),
+              MedicalTabAdmin(),
+              DurationTabAdmin(),
+            ]
+          : const [
+              ProjectsTabAdmin(),
+              DeductionTabAdmin(),
+              DurationTabAdmin(),
+            ],
     );
   }
 }

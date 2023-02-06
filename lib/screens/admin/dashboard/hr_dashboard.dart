@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import '../../../core/constants/strings.dart';
+import '../../../dummy_status.dart';
 import 'employees_list.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/custom_cards.dart';
@@ -10,6 +11,7 @@ import 'widgets/hr_check_in_out.dart';
 
 class HRDashboard extends StatelessWidget {
   const HRDashboard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +27,8 @@ class HRDashboard extends StatelessWidget {
             Expanded(
               child: ListView(children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
@@ -53,8 +55,8 @@ class HRDashboard extends StatelessWidget {
                 kSizedBoxH4,
                 Container(
                   height: MediaQuery.of(context).size.height,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   decoration: BoxDecoration(
                     color: CustomColors.whiteCardColor,
                     borderRadius: BorderRadius.circular(20),
@@ -64,7 +66,8 @@ class HRDashboard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const HRCheckInOutCard(),
-                      CustomCardDetails(details: hrDetails),
+                      CustomCardDetails(
+                          details: Status.isHrSession ? hrDetails : financeDetails),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

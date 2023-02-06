@@ -41,7 +41,7 @@ class CustomAdminScaffold extends StatelessWidget {
                 children: [
                   CustomTabBarAdmin(
                     tabsList: tabList,
-                    
+                    width: 120,
                   ),
                   kSizedBoxH10,
                   Expanded(

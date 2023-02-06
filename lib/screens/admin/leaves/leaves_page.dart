@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:paytym/screens/widgets/custom_tab_bar.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
+import '../../../network/base_client.dart';
 import 'leaves_controller.dart';
 import 'leaves_tab.dart';
 
@@ -15,6 +16,7 @@ class LeavesPageAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(BaseClient());
     Get.put(LeavesControllerAdmin());
     return CustomAdminScaffold(
       tabList: leaveTabList,

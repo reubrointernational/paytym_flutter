@@ -5,7 +5,7 @@ import '../../../core/constants/styles.dart';
 
 class CustomTabBarAdmin extends StatelessWidget {
   final List<String> tabsList;
-  
+
   final double width;
 
   const CustomTabBarAdmin({
@@ -23,6 +23,8 @@ class CustomTabBarAdmin extends StatelessWidget {
           color: CustomColors.lightBlueColor,
           borderRadius: BorderRadius.circular(22),
         ),
+        //padding: EdgeInsets.zero,
+        labelPadding: const EdgeInsets.symmetric(horizontal: 4),
         labelColor: Colors.white,
         unselectedLabelColor: CustomColors.lightBlueColor,
         labelStyle: kTextStyleS14W600LS0p2,

@@ -2,6 +2,7 @@ abstract class Routes {
   // Main Menu Route
   static const login = '/login';
   static const bottomNav = '/bottomNav';
+  static const financeBottomNav = '/financeBottomNav';
   static const bottomNavAdmin = '/bottomNavAdmin';
   static const resetPassword = '/resetPassword';
   static const splash = '/splash';

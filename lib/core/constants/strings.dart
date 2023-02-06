@@ -190,6 +190,33 @@ List<Map<String, dynamic>> hrDetails = [
   },
 ];
 
+List<Map<String, dynamic>> financeDetails = [
+  {
+    'icon': IconPath.projectIconPng,
+    'title': 'Absentees',
+    'count': 3,
+    'color': Colors.green,
+  },
+  {
+    'icon': IconPath.attendanceIconPng,
+    'title': 'Sick leave',
+    'count': 1,
+    'color': Colors.red,
+  },
+  {
+    'icon': IconPath.absenteesIconPng,
+    'title': 'Annual leave',
+    'count': 2,
+    'color': Colors.orange,
+  },
+  {
+    'icon': IconPath.meetingsIconPng,
+    'title': 'Late Arrival',
+    'count': 4,
+    'color': Colors.blue,
+  },
+];
+
 List<Map<String, dynamic>> totalEmployeesDetails = [
   {
     'icon': IconPath.projectIconPng,
@@ -217,6 +244,44 @@ List<Map<String, dynamic>> totalEmployeesDetails = [
   },
 ];
 
+List<Map<String, dynamic>> earningsLists = [
+  {
+    'id': '6386282927',
+    'name': 'Akhil Reubro',
+    'salary': 50000,
+    'branch': 'Branch',
+    'days': 23,
+  },
+  {
+    'id': '402921927',
+    'name': 'Robin Reubro',
+    'salary': 60000,
+    'branch': 'Branch',
+    'days': 16,
+  },
+  {
+    'id': '6388882927',
+    'name': 'Sreehari Reubro',
+    'salary': 90000,
+    'branch': 'Branch',
+    'days': 18,
+  },
+  {
+    'id': '4993483927',
+    'name': 'Sooraj Reubro',
+    'salary': 40000,
+    'branch': 'Branch',
+    'days': 22,
+  },
+  {
+    'id': '94842927',
+    'name': 'Sreejith Reubro',
+    'salary': 70000,
+    'branch': 'Branch',
+    'days': 20,
+  },
+];
+
 List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> reportsTabListAdmin = [
@@ -227,6 +292,9 @@ List<String> reportsTabListAdmin = [
   'Contract period'
 ];
 List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];
+List<String> financeReportsTabList = ['Projects',
+  'Deduction',
+  'Contract period'];
 
 const kAppNameString = 'Paytym';
 

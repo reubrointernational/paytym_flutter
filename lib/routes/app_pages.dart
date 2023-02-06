@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:paytym/screens/webview/custom_webview_page.dart';
 import '../screens/employee/bottom_nav/bottom_nav_page.dart';
 import '../screens/employee/dashboard/dashboard.dart';
+import '../screens/finance/bottom_nav/finance_bottom_nav.dart';
 import '../screens/login/forgot_password.dart';
 import '../screens/login/reset_password_page.dart';
 import 'app_routes.dart';
@@ -34,7 +35,11 @@ class AppPages {
     GetPage(
       name: Routes.bottomNavAdmin,
       page: () => const BottomNavigationPageAdmin(),
-      
+      // page: () => const PaymentsPage(),
+    ),
+    GetPage(
+      name: Routes.financeBottomNav,
+      page: () => const FinanceBottomNavigationPage(),
       // page: () => const PaymentsPage(),
     ),
     GetPage(
