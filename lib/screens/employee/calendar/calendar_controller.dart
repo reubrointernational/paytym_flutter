@@ -11,6 +11,7 @@ import '../../../core/dialog_helper.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
+import '../dashboard/widgets/dashboard_bottomsheet.dart';
 import '../reports/widgets/reports_bottomsheet.dart';
 
 class CalendarController extends GetxController with BaseController {
@@ -77,9 +78,7 @@ class CalendarController extends GetxController with BaseController {
       //       return const AddMeetingDialogue();
       //     });
     } else if (value == CalendarTabs.events) {
-      DialogHelper.showBottomSheet(const ReportsBottomsheet(
-        isSalary: false,
-      ));
+      DialogHelper.showBottomSheet(const ReportsBottomsheet());
     }
   }
 }

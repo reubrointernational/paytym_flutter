@@ -101,45 +101,8 @@ class CalendarMeeting extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Divider(
-                  thickness: 3,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 5, 25, 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.edit,
-                            color: CustomColors.greenColor,
-                          ),
-                          kSizedBoxW10,
-                          Text(
-                            kEditString,
-                            style: kTextStyleS13W600,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.delete_sharp,
-                            color: CustomColors.redColor,
-                          ),
-                          kSizedBoxW10,
-                          Text(
-                            kDeleteString,
-                            style: kTextStyleS13W600,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                
+                
               ],
             ),
           );

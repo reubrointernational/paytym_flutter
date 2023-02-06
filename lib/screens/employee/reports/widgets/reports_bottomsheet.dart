@@ -11,8 +11,8 @@ import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
 
 class ReportsBottomsheet extends StatelessWidget {
-  final bool isSalary;
-  const ReportsBottomsheet({super.key, required this.isSalary});
+ 
+  const ReportsBottomsheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class ReportsBottomsheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            !isSalary ? kRequestAdvanceString : kRequestPaymentString,
+            kRequestAdvanceString,
             style:
                 kTextStyleS18W600.copyWith(color: CustomColors.blueTextColor),
           ),
@@ -47,14 +47,7 @@ class ReportsBottomsheet extends StatelessWidget {
                 kSizedBoxH10,
                 BottomsheetTextField(
                   hintText: kAmountString,
-                  enabled: !isSalary,
-                  text: isSalary
-                      ? Get.find<ReportsController>()
-                          .payslipResponseModel
-                          .value
-                          .payroll
-                          ?.salary
-                      : null,
+                 
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) =>
@@ -66,8 +59,7 @@ class ReportsBottomsheet extends StatelessWidget {
                 kSizedBoxH10,
                 BottomsheetTextField(
                   hintText: kDescString,
-                  text: isSalary ? kSalaryString : null,
-                  enabled: !isSalary,
+                 
                   validator: (value) => Get.find<ReportsController>()
                       .descriptionValidator(value!),
                   onSaved: (value) => Get.find<ReportsController>()
@@ -82,18 +74,17 @@ class ReportsBottomsheet extends StatelessWidget {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => !isSalary
-                  ? Get.find<ReportsController>().requestAdvance()
-                  : Get.find<ReportsController>().requestPayment(),
+              onPressed: () => 
+                  Get.find<ReportsController>().requestPayment(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: Text(
-                isSalary ? kRequestPaymentString : kRequestAdvanceString,
-                style: const TextStyle(
+              child: const Text(
+               kRequestAdvanceString,
+                style: TextStyle(
                   color: CustomColors.whiteTextColor,
                 ),
               ),

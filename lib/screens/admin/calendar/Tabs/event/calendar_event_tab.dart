@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
-import 'package:paytym/screens/employee/calendar/Tabs/event/calendar_event_card.dart';
-import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
-import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
-import '../../../../../core/constants/strings.dart';
 import '../../../../../core/constants/styles.dart';
 import 'calendar_event_card.dart';
 
@@ -30,14 +26,15 @@ class CalendarEventAdmin extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10, bottom: 5),
                 child: Text(
                   '${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index]?.startDate ?? ""} - ${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index]?.endDate ?? ""}',
                   style: kTextStyleS13W600CustomGrey,
                 ),
+                
               ),
               CalendarEventCardAdmin(index: index),
-              kSizedBoxH10,
+              kSizedBoxH20,
             ],
           );
         },

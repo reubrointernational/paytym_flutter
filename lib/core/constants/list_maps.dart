@@ -4,15 +4,12 @@ import 'enums.dart';
 import 'strings.dart';
 
 List<ReportDropDownModel> kReportDropDownItemList = [
-  ReportDropDownModel(kRequestPaymentString, ReportsDropDown.payment),
-  ReportDropDownModel(kRequestAdvanceString, ReportsDropDown.advance),
-  ReportDropDownModel(kReasonString, ReportsDropDown.quit),
-  ReportDropDownModel(kLogoutString, ReportsDropDown.logout),
+  ReportDropDownModel(kWorkProfileString, DashboardDropDown.workProfile),
+  ReportDropDownModel(kRequestAdvanceString, DashboardDropDown.advance),
+  ReportDropDownModel(kLogoutString, DashboardDropDown.logout),
 ];
 
-List<CalendarDropDownModel> kCalendarDropDownItemList = [
-  CalendarDropDownModel(kAddMeetingString, CalendarTabs.meeting),
-  CalendarDropDownModel(kAddEventString, CalendarTabs.events),
-  CalendarDropDownModel(kAddScheduleString, CalendarTabs.schedule),
-  CalendarDropDownModel(kAddHolidayString, CalendarTabs.holiday),
+List<ReportDropDownModel> kReportDropDownItemListWithoutAdvance = [
+  ReportDropDownModel(kEmployeeProfileString, DashboardDropDown.employeeProfile),
+  ReportDropDownModel(kLogoutString, DashboardDropDown.logout),
 ];

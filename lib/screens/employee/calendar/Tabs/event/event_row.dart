@@ -3,11 +3,9 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/strings.dart';
 
-import '../../../../../core/constants/icons.dart';
 import '../../../../../core/constants/styles.dart';
 import '../../../../../core/constants/widgets.dart';
 import '../../calendar_controller.dart';
-import '../../widgets/custom_svg.dart';
 
 class EventRow extends StatelessWidget {
   final int index;
@@ -77,22 +75,11 @@ class EventRow extends StatelessWidget {
               ],
             ),
           ),
-          Stack(
-            children: const [
-              Positioned(
-                top: 4,
-                left: 5,
-                child: CustomSVG(
-                  IconPath.add1Svg,
-                  size: 10,
-                ),
-              ),
-              CustomSVG(
-                IconPath.add2Svg,
-                size: 18,
-              ),
-            ],
-          ),
+
+// CustomSVG(
+          //   IconPath.add2Svg,
+          //   size: 18,
+          // ),
 
           // Stack(
           //   children: const [

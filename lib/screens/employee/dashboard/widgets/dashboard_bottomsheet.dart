@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/login/login_controller.dart';
+import 'package:paytym/screens/employee/reports/reports_controller.dart';
+import 'package:paytym/screens/employee/reports/widgets/bottomsheet_text_field.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
-import '../reports_controller.dart';
-import 'bottomsheet_text_field.dart';
 
-class QuitCompanyBottomSheet extends StatelessWidget {
-  const QuitCompanyBottomSheet({super.key});
+class DashboardBottomsheet extends StatelessWidget {
+  const DashboardBottomsheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class QuitCompanyBottomSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            kReasonString,
+            kRequestAdvanceString,
             style:
                 kTextStyleS18W600.copyWith(color: CustomColors.blueTextColor),
           ),
@@ -37,12 +39,29 @@ class QuitCompanyBottomSheet extends StatelessWidget {
             child: Column(
               children: [
                 BottomsheetTextField(
-                  hintText: kReasonString,
-                  maxLines: 8,
+                  text:
+                      '${Get.find<LoginController>().loginResponseModel?.employee?.firstName} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName}',
+                  enabled: false,
+                ),
+                kSizedBoxH10,
+                BottomsheetTextField(
+                  hintText: kAmountString,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) =>
-                      Get.find<ReportsController>().notEmptyValidator(value!),
-                  onSaved: (value) =>
-                      Get.find<ReportsController>().quitCompanyReason = value!,
+                      Get.find<ReportsController>().amountValidator(value!),
+                  onSaved: (value) => Get.find<ReportsController>()
+                      .requestAdvanceModel
+                      .amount = value!,
+                ),
+                kSizedBoxH10,
+                BottomsheetTextField(
+                  hintText: kDescString,
+                  validator: (value) => Get.find<ReportsController>()
+                      .descriptionValidator(value!),
+                  onSaved: (value) => Get.find<ReportsController>()
+                      .requestAdvanceModel
+                      .description = value!,
                 ),
               ],
             ),
@@ -52,8 +71,7 @@ class QuitCompanyBottomSheet extends StatelessWidget {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () =>
-                  Get.find<ReportsController>().requestQuitFromCompany(),
+              onPressed: () => Get.find<ReportsController>().requestAdvance(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(
@@ -61,7 +79,7 @@ class QuitCompanyBottomSheet extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                kReasonString,
+                kRequestAdvanceString,
                 style: TextStyle(
                   color: CustomColors.whiteTextColor,
                 ),

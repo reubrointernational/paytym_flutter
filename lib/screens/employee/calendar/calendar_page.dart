@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/employee/calendar/Tabs/holiday/calendar_holiday_tab.dart';
 import 'package:paytym/screens/employee/calendar/widgets/calendar_card.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/widgets/custom_app_bar.dart';
@@ -30,15 +32,16 @@ class CalendarPage extends StatelessWidget {
           child: Column(
             children: [
               const CalendarCard(),
+              kSizedBoxH15,
               Padding(
                 padding: const EdgeInsets.fromLTRB(18, 0, 18, 10),
                 child: CustomTabBar(
                   tabsList: calendarTabList,
                   width: 30,
-                  backgroundColor: Colors.grey.shade200,
+                  color: CustomColors.blueTextColor,
                 ),
               ),
-
+              kSizedBoxH8,
               const Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 18),
@@ -48,50 +51,11 @@ class CalendarPage extends StatelessWidget {
                       CalendarMeeting(),
                       CalendarEvent(),
                       CalendarSchedule(),
-                      CalendarEvent()
+                      CalendarHolidayTab()
                     ],
                   ),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(15.0),
-              //   child: Obx(
-              //     () => CupertinoSlidingSegmentedControl(
-              //       padding: const EdgeInsets.all(0),
-              //       backgroundColor: CustomColors.selectedTabColor,
-              //       children: const {
-              //         CalendarTabs.meeting: SizedBox(
-              //           width: 160,
-              //           height: 40,
-              //           child: Center(
-              //             child: Text(
-              //               kMeetingString,
-              //               style: kTextStyleS14W600LS0p2,
-              //             ),
-              //           ),
-              //         ),
-              //         CalendarTabs.events: Text(
-              //           kEventString,
-              //           style: kTextStyleS14W600LS0p2,
-              //         ),
-              //       },
-              //       groupValue: calendarController.selectedCalendarTab.value,
-              //       onValueChanged: (value) =>
-              //           calendarController.selectedCalendarTab.value = value!,
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 370,
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(horizontal: 15),
-              //     child: Obx(() =>
-              //         calendarController.selectedCalendarTab.value ==
-              //                 CalendarTabs.meeting
-              //             ? const CalendarMeeting()
-              //             : const CalendarSchedule()),
-              //   ),
-              // ),
             ],
           ),
         ),

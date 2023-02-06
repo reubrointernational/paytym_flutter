@@ -12,4 +12,6 @@ abstract class Routes {
   static const scanTime = '/scan';
   static const webview = '/webview';
   static const settings = '/settings';
+  static const adminChat = '/adminChat';
+  
 }

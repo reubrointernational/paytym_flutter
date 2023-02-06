@@ -30,16 +30,16 @@ class LeavesAppBar extends StatelessWidget {
                 ),
               ),
             ]),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const LeaveDialogue();
-                      });
-                },
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const LeaveDialogue();
+                    });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15),
                 child: Container(
                   height: 30,
                   width: 30,

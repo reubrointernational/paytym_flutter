@@ -4,6 +4,7 @@ import 'event_row.dart';
 
 class CalendarEventCard extends StatelessWidget {
   final int index;
+
   const CalendarEventCard({super.key, required this.index});
 
   @override
@@ -15,7 +16,9 @@ class CalendarEventCard extends StatelessWidget {
           padding: const EdgeInsets.all(18.0),
           child: Column(
             children: [
-              EventRow(index: index,),
+              EventRow(
+                index: index,
+              ),
               // Divider(
               //   thickness: 2,
               //   height: 40,

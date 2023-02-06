@@ -2,6 +2,6 @@ import '../../core/constants/enums.dart';
 
 class ReportDropDownModel {
   String label = '';
-  ReportsDropDown dropDownItem = ReportsDropDown.advance;
+  DashboardDropDown dropDownItem = DashboardDropDown.advance;
   ReportDropDownModel(this.label, this.dropDownItem);
 }

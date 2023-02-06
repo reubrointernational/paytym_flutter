@@ -52,13 +52,14 @@ class CheckInOutCard extends StatelessWidget {
                                   child: Container(
                                     height: 15,
                                     decoration: BoxDecoration(
-                                        gradient: const LinearGradient(
+                                        color: Colors.white,
+                                        /*gradient: const LinearGradient(
                                             begin: Alignment.topCenter,
                                             end: Alignment.bottomCenter,
                                             colors: [
                                               Color.fromARGB(255, 28, 41, 226),
                                               Color.fromARGB(255, 14, 130, 238)
-                                            ]),
+                                            ]),*/
                                         borderRadius:
                                             BorderRadius.circular(7.5)),
                                   ),
@@ -67,7 +68,7 @@ class CheckInOutCard extends StatelessWidget {
                               SliderTheme(
                                 data: SliderThemeData(
                                   trackHeight: 0,
-                                  activeTrackColor: Colors.red,
+                                  //activeTrackColor: Colors.red,
                                   /*inactiveTrackColor:
                                       const Color.fromARGB(255, 2, 69, 124),*/
                                   overlayShape: SliderComponentShape.noOverlay,
@@ -76,7 +77,9 @@ class CheckInOutCard extends StatelessWidget {
                                   ),
                                 ),
                                 child: Slider(
+                                  thumbColor: CustomColors.whiteCardColor,
                                   inactiveColor: CustomColors.whiteCardColor,
+                                  activeColor: CustomColors.whiteCardColor,
                                   value: Get.find<DashboardController>()
                                       .sliderValue
                                       .value,

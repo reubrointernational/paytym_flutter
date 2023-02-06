@@ -13,8 +13,7 @@ abstract class IconPath {
 
   static const String tick1Svg = 'assets/svg/tick1.svg';
   static const String tick2Svg = 'assets/svg/tick2.svg';
-  static const String add1Svg = 'assets/svg/add1.svg';
-  static const String add2Svg = 'assets/svg/add2.svg';
+
 
   //calendar app bar
 
@@ -49,6 +48,8 @@ abstract class IconPath {
   static const String downloadIconSvg = 'assets/svg/downloadIcon.svg';
 
   //report
+  static const String dropdownYearIconSvg = 'assets/svg/year_dropdown_icon.svg';
+
   //menusvg//
 
   //hr

@@ -15,37 +15,18 @@ class ReportsAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: const [
-            CustomSVG(IconPath.menuSvg, size: 20),
-            kSizedBoxW15,
-            Text(
-              kReportsString,
-              style: kTextStyleS18W600,
-            ),
-          ],
-        ),
-        PopupMenuButton<ReportsDropDown>(
-          color: CustomColors.blueTextColor,
-          onSelected: (ReportsDropDown value) =>
-              Get.find<ReportsController>().onClickMenuItem(value),
-          itemBuilder: (BuildContext context) => List.generate(
-            4,
-            (index) => PopupMenuItem(
-              value: kReportDropDownItemList[index].dropDownItem,
-              child: Text(
-                kReportDropDownItemList[index].label,
-                style: const TextStyle(
-                  color: CustomColors.whiteTextColor,
-                ),
-              ),
-            ),
-          ).toList(),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: const [
+          CustomSVG(IconPath.menuSvg, size: 23),
+          kSizedBoxW15,
+          Text(
+            kReportsString,
+            style: kTextStyleS18W600,
+          ),
+        ],
+      ),
     );
   }
 }

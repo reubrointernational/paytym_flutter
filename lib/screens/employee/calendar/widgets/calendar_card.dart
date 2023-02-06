@@ -6,7 +6,6 @@ import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../core/constants/styles.dart';
-import '../../../../core/constants/widgets.dart';
 import '../calendar_controller.dart';
 
 class CalendarCard extends StatelessWidget {
@@ -16,12 +15,12 @@ class CalendarCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: CustomColors.whiteCardColor,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
       child: Column(
         children: [
           Container(
             decoration: const BoxDecoration(
-              color: CustomColors.blueCardColor,
+              color: CustomColors.whiteTextColor,
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
             child: Obx(() {
@@ -39,7 +38,7 @@ class CalendarCard extends StatelessWidget {
                 rowHeight: 65,
                 daysOfWeekHeight: 20,
                 firstDay: DateTime.utc(2022, 12, 12),
-                lastDay: DateTime.utc(2030, 3, 14),
+                lastDay: DateTime.utc(2040, 3, 14),
                 focusedDay: Get.find<CalendarController>().selectedDay.value,
                 calendarFormat: CalendarFormat.week,
                 daysOfWeekStyle: const DaysOfWeekStyle(
@@ -49,28 +48,42 @@ class CalendarCard extends StatelessWidget {
                 headerStyle: HeaderStyle(
                   titleCentered: true,
                   formatButtonVisible: false,
-                  rightChevronIcon:
-                      const CustomSVG(IconPath.forwardArrowSvg, size: 25),
-                  leftChevronIcon:
-                      const CustomSVG(IconPath.backArrowSvg, size: 25),
+                  rightChevronIcon: const CustomSVG(
+                    IconPath.forwardArrowSvg,
+                    size: 25,
+                  ),
+                  leftChevronIcon: const CustomSVG(
+                    IconPath.backArrowSvg,
+                    size: 25,
+                  ),
                   titleTextStyle: const TextStyle(
-                    color: CustomColors.whiteTextColor,
+                    color: CustomColors.blackTextColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                   ),
                   titleTextFormatter: (date, locale) =>
                       DateFormat('MMMM, yyyy').format(date),
                   decoration: const BoxDecoration(
-                    color: CustomColors.blueCardColor,
+                    color: CustomColors.whiteTabColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
                     ),
                   ),
                 ),
-                calendarStyle: const CalendarStyle(
+                calendarStyle: CalendarStyle(
                   weekendTextStyle: kCalendarCard,
                   defaultTextStyle: kCalendarCard,
+                  markerDecoration: const BoxDecoration(
+                      color: Colors.amber, shape: BoxShape.circle),
+                  selectedDecoration: const BoxDecoration(
+                    color: CustomColors.blueCardColor,
+                    shape: BoxShape.circle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: const Color.fromRGBO(72, 13, 250, 1).withOpacity(0.7),
+                    shape: BoxShape.circle,
+                  ),
                 ),
               );
             }),

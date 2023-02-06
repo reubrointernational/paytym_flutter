@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/models/leaves/leaves_request_model.dart';
 import 'package:paytym/models/leaves/leaves_response.dart';
 import 'package:paytym/models/leaves/leaves_status_model.dart';
@@ -19,6 +20,7 @@ class LeavesController extends GetxController with BaseController {
   final selectedItem = 'annual'.obs;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
+
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
@@ -78,7 +80,7 @@ class LeavesController extends GetxController with BaseController {
     final DateTime? dateTime = await showDatePicker(
       context: context,
       initialDate: startDate,
-      firstDate: DateTime(1990),
+      firstDate: isStartDate ? DateTime(1990) : startDate,
       lastDate: DateTime(2030),
     );
     isStartDate ? startDate = dateTime! : endDate = dateTime!;
@@ -122,6 +124,10 @@ class LeavesController extends GetxController with BaseController {
             type: leaveRequestModel.type);
         leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
         leaveRequestModel = LeaveRequestModel();
+        startDate = DateTime.now();
+        endDate = DateTime.now();
+        startDateController.text = kStartDateString;
+        endDateController.text = kEndDateString;
         Get.back();
         leaveResponseModel.refresh();
       }
