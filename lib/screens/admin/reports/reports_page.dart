@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/screens/admin/reports/deduction_tab.dart';
-import 'package:paytym/screens/admin/reports/projects_tab.dart';
+import 'package:paytym/screens/admin/reports/tabs/deduction_tab.dart';
+import 'package:paytym/screens/admin/reports/tabs/projects_tab.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +16,9 @@ import '../../widgets/custom_cached_network_image.dart';
 import '../widgets/custom_admin_scaffold_with_tabbar.dart';
 import '../leaves/leaves_controller.dart';
 import '../leaves/leaves_tab.dart';
-import 'attendance_tab.dart';
-import 'contract_period_tab.dart';
-import 'medical_tab.dart';
+import 'tabs/attendance_tab.dart';
+import 'tabs/contract_period_tab.dart';
+import 'tabs/medical_tab.dart';
 import 'reports_controller.dart';
 
 class ReportsPageAdmin extends StatelessWidget {

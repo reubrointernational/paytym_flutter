@@ -3,8 +3,8 @@ import 'package:paytym/core/constants/styles.dart';
 
 import '../widgets/custom_admin_scaffold.dart';
 
-class ProjectEmployeeList extends StatelessWidget {
-  const ProjectEmployeeList({super.key});
+class ProjectEmployeeListPage extends StatelessWidget {
+  const ProjectEmployeeListPage({super.key});
 
   @override
   Widget build(BuildContext context) {

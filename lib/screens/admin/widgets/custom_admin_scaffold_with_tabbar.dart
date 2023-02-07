@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
+import 'custom_floating_action_button.dart';
 import '../../widgets/custom_tab_bar.dart';
 
 class CustomAdminScaffoldWithTabBar extends StatelessWidget {
@@ -19,6 +20,9 @@ class CustomAdminScaffoldWithTabBar extends StatelessWidget {
     return DefaultTabController(
       length: tabList.length,
       child: Scaffold(
+        floatingActionButton: CustomFloatingActionButton(
+          isLeavesController: title == 'Leaves',
+        ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(

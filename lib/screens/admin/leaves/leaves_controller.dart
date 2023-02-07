@@ -11,6 +11,7 @@ import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
@@ -26,6 +27,8 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   DateTime endDate = DateTime.now();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
+  final selectedDepartment = departments.first.obs;
+  final selectedBranch = branches.first.obs;
 
   //for bottomsheet
   final requestAdvanceFormKey = GlobalKey<FormState>();

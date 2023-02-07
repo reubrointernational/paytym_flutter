@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/constants/styles.dart';
-import 'reports_controller.dart';
-import 'widgets/medical_title_tag.dart';
+import '../../../../core/constants/styles.dart';
+import '../reports_controller.dart';
+import '../widgets/medical_title_tag.dart';
 
 class ContractPeriodTabAdmin extends StatelessWidget {
   const ContractPeriodTabAdmin({Key? key}) : super(key: key);

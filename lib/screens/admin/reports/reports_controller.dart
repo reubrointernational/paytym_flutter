@@ -18,13 +18,13 @@ import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../../routes/app_routes.dart';
 import '../widgets/reason_bottomsheet.dart';
-
 
 class ReportsControllerAdmin extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
@@ -37,6 +37,9 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   final deductionResponseModel = DeductionResponseModel().obs;
   String quitCompanyReason = '';
+
+  final selectedDepartment = departments.first.obs;
+  final selectedBranch = branches.first.obs;
 
   showLogoutDialog() {
     DialogHelper.showConfirmDialog(

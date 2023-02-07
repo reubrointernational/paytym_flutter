@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
-import '../../../core/colors/colors.dart';
-import '../../../core/constants/strings.dart';
-import '../../../core/constants/styles.dart';
-import 'reports_controller.dart';
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/styles.dart';
+import '../reports_controller.dart';
 
 class DeductionTabAdmin extends StatelessWidget {
   const DeductionTabAdmin({Key? key}) : super(key: key);

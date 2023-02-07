@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import '../../../core/constants/strings.dart';
-import '../../../core/constants/styles.dart';
-import 'dummy_data.dart';
-import 'reports_controller.dart';
-import 'widgets/medical_title_tag.dart';
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/styles.dart';
+import '../dummy_data.dart';
+import '../reports_controller.dart';
+import '../widgets/medical_title_tag.dart';
 
 class MedicalTabAdmin extends StatelessWidget {
   const MedicalTabAdmin({Key? key}) : super(key: key);

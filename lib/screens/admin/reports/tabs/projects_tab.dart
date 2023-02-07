@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/colors/colors.dart';
-import '../../../core/constants/styles.dart';
-import '../../../core/constants/widgets.dart';
-import '../../../routes/app_routes.dart';
-import 'reports_controller.dart';
-import 'widgets/custom_progress_indicator.dart';
+import '../../../../core/colors/colors.dart';
+import '../../../../core/constants/styles.dart';
+import '../../../../core/constants/widgets.dart';
+import '../../../../routes/app_routes.dart';
+import '../reports_controller.dart';
+import '../widgets/custom_progress_indicator.dart';
 
 class ProjectsTabAdmin extends StatelessWidget {
   const ProjectsTabAdmin({Key? key}) : super(key: key);
@@ -46,7 +46,12 @@ class ProjectsTabAdmin extends StatelessWidget {
                               style: kTextStyleS18W600.copyWith(
                                   color: CustomColors.blackTextColor),
                             ),
-                            kSizedBoxH35,
+                            kSizedBoxH10,
+                            const Text(
+                              'Ongoing',
+                              style: kTextStyleS15W600CGreen,
+                            ),
+                            kSizedBoxH10,
                             Text(
                               'Team',
                               style: kTextStyleS14W600Cgrey300LS0p2.copyWith(

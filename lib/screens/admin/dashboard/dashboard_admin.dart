@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
+import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
+import '../../../routes/app_routes.dart';
+import '../../employee/calendar/widgets/custom_svg.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/custom_cards.dart';
 import 'widgets/check_in_out_card_admin.dart';
@@ -10,7 +15,17 @@ class DashboardAdmin extends StatelessWidget {
   const DashboardAdmin({super.key});
   @override
   Widget build(BuildContext context) {
+    
+        Get.put(DashboardControllerAdmin());
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.toNamed(Routes.scanTime),
+        backgroundColor: CustomColors.fabColor,
+        child: const CustomSVG(
+          IconPath.scanIconSvg,
+          size: 23,
+        ),
+      ),
       backgroundColor: CustomColors.lightBlueColor,
       body: SafeArea(
         child: Column(
