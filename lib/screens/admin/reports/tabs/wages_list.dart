@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 
-
-class WagesList extends StatelessWidget {
-  const WagesList({super.key});
+class WagesTabAdmin extends StatelessWidget {
+  const WagesTabAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {

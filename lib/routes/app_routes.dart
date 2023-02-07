@@ -17,4 +17,7 @@ abstract class Routes {
   static const settings = '/settings';
   static const adminChat = '/adminChat';
   static const projectEmployeeList = '/projectEmployeeList';
+  static const createGroupPage = '/createGroupPage';
+  static const selectChatUsersPage = '/selectChatUsers';
+
 }

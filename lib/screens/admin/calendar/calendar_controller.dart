@@ -1,14 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import '../../../core/constants/enums.dart';
-import '../../../core/dialog_helper.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
-import '../../employee/reports/widgets/reports_bottomsheet.dart';
 import '../../login/login_controller.dart';
 
 class CalendarControllerAdmin extends GetxController with BaseController {
@@ -67,15 +64,5 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     getEvents();
   }
 
-  onClickMenuItem(CalendarTabs value, BuildContext context) {
-    if (value == CalendarTabs.meeting) {
-      // showDialog(
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return const AddMeetingDialogue();
-      //     });
-    } else if (value == CalendarTabs.events) {
-      DialogHelper.showBottomSheet(const ReportsBottomsheet());
-    }
-  }
+  
 }

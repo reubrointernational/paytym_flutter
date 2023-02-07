@@ -9,6 +9,8 @@ import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/webview/custom_webview_page.dart';
 import '../screens/admin/chat/chat_page.dart';
+import '../screens/admin/chat/select_chat_users_page.dart';
+import '../screens/admin/chat/create_group_page.dart';
 import '../screens/admin/reports/project_employee_list_page.dart';
 import '../screens/employee/bottom_nav/bottom_nav_page.dart';
 import '../screens/employee/dashboard/dashboard.dart';
@@ -81,6 +83,14 @@ class AppPages {
     GetPage(
       name: Routes.chat,
       page: () => const ChatPage(),
+    ),
+    GetPage(
+      name: Routes.createGroupPage,
+      page: () => const CreateGroupPage(),
+    ),
+    GetPage(
+      name: Routes.selectChatUsersPage,
+      page: () => const SelectChatUsersPage(),
     ),
   ];
 }

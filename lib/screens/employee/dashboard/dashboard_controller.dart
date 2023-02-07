@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/dialog_helper.dart';
@@ -10,6 +11,7 @@ import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/constants/enums.dart';
 import '../../../models/login/user_model.dart';
+import '../../../models/report/request_advance_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../../network/shared_preference_helper.dart';
@@ -23,6 +25,8 @@ class DashboardController extends GetxController with BaseController {
   final sliderValue = 0.0.obs;
   bool checkInStatus = false;
   bool sliderValueChanged = false;
+  final requestAdvanceFormKey = GlobalKey<FormState>();
+  RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
 
   getWish() {
     DateTime now = DateTime.now();
@@ -43,6 +47,35 @@ class DashboardController extends GetxController with BaseController {
     if ((sliderValue.value - value).abs() < 20) {
       sliderValue.value = value;
       sliderValueChanged = true;
+    }
+  }
+
+  void requestAdvance() {
+    if (requestAdvanceFormKey.currentState!.validate()) {
+      requestAdvanceFormKey.currentState!.save();
+      requestAdvanceOrSalary(false);
+    }
+  }
+
+  requestAdvanceOrSalary(bool isSalary) async {
+    showLoading();
+
+    var responseString = await Get.find<BaseClient>()
+        .post(
+            isSalary
+                ? ApiEndPoints.requestPayment
+                : ApiEndPoints.requestAdvance,
+            requestAdvanceModelToJson(requestAdvanceModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message!);
+      requestAdvanceModel = RequestAdvanceModel();
+      Get.back();
     }
   }
 

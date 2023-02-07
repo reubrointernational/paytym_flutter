@@ -31,11 +31,14 @@ class ChatListingPageAdmin extends StatelessWidget {
                     color: CustomColors.whiteTextColor,
                   ),
                 ),
-                SvgPicture.asset(
-                  IconPath.editIconSvg,
-                  height: 20,
-                  width: 20,
-                  color: CustomColors.whiteTextColor,
+                InkWell(
+                  onTap: () => Get.toNamed(Routes.selectChatUsersPage),
+                  child: SvgPicture.asset(
+                    IconPath.editIconSvg,
+                    height: 20,
+                    width: 20,
+                    color: CustomColors.whiteTextColor,
+                  ),
                 )
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import 'package:paytym/screens/employee/reports/widgets/bottomsheet_text_field.dart';
@@ -35,7 +36,7 @@ class DashboardBottomsheet extends StatelessWidget {
           ),
           kSizedBoxH10,
           Form(
-            key: Get.find<ReportsController>().requestAdvanceFormKey,
+            key: Get.find<DashboardController>().requestAdvanceFormKey,
             child: Column(
               children: [
                 BottomsheetTextField(
@@ -50,7 +51,7 @@ class DashboardBottomsheet extends StatelessWidget {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) =>
                       Get.find<ReportsController>().amountValidator(value!),
-                  onSaved: (value) => Get.find<ReportsController>()
+                  onSaved: (value) => Get.find<DashboardController>()
                       .requestAdvanceModel
                       .amount = value!,
                 ),
@@ -59,7 +60,7 @@ class DashboardBottomsheet extends StatelessWidget {
                   hintText: kDescString,
                   validator: (value) => Get.find<ReportsController>()
                       .descriptionValidator(value!),
-                  onSaved: (value) => Get.find<ReportsController>()
+                  onSaved: (value) => Get.find<DashboardController>()
                       .requestAdvanceModel
                       .description = value!,
                 ),
@@ -71,7 +72,7 @@ class DashboardBottomsheet extends StatelessWidget {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => Get.find<ReportsController>().requestAdvance(),
+              onPressed: () => Get.find<DashboardController>().requestAdvance(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(

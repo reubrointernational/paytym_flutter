@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/colors/colors.dart';
-import '../../../../core/constants/icons.dart';
-import '../../../../core/constants/strings.dart';
-import 'custom_text_form_field.dart';
+import '../../../core/colors/colors.dart';
+import '../../../core/constants/icons.dart';
+import '../../../core/constants/strings.dart';
+import '../dashboard/widgets/custom_text_form_field.dart';
 
 showCustomBottomSheet(context, controller) {
   showModalBottomSheet(

@@ -4,7 +4,7 @@ import 'package:paytym/screens/admin/leaves/leaves_page.dart';
 import '../../../core/colors/colors.dart';
 import '../../employee/bottom_nav/bottom_nav_controller.dart';
 import '../calendar/calendar_page.dart';
-import '../chat/chat_listing.dart';
+import '../chat/chat_listing_page.dart';
 import '../dashboard/dashboard_admin.dart';
 import '../reports/reports_page.dart';
 

@@ -303,6 +303,7 @@ List<Map<String, dynamic>> earningsLists = [
 List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> reportsTabListAdmin = [
+  'Wages',
   'Projects',
   'Attendance',
   'Deduction',
@@ -310,9 +311,11 @@ List<String> reportsTabListAdmin = [
   'Contract period'
 ];
 List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];
-List<String> financeReportsTabList = ['Projects',
+List<String> financeReportsTabList = [
+  'Projects',
   'Deduction',
-  'Contract period'];
+  'Contract period'
+];
 
 const kAppNameString = 'Paytym';
 

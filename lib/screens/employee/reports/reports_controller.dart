@@ -38,8 +38,8 @@ class ReportsController extends GetxController
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
-  final requestAdvanceFormKey = GlobalKey<FormState>();
-  RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
+  
+  
   final deductionResponseModel = DeductionResponseModel().obs;
   String quitCompanyReason = '';
 
@@ -64,27 +64,7 @@ class ReportsController extends GetxController
     }
   }
 
-  requestAdvanceOrSalary(bool isSalary) async {
-    showLoading();
-
-    var responseString = await Get.find<BaseClient>()
-        .post(
-            isSalary
-                ? ApiEndPoints.requestPayment
-                : ApiEndPoints.requestAdvance,
-            requestAdvanceModelToJson(requestAdvanceModel),
-            Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-    if (responseString == null) {
-      return;
-    } else {
-      hideLoading();
-      DialogHelper.showToast(
-          desc: messageOnlyResponseModelFromJson(responseString).message!);
-      requestAdvanceModel = RequestAdvanceModel();
-      Get.back();
-    }
-  }
+  
 //todo add onError in getattendance as well. Don't forget '()' will not be present on function
 
   getDeduction() async {
@@ -165,18 +145,8 @@ class ReportsController extends GetxController
     return (value.isEmpty) ? 'Value cannot be empty' : null;
   }
 
-  void requestAdvance() {
-    if (requestAdvanceFormKey.currentState!.validate()) {
-      requestAdvanceFormKey.currentState!.save();
-      requestAdvanceOrSalary(false);
-    }
-  }
+  
 
-  void requestPayment() {
-    requestAdvanceModel = RequestAdvanceModel(
-        amount: payslipResponseModel.value.payroll?.salary ?? '0');
-    requestAdvanceOrSalary(true);
-  }
 
   String? descriptionValidator(String value) {
     return GetUtils.isLengthLessThan(value, 5)
