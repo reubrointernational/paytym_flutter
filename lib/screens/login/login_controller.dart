@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/models/login/login_request_model.dart';
 import 'package:paytym/models/login/login_response_model.dart';
 import 'package:paytym/models/login/otp_request_with_email_model.dart';
