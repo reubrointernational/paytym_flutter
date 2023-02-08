@@ -246,7 +246,7 @@ List<Map<String, dynamic>> totalEmployeesDetails = [
 
 List<String> years = ['2018', '2019', '2020', '2021', '2022', '2023', '2024'];
 
-List<String> monthsTabList = [
+List<String> monthsList = [
   'Jan',
   'Feb',
   'Mar',
@@ -259,6 +259,13 @@ List<String> monthsTabList = [
   'Oct',
   'Nov',
   'Dec'
+];
+
+List<String> daysDummyList = [
+  '08-02-2023',
+  '09-02-2023',
+  '10-02-2023',
+  '11-02-2023'
 ];
 
 List<Map<String, dynamic>> earningsLists = [

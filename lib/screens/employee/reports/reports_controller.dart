@@ -19,6 +19,7 @@ import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
@@ -41,9 +42,11 @@ class ReportsController extends GetxController
   
   
   final deductionResponseModel = DeductionResponseModel().obs;
-  String quitCompanyReason = '';
+  
 
-  final selectedDropdownYear = ''.obs;
+  final selectedDropdownYear = years.first.obs;
+  final selectedDropdownMonth = monthsList.first.obs;
+  final selectedDropdownDay = daysDummyList.first.obs;
 
   
 

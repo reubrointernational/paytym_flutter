@@ -21,7 +21,7 @@ class ReportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ReportsController reportsController = Get.put(ReportsController());
-    reportsController.selectedDropdownYear.value = years.first;
+    
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,

@@ -4,12 +4,13 @@ import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 
 class LogoutController extends GetxService {
   RestartableTimer? _timer;
+  //todo uncomment all data in this file
   
   initTimer() {
     print('init timer');
     _timer?.cancel();
-    _timer = RestartableTimer(const Duration(minutes: 1),
-        () => Get.find<DashboardController>().logout());
+    // _timer = RestartableTimer(const Duration(minutes: 1),
+    //     () => Get.find<DashboardController>().logout());
         
   }
 
@@ -19,7 +20,7 @@ class LogoutController extends GetxService {
   }
 
   restartTimer() {
-    _timer?.reset();
+    // _timer?.reset();
     
   }
 
