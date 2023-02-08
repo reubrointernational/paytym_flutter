@@ -41,31 +41,14 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final selectedDepartment = departments.first.obs;
   final selectedBranch = branches.first.obs;
 
-  showLogoutDialog() {
-    DialogHelper.showConfirmDialog(
-      onConfirm: logout,
-    );
-  }
+  
 
 //for bottomsheet
   showBottomSheetForReason() {
     DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
   }
 
-  logout() async {
-    showLoading();
-    var responseString = await Get.find<BaseClient>()
-        .post(
-            ApiEndPoints.logout, null, Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-
-    if (responseString == null) {
-      return;
-    } else {
-      hideLoading();
-      resetControllerAndGoToLogin();
-    }
-  }
+  
 
   fetchPayslip() async {
     showLoading();
@@ -132,12 +115,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     return formatNum.format(int.parse(value));
   }
 
-  resetControllerAndGoToLogin() {
-    Get.find<LoginController>().loginResponseModel = null;
-    Get.find<LoginController>().userModel = UserModel();
-    Get.find<SharedPreferenceHelper>().deleteAll();
-    Get.offAllNamed(Routes.login);
-  }
+
 
   downloadPdf(String? url) async {
     if (url != null && url.isNotEmpty) {

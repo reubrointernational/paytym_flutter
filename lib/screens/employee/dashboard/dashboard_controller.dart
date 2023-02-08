@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/dialog_helper.dart';
+import 'package:paytym/logout_controller.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/employee/dashboard/widgets/dashboard_bottomsheet.dart';
@@ -126,6 +127,8 @@ class DashboardController extends GetxController with BaseController {
     } else {
       hideLoading();
       resetControllerAndGoToLogin();
+      //cancel inactive timer
+      Get.find<LogoutController>().cancelTimer();
     }
   }
 

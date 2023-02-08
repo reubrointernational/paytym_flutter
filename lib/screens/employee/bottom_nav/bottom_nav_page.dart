@@ -1,9 +1,11 @@
+import 'package:get/get.dart';
 import 'package:paytym/screens/employee/chats/chats_page.dart';
 import 'package:paytym/screens/employee/leaves/leaves_page.dart';
 import 'package:paytym/screens/employee/reports/reports_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/colors/colors.dart';
+import '../../../logout_controller.dart';
 import '../calendar/calendar_page.dart';
 import '../chats/chats_listing.dart';
 import '../dashboard/dashboard.dart';
@@ -18,6 +20,13 @@ class BottomNavigationPage extends StatefulWidget {
 
 class _BottomNavigationPageState extends State<BottomNavigationPage> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    //init inactivity timer
+    Get.find<LogoutController>().initTimer();
+    super.initState();
+  }
 
   Widget switchWidgets(index) {
     switch (index) {
