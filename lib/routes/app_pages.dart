@@ -75,6 +75,7 @@ class AppPages {
     GetPage(
       name: Routes.adminChat,
       page: () => const ChatPageAdmin(),
+      
     ),
     GetPage(
       name: Routes.projectEmployeeList,
