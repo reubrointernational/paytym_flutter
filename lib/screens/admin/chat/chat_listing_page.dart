@@ -8,12 +8,14 @@ import 'package:paytym/routes/app_routes.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/widgets.dart';
 import '../dashboard/widgets/custom_text_form_field.dart';
+import 'chat_controller.dart';
 
 class ChatListingPageAdmin extends StatelessWidget {
   const ChatListingPageAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ChatControllerAdmin());
     return Scaffold(
       backgroundColor: CustomColors.lightBlueColor,
       body: SafeArea(

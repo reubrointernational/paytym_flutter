@@ -20,6 +20,7 @@ import 'tabs/attendance_tab.dart';
 import 'tabs/contract_period_tab.dart';
 import 'tabs/medical_tab.dart';
 import 'reports_controller.dart';
+import 'tabs/payroll_tab.dart';
 import 'tabs/wages_list.dart';
 
 class ReportsPageAdmin extends StatelessWidget {
@@ -32,6 +33,7 @@ class ReportsPageAdmin extends StatelessWidget {
       tabList: reportsTabListAdmin,
       title: kReportsString,
       children: const [
+        PayrollTab(),
         WagesTabAdmin(),
         ProjectsTabAdmin(),
         AttendanceTabAdmin(),

@@ -8,12 +8,10 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:paytym/models/login/user_model.dart';
 import 'package:paytym/models/report/deduction_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/report/request_advance_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:paytym/network/shared_preference_helper.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -23,7 +21,6 @@ import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
-import '../../../routes/app_routes.dart';
 import '../widgets/reason_bottomsheet.dart';
 
 class ReportsControllerAdmin extends GetxController with BaseController {
@@ -41,14 +38,13 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final selectedDepartment = departments.first.obs;
   final selectedBranch = branches.first.obs;
 
-  
+  final selectedDropdownYear = years.first.obs;
+
 
 //for bottomsheet
   showBottomSheetForReason() {
     DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
   }
-
-  
 
   fetchPayslip() async {
     showLoading();
@@ -114,8 +110,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     final formatNum = NumberFormat('#.00');
     return formatNum.format(int.parse(value));
   }
-
-
 
   downloadPdf(String? url) async {
     if (url != null && url.isNotEmpty) {

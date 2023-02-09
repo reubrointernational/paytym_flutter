@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/routes/app_routes.dart';
+import 'package:paytym/screens/admin/chat/chat_controller.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
-
-import '../../../core/colors/colors.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
-import '../../../core/constants/widgets.dart';
+import '../../employee/reports/widgets/year_dropdown.dart';
 
 class SelectChatUsersPage extends StatelessWidget {
   const SelectChatUsersPage({super.key});
@@ -23,6 +23,54 @@ class SelectChatUsersPage extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Column(
           children: [
+            kSizedBoxH15,
+            SizedBox(
+              height: 40,
+              child: Obx(
+                () => ListView(
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.lightBlue),
+                            borderRadius: BorderRadius.circular(25)),
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        margin: const EdgeInsets.only(right: 10),
+                        child: const Text(
+                          'All',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                      ...List.generate(
+                        2,
+                        (index) => Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.lightBlue),
+                              borderRadius: BorderRadius.circular(25)),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          margin: const EdgeInsets.only(right: 10),
+                          child: CustomDropdownYearButton(
+                            lists: index == 0 ? departments : branches,
+                            value: Get.find<ChatControllerAdmin>()
+                                .selectedDropdownDepartments
+                                .value,
+                            onChanged: (value) {
+                              Get.find<ChatControllerAdmin>()
+                                  .selectedDropdownDepartments
+                                  .value = value;
+                            },
+                            hint: selectMembersTabs[index],
+                          ),
+                        ),
+                      ),
+                    ]),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: SizedBox(

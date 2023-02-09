@@ -244,6 +244,76 @@ List<Map<String, dynamic>> totalEmployeesDetails = [
   },
 ];
 
+List<String> selectMembersTabs = ['Departments ', 'Branches '];
+
+List<Map<String, dynamic>> payrollList = [
+  {
+    'id': '6386282927',
+    'name': 'Akhil Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+  {
+    'id': '402921927',
+    'name': 'Robin Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+  {
+    'id': '6388882927',
+    'name': 'Sreehari Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+  {
+    'id': '4993483927',
+    'name': 'Sooraj Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+  {
+    'id': '94842927',
+    'name': 'Sreejith Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+];
+
 List<String> years = ['2018', '2019', '2020', '2021', '2022', '2023', '2024'];
 
 List<String> monthsList = [
@@ -266,6 +336,17 @@ List<String> daysDummyList = [
   '09-02-2023',
   '10-02-2023',
   '11-02-2023'
+];
+
+List<String> branchesDummyData = [
+  'Branches 1',
+  'Branches 2',
+  'Branches 3',
+  'Branches 4',
+  'Branches 5',
+  'Branches 6',
+  'Branches 7',
+  'Branches 8',
 ];
 
 List<Map<String, dynamic>> earningsLists = [
@@ -311,6 +392,7 @@ List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending'];
 List<String> reportsTabListAdmin = [
+  'Payroll',
   'Wages',
   'Projects',
   'Attendance',
