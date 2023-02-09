@@ -18,7 +18,7 @@ class AttendanceTab extends StatelessWidget {
         children: [
           PieChart(
               dataMap: datamap,
-              chartRadius: MediaQuery.of(context).size.width / 3.2,
+              chartRadius: w / 3.2,
               chartLegendSpacing: 60,
               colorList: CustomColors.cardColorList,
               chartValuesOptions: const ChartValuesOptions(

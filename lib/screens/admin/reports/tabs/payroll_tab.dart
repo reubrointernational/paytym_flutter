@@ -155,14 +155,7 @@ class _PayrollTabState extends State<PayrollTab> {
                                         ],
                                       ),
                                     ),
-                                    /*Text(
-                                      "\$ ${employees['gross_salary']}",
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                        color: CustomColors.lightBlueColor,
-                                      ),
-                                    ),*/
+                                    
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {

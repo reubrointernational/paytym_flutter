@@ -400,7 +400,13 @@ List<String> reportsTabListAdmin = [
   'Medical',
   'Contract period'
 ];
-List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];
+List<String> reportsTabList = [
+  'Split Payment',
+  'Payslip',
+  'Deduction',
+  'Attendance',
+  'Health'
+];
 List<String> financeReportsTabList = [
   'Projects',
   'Deduction',
@@ -513,7 +519,7 @@ const kTotalString = 'Total';
 
 const kNetPayString = 'Net Pay:';
 
-const kPaySlipString = 'Pay Slip';
+const kPaySlipString = 'Payslip';
 
 const kDeductionString = 'Deduction';
 

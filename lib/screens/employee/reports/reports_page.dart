@@ -13,6 +13,7 @@ import 'attendance_tab.dart';
 import 'deduction_tab.dart';
 import 'medical_tab.dart';
 import 'payslip_tab.dart';
+import 'split_payment_tab.dart';
 import 'widgets/reports_app_bar.dart';
 
 class ReportsPage extends StatelessWidget {
@@ -21,7 +22,6 @@ class ReportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ReportsController reportsController = Get.put(ReportsController());
-    
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -126,7 +126,8 @@ class ReportsPage extends StatelessWidget {
                           child: TabBarView(
                             physics: BouncingScrollPhysics(),
                             children: [
-                              PaySlipTab(),
+                              SplitPaymentTab(),
+                              PayslipTab(),
                               DeductionTab(),
                               AttendanceTab(),
                               MedicalTab(),

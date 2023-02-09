@@ -1,48 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
-import 'package:paytym/core/constants/icons.dart';
+
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
 import 'payment_bottom_sheet.dart';
-import 'payment_controller.dart';
 
-class PaymentMethods extends StatefulWidget {
-  const PaymentMethods({super.key});
+class PaymentMethodRow extends StatefulWidget {
+  const PaymentMethodRow({super.key});
 
   @override
-  State<PaymentMethods> createState() => _PaymentMethodsState();
+  State<PaymentMethodRow> createState() => _PaymentMethodRowState();
 }
 
-class _PaymentMethodsState extends State<PaymentMethods> {
+class _PaymentMethodRowState extends State<PaymentMethodRow> {
   @override
   Widget build(BuildContext context) {
-    final paymentController = Get.put(PaymentController());
-    List<Map<String, dynamic>> paymentMethods = [
-      {
-        'icon': IconPath.windcavePng,
-        'selected': Get.find<PaymentController>().isWindcaveSelected.value,
-        'amount': 00.00
-      },
-      {
-        'icon': IconPath.mPesaPng,
-        'selected': Get.find<PaymentController>().isMpesaSelected.value,
-        'amount': 00.00
-      },
-      {
-        'icon': IconPath.myCashPng,
-        'selected': Get.find<PaymentController>().isMyCashSelected.value,
-        'amount': 00.00
-      },
-    ];
     return SizedBox(
         height: h / 4.5,
         width: w,
         child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            itemCount: paymentMethods.length,
+            itemCount: 3,
             separatorBuilder: (context, index) => const SizedBox(
                   width: 14,
                 ),
@@ -51,7 +33,8 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                 onTap: () {
                   DialogHelper.showBottomSheet(
                     PaymentBottomSheet(
-                        image: paymentController.getImagePath(index),
+                        image:
+                            Get.find<ReportsController>().getImagePath(index),
                         index: index),
                   );
                 },
@@ -100,7 +83,8 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                             )
                           : Center(
                               child: Image.asset(
-                                paymentMethods[index]['icon'],
+                                Get.find<ReportsController>()
+                                    .getImagePath(index),
                                 height: h / 10,
                                 width: w / 5,
                                 fit: BoxFit.contain,
@@ -111,7 +95,7 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                         left: 0,
                         right: 0,
                         child: Text(
-                          '\$${paymentMethods[index]['amount']}',
+                          '\$${Get.find<ReportsController>().splitPaymentAmountList[index]}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16,

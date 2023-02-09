@@ -1,32 +1,25 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:paytym/models/login/user_model.dart';
 import 'package:paytym/models/report/deduction_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
-import 'package:paytym/models/report/request_advance_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:paytym/network/shared_preference_helper.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
-import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
-import '../../../routes/app_routes.dart';
 
-import '../dashboard/widgets/dashboard_bottomsheet.dart';
 
 class ReportsController extends GetxController
     with BaseController, GetTickerProviderStateMixin {
@@ -39,16 +32,14 @@ class ReportsController extends GetxController
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
-  
-  
+
   final deductionResponseModel = DeductionResponseModel().obs;
-  
 
   final selectedDropdownYear = years.first.obs;
   final selectedDropdownMonth = monthsList.first.obs;
   final selectedDropdownDay = daysDummyList.first.obs;
 
-  
+  final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
 
   fetchPayslip() async {
     showLoading();
@@ -67,7 +58,16 @@ class ReportsController extends GetxController
     }
   }
 
-  
+  String getImagePath(int index) {
+    if (index == 0) {
+      return IconPath.windcavePng;
+    } else if (index == 1) {
+      return IconPath.mPesaPng;
+    } else {
+      return IconPath.myCashPng;
+    }
+  }
+
 //todo add onError in getattendance as well. Don't forget '()' will not be present on function
 
   getDeduction() async {
@@ -94,8 +94,6 @@ class ReportsController extends GetxController
     final formatNum = NumberFormat('#.00');
     return formatNum.format(int.parse(value));
   }
-
-
 
   downloadPdf(String? url) async {
     if (url != null && url.isNotEmpty) {
@@ -147,9 +145,6 @@ class ReportsController extends GetxController
   String? notEmptyValidator(String value) {
     return (value.isEmpty) ? 'Value cannot be empty' : null;
   }
-
-  
-
 
   String? descriptionValidator(String value) {
     return GetUtils.isLengthLessThan(value, 5)

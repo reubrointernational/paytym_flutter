@@ -33,11 +33,11 @@ class PaymentController extends GetxController {
     }
   }
 
-  goToMPaisaPayment() async {
-    Mpaisa mpaisa = Mpaisa();
-    MPaisaPaymentModel mPaisaPaymentModel = await mpaisa.connectToMpaisa();
-    if (mPaisaPaymentModel.destinationurl != null) {
-      mpaisa.goToWebViewPage(mPaisaPaymentModel);
-    }
-  }
+  // goToMPaisaPayment() async {
+  //   Mpaisa mpaisa = Mpaisa();
+  //   MPaisaPaymentModel mPaisaPaymentModel = await mpaisa.connectToMpaisa();
+  //   if (mPaisaPaymentModel.destinationurl != null) {
+  //     mpaisa.goToWebViewPage(mPaisaPaymentModel);
+  //   }
+  // }
 }

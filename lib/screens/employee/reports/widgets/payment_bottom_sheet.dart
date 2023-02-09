@@ -3,19 +3,19 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
-import 'payment_card_textfields.dart';
-import 'payment_controller.dart';
+import '../../../split_payment/payment_card_textfields.dart';
+
 
 class PaymentBottomSheet extends StatelessWidget {
   final String? image;
-  final int? index;
-  const PaymentBottomSheet({super.key, this.image, this.index});
+  final int index;
+  const PaymentBottomSheet({super.key, this.image, this.index = 0});
 
   @override
   Widget build(BuildContext context) {
-    
-    final paymentController = Get.put(PaymentController());
+
     return SingleChildScrollView(
       child: Container(
         padding:
@@ -107,7 +107,7 @@ class PaymentBottomSheet extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      paymentController.selectPaymentMethod(index);
+                      Get.find<ReportsController>().splitPaymentAmountList[index] = 2000;
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paytym/core/constants/strings.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/icons.dart';
@@ -10,14 +11,14 @@ class CustomFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    
     return FloatingActionButton(
       onPressed: onPressed,
       backgroundColor: CustomColors.lightBlueColor,
       child: Image.asset(
         IconPath.filterIconPng,
-        height: size.height * 0.06, // 25
-        width: size.width * 0.06,
+        height: h * 0.06, // 25
+        width: w * 0.06,
       ),
     );
   }

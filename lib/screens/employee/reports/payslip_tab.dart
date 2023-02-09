@@ -17,8 +17,8 @@ import '../../widgets/custom_tab_bar.dart';
 
 import 'widgets/year_dropdown.dart';
 
-class PaySlipTab extends StatelessWidget {
-  const PaySlipTab({Key? key}) : super(key: key);
+class PayslipTab extends StatelessWidget {
+  const PayslipTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

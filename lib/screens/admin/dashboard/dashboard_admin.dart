@@ -20,7 +20,7 @@ class DashboardAdmin extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(Routes.scanTime),
-        backgroundColor: CustomColors.fabColor,
+        backgroundColor: CustomColors.lightBlueColor,
         child: const CustomSVG(
           IconPath.scanIconSvg,
           size: 23,
