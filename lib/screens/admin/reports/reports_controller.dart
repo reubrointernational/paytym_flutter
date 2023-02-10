@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +23,9 @@ import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../widgets/reason_bottomsheet.dart';
+import 'widgets/pay_payment.dart';
+import 'widgets/payment_history.dart';
+import 'widgets/pending_payroll_listview.dart';
 
 class ReportsControllerAdmin extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
@@ -39,6 +43,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final selectedBranch = branches.first.obs;
 
   final selectedDropdownYear = years.first.obs;
+  final payrollClickedButton = 0.obs;
 
 
 //for bottomsheet
@@ -104,6 +109,16 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         Get.find<BaseClient>().onError = null;
       }
     }
+  }
+
+  Widget getPayrollTab(){
+    if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value == 0) {
+      return const PendingPayrollListview();
+    } else if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value ==
+        1) {
+      return const PayPayment();
+    }
+    return const PaymentHistory();
   }
 
   String formatNumber(String value) {
