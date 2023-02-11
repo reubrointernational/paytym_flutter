@@ -7,12 +7,13 @@ import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/logout_controller.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:paytym/screens/employee/dashboard/widgets/dashboard_bottomsheet.dart';
+import 'package:paytym/screens/employee/dashboard/widgets/request_advance_bottomsheet.dart';
+import 'package:paytym/screens/employee/dashboard/widgets/request_overtime_bottomsheet.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/constants/enums.dart';
 import '../../../models/login/user_model.dart';
-import '../../../models/report/request_advance_model.dart';
+import '../../../models/dashboard/request_advance_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../../network/shared_preference_helper.dart';
@@ -99,20 +100,36 @@ class DashboardController extends GetxController with BaseController {
 
   onClickMenuItem(DashboardDropDown value) {
     if (value == DashboardDropDown.advance) {
-      DialogHelper.showBottomSheet(const DashboardBottomsheet());
+      DialogHelper.showBottomSheet(const RequestAdvanceBottomsheet());
     } else if (value == DashboardDropDown.logout) {
       showLogoutDialog();
     } else if (value == DashboardDropDown.workProfile) {
       Get.toNamed(Routes.bottomNavAdmin);
+    } else if (value == DashboardDropDown.overTime) {
+      DialogHelper.showBottomSheet(const RequestOvertimeBottomsheet());
     } else {
       Get.back();
     }
+  }
+
+  String? reasonValidator(String value) {
+    return GetUtils.isLengthLessThan(value, 5)
+        ? "Enter a valid reason"
+        : null;
   }
 
   showLogoutDialog() {
     DialogHelper.showConfirmDialog(
       onConfirm: logout,
     );
+  }
+
+  String? dateValidator(String value) {
+    final regExp =
+        RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
+    return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
+        ? null
+        : "Enter a valid date";
   }
 
   logout() async {

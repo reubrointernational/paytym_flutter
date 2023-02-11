@@ -5,8 +5,10 @@ import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/styles.dart';
 
 class BottomsheetTextField extends StatelessWidget {
+  final Widget? suffixIcon;
   final String? hintText;
   final bool? enabled;
+  final int? maxLength;
   final String? Function(String?)? validator;
   final String? text;
   final void Function(String?)? onSaved;
@@ -22,7 +24,8 @@ class BottomsheetTextField extends StatelessWidget {
       this.validator,
       this.onSaved,
       this.inputFormatters,
-      this.maxLines = 1});
+      this.maxLines = 1,
+      this.suffixIcon, this.maxLength});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +38,10 @@ class BottomsheetTextField extends StatelessWidget {
       enabled: enabled,
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
+      maxLength: maxLength,
       decoration: InputDecoration(
-        contentPadding:
-            const EdgeInsets.all(10),
+        suffixIcon: suffixIcon,
+        contentPadding: const EdgeInsets.all(10),
         hintText: hintText,
         hintStyle: const TextStyle(
           color: CustomColors.greyTextColor,

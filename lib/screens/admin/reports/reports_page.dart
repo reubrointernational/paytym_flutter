@@ -21,7 +21,7 @@ import 'tabs/contract_period_tab.dart';
 import 'tabs/medical_tab.dart';
 import 'reports_controller.dart';
 import 'tabs/payroll_tab.dart';
-import 'tabs/wages_list.dart';
+import 'tabs/overtime_tab.dart';
 
 class ReportsPageAdmin extends StatelessWidget {
   const ReportsPageAdmin({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class ReportsPageAdmin extends StatelessWidget {
       title: kReportsString,
       children: const [
         PayrollTab(),
-        WagesTabAdmin(),
+        OvertimeTabAdmin(),
         ProjectsTabAdmin(),
         AttendanceTabAdmin(),
         DeductionTabAdmin(),

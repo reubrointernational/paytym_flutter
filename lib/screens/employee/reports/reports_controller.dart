@@ -95,6 +95,21 @@ class ReportsController extends GetxController
     return formatNum.format(int.parse(value));
   }
 
+
+
+  String? amountValidator(String value) {
+    if (value.isEmpty) {
+      return 'Value cannot be empty';
+    } else if (int.parse(
+            payslipResponseModel.value.payroll?.salary ?? '10000') <
+        int.parse(value)) {
+      return 'Request amount should be less than salary';
+    } else if (int.parse(value) < 50) {
+      return 'Request amount should be greater than 50';
+    }
+    return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
+  }
+
   downloadPdf(String? url) async {
     if (url != null && url.isNotEmpty) {
       sharePath = '';
@@ -129,27 +144,10 @@ class ReportsController extends GetxController
     }
   }
 
-  String? amountValidator(String value) {
-    if (value.isEmpty) {
-      return 'Value cannot be empty';
-    } else if (int.parse(
-            payslipResponseModel.value.payroll?.salary ?? '10000') <
-        int.parse(value)) {
-      return 'Request amount should be less than salary';
-    } else if (int.parse(value) < 50) {
-      return 'Request amount should be greater than 50';
-    }
-    return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
-  }
+  
 
   String? notEmptyValidator(String value) {
     return (value.isEmpty) ? 'Value cannot be empty' : null;
-  }
-
-  String? descriptionValidator(String value) {
-    return GetUtils.isLengthLessThan(value, 5)
-        ? "Enter a valid description"
-        : null;
   }
 
   String getDate(String date) {

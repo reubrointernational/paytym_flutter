@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:paytym/screens/employee/leaves/leaves_controller.dart';
 import '../../../models/leaves/leaves_response.dart';
 import 'leaves_controller.dart';
 import 'widgets/leave_card.dart';
@@ -11,7 +10,6 @@ class LeavesTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(leave);
     return Obx(() {
       List<LeaveRequest>? allLeaves;
       allLeaves = (leave == 'All')

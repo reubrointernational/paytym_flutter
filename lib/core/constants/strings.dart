@@ -395,7 +395,7 @@ List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending'];
 List<String> reportsTabListAdmin = [
   'Payroll',
-  'Wages',
+  'Overtime',
   'Projects',
   'Attendance',
   'Deduction',
@@ -539,11 +539,15 @@ const kTypeTheReasonString = 'Type The Reason';
 
 const kRequestAdvanceString = 'Request Advance';
 
+const kRequestOvertimeString = 'Request Overtime';
+
 const kLogoutString = 'Logout';
 
 const kAmountString = 'Amount';
 
-const kDescString = 'Description';
+const kStartTimeString = 'Start time';
+
+const kEndTimeString = 'End time';
 
 const kSalaryString = 'Salary';
 
