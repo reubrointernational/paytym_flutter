@@ -45,7 +45,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/png/logo.png"
+  image_path: "assets/png/logo_square.png"
 
 flutter:
   uses-material-design: true
