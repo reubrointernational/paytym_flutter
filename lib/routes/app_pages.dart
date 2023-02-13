@@ -93,5 +93,6 @@ class AppPages {
       name: Routes.selectChatUsersPage,
       page: () => const SelectChatUsersPage(),
     ),
+    
   ];
 }

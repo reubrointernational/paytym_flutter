@@ -15,7 +15,6 @@ class DashboardAdmin extends StatelessWidget {
   const DashboardAdmin({super.key});
   @override
   Widget build(BuildContext context) {
-    
         Get.put(DashboardControllerAdmin());
     return Scaffold(
       floatingActionButton: FloatingActionButton(

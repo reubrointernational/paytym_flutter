@@ -24,6 +24,8 @@ class LoginController extends GetxController with BaseController {
   final formKeyForgotPassword = GlobalKey<FormState>();
   final formKeyResetPassword = GlobalKey<FormState>();
   RxList<String> otpList = ['', '', '', ''].obs;
+  final bottomNavigationAdminIndex = 0.obs;
+  int? initialIndex = 0;
 
   Map<String, String>? getHeader() {
     return {

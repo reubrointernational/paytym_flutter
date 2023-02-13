@@ -13,19 +13,12 @@ class ProjectsTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsControllerAdmin>().getDeduction());
-    return Obx(
-      () => ListView.builder(
+    return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: Get.find<ReportsControllerAdmin>()
-                .deductionResponseModel
-                .value
-                .deductions
-                ?.length ??
-            0,
+        itemCount: 3,
         itemBuilder: (context, index) {
           return Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade200),
                 borderRadius: BorderRadius.circular(10)),
@@ -219,20 +212,42 @@ class ProjectsTabAdmin extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Text(
-                  "Total Cost: \$ 365,500",
-                  style: TextStyle(
-                    color: CustomColors.grey156x3TextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                Row(
+                  children: const [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          "Total Cost: \$ 365,500",
+                          style: TextStyle(
+                            color: CustomColors.grey156x3TextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    kSizedBoxH12,
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          "Remaining: \$ 5,500",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: CustomColors.grey156x3TextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                kSizedBoxH20,
+                kSizedBoxH12,
               ],
             ),
           );
-        },
-      ),
-    );
+        });
   }
 }

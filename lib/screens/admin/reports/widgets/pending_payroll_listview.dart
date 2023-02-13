@@ -81,10 +81,6 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                   padding: const EdgeInsets.only(bottom: 10),
                                   child: Row(
                                     children: [
-                                      //Approve is for Supervisor
-                                      processButton(
-                                          'Approve', CustomColors.greenColor),
-                                      kSizedBoxW10,
                                       //Process & Reverse is for HR
                                       processButton(
                                           'Process', CustomColors.greenColor),
@@ -184,8 +180,6 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
       ),
     );
   }
-
-  
 }
 
 Widget processButton(String text, Color color) => Container(

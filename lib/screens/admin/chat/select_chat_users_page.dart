@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/routes/app_routes.dart';
 import 'package:paytym/screens/admin/chat/chat_controller.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
@@ -73,85 +74,113 @@ class SelectChatUsersPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-              child: SizedBox(
-                height: 60,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Stack(
-                        children: const [
-                          CircleAvatar(
-                            radius: 28,
-                            backgroundColor: Colors.black,
-                          ),
-                          Positioned(
-                            bottom: 5,
-                            right: 0,
-                            child: CircleAvatar(
-                              radius: 10,
-                              backgroundColor: Colors.red,
-                              child: Icon(
-                                Icons.close,
-                                size: 15,
-                                color: Colors.white,
+              child: Obx(() {
+                var chatList = Get.find<ChatControllerAdmin>()
+                    .chatGroupList
+                    .where((element) => element.isSelected)
+                    .toList();
+
+                return SizedBox(
+                    height: chatList.isEmpty ? 0 : 60,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: chatList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 28,
+                                backgroundImage:
+                                    NetworkImage(chatList[index].image),
                               ),
-                            ),
+                              Positioned(
+                                bottom: 5,
+                                right: 0,
+                                child: CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: Colors.red,
+                                  child: InkWell(
+                                    onTap: () {
+                                      chatList[index].isSelected = false;
+                                      Get.find<ChatControllerAdmin>()
+                                          .chatGroupList
+                                          .refresh();
+                                    },
+                                    child: const Icon(
+                                      Icons.close,
+                                      size: 15,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+                        );
+                      },
+                    ));
+              }),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: ListView.builder(
-                  itemCount: 6,
+                  itemCount:
+                      Get.find<ChatControllerAdmin>().chatGroupList.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(width: 1.2, color: Colors.grey.shade400),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        title: const Text(
-                          'John Smith',
-                          style: kTextStyleS18W600CBlack,
-                        ),
-                        subtitle: const Text('ID: 002145'),
-                        leading: Stack(
-                          children: const [
-                            CircleAvatar(
-                                radius: 28, backgroundColor: Colors.black),
-                            Positioned(
-                              bottom: 2,
-                              right: 0,
-                              child: CircleAvatar(
-                                radius: 10,
-                                backgroundColor: Colors.green,
-                                child: Icon(
-                                  Icons.done,
-                                  size: 15,
-                                  color: Colors.white,
-                                ),
+                    var chatList =
+                        Get.find<ChatControllerAdmin>().chatGroupList;
+                    return Obx(() => InkWell(
+                          onTap: () => Get.find<ChatControllerAdmin>()
+                              .updateChatSelection(index),
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1.2, color: Colors.grey.shade400),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                chatList[index].name,
+                                style: kTextStyleS18W600CBlack,
+                              ),
+                              subtitle: Text(chatList[index].id),
+                              leading: Stack(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 28,
+                                    backgroundImage:
+                                        NetworkImage(chatList[index].image),
+                                  ),
+                                  Positioned(
+                                    bottom: 2,
+                                    right: 0,
+                                    child: Visibility(
+                                      visible: chatList[index].isSelected,
+                                      child: const CircleAvatar(
+                                        radius: 10,
+                                        backgroundColor: Colors.green,
+                                        child: Icon(
+                                          Icons.done,
+                                          size: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              trailing: Text(
+                                chatList[index].branch,
+                                style: kTextStyleS13W500Cgrey,
                               ),
                             ),
-                          ],
-                        ),
-                        trailing: const Text(
-                          'Branch',
-                          style: kTextStyleS13W500Cgrey,
-                        ),
-                      ),
-                    );
+                          ),
+                        ));
                   },
                 ),
               ),

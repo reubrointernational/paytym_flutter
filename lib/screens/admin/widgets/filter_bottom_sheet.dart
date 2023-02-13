@@ -31,7 +31,7 @@ showCustomBottomSheet(context, controller) {
                     ),
                     CustomSearchTextField(
                       iconImg: IconPath.searchIconPng,
-                      hintText: 'Search',
+                      hintText: 'Search', controller: null,
                     ),
                   ]),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -387,7 +387,7 @@ List<Map<String, dynamic>> earningsLists = [
   },
 ];
 
-List<String> payrollTabList = ['Pending', 'Payment', 'Paid'];
+List<String> payrollTabList = ['Pending', 'Payment', 'Payment History'];
 
 // List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];

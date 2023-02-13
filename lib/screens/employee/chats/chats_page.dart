@@ -22,7 +22,6 @@ class ChatPage extends StatelessWidget {
         backgroundColor: CustomColors.backgroundColor,
       ),
       backgroundColor: CustomColors.backgroundColor,
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -99,6 +98,7 @@ class ChatPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
+                        
                         controller:
                             Get.find<ChatController>().chatTextController,
                         decoration: const InputDecoration(

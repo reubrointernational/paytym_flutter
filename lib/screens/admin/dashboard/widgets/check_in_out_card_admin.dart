@@ -1,12 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paytym/core/custom_slider_thumb.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../employee/dashboard/dashboard_controller.dart';
 
 class CheckInOutCardAdmin extends StatelessWidget {
   const CheckInOutCardAdmin({super.key});
@@ -55,22 +57,30 @@ class CheckInOutCardAdmin extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SliderTheme(
-                        data: SliderThemeData(
-                          overlayShape: SliderComponentShape.noOverlay,
-                          thumbShape: const CustomRoundSliderThumbShape(
-                            enabledThumbRadius: 18.0,
-                          ),
-                        ),
-                        child: Slider(
-                            value: 20,
-                            max: 100,
-                            thumbColor: CustomColors.lightBlueColor,
-                            inactiveColor: CustomColors.lightBlueColor,
-                            activeColor: CustomColors.whiteTextColor,
-                            onChanged: (double value) {},
-                            onChangeEnd: (double value) {}),
-                      ),
+                      Obx(() => SliderTheme(
+                            data: SliderThemeData(
+                              overlayShape: SliderComponentShape.noOverlay,
+                              thumbShape: const CustomRoundSliderThumbShape(
+                                enabledThumbRadius: 18.0,
+                              ),
+                            ),
+                            child: Slider(
+                              value: Get.find<DashboardController>()
+                                  .sliderValue
+                                  .value,
+                              max: 100,
+                              thumbColor: CustomColors.lightBlueColor,
+                              inactiveColor: CustomColors.lightBlueColor,
+                              activeColor: CustomColors.whiteTextColor,
+                              onChanged: (double value) {
+                                Get.find<DashboardController>()
+                                    .changeSliderPosition(value);
+                              },
+                              onChangeEnd: (double value) =>
+                                  Get.find<DashboardController>()
+                                      .sliderController(value),
+                            ),
+                          )),
                     ],
                   ),
                 ),

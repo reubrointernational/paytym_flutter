@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paytym/screens/admin/leaves/leaves_page.dart';
+import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../employee/bottom_nav/bottom_nav_controller.dart';
@@ -17,7 +19,7 @@ class BottomNavigationPageAdmin extends StatefulWidget {
 }
 
 class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
-  int _currentIndex = 0;
+  
 
   Widget switchWidgets(index) {
     switch (index) {
@@ -41,35 +43,35 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
       onWillPop: () async {
         return false;
       },
-      child: Scaffold(
-        backgroundColor: CustomColors.backgroundColor,
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 0,
-          backgroundColor: CustomColors.lightBlueColor,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.red,
-          unselectedItemColor: CustomColors.whiteCardColor,
-          selectedFontSize: 10,
-          unselectedFontSize: 10,
-          currentIndex: _currentIndex,
-          onTap: (value) {
-            setState(() {
-              _currentIndex = value;
-            });
-          },
-          items: List.generate(
-            BottomNavController.bottomNavModelList.length,
-            (index) => BottomNavigationBarItem(
-              icon: Icon(
-                BottomNavController.bottomNavModelList[index].icon,
-                size: 20,
+      child: Obx(() => Scaffold(
+            backgroundColor: CustomColors.backgroundColor,
+            bottomNavigationBar: BottomNavigationBar(
+              elevation: 0,
+              backgroundColor: CustomColors.lightBlueColor,
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.red,
+              unselectedItemColor: CustomColors.whiteCardColor,
+              selectedFontSize: 10,
+              unselectedFontSize: 10,
+              currentIndex: Get.find<LoginController>().bottomNavigationAdminIndex.value,
+              onTap: (value) {
+                Get.find<LoginController>().bottomNavigationAdminIndex.value =
+                    value;
+              },
+              items: List.generate(
+                BottomNavController.bottomNavModelList.length,
+                (index) => BottomNavigationBarItem(
+                  icon: Icon(
+                    BottomNavController.bottomNavModelList[index].icon,
+                    size: 20,
+                  ),
+                  label: BottomNavController.bottomNavModelList[index].label,
+                ),
               ),
-              label: BottomNavController.bottomNavModelList[index].label,
             ),
-          ),
-        ),
-        body: switchWidgets(_currentIndex),
-      ),
+            body: switchWidgets(
+                Get.find<LoginController>().bottomNavigationAdminIndex.value),
+          )),
     );
   }
 }

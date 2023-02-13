@@ -54,96 +54,114 @@ class ChatListingPageAdmin extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Column(children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: CustomSearchTextField(
+                    controller: Get.find<ChatControllerAdmin>(),
                     iconImg: IconPath.searchIconPng,
                     hintText: 'Search for chats & messages',
                   ),
                 ),
                 kSizedBoxH8,
                 Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () => Get.toNamed(Routes.adminChat),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 12),
-                          child: Row(
-                            children: [
-                              Stack(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 25,
-                                    backgroundColor: Colors.pink.shade200,
-                                    child: const Center(
-                                        child: Text(
-                                      'J',
-                                      style: TextStyle(
-                                        color: Colors.purple,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    )),
-                                  ),
-                                  const Positioned(
-                                    right: 2,
-                                    bottom: 0,
-                                    child: CircleAvatar(
-                                        radius: 8,
-                                        backgroundColor:
-                                            Color.fromARGB(255, 0, 226, 117)),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Obx(() {
+                    var dummy = Get.find<ChatControllerAdmin>()
+                        .dummyData
+                        .where((element) => element.toLowerCase().contains(
+                            Get.find<ChatControllerAdmin>()
+                                .searchKeyword
+                                .value
+                                .toLowerCase()))
+                        .toList();
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: dummy.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () => Get.toNamed(Routes.adminChat),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 12),
+                            margin: const EdgeInsets.only(bottom: 6),
+                            decoration: BoxDecoration(
+                              color:
+                                  CustomColors.lightBlueColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Stack(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Text(
-                                          'John Smith',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                    CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor: Colors.pink.shade200,
+                                      child: Center(
+                                          child: Text(
+                                        dummy[index].substring(0, 1),
+                                        style: const TextStyle(
+                                          color: Colors.purple,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        Text(
-                                          '1/2/2022',
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color: CustomColors.greyIconColor,
-                                          ),
-                                        ),
-                                      ],
+                                      )),
                                     ),
-                                    kSizedBoxH2,
-                                    const Text(
-                                      'Hai, John! How are you doing?',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: CustomColors.greyIconColor,
-                                      ),
+                                    const Positioned(
+                                      right: 2,
+                                      bottom: 0,
+                                      child: CircleAvatar(
+                                          radius: 8,
+                                          backgroundColor:
+                                              Color.fromARGB(255, 0, 226, 117)),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            dummy[index],
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          const Text(
+                                            '1/2/2022',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: CustomColors.greyIconColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      kSizedBoxH2,
+                                      const Text(
+                                        'Hai, John! How are you doing?',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: CustomColors.greyIconColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    );
+                  }),
                 ),
               ]),
             ),
