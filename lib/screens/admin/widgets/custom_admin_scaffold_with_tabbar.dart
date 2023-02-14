@@ -1,24 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paytym/screens/login/login_controller.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
+import 'custom_floating_action_button.dart';
 import '../../widgets/custom_tab_bar.dart';
 
 class CustomAdminScaffoldWithTabBar extends StatelessWidget {
   final List<String> tabList;
   final String title;
   final List<Widget> children;
+
   const CustomAdminScaffoldWithTabBar(
       {super.key,
       required this.tabList,
       required this.title,
       required this.children});
 
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Get.find<LoginController>().initialIndex = 0);
     return DefaultTabController(
+      initialIndex: Get.find<LoginController>().initialIndex ?? 0,
       length: tabList.length,
       child: Scaffold(
+        floatingActionButton: CustomFloatingActionButton(
+          isLeavesController: title == 'Leaves',
+        ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(

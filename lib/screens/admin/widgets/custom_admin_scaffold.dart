@@ -4,17 +4,22 @@ import '../../../core/constants/styles.dart';
 
 class CustomAdminScaffold extends StatelessWidget {
   final String title;
-  final Widget widget;
+  final Widget child;
+  final Widget? trailing;
+  final Widget? floatingActionButton;
 
   const CustomAdminScaffold({
     super.key,
     required this.title,
-    required this.widget,
+    required this.child,
+    this.floatingActionButton,
+    this.trailing,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: floatingActionButton,
       appBar: AppBar(
         title: Text(
           title,
@@ -30,9 +35,11 @@ class CustomAdminScaffold extends StatelessWidget {
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
           ),
-          child: widget,
+          child: child,
         ),
       ),
     );

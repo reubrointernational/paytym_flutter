@@ -68,10 +68,28 @@ const kTextStyleS15W600CBlack = TextStyle(
   color: Colors.black,
 );
 
+const kTextStyleS15W600CWhite = TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.w600,
+  color: Colors.white,
+);
+
+const kTextStyleS18W600CBlack = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w600,
+  color: Colors.black,
+);
+
 const kTextStyleS15W600CGrey = TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.w600,
   color: Colors.grey,
+);
+
+const kTextStyleS15W600CGreen = TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.w600,
+  color: Colors.green,
 );
 
 const kTextStyleS18W600 = TextStyle(

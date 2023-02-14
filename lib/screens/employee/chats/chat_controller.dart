@@ -11,6 +11,9 @@ import '../../../network/end_points.dart';
 class ChatController extends GetxController with BaseController {
   final chatResponseModel = ChatResponseModel().obs;
   final TextEditingController chatTextController = TextEditingController();
+  final searchKeyword = ''.obs;
+  List<String> dummy_data = ['John Smith', 'Michael', 'Hohmin', 'Lappa'];
+
   final ScrollController scrollController = ScrollController();
   @override
   void onReady() {

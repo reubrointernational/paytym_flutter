@@ -11,8 +11,8 @@ import '../../../core/dialog_helper.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
-import '../dashboard/widgets/dashboard_bottomsheet.dart';
-import '../reports/widgets/reports_bottomsheet.dart';
+import '../dashboard/widgets/request_advance_bottomsheet.dart';
+
 
 class CalendarController extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
@@ -70,15 +70,5 @@ class CalendarController extends GetxController with BaseController {
     getEvents();
   }
 
-  onClickMenuItem(CalendarTabs value, BuildContext context) {
-    if (value == CalendarTabs.meeting) {
-      // showDialog(
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return const AddMeetingDialogue();
-      //     });
-    } else if (value == CalendarTabs.events) {
-      DialogHelper.showBottomSheet(const ReportsBottomsheet());
-    }
-  }
+
 }

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.7+1
+version: 1.1.2+1
 
 environment:
   sdk: ">=2.18.2 <3.3.6"
@@ -11,6 +11,7 @@ environment:
 dependencies:
   cached_network_image: ^3.2.2
   cupertino_icons: ^1.0.2
+  dotted_border: ^2.0.0+3
   firebase_core: ^2.1.1
   firebase_messaging: ^14.0.4
   flutter:
@@ -23,6 +24,7 @@ dependencies:
   flutter_svg: ^1.1.5
   fluttertoast: ^8.1.1
   get: ^4.6.5
+  image_picker: ^0.8.6+1
   intl: ^0.17.0
   lottie: ^1.4.3
   mobile_scanner: ^2.1.0
@@ -43,7 +45,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/png/logo.png"
+  image_path: "assets/png/logo_square.png"
 
 flutter:
   uses-material-design: true
@@ -55,10 +57,12 @@ flutter:
     - assets/png/
   #   - images/a_dot_ham.jpeg
 fonts:
+  # todo remove font
   - family: DMSerif
     fonts:
       - asset: assets/fonts/dm_serif/DMSerifDisplay-Regular.ttf
       - asset: assets/fonts/dm_serif/DMSerifDisplay-Italic.ttf
+
 # fonts:
 #   - family: Schyler
 #     fonts:

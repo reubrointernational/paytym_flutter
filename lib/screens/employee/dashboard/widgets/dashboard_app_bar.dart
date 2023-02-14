@@ -45,15 +45,14 @@ class DashboardAppBar extends StatelessWidget {
               ),
             ]),
             kSizedBoxW15,
-            
             PopupMenuButton<DashboardDropDown>(
-               color: CustomColors.blueTextColor,
+              color: CustomColors.blueTextColor,
               itemBuilder: (BuildContext context) => List.generate(
-                3,
+                4,
                 (index) => PopupMenuItem(
-                  value: kReportDropDownItemList[index].dropDownItem,
+                  value: kDashboardDropDownItemList[index].dropDownItem,
                   child: Text(
-                    kReportDropDownItemList[index].label,
+                    kDashboardDropDownItemList[index].label,
                     style: const TextStyle(
                       color: CustomColors.whiteTextColor,
                     ),

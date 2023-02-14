@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:paytym/screens/login/login_controller.dart';
+import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import 'package:paytym/screens/employee/reports/widgets/bottomsheet_text_field.dart';
-
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../leaves/leaves_controller.dart';
 
-class DashboardBottomsheet extends StatelessWidget {
-  const DashboardBottomsheet({super.key});
-
+class RequestAdvanceBottomsheet extends StatelessWidget {
+  const RequestAdvanceBottomsheet({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,31 +36,27 @@ class DashboardBottomsheet extends StatelessWidget {
           ),
           kSizedBoxH10,
           Form(
-            key: Get.find<ReportsController>().requestAdvanceFormKey,
+            key: Get.find<DashboardController>().requestAdvanceFormKey,
             child: Column(
               children: [
-                BottomsheetTextField(
-                  text:
-                      '${Get.find<LoginController>().loginResponseModel?.employee?.firstName} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName}',
-                  enabled: false,
-                ),
-                kSizedBoxH10,
                 BottomsheetTextField(
                   hintText: kAmountString,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  //todo amount validator need salary details of the employee
                   validator: (value) =>
                       Get.find<ReportsController>().amountValidator(value!),
-                  onSaved: (value) => Get.find<ReportsController>()
+                  onSaved: (value) => Get.find<DashboardController>()
                       .requestAdvanceModel
                       .amount = value!,
                 ),
                 kSizedBoxH10,
                 BottomsheetTextField(
-                  hintText: kDescString,
-                  validator: (value) => Get.find<ReportsController>()
-                      .descriptionValidator(value!),
-                  onSaved: (value) => Get.find<ReportsController>()
+                  maxLines: 3,
+                  hintText: kReasonString,
+                  validator: (value) =>
+                      Get.find<DashboardController>().reasonValidator(value!),
+                  onSaved: (value) => Get.find<DashboardController>()
                       .requestAdvanceModel
                       .description = value!,
                 ),
@@ -71,7 +68,7 @@ class DashboardBottomsheet extends StatelessWidget {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => Get.find<ReportsController>().requestAdvance(),
+              onPressed: () => Get.find<DashboardController>().requestAdvance(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(

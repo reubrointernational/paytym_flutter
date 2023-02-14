@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'core/init_app.dart';
+import 'logout_controller.dart';
 import 'routes/app_pages.dart';
 
 void main() async {
@@ -17,7 +18,6 @@ void main() async {
     },
     appRunner: () => runApp(const MyApp()),
   );
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -25,13 +25,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    LogoutController logoutController = Get.put(LogoutController());
+    return Listener(
+      onPointerDown: ((event) => logoutController.restartTimer()),
+      child: GetMaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppPages.initial,
+        getPages: AppPages.routes,
       ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppPages.initial,
-      getPages: AppPages.routes,
     );
   }
 }

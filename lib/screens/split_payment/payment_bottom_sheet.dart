@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
 
 import 'payment_card_textfields.dart';
@@ -13,7 +14,7 @@ class PaymentBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    
     final paymentController = Get.put(PaymentController());
     return SingleChildScrollView(
       child: Container(
@@ -58,8 +59,8 @@ class PaymentBottomSheet extends StatelessWidget {
                     ),
                     Image.asset(
                       image!,
-                      height: size.height / 15,
-                      width: size.width / 5,
+                      height: h / 15,
+                      width: w / 5,
                       fit: BoxFit.contain,
                     ),
                   ],
@@ -83,13 +84,13 @@ class PaymentBottomSheet extends StatelessWidget {
                     PaymentCardTextFields(
                       hint: 'Expiry Date',
                       label: '05/23',
-                      width: size.width / 2 - 22,
+                      width: w / 2 - 22,
                       keyboardType: TextInputType.datetime,
                     ),
                     PaymentCardTextFields(
                       hint: 'CCV',
                       label: '159',
-                      width: size.width / 2 - 22,
+                      width: w / 2 - 22,
                       keyboardType: TextInputType.number,
                     ),
                   ],
@@ -100,9 +101,9 @@ class PaymentBottomSheet extends StatelessWidget {
                     width: double.infinity,
                     keyboardType: TextInputType.number),
                 kSizedBoxH15,
-                Container(
-                  height: size.height / 14,
-                  width: size.width,
+                SizedBox(
+                  height: h / 14,
+                  width: w,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);

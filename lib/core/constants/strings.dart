@@ -163,6 +163,60 @@ List<String> branches = [
   'Deployment'
 ];
 
+List<Map<String, dynamic>> hrDetails = [
+  {
+    'icon': IconPath.projectIconPng,
+    'title': 'Absentees',
+    'count': 8,
+    'color': Colors.green,
+  },
+  {
+    'icon': IconPath.attendanceIconPng,
+    'title': 'Sick leave',
+    'count': 2,
+    'color': Colors.red,
+  },
+  {
+    'icon': IconPath.absenteesIconPng,
+    'title': 'Annual leave',
+    'count': 3,
+    'color': Colors.orange,
+  },
+  {
+    'icon': IconPath.meetingsIconPng,
+    'title': 'Late Arrival',
+    'count': 5,
+    'color': Colors.blue,
+  },
+];
+
+List<Map<String, dynamic>> financeDetails = [
+  {
+    'icon': IconPath.projectIconPng,
+    'title': 'Absentees',
+    'count': 3,
+    'color': Colors.green,
+  },
+  {
+    'icon': IconPath.attendanceIconPng,
+    'title': 'Sick leave',
+    'count': 1,
+    'color': Colors.red,
+  },
+  {
+    'icon': IconPath.absenteesIconPng,
+    'title': 'Annual leave',
+    'count': 2,
+    'color': Colors.orange,
+  },
+  {
+    'icon': IconPath.meetingsIconPng,
+    'title': 'Late Arrival',
+    'count': 4,
+    'color': Colors.blue,
+  },
+];
+
 List<Map<String, dynamic>> totalEmployeesDetails = [
   {
     'icon': IconPath.projectIconPng,
@@ -190,9 +244,79 @@ List<Map<String, dynamic>> totalEmployeesDetails = [
   },
 ];
 
+List<String> selectMembersTabs = ['Departments ', 'Branches '];
+
+List<Map<String, dynamic>> payrollList = [
+  {
+    'id': '6386282927',
+    'name': 'Akhil Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+  {
+    'id': '402921927',
+    'name': 'Robin Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+  {
+    'id': '6388882927',
+    'name': 'Sreehari Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+  {
+    'id': '4993483927',
+    'name': 'Sooraj Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+  {
+    'id': '94842927',
+    'name': 'Sreejith Reubro',
+    'branch': 'Branch',
+    'allowance': 2000,
+    'deduction': 500,
+    'basic_salary': 15000,
+    'tax': 100,
+    'gross_salary': 14000,
+    'bonus': 200,
+    'commission': 500,
+    'isExpanded': false,
+  },
+];
+
 List<String> years = ['2018', '2019', '2020', '2021', '2022', '2023', '2024'];
 
-List<String> monthsTabList = [
+List<String> monthsList = [
   'Jan',
   'Feb',
   'Mar',
@@ -207,17 +331,91 @@ List<String> monthsTabList = [
   'Dec'
 ];
 
+List<String> daysDummyList = [
+  '08-02-2023',
+  '09-02-2023',
+  '10-02-2023',
+  '11-02-2023'
+];
+
+List<String> branchesDummyData = [
+  'Branches 1',
+  'Branches 2',
+  'Branches 3',
+  'Branches 4',
+  'Branches 5',
+  'Branches 6',
+  'Branches 7',
+  'Branches 8',
+];
+
+List<Map<String, dynamic>> earningsLists = [
+  {
+    'id': '6386282927',
+    'name': 'Akhil Reubro',
+    'salary': 50000,
+    'branch': 'Branch',
+    'days': 23,
+  },
+  {
+    'id': '402921927',
+    'name': 'Robin Reubro',
+    'salary': 60000,
+    'branch': 'Branch',
+    'days': 16,
+  },
+  {
+    'id': '6388882927',
+    'name': 'Sreehari Reubro',
+    'salary': 90000,
+    'branch': 'Branch',
+    'days': 18,
+  },
+  {
+    'id': '4993483927',
+    'name': 'Sooraj Reubro',
+    'salary': 40000,
+    'branch': 'Branch',
+    'days': 22,
+  },
+  {
+    'id': '94842927',
+    'name': 'Sreejith Reubro',
+    'salary': 70000,
+    'branch': 'Branch',
+    'days': 20,
+  },
+];
+
+List<String> payrollTabList = ['Pending', 'Payment', 'Payment History'];
+
 // List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
+List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending'];
 List<String> reportsTabListAdmin = [
+  'Uploads',
+  'Payroll',
+  'Overtime',
   'Projects',
   'Attendance',
   'Deduction',
   'Medical',
   'Contract period'
 ];
-List<String> reportsTabList = ['Pay Slip', 'Deduction', 'Attendance', 'Health'];
+List<String> reportsTabList = [
+  'My Files',
+  'Split Payment',
+  'Payslip',
+  'Deduction',
+  'Attendance',
+  'Health'
+];
+List<String> financeReportsTabList = [
+  'Projects',
+  'Deduction',
+  'Contract period'
+];
 
 const kAppNameString = 'Paytym';
 
@@ -325,7 +523,7 @@ const kTotalString = 'Total';
 
 const kNetPayString = 'Net Pay:';
 
-const kPaySlipString = 'Pay Slip';
+const kPaySlipString = 'Payslip';
 
 const kDeductionString = 'Deduction';
 
@@ -343,11 +541,15 @@ const kTypeTheReasonString = 'Type The Reason';
 
 const kRequestAdvanceString = 'Request Advance';
 
+const kRequestOvertimeString = 'Request Overtime';
+
 const kLogoutString = 'Logout';
 
 const kAmountString = 'Amount';
 
-const kDescString = 'Description';
+const kStartTimeString = 'Start time';
+
+const kEndTimeString = 'End time';
 
 const kSalaryString = 'Salary';
 

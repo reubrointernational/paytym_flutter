@@ -4,27 +4,29 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:paytym/models/login/user_model.dart';
 import 'package:paytym/models/report/deduction_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
-import 'package:paytym/models/report/request_advance_model.dart';
+import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:paytym/network/shared_preference_helper.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
-import '../../../routes/app_routes.dart';
+import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
-
+import 'widgets/pay_payment.dart';
+import 'widgets/payment_history.dart';
+import 'widgets/pending_payroll_listview.dart';
 
 class ReportsControllerAdmin extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
@@ -38,30 +40,18 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final deductionResponseModel = DeductionResponseModel().obs;
   String quitCompanyReason = '';
 
-  showLogoutDialog() {
-    DialogHelper.showConfirmDialog(
-      onConfirm: logout,
-    );
-  }
+  final selectedDepartment = departments.first.obs;
+  final selectedBranch = branches.first.obs;
+
+  final selectedDropdownYear = years.first.obs;
+  final payrollClickedButton = 0.obs;
+
+  final chatGroupList = dummy_data.obs;
+
 
 //for bottomsheet
   showBottomSheetForReason() {
     DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
-  }
-
-  logout() async {
-    showLoading();
-    var responseString = await Get.find<BaseClient>()
-        .post(
-            ApiEndPoints.logout, null, Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-
-    if (responseString == null) {
-      return;
-    } else {
-      hideLoading();
-      resetControllerAndGoToLogin();
-    }
   }
 
   fetchPayslip() async {
@@ -124,16 +114,19 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  Widget getPayrollTab(){
+    if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value == 0) {
+      return const PendingPayrollListview();
+    } else if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value ==
+        1) {
+      return const PayPayment();
+    }
+    return const PaymentHistory();
+  }
+
   String formatNumber(String value) {
     final formatNum = NumberFormat('#.00');
     return formatNum.format(int.parse(value));
-  }
-
-  resetControllerAndGoToLogin() {
-    Get.find<LoginController>().loginResponseModel = null;
-    Get.find<LoginController>().userModel = UserModel();
-    Get.find<SharedPreferenceHelper>().deleteAll();
-    Get.offAllNamed(Routes.login);
   }
 
   downloadPdf(String? url) async {

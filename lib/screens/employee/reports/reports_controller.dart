@@ -1,31 +1,25 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:paytym/models/login/user_model.dart';
 import 'package:paytym/models/report/deduction_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
-import 'package:paytym/models/report/request_advance_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:paytym/network/shared_preference_helper.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../core/constants/icons.dart';
+import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
-import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
-import '../../../routes/app_routes.dart';
 
-import '../dashboard/widgets/dashboard_bottomsheet.dart';
 
 class ReportsController extends GetxController
     with BaseController, GetTickerProviderStateMixin {
@@ -38,14 +32,14 @@ class ReportsController extends GetxController
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
-  final requestAdvanceFormKey = GlobalKey<FormState>();
-  RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
+
   final deductionResponseModel = DeductionResponseModel().obs;
-  String quitCompanyReason = '';
 
-  final selectedDropdownYear = ''.obs;
+  final selectedDropdownYear = years.first.obs;
+  final selectedDropdownMonth = monthsList.first.obs;
+  final selectedDropdownDay = daysDummyList.first.obs;
 
-  
+  final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
 
   fetchPayslip() async {
     showLoading();
@@ -64,27 +58,16 @@ class ReportsController extends GetxController
     }
   }
 
-  requestAdvanceOrSalary(bool isSalary) async {
-    showLoading();
-
-    var responseString = await Get.find<BaseClient>()
-        .post(
-            isSalary
-                ? ApiEndPoints.requestPayment
-                : ApiEndPoints.requestAdvance,
-            requestAdvanceModelToJson(requestAdvanceModel),
-            Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-    if (responseString == null) {
-      return;
+  String getImagePath(int index) {
+    if (index == 0) {
+      return IconPath.windcavePng;
+    } else if (index == 1) {
+      return IconPath.mPesaPng;
     } else {
-      hideLoading();
-      DialogHelper.showToast(
-          desc: messageOnlyResponseModelFromJson(responseString).message!);
-      requestAdvanceModel = RequestAdvanceModel();
-      Get.back();
+      return IconPath.myCashPng;
     }
   }
+
 //todo add onError in getattendance as well. Don't forget '()' will not be present on function
 
   getDeduction() async {
@@ -113,6 +96,19 @@ class ReportsController extends GetxController
   }
 
 
+
+  String? amountValidator(String value) {
+    if (value.isEmpty) {
+      return 'Value cannot be empty';
+    } else if (int.parse(
+            payslipResponseModel.value.payroll?.salary ?? '10000') <
+        int.parse(value)) {
+      return 'Request amount should be less than salary';
+    } else if (int.parse(value) < 50) {
+      return 'Request amount should be greater than 50';
+    }
+    return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
+  }
 
   downloadPdf(String? url) async {
     if (url != null && url.isNotEmpty) {
@@ -148,40 +144,10 @@ class ReportsController extends GetxController
     }
   }
 
-  String? amountValidator(String value) {
-    if (value.isEmpty) {
-      return 'Value cannot be empty';
-    } else if (int.parse(
-            payslipResponseModel.value.payroll?.salary ?? '10000') <
-        int.parse(value)) {
-      return 'Request amount should be less than salary';
-    } else if (int.parse(value) < 50) {
-      return 'Request amount should be greater than 50';
-    }
-    return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
-  }
+  
 
   String? notEmptyValidator(String value) {
     return (value.isEmpty) ? 'Value cannot be empty' : null;
-  }
-
-  void requestAdvance() {
-    if (requestAdvanceFormKey.currentState!.validate()) {
-      requestAdvanceFormKey.currentState!.save();
-      requestAdvanceOrSalary(false);
-    }
-  }
-
-  void requestPayment() {
-    requestAdvanceModel = RequestAdvanceModel(
-        amount: payslipResponseModel.value.payroll?.salary ?? '0');
-    requestAdvanceOrSalary(true);
-  }
-
-  String? descriptionValidator(String value) {
-    return GetUtils.isLengthLessThan(value, 5)
-        ? "Enter a valid description"
-        : null;
   }
 
   String getDate(String date) {

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/employee/reports/my_files_tab.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
@@ -13,6 +14,7 @@ import 'attendance_tab.dart';
 import 'deduction_tab.dart';
 import 'medical_tab.dart';
 import 'payslip_tab.dart';
+import 'split_payment_tab.dart';
 import 'widgets/reports_app_bar.dart';
 
 class ReportsPage extends StatelessWidget {
@@ -21,7 +23,6 @@ class ReportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ReportsController reportsController = Get.put(ReportsController());
-    reportsController.selectedDropdownYear.value = years.first;
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -126,7 +127,9 @@ class ReportsPage extends StatelessWidget {
                           child: TabBarView(
                             physics: BouncingScrollPhysics(),
                             children: [
-                              PaySlipTab(),
+                              MyFilesTab(),
+                              SplitPaymentTab(),
+                              PayslipTab(),
                               DeductionTab(),
                               AttendanceTab(),
                               MedicalTab(),

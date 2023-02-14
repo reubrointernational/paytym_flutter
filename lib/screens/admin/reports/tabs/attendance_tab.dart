@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/admin/reports/widgets/rounded_icons.dart';
 
-import '../../../core/constants/styles.dart';
-import '../../../core/constants/widgets.dart';
-import 'reports_controller.dart';
+import '../../../../core/constants/styles.dart';
+import '../../../../core/constants/widgets.dart';
+import '../reports_controller.dart';
 
 class AttendanceTabAdmin extends StatelessWidget {
   const AttendanceTabAdmin({Key? key}) : super(key: key);

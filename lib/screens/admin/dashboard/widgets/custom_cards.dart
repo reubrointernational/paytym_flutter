@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paytym/core/constants/strings.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 
 class CustomCardDetails extends StatelessWidget {
   final List<Map> details;
@@ -7,7 +9,6 @@ class CustomCardDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return SizedBox(
       height: h * 0.35,
       //color: Colors.yellow,
@@ -20,39 +21,43 @@ class CustomCardDetails extends StatelessWidget {
           itemCount: details.length,
           itemBuilder: (context, index) {
             final hr = details[index];
-            return Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(width: 1, color: Colors.grey.shade300)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CircleAvatar(
-                          radius: 18,
-                          backgroundColor: hr['color'],
-                          child: Image.asset(
-                            hr['icon'],
-                            height: 20,
-                            width: 20,
-                            fit: BoxFit.cover,
-                          )),
-                      Text(
-                        hr['title'],
-                        style: TextStyle(
-                          color: hr['color'],
+            return InkWell(
+              onTap: () =>
+                  Get.find<DashboardControllerAdmin>().seeDetailsPage(index),
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(width: 1, color: Colors.grey.shade300)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CircleAvatar(
+                            radius: 18,
+                            backgroundColor: hr['color'],
+                            child: Image.asset(
+                              hr['icon'],
+                              height: 20,
+                              width: 20,
+                              fit: BoxFit.cover,
+                            )),
+                        Text(
+                          hr['title'],
+                          style: TextStyle(
+                            color: hr['color'],
+                          ),
                         ),
-                      ),
-                      Text(
-                        hr['count'].toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey.shade800,
-                            fontSize: 25),
-                      ),
-                    ]),
+                        Text(
+                          hr['count'].toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey.shade800,
+                              fontSize: 25),
+                        ),
+                      ]),
+                ),
               ),
             );
           }),

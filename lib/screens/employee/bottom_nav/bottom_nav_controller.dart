@@ -1,7 +1,9 @@
+import 'package:get/get.dart';
 import 'package:paytym/models/bottom_nav/bottom_nav_model.dart';
 import 'package:flutter/material.dart';
 
-class BottomNavController {
+
+class BottomNavController{
   static List<BottomNavModel> bottomNavModelList = [
     BottomNavModel("Dashboard", Icons.dashboard_outlined),
     BottomNavModel("Leaves", Icons.article_outlined),
@@ -9,4 +11,6 @@ class BottomNavController {
     BottomNavModel("Chat", Icons.chat_outlined),
     BottomNavModel("Report", Icons.analytics_outlined),
   ];
+
+
 }

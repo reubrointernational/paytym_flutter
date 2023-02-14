@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/split_payment/payment_controller.dart';
 
@@ -16,7 +17,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   bool isSelected = false;
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    
     return Scaffold(
       backgroundColor: CustomColors.blueTextColor,
       resizeToAvoidBottomInset: false,
@@ -55,7 +56,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         ),
                       ),
                       Container(
-                        width: size.width,
+                        width: w,
                         padding: const EdgeInsets.all(30),
                         decoration: BoxDecoration(
                           color: CustomColors.whiteTextColor,
@@ -132,11 +133,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
               child: Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                  height: size.height / 15,
-                  width: size.width / 1.8,
+                  height: h / 15,
+                  width: w / 1.8,
                   child: ElevatedButton(
                     onPressed: () {
-                      PaymentController().goToMPaisaPayment();
+                      // PaymentController().goToMPaisaPayment();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

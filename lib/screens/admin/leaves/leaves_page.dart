@@ -17,9 +17,10 @@ class LeavesPageAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(LeavesControllerAdmin());
     return CustomAdminScaffoldWithTabBar(
-      tabList: leaveTabList,
+      tabList: leaveTabListAdmin,
       title: kLeavesString,
-      children: leaveTabList.map((e) => LeavesTabAdmin(e)).toList(),
+      children:
+          leaveTabList.getRange(0, 3).map((e) => LeavesTabAdmin(e)).toList(),
     );
   }
 }

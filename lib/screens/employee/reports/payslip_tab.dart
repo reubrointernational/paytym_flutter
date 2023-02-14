@@ -17,63 +17,57 @@ import '../../widgets/custom_tab_bar.dart';
 
 import 'widgets/year_dropdown.dart';
 
-class PaySlipTab extends StatelessWidget {
-  const PaySlipTab({Key? key}) : super(key: key);
+class PayslipTab extends StatelessWidget {
+  const PayslipTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ReportsController reportsController = Get.put(ReportsController());
     reportsController.selectedDropdownYear.value = years.first;
-    return DefaultTabController(
-      length: monthsTabList.length,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Obx(() {
-                return CustomDropdownYearButton(
-                  lists: years,
-                  value: reportsController.selectedDropdownYear.value,
-                  onChanged: (value) {
-                    reportsController.selectedDropdownYear.value = value!;
-                  },
-                  hint: 'years',
-                );
-              }),
-              Expanded(
-                child: CustomTabBar(
-                  tabsList: monthsTabList,
-                  color: CustomColors.blueCardColor,
-                  height: 36,
-                  width: 20,
-                ),
-              ),
-            ],
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Obx(() {
+              return CustomDropdownYearButton(
+                lists: years,
+                value: reportsController.selectedDropdownYear.value,
+                onChanged: (value) {
+                  reportsController.selectedDropdownYear.value = value!;
+                },
+                hint: '2022 ',
+              );
+            }),
+            Obx(() {
+              return CustomDropdownYearButton(
+                lists: monthsList,
+                value: reportsController.selectedDropdownMonth.value,
+                onChanged: (value) {
+                  reportsController.selectedDropdownMonth.value = value!;
+                },
+                hint: 'Jan ',
+              );
+            }),
+            Obx(() {
+              return CustomDropdownYearButton(
+                lists: daysDummyList,
+                value: reportsController.selectedDropdownDay.value,
+                onChanged: (value) {
+                  reportsController.selectedDropdownDay.value = value!;
+                },
+                hint: '08-02-2023 ',
+              );
+            }),
+          ],
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
+            child: payslipContainer(),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
-              child: TabBarView(
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                  payslipContainer(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
