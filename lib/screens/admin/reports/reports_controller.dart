@@ -22,6 +22,7 @@ import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
+import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'widgets/pay_payment.dart';
 import 'widgets/payment_history.dart';
@@ -44,6 +45,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
 
   final selectedDropdownYear = years.first.obs;
   final payrollClickedButton = 0.obs;
+
+  final chatGroupList = dummy_data.obs;
 
 
 //for bottomsheet

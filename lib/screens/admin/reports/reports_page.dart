@@ -22,6 +22,7 @@ import 'tabs/medical_tab.dart';
 import 'reports_controller.dart';
 import 'tabs/payroll_tab.dart';
 import 'tabs/overtime_tab.dart';
+import 'tabs/uploads_tab.dart';
 
 class ReportsPageAdmin extends StatelessWidget {
   const ReportsPageAdmin({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class ReportsPageAdmin extends StatelessWidget {
       tabList: reportsTabListAdmin,
       title: kReportsString,
       children: const [
+        UploadsTabAdmin(),
         PayrollTab(),
         OvertimeTabAdmin(),
         ProjectsTabAdmin(),

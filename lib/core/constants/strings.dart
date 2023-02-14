@@ -394,6 +394,7 @@ List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending'];
 List<String> reportsTabListAdmin = [
+  'Uploads',
   'Payroll',
   'Overtime',
   'Projects',

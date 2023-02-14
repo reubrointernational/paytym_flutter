@@ -1,0 +1,95 @@
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+
+import '../../../core/colors/colors.dart';
+import '../../../core/constants/strings.dart';
+import '../../../core/constants/widgets.dart';
+class FileUploadWidget extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final void Function()? onTap;
+  const FileUploadWidget({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+            text: TextSpan(
+                text: title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+                children: const [
+              TextSpan(
+                text: ' *',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.red,
+                ),
+              ),
+            ])),
+        kSizedBoxH10,
+        TextFormField(
+          decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+                borderSide: const BorderSide(
+                    width: 1, color: CustomColors.lightBlueColor),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+                borderSide: const BorderSide(
+                    width: 1, color: CustomColors.lightBlueColor),
+              )),
+        ),
+        kSizedBoxH20,
+        const Text(
+          'Attachments',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black,
+          ),
+        ),
+        kSizedBoxH10,
+        GestureDetector(
+          // onTap: () =>
+          // createChatController.uploadProfileImage(),
+          child: DottedBorder(
+            strokeWidth: 1.5,
+            borderType: BorderType.RRect,
+            radius: const Radius.circular(10),
+            color: CustomColors.lightBlueColor,
+            dashPattern: const [10, 2],
+            child: InkWell(
+              onTap: onTap,
+              child: Container(
+                  padding: const EdgeInsets.all(30),
+                  child: Center(
+                    child: SizedBox(
+                      width: w * 0.5,
+                      child: Text(
+                        subtitle,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: CustomColors.greyTextColor,
+                        ),
+                      ),
+                    ),
+                  )),
+            ),
+          ),
+        ),
+        kSizedBoxH20,
+      ],
+    );
+  }
+}

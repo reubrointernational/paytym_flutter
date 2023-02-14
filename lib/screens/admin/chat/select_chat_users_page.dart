@@ -20,7 +20,7 @@ class SelectChatUsersPage extends StatelessWidget {
         onPressed: () => Get.toNamed(Routes.createGroupPage),
         child: const Icon(Icons.arrow_forward),
       ),
-      widget: Padding(
+      child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Column(
           children: [

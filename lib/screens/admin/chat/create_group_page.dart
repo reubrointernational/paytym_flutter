@@ -6,9 +6,9 @@ import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/screens/admin/chat/chat_controller.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
-
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/widgets.dart';
+import '../widgets/file_upload_widget.dart';
 
 class CreateGroupPage extends StatelessWidget {
   const CreateGroupPage({super.key});
@@ -29,7 +29,7 @@ class CreateGroupPage extends StatelessWidget {
         ),
       ),
       title: 'Create New Group',
-      widget: Padding(
+      child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
@@ -53,115 +53,52 @@ class CreateGroupPage extends StatelessWidget {
             ),
           ),
           kSizedBoxH10,
-          RichText(
-              text: const TextSpan(
-                  text: 'Group name ',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
+          FileUploadWidget(
+            title: 'Group Name',
+            subtitle: 'Upload a PNG, JPG or GIF Image of max 10MB',
+            onTap: () {
+              DialogHelper.showBottomSheet(
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                    ),
                   ),
-                  children: [
-                TextSpan(
-                  text: '*',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.red,
-                  ),
-                ),
-              ])),
-          kSizedBoxH10,
-          TextFormField(
-            decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
-                  borderSide: const BorderSide(
-                      width: 1, color: CustomColors.lightBlueColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
-                  borderSide: const BorderSide(
-                      width: 1, color: CustomColors.lightBlueColor),
-                )),
-          ),
-          kSizedBoxH20,
-          const Text(
-            'Attachments',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
-          kSizedBoxH10,
-          GestureDetector(
-            // onTap: () =>
-            // createChatController.uploadProfileImage(),
-            child: DottedBorder(
-              strokeWidth: 1.5,
-              borderType: BorderType.RRect,
-              radius: const Radius.circular(10),
-              color: CustomColors.lightBlueColor,
-              dashPattern: const [10, 2],
-              child: InkWell(
-                onTap: () {
-                  DialogHelper.showBottomSheet(
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          topLeft: Radius.circular(20),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ...['Image', 'Camera'].map(
-                            (e) => InkWell(
-                              onTap: () => e == 'Image'
-                                  ? ImagePicker()
-                                      .pickImage(source: ImageSource.gallery)
-                                  : ImagePicker()
-                                      .pickImage(source: ImageSource.camera),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(color: Colors.grey),
-                                  ),
-                                ),
-                                height: 60,
-                                child: Center(
-                                    child: Text(
-                                  e,
-                                  style: const TextStyle(fontSize: 20),
-                                )),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ...['Image', 'Camera'].map(
+                        (e) => InkWell(
+                          onTap: () => e == 'Image'
+                              ? ImagePicker()
+                                  .pickImage(source: ImageSource.gallery)
+                              : ImagePicker()
+                                  .pickImage(source: ImageSource.camera),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(color: Colors.grey),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-                child: Container(
-                    padding: const EdgeInsets.all(30),
-                    child: Center(
-                      child: SizedBox(
-                        width: w * 0.5,
-                        child: const Text(
-                          'Upload a PNG, JPG or GIF Image of max 10MB',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: CustomColors.greyTextColor,
+                            height: 60,
+                            child: Center(
+                                child: Text(
+                              e,
+                              style: const TextStyle(fontSize: 20),
+                            )),
                           ),
                         ),
                       ),
-                    )),
-              ),
-            ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
-          kSizedBoxH20,
         ]),
       ),
     );
   }
 }
+

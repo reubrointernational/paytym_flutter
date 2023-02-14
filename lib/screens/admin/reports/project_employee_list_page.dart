@@ -10,7 +10,7 @@ class ProjectEmployeeListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomAdminScaffold(
       title: 'Project Name',
-      widget: Padding(
+      child: Padding(
         padding: const EdgeInsets.only(top: 10),
         child: ListView.builder(
           itemCount: 3,
