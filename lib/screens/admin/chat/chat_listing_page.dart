@@ -34,7 +34,14 @@ class ChatListingPageAdmin extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () => Get.toNamed(Routes.selectChatUsersPage),
+                  onTap: () {
+                    Get.find<ChatControllerAdmin>()
+                        .chatGroupList
+                        .forEach((element) {
+                      element.isSelected = false;
+                    });
+                    Get.toNamed(Routes.selectChatUsersPage);
+                  },
                   child: SvgPicture.asset(
                     IconPath.editIconSvg,
                     height: 20,

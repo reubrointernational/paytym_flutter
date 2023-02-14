@@ -1,7 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:paytym/core/constants/strings.dart';
+import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/screens/admin/chat/chat_controller.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 
@@ -15,7 +17,8 @@ class CreateGroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var memberList = Get.find<ChatControllerAdmin>()
         .chatGroupList
-        .where((element) => element.isSelected).toList();
+        .where((element) => element.isSelected)
+        .toList();
     return CustomAdminScaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -98,21 +101,62 @@ class CreateGroupPage extends StatelessWidget {
               radius: const Radius.circular(10),
               color: CustomColors.lightBlueColor,
               dashPattern: const [10, 2],
-              child: Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Center(
-                    child: SizedBox(
-                      width: w * 0.5,
-                      child: const Text(
-                        'Upload a PNG, JPG or GIF Image of max 10MB',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: CustomColors.greyTextColor,
+              child: InkWell(
+                onTap: () {
+                  DialogHelper.showBottomSheet(
+                    Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20),
                         ),
                       ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ...['Image', 'Camera'].map(
+                            (e) => InkWell(
+                              onTap: () => e == 'Image'
+                                  ? ImagePicker()
+                                      .pickImage(source: ImageSource.gallery)
+                                  : ImagePicker()
+                                      .pickImage(source: ImageSource.camera),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
+                                height: 60,
+                                child: Center(
+                                    child: Text(
+                                  e,
+                                  style: const TextStyle(fontSize: 20),
+                                )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  )),
+                  );
+                },
+                child: Container(
+                    padding: const EdgeInsets.all(30),
+                    child: Center(
+                      child: SizedBox(
+                        width: w * 0.5,
+                        child: const Text(
+                          'Upload a PNG, JPG or GIF Image of max 10MB',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: CustomColors.greyTextColor,
+                          ),
+                        ),
+                      ),
+                    )),
+              ),
             ),
           ),
           kSizedBoxH20,

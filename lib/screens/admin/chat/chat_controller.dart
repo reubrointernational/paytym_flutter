@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 List<Model> dummy_data = [
@@ -23,6 +24,7 @@ class ChatControllerAdmin extends GetxController {
   final selectedDropdownDepartments = Rxn<String>();
   final selectedDropdownBranches = Rxn<String>();
   final chatGroupList = dummy_data.obs;
+  
 
   final searchKeyword = ''.obs;
   List<String> dummyData = ['John Smith', 'Michael', 'Hohmin', 'Lappa'];
@@ -32,4 +34,5 @@ class ChatControllerAdmin extends GetxController {
     chatGroupList[index].isSelected = !chatGroupList[index].isSelected;
     chatGroupList.refresh();
   }
+
 }
