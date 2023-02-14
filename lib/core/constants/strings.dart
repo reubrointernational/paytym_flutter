@@ -404,6 +404,7 @@ List<String> reportsTabListAdmin = [
   'Contract period'
 ];
 List<String> reportsTabList = [
+  'My Files',
   'Split Payment',
   'Payslip',
   'Deduction',

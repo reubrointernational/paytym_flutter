@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/employee/reports/my_files_tab.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
@@ -126,6 +127,7 @@ class ReportsPage extends StatelessWidget {
                           child: TabBarView(
                             physics: BouncingScrollPhysics(),
                             children: [
+                              MyFilesTab(),
                               SplitPaymentTab(),
                               PayslipTab(),
                               DeductionTab(),
