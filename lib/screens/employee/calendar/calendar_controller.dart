@@ -19,7 +19,7 @@ class CalendarController extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
   final meetingResponseModel = MeetingResponseModel().obs;
   final eventsResponseModel = EventsResponseModel().obs;
-  final picker = ''.obs;
+
 
   final selectedDay = DateTime.now().obs;
 
@@ -72,25 +72,5 @@ class CalendarController extends GetxController with BaseController {
     getEvents();
   }
 
-  ImagePicker imagePicker = ImagePicker();
-
-  Future<void> uploadProfileImageFromCamera() async {
-    XFile? image = await imagePicker.pickImage(source: ImageSource.camera);
-    if (image == null) {
-      DialogHelper.showToast(desc: 'No image selected');
-    } else {
-      picker.value = image.path;
-    }
-    Get.back();
-  }
-
-  Future<void> uploadProfileImageFromGallery() async {
-    XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      DialogHelper.showToast(desc: 'No image selected');
-    } else {
-      picker.value = image.path;
-    }
-    Get.back();
-  }
+  
 }

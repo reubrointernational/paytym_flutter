@@ -1,9 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../core/constants/enums.dart';
+import '../../../core/dialog_helper.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
@@ -14,6 +18,11 @@ class CalendarControllerAdmin extends GetxController with BaseController {
   final eventsResponseModel = EventsResponseModel().obs;
 
   final selectedDay = DateTime.now().obs;
+    final picker = ''.obs;
+
+    
+  final TextEditingController startDateController = TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
 
   List<dynamic> getEventsForDay(DateTime day) => ['HI'];
 
@@ -62,6 +71,28 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     super.onReady();
     getMeeting();
     getEvents();
+  }
+
+  ImagePicker imagePicker = ImagePicker();
+
+  Future<void> uploadProfileImageFromCamera() async {
+    XFile? image = await imagePicker.pickImage(source: ImageSource.camera);
+    if (image == null) {
+      DialogHelper.showToast(desc: 'No image selected');
+    } else {
+      picker.value = image.path;
+    }
+    Get.back();
+  }
+
+  Future<void> uploadProfileImageFromGallery() async {
+    XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      DialogHelper.showToast(desc: 'No image selected');
+    } else {
+      picker.value = image.path;
+    }
+    Get.back();
   }
 
   
