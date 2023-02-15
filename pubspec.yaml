@@ -57,7 +57,6 @@ flutter:
     - assets/png/
   #   - images/a_dot_ham.jpeg
 fonts:
-  # todo remove font
   - family: DMSerif
     fonts:
       - asset: assets/fonts/dm_serif/DMSerifDisplay-Regular.ttf

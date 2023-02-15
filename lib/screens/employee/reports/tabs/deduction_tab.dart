@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
-import '../../../core/colors/colors.dart';
-import '../../../core/constants/strings.dart';
-import '../../../core/constants/styles.dart';
+import '../../../../core/colors/colors.dart';
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/styles.dart';
 
 class DeductionTab extends StatelessWidget {
   const DeductionTab({Key? key}) : super(key: key);

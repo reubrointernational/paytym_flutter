@@ -17,9 +17,10 @@ class LeavesController extends GetxController with BaseController {
   final leaveResponseModel = LeaveResponseModel().obs;
   final formKey = GlobalKey<FormState>();
   LeaveRequestModel leaveRequestModel = LeaveRequestModel();
-  final selectedItem = 'annual'.obs;
+  final selectedItem = leaveTypes[0].obs;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
+  final isTimeFieldVisible = false.obs;
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
@@ -129,6 +130,7 @@ class LeavesController extends GetxController with BaseController {
         startDateController.text = kStartDateString;
         endDateController.text = kEndDateString;
         Get.back();
+        selectedItem.value = leaveTypes[0];
         leaveResponseModel.refresh();
       }
     }
@@ -136,7 +138,7 @@ class LeavesController extends GetxController with BaseController {
 
   String? titleValidator(String value) {
     return GetUtils.isLengthLessThan(value, 5)
-        ? "Title should be minimum 5 characters"
+        ? "Reason should be minimum 5 characters"
         : null;
   }
 

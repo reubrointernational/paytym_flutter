@@ -389,30 +389,6 @@ List<Map<String, dynamic>> earningsLists = [
 
 List<String> payrollTabList = ['Pending', 'Payment', 'Payment History'];
 
-
-List<Map<String, dynamic>> chatList = [
-  {
-    'name': 'Robin Reubro',
-    'last_message': 'Hai, how is the project status',
-    'date': '01/02/2023',
-  },
-  {
-    'name': 'Akhil Reubro',
-    'last_message': 'Please finish pending works',
-    'date': '01/02/2023',
-  },
-  {
-    'name': 'Sreehari Reubro',
-    'last_message': 'Finished the paytym designs',
-    'date': '01/02/2023',
-  },
-  {
-    'name': 'Sooraj Reubro',
-    'last_message': 'please check new server link',
-    'date': '02/02/2023',
-  },
-];
-
 // List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];

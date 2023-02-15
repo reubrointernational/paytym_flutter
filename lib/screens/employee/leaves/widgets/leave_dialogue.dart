@@ -9,6 +9,7 @@ import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../widgets/bordered_text_form_field.dart';
 
+
 class LeaveDialogue extends StatelessWidget {
   const LeaveDialogue({
     Key? key,
@@ -28,21 +29,12 @@ class LeaveDialogue extends StatelessWidget {
               key: Get.find<LeavesController>().formKey,
               child: Column(
                 children: [
-                  BorderedTextFormField(
-                    onSaved: (value) => Get.find<LeavesController>()
-                        .leaveRequestModel
-                        .title = value!.toCamelCase(),
-                    hintText: kTitleString,
-                    validator: (value) =>
-                        Get.find<LeavesController>().titleValidator(value!),
-                  ),
-                  kSizedBoxH6,
                   Container(
                     height: 50,
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                           width: 1.2,
                           color: CustomColors.lightBlueCardBorderColor),
@@ -60,6 +52,13 @@ class LeaveDialogue extends StatelessWidget {
                             Get.find<LeavesController>()
                                 .leaveRequestModel
                                 .type = value;
+
+                            Get.find<LeavesController>()
+                                .isTimeFieldVisible
+                                .value = Get.find<LeavesController>()
+                                    .selectedItem
+                                    .value ==
+                                'halfday';
                           },
                           items: leaveTypes
                               .map<DropdownMenuItem<String>>((String? value) {
@@ -68,7 +67,7 @@ class LeaveDialogue extends StatelessWidget {
                               child: Text(
                                 value!.toCamelCase(),
                                 style: const TextStyle(
-                                  color: Colors.grey,
+                                  color: Colors.black,
                                 ),
                               ),
                             );
@@ -116,16 +115,100 @@ class LeaveDialogue extends StatelessWidget {
                     validator: (value) =>
                         Get.find<LeavesController>().dateValidator(value!),
                   ),
+                  kSizedBoxH6,
+                  Obx(() => Visibility(
+                        visible: Get.find<LeavesController>()
+                            .isTimeFieldVisible
+                            .value,
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: (() async {
+                                TimeOfDay? selectedTime = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now());
+                                print(selectedTime.toString());
+                              }),
+                              child: BorderedTextFormField(
+                                enabled: false,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9-]'),
+                                  ),
+                                ],
+                                // onSaved: (value) => Get.find<LeavesController>()
+                                //     .leaveRequestModel
+                                //     .startDate = value,
+                                controller: Get.find<LeavesController>()
+                                    .startDateController,
+                                hintText: kStartTimeString,
+                                keyboardType: TextInputType.datetime,
+                                suffixIcon: const Icon(
+                                  Icons.access_time,
+                                  size: 18,
+                                ),
+                                // validator: (value) =>
+                                //     Get.find<LeavesController>()
+                                //         .dateValidator(value!),
+                              ),
+                            ),
+                            kSizedBoxH6,
+                            GestureDetector(
+                              onTap: (() async {
+                                TimeOfDay? selectedTime = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now());
+                                print(selectedTime.toString());
+                              }),
+                              child: BorderedTextFormField(
+                                enabled: false,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9-]'),
+                                  ),
+                                ],
+                                // onSaved: (value) => Get.find<LeavesController>()
+                                //     .leaveRequestModel
+                                //     .startDate = value,
+                                controller: Get.find<LeavesController>()
+                                    .startDateController,
+                                hintText: kEndTimeString,
+                                keyboardType: TextInputType.datetime,
+                                suffixIcon: const Icon(
+                                  Icons.access_time,
+                                  size: 18,
+                                ),
+                                // validator: (value) =>
+                                //     Get.find<LeavesController>()
+                                //         .dateValidator(value!),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                  kSizedBoxH6,
+                  BorderedTextFormField(
+                    maxLines: 5,
+                    maxLength: 300,
+                    onSaved: (value) => Get.find<LeavesController>()
+                        .leaveRequestModel
+                        .title = value!.toCamelCase(),
+                    hintText: 'Reason',
+                    validator: (value) =>
+                        Get.find<LeavesController>().titleValidator(value!),
+                  ),
                 ],
               ),
             ),
-            kSizedBoxH6,
+            kSizedBoxH15,
             SizedBox(
               height: 50,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () =>
-                    Get.find<LeavesController>().validateAndApplyForLeave(),
+                onPressed: () {
+                  print(Get.find<LeavesController>().selectedItem.value);
+                  Get.find<LeavesController>().validateAndApplyForLeave();
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: CustomColors.blueCardColor,
                   shape: RoundedRectangleBorder(

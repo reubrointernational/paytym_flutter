@@ -74,25 +74,6 @@ class DialogHelper {
         confirmTextColor: Colors.white,
         textCancel: 'NO');
   }
-
-  static void showUploadImageDialog({
-    String title = 'Upload Image',
-    Widget? content,
-  }) {
-    Get.defaultDialog(
-      title: title.toUpperCase(),
-      titleStyle: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Colors.grey.shade500,
-      ),
-      
-      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      titlePadding: const EdgeInsets.only(top: 20),
-      content: content,
-    );
-  }
-
   //show toast
 
   static void showToast({String desc = 'Something went wrong'}) {

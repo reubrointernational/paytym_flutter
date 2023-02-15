@@ -3,8 +3,8 @@ import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-import '../../../core/constants/strings.dart';
-import '../../../core/constants/styles.dart';
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/styles.dart';
 
 class AttendanceTab extends StatelessWidget {
   const AttendanceTab({Key? key}) : super(key: key);
