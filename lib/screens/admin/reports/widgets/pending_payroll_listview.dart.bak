@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/widgets.dart';
-import '../../../../core/custom_slider_thumb.dart';
-import '../../../../core/dialog_helper.dart';
 
 class PendingPayrollListview extends StatefulWidget {
   const PendingPayrollListview({super.key});
@@ -76,83 +74,10 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                 const Icon(
                                   Icons.download,
                                   size: 18,
-                                  color: CustomColors.orangeColor,
+                                  color: Colors.orange,
                                 ),
                                 //Only for HR
-                                SizedBox(
-                                  height: h * 0.05,
-                                  width: w * 0.3,
-                                  //color: Colors.yellow,
-                                  child: Stack(
-                                    children: [
-                                      Positioned.fill(
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Container(
-                                            height: 6,
-                                            decoration: BoxDecoration(
-                                                color: CustomColors.orangeColor,
-                                                /*gradient: const LinearGradient(
-                                                    begin: Alignment.topCenter,
-                                                    end: Alignment.bottomCenter,
-                                                    colors: [
-                                                      Color.fromARGB(255, 28, 41, 226),
-                                                      Color.fromARGB(255, 14, 130, 238)
-                                                    ]),*/
-                                                borderRadius:
-                                                    BorderRadius.circular(7.5)),
-                                          ),
-                                        ),
-                                      ),
-                                      SliderTheme(
-                                        data: SliderThemeData(
-                                          trackHeight: 0,
-                                          //activeTrackColor: Colors.red,
-                                          /*inactiveTrackColor:
-                                              const Color.fromARGB(255, 2, 69, 124),*/
-                                          overlayShape:
-                                              SliderComponentShape.noOverlay,
-                                          thumbShape:
-                                              const CustomRoundSliderThumbShape(
-                                            enabledThumbRadius: 10.0,
-                                            // thumbColor:
-                                            //     CustomColors.whiteTextColor,
-                                          ),
-                                        ),
-                                        child: Slider(
-                                          thumbColor: CustomColors.orangeColor,
-                                          inactiveColor:
-                                              CustomColors.orangeColor,
-                                          activeColor: CustomColors.greenColor,
-                                          value: employees['processValue'],
-                                          max: 100,
-                                          onChanged: (double value) {
-                                            setState(() {
-                                              employees['processValue'] = value;
-                                            });
-                                          },
-                                          onChangeEnd: (double value) {
-                                            print(value);
-                                            if (value == 100) {
-                                              DialogHelper.showConfirmDialog(
-                                                title: 'Process Payroll',
-                                                desc:
-                                                    'Do you like to process payroll?',
-                                              );
-                                            } else if (value == 0) {
-                                              DialogHelper.showConfirmDialog(
-                                                title: 'Reverse Payroll',
-                                                desc:
-                                                    'Do you like to reverse process payroll?',
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                /*Padding(
+                                Padding(
                                   padding: const EdgeInsets.only(bottom: 10),
                                   child: Row(
                                     children: [
@@ -164,7 +89,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                           'Reverse', CustomColors.redColor),
                                     ],
                                   ),
-                                ),*/
+                                ),
                                 RichText(
                                   text: TextSpan(
                                     text: 'Gross : ',

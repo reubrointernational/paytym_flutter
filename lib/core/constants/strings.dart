@@ -259,6 +259,7 @@ List<Map<String, dynamic>> payrollList = [
     'bonus': 200,
     'commission': 500,
     'isExpanded': false,
+    'processValue': 100.0,
   },
   {
     'id': '402921927',
@@ -272,6 +273,7 @@ List<Map<String, dynamic>> payrollList = [
     'bonus': 200,
     'commission': 500,
     'isExpanded': false,
+    'processValue': 100.0,
   },
   {
     'id': '6388882927',
@@ -285,6 +287,7 @@ List<Map<String, dynamic>> payrollList = [
     'bonus': 200,
     'commission': 500,
     'isExpanded': false,
+    'processValue': 100.0,
   },
   {
     'id': '4993483927',
@@ -298,6 +301,7 @@ List<Map<String, dynamic>> payrollList = [
     'bonus': 200,
     'commission': 500,
     'isExpanded': false,
+    'processValue': 100.0,
   },
   {
     'id': '94842927',
@@ -311,6 +315,7 @@ List<Map<String, dynamic>> payrollList = [
     'bonus': 200,
     'commission': 500,
     'isExpanded': false,
+    'processValue': 100.0,
   },
 ];
 
@@ -388,7 +393,6 @@ List<Map<String, dynamic>> earningsLists = [
 ];
 
 List<String> payrollTabList = ['Pending', 'Payment', 'Payment History'];
-
 
 List<Map<String, dynamic>> chatList = [
   {

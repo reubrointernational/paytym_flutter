@@ -18,7 +18,6 @@ class CustomAdminScaffoldWithTabBar extends StatelessWidget {
       required this.title,
       required this.children});
 
-
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -48,7 +47,7 @@ class CustomAdminScaffoldWithTabBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding: const EdgeInsets.fromLTRB(18, 18, 18, 3),
               child: Column(
                 children: [
                   CustomTabBar(tabsList: tabList),

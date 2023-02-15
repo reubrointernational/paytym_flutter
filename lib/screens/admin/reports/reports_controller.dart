@@ -31,6 +31,7 @@ import 'widgets/pending_payroll_listview.dart';
 class ReportsControllerAdmin extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
+  final selectedDropdownDay = daysDummyList[0].obs;
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
@@ -47,7 +48,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final payrollClickedButton = 0.obs;
 
   final chatGroupList = dummy_data.obs;
-
 
 //for bottomsheet
   showBottomSheetForReason() {
@@ -114,7 +114,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
-  Widget getPayrollTab(){
+  Widget getPayrollTab() {
     if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value == 0) {
       return const PendingPayrollListview();
     } else if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value ==

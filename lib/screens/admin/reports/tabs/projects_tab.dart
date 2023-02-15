@@ -232,7 +232,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "Remaining: \$ 5,500",
+                          "Spent: \$ 5,500",
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             color: CustomColors.grey156x3TextColor,
