@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
+import 'package:paytym/screens/employee/leaves/leaves_controller.dart';
 
 import '../../../core/colors/colors.dart';
+import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
 import '../../employee/reports/widgets/bottomsheet_text_field.dart';
 
 class ReasonBottomSheetAdmin extends StatelessWidget {
-  const ReasonBottomSheetAdmin({super.key});
+  final ReasonButton reasonButton;
+  const ReasonBottomSheetAdmin(
+      {super.key, this.reasonButton = ReasonButton.leaveApprove});
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +56,20 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                reasonButton.name.contains('leave')
+                    ? Get.find<LeavesControllerAdmin>().approveOrDeclineLeave(reasonButton)
+                    : Get.find<LeavesControllerAdmin>().approveOrDeclineLeave(reasonButton);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                kReasonString,
-                style: TextStyle(
+              child: Text(
+                reasonButton.name.contains('App') ? 'Approve' : 'Decline',
+                style: const TextStyle(
                   color: CustomColors.whiteTextColor,
                 ),
               ),

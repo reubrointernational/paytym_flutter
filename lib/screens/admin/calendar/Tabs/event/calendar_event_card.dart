@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
 
 import '../../../../../core/colors/colors.dart';
 import '../../../../../core/constants/strings.dart';
@@ -30,36 +32,23 @@ class CalendarEventCardAdmin extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(25, 5, 25, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: const [
-                      Icon(
-                        Icons.add_circle_outline,
-                        color: CustomColors.greenColor,
-                      ),
-                      kSizedBoxW10,
-                      Text(
-                        kAddString,
-                        style: kTextStyleS13W600,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: const [
-                      Icon(
-                        Icons.delete_sharp,
-                        color: CustomColors.redColor,
-                      ),
-                      kSizedBoxW10,
-                      Text(
-                        kDeleteString,
-                        style: kTextStyleS13W600,
-                      ),
-                    ],
-                  ),
-                ],
+              child: GestureDetector(
+                onTap: () =>
+                    Get.find<CalendarControllerAdmin>().deleteEvent(index),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    Icon(
+                      Icons.delete_sharp,
+                      color: CustomColors.redColor,
+                    ),
+                    kSizedBoxW10,
+                    Text(
+                      kDeleteString,
+                      style: kTextStyleS13W600,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

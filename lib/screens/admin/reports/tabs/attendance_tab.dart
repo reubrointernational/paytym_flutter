@@ -37,7 +37,7 @@ class AttendanceTabAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsControllerAdmin>().getDeduction());
+        (_) => Get.find<ReportsControllerAdmin>().getAttendance());
     return Column(
       children: [
         SizedBox(
@@ -73,7 +73,9 @@ class AttendanceTabAdmin extends StatelessWidget {
               kSizedBoxH2,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(4, (index) => Column(
+                children: List.generate(
+                  4,
+                  (index) => Column(
                     children: [
                       Text(
                         totalAttendance[index]['count'].toString(),
@@ -91,10 +93,8 @@ class AttendanceTabAdmin extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
-
-              ,),
-              
+                ),
+              ),
             ],
           ),
         ),
@@ -104,11 +104,10 @@ class AttendanceTabAdmin extends StatelessWidget {
               return ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemCount: Get.find<ReportsControllerAdmin>()
-                        .deductionResponseModel
-                        .value
-                        .deductions
-                        ?.length ??
-                    0,
+                    .attendanceResponseModel
+                    .value
+                    .history
+                    .length,
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
@@ -118,9 +117,14 @@ class AttendanceTabAdmin extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const AttendanceCardColumn(),
-                        const AttendanceCardColumn(
-                          isLeftTab: true,
+                        AttendanceCardColumn(
+                          index: index,
+                        ),
+                        Expanded(
+                          child: AttendanceCardColumn(
+                            isRightTab: true,
+                            index: index,
+                          ),
                         ),
                         Column(
                           children: [
@@ -169,10 +173,12 @@ class AttendanceTabAdmin extends StatelessWidget {
 }
 
 class AttendanceCardColumn extends StatelessWidget {
-  final bool isLeftTab;
+  final bool isRightTab;
+  final int index;
   const AttendanceCardColumn({
     Key? key,
-    this.isLeftTab = false,
+    this.isRightTab = false,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -183,18 +189,39 @@ class AttendanceCardColumn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Branch/Dept',
-            style: isLeftTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
+            !isRightTab
+                ? 'Branch'
+                : Get.find<ReportsControllerAdmin>()
+                    .attendanceResponseModel
+                    .value
+                    .history[index]
+                    .user
+                    .branch,
+            style:
+                isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
+            overflow: TextOverflow.ellipsis,
           ),
           kSizedBoxH4,
           Text(
-            'Name',
-            style: isLeftTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
+            !isRightTab
+                ? 'Name'
+                : '${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user.firstName} ${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user.lastName}',
+            style:
+                isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
           ),
           kSizedBoxH4,
           Text(
-            'Employee ID',
-            style: isLeftTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
+            !isRightTab
+                ? 'Employee ID'
+                : Get.find<ReportsControllerAdmin>()
+                    .attendanceResponseModel
+                    .value
+                    .history[index]
+                    .user
+                    .employerId
+                    .toString(),
+            style:
+                isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
           ),
           kSizedBoxH20,
           const Text(
@@ -203,9 +230,21 @@ class AttendanceCardColumn extends StatelessWidget {
           ),
           kSizedBoxH4,
           Text(
-            '09:00 AM',
+            !isRightTab
+                ? Get.find<ReportsControllerAdmin>().getTime(
+                    Get.find<ReportsControllerAdmin>()
+                        .attendanceResponseModel
+                        .value
+                        .history[index]
+                        .checkIn)
+                : Get.find<ReportsControllerAdmin>().getTime(
+                    Get.find<ReportsControllerAdmin>()
+                        .attendanceResponseModel
+                        .value
+                        .history[index]
+                        .checkOut),
             style: kTextStyleS15W600CBlack.copyWith(
-                color: !isLeftTab ? Colors.green : Colors.red),
+                color: !isRightTab ? Colors.green : Colors.red),
           ),
         ],
       ),

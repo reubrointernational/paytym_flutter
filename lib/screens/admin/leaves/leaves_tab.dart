@@ -1,32 +1,34 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import '../../../models/leaves/leaves_response.dart';
+import 'package:paytym/models/leaves/leaves_admin_response_model.dart';
 import 'leaves_controller.dart';
 import 'widgets/leave_card.dart';
 
 class LeavesTabAdmin extends StatelessWidget {
   final String leave;
-  const LeavesTabAdmin(this.leave,{Key? key}) : super(key: key);
+  const LeavesTabAdmin(this.leave, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      List<LeaveRequest>? allLeaves;
-      allLeaves = (leave == 'All')
-          ? Get.find<LeavesControllerAdmin>()
-              .leaveResponseModel
+      List<LeaveList>? allLeaves;
+      allLeaves =
+          // (leave == 'Today')
+          //     ?
+          Get.find<LeavesControllerAdmin>()
+              .leaveAdminResponseModel
               .value
-              .leaveRequests
-          : Get.find<LeavesControllerAdmin>()
-              .leaveResponseModel
-              .value
-              .leaveRequests
-              ?.where((element) =>
-                  element.type?.toLowerCase() == leave.toLowerCase())
-              .toList();
+              .leaveList;
+      // : Get.find<LeavesControllerAdmin>()
+      //     .leaveAdminResponseModel
+      //     .value
+      //     .leaveList
+      //     .where((element) =>
+      //         element.type?.toLowerCase() == leave.toLowerCase())
+      //     .toList();
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: allLeaves?.length ?? 0,
+        itemCount: allLeaves.length,
         itemBuilder: (context, index) {
           final leave = allLeaves?[index];
           return LeavesCardAdmin(leave: leave);

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,8 +49,13 @@ class CalendarController extends GetxController with BaseController {
   getEvents() async {
     showLoading();
     Get.find<BaseClient>().onError = getEvents;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
     var responseString = await Get.find<BaseClient>()
-        .get(ApiEndPoints.events, Get.find<LoginController>().getHeader())
+        .post(ApiEndPoints.events, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;

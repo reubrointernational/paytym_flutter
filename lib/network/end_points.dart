@@ -1,4 +1,4 @@
-const kBaseUrl = 'http://phpstack-898712-3252616.cloudwaysapps.com/api';
+const kBaseUrl = 'http://52.40.210.26:2000/api';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
 const kDomainUrl = 'petty.ga';
 
@@ -25,4 +25,11 @@ class ApiEndPoints {
   static const sendOtpToEmail = '$kBaseUrl/forgot-password';
   static const confirmOtpWithEmail = '$kBaseUrl/forgotpwd-confirm-otp';
   static const resetPasswordWithEmail = '$kBaseUrl/forgotpwd-password-update';
+
+  static const attendance = '$kBaseUrl/checkin_checkout_list';
+  static const leaveRequestAdmin =
+      '$kBaseUrl/list_leaves'; // todo change to 'leave_requests_lists'
+  static const leaveAcceptReject = '$kBaseUrl/leave_requests_accept_reject';
+  static const deleteEvent = '$kBaseUrl/delete_event';
+  static const createEvent = '$kBaseUrl/create_event';
 }

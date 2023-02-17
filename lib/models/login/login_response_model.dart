@@ -54,6 +54,7 @@ class LoginResponseModel {
 class Employee {
   Employee({
     this.id,
+    this.employer_id,
     this.firstName,
     this.lastName,
     this.company,
@@ -79,6 +80,7 @@ class Employee {
   });
 
   int? id;
+  int?  employer_id;
   String? firstName;
   String? lastName;
   String? company;
@@ -104,6 +106,7 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
         id: json["id"],
+        employer_id: json["employer_id"],
         firstName: json["first_name"],
         lastName: json["last_name"],
         company: json["company"],
@@ -130,6 +133,7 @@ class Employee {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "employer_id": employer_id,
         "first_name": firstName,
         "last_name": lastName,
         "company": company,
