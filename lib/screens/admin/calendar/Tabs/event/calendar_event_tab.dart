@@ -31,7 +31,6 @@ class CalendarEventAdmin extends StatelessWidget {
                   '${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index]?.startDate ?? ""} - ${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index]?.endDate ?? ""}',
                   style: kTextStyleS13W600CustomGrey,
                 ),
-                
               ),
               CalendarEventCardAdmin(index: index),
               kSizedBoxH20,

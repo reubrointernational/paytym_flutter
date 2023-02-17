@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/screens/employee/reports/my_files_tab.dart';
+import 'package:paytym/screens/employee/reports/tabs/my_files_tab.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
@@ -10,11 +10,11 @@ import '../../../core/colors/colors.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../widgets/custom_cached_network_image.dart';
-import 'attendance_tab.dart';
-import 'deduction_tab.dart';
-import 'medical_tab.dart';
-import 'payslip_tab.dart';
-import 'split_payment_tab.dart';
+import 'tabs/attendance_tab.dart';
+import 'tabs/deduction_tab.dart';
+import 'tabs/medical_tab.dart';
+import 'tabs/payslip_tab.dart';
+import 'tabs/split_payment_tab.dart';
 import 'widgets/reports_app_bar.dart';
 
 class ReportsPage extends StatelessWidget {

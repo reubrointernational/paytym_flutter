@@ -64,7 +64,6 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                     fontSize: 13,
                                   ),
                                 ),
-                                kSizedBoxH8,
                               ],
                             ),
                             Column(
@@ -127,27 +126,27 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                     ),
                                   ],
                                 ),
-                                kSizedBoxH4,
-                                kSizedBoxH12,
-                                RichText(
-                                  text: TextSpan(
-                                    text: 'Gross : ',
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: '\$${employees['gross_salary']}',
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: CustomColors.lightBlueColor,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                // kSizedBoxH4,
+                                // kSizedBoxH12,
+                                // RichText(
+                                //   text: TextSpan(
+                                //     text: 'Gross : ',
+                                //     style: const TextStyle(
+                                //       color: Colors.grey,
+                                //       fontSize: 12,
+                                //     ),
+                                //     children: [
+                                //       TextSpan(
+                                //         text: '\$${employees['gross_salary']}',
+                                //         style: const TextStyle(
+                                //           fontSize: 15,
+                                //           fontWeight: FontWeight.w600,
+                                //           color: CustomColors.lightBlueColor,
+                                //         ),
+                                //       )
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             ),
                           ],

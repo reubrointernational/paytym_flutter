@@ -4,22 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
+import 'package:paytym/core/constants/enums.dart';
+import 'package:paytym/models/leaves/leaves_accept_decline_request_model.dart';
 import 'package:paytym/models/leaves/leaves_request_model.dart';
-import 'package:paytym/models/leaves/leaves_response.dart';
 import 'package:paytym/models/leaves/leaves_status_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
-import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../models/leaves/leaves_admin_response_model.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../widgets/reason_bottomsheet.dart';
 
 class LeavesControllerAdmin extends GetxController with BaseController {
-  final leaveResponseModel = LeaveResponseModel().obs;
+  final leaveAdminResponseModel =
+      LeavesAdminResponseModel(leaveList: [], message: '').obs;
   final formKey = GlobalKey<FormState>();
   LeaveRequestModel leaveRequestModel = LeaveRequestModel();
   final selectedItem = 'annual'.obs;
@@ -75,15 +77,46 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   fetchLeaveData() async {
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
     var responseString = await Get.find<BaseClient>()
-        .get(ApiEndPoints.leave, Get.find<LoginController>().getHeader())
+        .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
     } else {
       hideLoading();
-      leaveResponseModel.value = leaveResponseModelFromJson(responseString);
+      leaveAdminResponseModel.value =
+          leavesAdminResponseModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  approveOrDeclineLeave(ReasonButton reasonButton) async {
+    showLoading();
+    final model = LeaveAcceptDeclineRequestModel(
+        employeeId: Get.find<LoginController>()
+            .loginResponseModel!
+            .employee!
+            .id
+            .toString(),
+        approvalStatus: reasonButton == ReasonButton.leaveApprove ? '0' :'1',
+        startDate: '2023-02-03');
+    var responseString = await Get.find<BaseClient>()
+        .post(
+            ApiEndPoints.leaveAcceptReject,
+            leaveAcceptDeclineRequestModelToJson(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
   }
 
@@ -150,27 +183,6 @@ class LeavesControllerAdmin extends GetxController with BaseController {
 
     var outputFormat = DateFormat('yyyy-MM-dd');
     return outputFormat.format(inputDate);
-  }
-
-  validateAndApplyForLeave() async {
-    if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-
-      MessageOnlyResponseModel? model = await applyForLeave();
-
-      if (model != null) {
-        DialogHelper.showToast(desc: model.message!);
-        LeaveRequest leaveRequest = LeaveRequest(
-            title: leaveRequestModel.title,
-            startDate: getDateReverseString(leaveRequestModel.startDate),
-            endDate: getDateReverseString(leaveRequestModel.endDate),
-            type: leaveRequestModel.type);
-        leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
-        leaveRequestModel = LeaveRequestModel();
-        Get.back();
-        leaveResponseModel.refresh();
-      }
-    }
   }
 
   String? titleValidator(String value) {

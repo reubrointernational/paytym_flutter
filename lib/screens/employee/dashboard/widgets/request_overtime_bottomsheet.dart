@@ -44,10 +44,13 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                   ],
                   hintText: kStartDateString,
                   keyboardType: TextInputType.datetime,
-                  suffixIcon: GestureDetector(
-                    onTap: () => Get.find<LeavesController>()
-                        .selectDateTime(context, true),
-                    child: const Icon(Icons.calendar_month, size: 18),
+                  suffixIcon: const InkWell(
+                    // onTap: () => Get.find<LeavesController>()
+                    //     .selectDateTime(context, true),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.calendar_month, size: 18),
+                    ),
                   ),
                   validator: (value) =>
                       Get.find<DashboardController>().dateValidator(value!),

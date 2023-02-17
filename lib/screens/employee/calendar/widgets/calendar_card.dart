@@ -1,16 +1,33 @@
+import 'dart:io';
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
+import '../../../../core/constants/widgets.dart';
+import '../../../../core/dialog_helper.dart';
+import '../../../login/widgets/custom_text_form_field.dart';
+// import '../../leaves/widgets/time_picker.dart';
+import '../../../widgets/bordered_text_form_field.dart';
+import '../../leaves/leaves_controller.dart';
 import '../calendar_controller.dart';
+import 'upload_text_buttons.dart';
 
-class CalendarCard extends StatelessWidget {
+class CalendarCard extends StatefulWidget {
   const CalendarCard({super.key});
 
+  @override
+  State<CalendarCard> createState() => _CalendarCardState();
+}
+
+class _CalendarCardState extends State<CalendarCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +43,7 @@ class CalendarCard extends StatelessWidget {
             child: Obx(() {
               DateTime selectedDay =
                   Get.find<CalendarController>().selectedDay.value;
-              return TableCalendar(
+              return TableCalendar( 
                 eventLoader: (day) {
                   return Get.find<CalendarController>().getEventsForDay(day);
                 },
@@ -34,6 +51,7 @@ class CalendarCard extends StatelessWidget {
                   Get.find<CalendarController>().selectedDay.value =
                       selectedDay;
                 },
+                
                 selectedDayPredicate: (day) => isSameDay(selectedDay, day),
                 rowHeight: 65,
                 daysOfWeekHeight: 20,
@@ -81,7 +99,8 @@ class CalendarCard extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   todayDecoration: BoxDecoration(
-                    color: const Color.fromRGBO(72, 13, 250, 1).withOpacity(0.7),
+                    color:
+                        const Color.fromRGBO(72, 13, 250, 1).withOpacity(0.7),
                     shape: BoxShape.circle,
                   ),
                 ),

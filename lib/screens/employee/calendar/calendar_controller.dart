@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
@@ -18,6 +21,7 @@ class CalendarController extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
   final meetingResponseModel = MeetingResponseModel().obs;
   final eventsResponseModel = EventsResponseModel().obs;
+
 
   final selectedDay = DateTime.now().obs;
 
@@ -45,8 +49,13 @@ class CalendarController extends GetxController with BaseController {
   getEvents() async {
     showLoading();
     Get.find<BaseClient>().onError = getEvents;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
     var responseString = await Get.find<BaseClient>()
-        .get(ApiEndPoints.events, Get.find<LoginController>().getHeader())
+        .post(ApiEndPoints.events, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
@@ -70,5 +79,5 @@ class CalendarController extends GetxController with BaseController {
     getEvents();
   }
 
-
+  
 }

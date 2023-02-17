@@ -28,13 +28,16 @@ class CustomDropdownYearButton extends StatelessWidget {
           onChanged: onChanged,
           hint: Text(hint!),
           icon: isIconPresent
-              ? const CircleAvatar(
-                  radius: 10,
-                  backgroundColor: CustomColors.blueCardColor,
-                  child: Icon(
-                    Icons.arrow_drop_down,
-                    size: 20,
-                  ))
+              ? const Padding(
+                  padding: EdgeInsets.only(left: 3),
+                  child: CircleAvatar(
+                      radius: 10,
+                      backgroundColor: CustomColors.blueCardColor,
+                      child: Icon(
+                        Icons.arrow_drop_down,
+                        size: 20,
+                      )),
+                )
               : const SizedBox(),
           items: lists.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(value: value, child: Text(value));

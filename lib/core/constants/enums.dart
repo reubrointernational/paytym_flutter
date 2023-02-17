@@ -11,3 +11,5 @@ enum CheckInOutStatus { checkIn, checkOut, qrCheckIn, qrCheckOut, idle }
 enum PaymentMethods { windcave, mpaisa, mycash }
 
 enum SharingOrDownloading { sharing, downloading, idle }
+
+enum ReasonButton { leaveApprove, leaveDecline }

@@ -4,7 +4,7 @@ import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/split_payment/payment_controller.dart';
 
-import '../../split_payment/payment_methods.dart';
+import '../../../split_payment/payment_methods.dart';
 
 class SplitPaymentTab extends StatefulWidget {
   const SplitPaymentTab({super.key});

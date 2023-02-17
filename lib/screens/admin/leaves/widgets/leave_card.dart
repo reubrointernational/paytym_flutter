@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/models/leaves/leaves_status_model.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
-import '../../../../models/leaves/leaves_response.dart';
+import '../../../../models/leaves/leaves_admin_response_model.dart';
 import '../leaves_controller.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
 
 class LeavesCardAdmin extends StatelessWidget {
-  final LeaveRequest? leave;
+  final LeaveList? leave;
   const LeavesCardAdmin({super.key, this.leave});
 
   @override
   Widget build(BuildContext context) {
-    LeaveStatusModel leaveStatusModel =
-        Get.find<LeavesControllerAdmin>().getLeaveStatusModel(leave?.status);
+    // LeaveStatusModel leaveStatusModel =
+    //     Get.find<LeavesControllerAdmin>().getLeaveStatusModel(leave?.status);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(
@@ -41,21 +40,20 @@ class LeavesCardAdmin extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Smith',
-                        // leave?.title ?? '',
+                      Text(
+                        leave?.name ?? '',
                         overflow: TextOverflow.ellipsis,
                         style: kTextStyleS18W600,
                       ),
-                      const Text(
-                        '004578457',
+                      Text(
+                        leave?.id.toString()??'',
                         // '${Get.find<LeavesControllerAdmin>().formatDate(leave?.startDate)}-${Get.find<LeavesControllerAdmin>().formatDate(leave?.endDate)}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: CustomColors.greyHeadingTextColor,
                         ),
                       ),
                       Text(
-                        leave?.type?.toCamelCase() ?? '',
+                        leave?.name.toCamelCase()??'',
                         style: TextStyle(
                           fontSize: 15,
                           color: (leave?.type == kcasualString)

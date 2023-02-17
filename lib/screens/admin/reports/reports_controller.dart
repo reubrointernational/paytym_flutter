@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 import 'package:paytym/models/report/deduction_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
@@ -31,6 +33,7 @@ import 'widgets/pending_payroll_listview.dart';
 class ReportsControllerAdmin extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
+  final selectedDropdownDay = daysDummyList[0].obs;
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
@@ -38,6 +41,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   final deductionResponseModel = DeductionResponseModel().obs;
+  final attendanceResponseModel =
+      AttendanceAdminModel(message: '', history: []).obs;
   String quitCompanyReason = '';
 
   final selectedDepartment = departments.first.obs;
@@ -48,10 +53,13 @@ class ReportsControllerAdmin extends GetxController with BaseController {
 
   final chatGroupList = dummy_data.obs;
 
-
 //for bottomsheet
   showBottomSheetForReason() {
     DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
+  }
+
+  String getTime(DateTime? dateTime) {
+    return DateFormat.jm().format(dateTime ?? DateTime(2023));
   }
 
   fetchPayslip() async {
@@ -114,7 +122,31 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
-  Widget getPayrollTab(){
+  getAttendance() async {
+    if (attendanceResponseModel.value.message.isEmpty) {
+      showLoading();
+      Get.find<BaseClient>().onError = getAttendance;
+      var attendanceRequestModel = {
+        'employer_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.attendance, jsonEncode(attendanceRequestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      if (responseString == null) {
+        return;
+      } else {
+        hideLoading();
+        attendanceResponseModel.value =
+            attendanceAdminModelFromJson(responseString);
+        attendanceResponseModel.refresh();
+        Get.find<BaseClient>().onError = null;
+      }
+    }
+  }
+
+  Widget getPayrollTab() {
     if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value == 0) {
       return const PendingPayrollListview();
     } else if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value ==
