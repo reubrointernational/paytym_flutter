@@ -4,14 +4,14 @@
 
 import 'dart:convert';
 
-CreateEventRequestModel createEventRequestModelFromJson(String str) =>
-    CreateEventRequestModel.fromJson(json.decode(str));
+CreateCalendarRequestModel createEventRequestModelFromJson(String str) =>
+    CreateCalendarRequestModel.fromJson(json.decode(str));
 
-String createEventRequestModelToJson(CreateEventRequestModel data) =>
+String createEventRequestModelToJson(CreateCalendarRequestModel data) =>
     json.encode(data.toJson());
 
-class CreateEventRequestModel {
-  CreateEventRequestModel({
+class CreateCalendarRequestModel {
+  CreateCalendarRequestModel({
     required this.employerId,
     required this.name,
     required this.description,
@@ -31,8 +31,8 @@ class CreateEventRequestModel {
   String endDate;
   String endTime;
 
-  factory CreateEventRequestModel.fromJson(Map<String, dynamic> json) =>
-      CreateEventRequestModel(
+  factory CreateCalendarRequestModel.fromJson(Map<String, dynamic> json) =>
+      CreateCalendarRequestModel(
         employerId: json["employer_id"],
         name: json["name"],
         description: json["description"],

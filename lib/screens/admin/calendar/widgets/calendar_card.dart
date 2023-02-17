@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -8,15 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
-import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
-import '../../../../core/dialog_helper.dart';
-import '../../../employee/calendar/widgets/upload_text_buttons.dart';
-import '../../../employee/leaves/leaves_controller.dart';
 import '../../../login/widgets/custom_text_form_field.dart';
 import '../../../widgets/bordered_text_form_field.dart';
 import '../calendar_controller.dart';
@@ -55,245 +48,303 @@ class CalendarCardAdmin extends StatelessWidget {
                   builder: (BuildContext context) {
                     return SingleChildScrollView(
                       child: Container(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'Add to Calendar',
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 1),
-                              ),
-                              kSizedBoxH20,
-                              Obx(() {
-                                return Container(
-                                  height: 60,
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        width: 1.2,
-                                        color: CustomColors
-                                            .lightBlueCardBorderColor),
-                                  ),
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton<String>(
-                                      isExpanded: true,
-                                      value: Get.find<CalendarControllerAdmin>()
-                                          .selectedCalendarDropdown
-                                          .value,
-                                      onChanged: (String? value) {
-                                        Get.find<CalendarControllerAdmin>()
-                                            .selectedCalendarDropdown
-                                            .value = value!;
-                                        print(value);
-                                      },
-                                      items: calendarTabList
-                                          .map<DropdownMenuItem<String>>(
-                                              (String? value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value!.toCamelCase(),
-                                            style: const TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                );
-                              }),
-                              kSizedBoxH6,
-                              const CustomTextFormField(hintText: 'Subject'),
-                              kSizedBoxH6,
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    onTap: (() async {
-                                      TimeOfDay? selectedTime =
-                                          await showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay.now());
-                                      print(selectedTime.toString());
-                                    }),
-                                    child: SizedBox(
-                                      width: w * 0.45,
-                                      child: BorderedTextFormField(
-                                        enabled: false,
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                            RegExp(r'[0-9-]'),
-                                          ),
-                                        ],
-                                        // onSaved: (value) => Get.find<CalendarControllerAdmin>()
-                                        //     .leaveRequestModel
-                                        //     .startDate = value,
-                                        controller:
-                                            Get.find<CalendarControllerAdmin>()
-                                                .startDateController,
-                                        hintText: kStartTimeString,
-                                        keyboardType: TextInputType.datetime,
-                                        suffixIcon: const Icon(
-                                          Icons.access_time,
-                                          size: 18,
-                                        ),
-                                        // validator: (value) =>
-                                        //     Get.find<CalendarControllerAdmin>()
-                                        //         .dateValidator(value!),
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: (() async {
-                                      TimeOfDay? selectedTime =
-                                          await showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay.now());
-                                      print(selectedTime.toString());
-                                    }),
-                                    child: SizedBox(
-                                      width: w * 0.45,
-                                      child: BorderedTextFormField(
-                                        enabled: false,
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                            RegExp(r'[0-9-]'),
-                                          ),
-                                        ],
-                                        // onSaved: (value) => Get.find<CalendarControllerAdmin>()
-                                        //     .leaveRequestModel
-                                        //     .startDate = value,
-                                        controller:
-                                            Get.find<CalendarControllerAdmin>()
-                                                .startDateController,
-                                        hintText: kEndTimeString,
-                                        keyboardType: TextInputType.datetime,
-                                        suffixIcon: const Icon(
-                                          Icons.access_time,
-                                          size: 18,
-                                        ),
-                                        // validator: (value) =>
-                                        //     Get.find<CalendarControllerAdmin>()
-                                        //         .dateValidator(value!),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              kSizedBoxH6,
-                              /*
-                                kSizedBoxH10,
-                                DottedBorder(
-                                    color: CustomColors.greyTextColor,
-                                    child: Container(
-                                      height: h * 0.08,
-                                      width: w,
-                                      child: Center(
-                                          child: GestureDetector(
-                                        onTap: () {
-                                          DialogHelper.showUploadImageDialog(
-                                            content: Column(
-                                              children: [
-                                                UploadTextButton(
-                                                  text: 'Gallery',
-                                                  backgroundColor: CustomColors
-                                                      .blueTextColor,
-                                                  onPressed: () {
-                                                    Get.find<
-                                                            CalendarController>()
-                                                        .uploadProfileImageFromGallery();
-                                                  },
-                                                ),
-                                                kSizedBoxH10,
-                                                UploadTextButton(
-                                                  text: 'Camera',
-                                                  backgroundColor: CustomColors
-                                                      .blueTextColor,
-                                                  onPressed: () {
-                                                    Get.find<
-                                                            CalendarController>()
-                                                        .uploadProfileImageFromCamera();
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        child: const Text(
-                                          'Upload Profile Image',
-                                          style: TextStyle(
-                                            color: CustomColors.greyTextColor,
-                                          ),
-                                        ),
-                                      )),
-                                    )),
-                                kSizedBoxH10,
-                                Obx(() {
-                                  return Container(
-                                    height: h * 0.2,
-                                    width: w,
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      border: Border.all(
-                                          width: 1,
-                                          color: Colors.grey.shade400),
-                                    ),
-                                    child: Get.find<CalendarController>()
-                                            .picker
-                                            .value
-                                            .isNotEmpty
-                                        ? Image.file(
-                                            File(Get.find<CalendarController>()
-                                                .picker
-                                                .value),
-                                            fit: BoxFit.contain,
-                                          )
-                                        : const Center(
-                                            child: Icon(
-                                            Icons.photo_outlined,
-                                            size: 60,
-                                            color: Colors.grey,
-                                          )),
-                                  );
-                                }),*/
-                              const CustomTextFormField(hintText: 'Location'),
-                              kSizedBoxH15,
-                              SizedBox(
-                                height: h * 0.06,
-                                width: w,
-                                child: ElevatedButton(
-                                    onPressed: () =>
-                                        Get.find<CalendarControllerAdmin>()
-                                            .createCalendarItems(),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          CustomColors.blueTextColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      'Submit',
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Form(
+                              key: Get.find<CalendarControllerAdmin>().formKey,
+                              child: Obx(
+                                () => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      'Add to Calendar',
                                       style: TextStyle(
-                                        color: CustomColors.whiteCardColor,
-                                      ),
-                                    )),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1),
+                                    ),
+                                    kSizedBoxH20,
+                                    Obx(() {
+                                      return Container(
+                                        height: 60,
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                              width: 1.2,
+                                              color: CustomColors
+                                                  .lightBlueCardBorderColor),
+                                        ),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton<String>(
+                                            isExpanded: true,
+                                            value: Get.find<
+                                                    CalendarControllerAdmin>()
+                                                .selectedCalendarDropdown
+                                                .value,
+                                            onChanged: (String? value) {
+                                              Get.find<
+                                                      CalendarControllerAdmin>()
+                                                  .selectedCalendarDropdown
+                                                  .value = value!;
+                                            },
+                                            items: calendarTabList
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String? value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(
+                                                  value!.toCamelCase(),
+                                                  style: const TextStyle(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                    kSizedBoxH6,
+                                    CustomTextFormField(
+                                      hintText: 'Subject',
+                                      onSaved: (value) =>
+                                          Get.find<CalendarControllerAdmin>()
+                                              .createCalendarRequestModel
+                                              .description = value!,
+                                      inputAction: TextInputAction.next,
+                                      inputType: TextInputType.emailAddress,
+                                      validator: (value) =>
+                                          Get.find<CalendarControllerAdmin>()
+                                              .subjectValidator(
+                                                  value!, 'Subject'),
+                                    ),
+                                    kSizedBoxH6,
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: BorderedTextFormField(
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp(r'[0-9-]')),
+                                            ],
+                                            controller: Get.find<
+                                                    CalendarControllerAdmin>()
+                                                .startDateController,
+                                            onSaved: (value) => Get.find<
+                                                    CalendarControllerAdmin>()
+                                                .createCalendarRequestModel
+                                                .startDate = value!,
+                                            hintText: Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .selectedCalendarDropdown
+                                                        .value !=
+                                                    calendarTabList[1]
+                                                ? kDateString.substring(0, 4)
+                                                : kStartDateString,
+                                            keyboardType:
+                                                TextInputType.datetime,
+                                            suffixIcon: GestureDetector(
+                                              onTap: () => Get.find<
+                                                      CalendarControllerAdmin>()
+                                                  .selectDateTime(
+                                                      context, true),
+                                              child: const Icon(
+                                                  Icons.calendar_month,
+                                                  size: 18),
+                                            ),
+                                            validator: (value) => Get.find<
+                                                    CalendarControllerAdmin>()
+                                                .dateValidator(value!),
+                                          ),
+                                        ),
+                                        kSizedBoxW4,
+                                        Get.find<CalendarControllerAdmin>()
+                                                    .selectedCalendarDropdown
+                                                    .value !=
+                                                calendarTabList[1]
+                                            ? const SizedBox()
+                                            : Expanded(
+                                                child: BorderedTextFormField(
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter
+                                                        .allow(
+                                                            RegExp(r'[0-9-]')),
+                                                  ],
+                                                  controller: Get.find<
+                                                          CalendarControllerAdmin>()
+                                                      .endDateController,
+                                                  onSaved: (value) => Get.find<
+                                                          CalendarControllerAdmin>()
+                                                      .createCalendarRequestModel
+                                                      .endDate = value!,
+                                                  hintText: kEndDateString,
+                                                  keyboardType:
+                                                      TextInputType.datetime,
+                                                  suffixIcon: GestureDetector(
+                                                    onTap: () => Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .selectDateTime(
+                                                            context, true),
+                                                    child: const Icon(
+                                                        Icons.calendar_month,
+                                                        size: 18),
+                                                  ),
+                                                  validator: (value) => Get.find<
+                                                          CalendarControllerAdmin>()
+                                                      .dateValidator(value!),
+                                                ),
+                                              ),
+                                      ],
+                                    ),
+                                    kSizedBoxH6,
+                                    Get.find<CalendarControllerAdmin>()
+                                                .selectedCalendarDropdown
+                                                .value ==
+                                            calendarTabList[2]
+                                        ? const SizedBox()
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: (() async {
+                                                  TimeOfDay? selectedTime =
+                                                      await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                              TimeOfDay.now());
+                                                  Get.find<CalendarControllerAdmin>()
+                                                          .createCalendarRequestModel
+                                                          .startTime =
+                                                      selectedTime.toString();
+                                                }),
+                                                child: SizedBox(
+                                                  width: w * 0.45,
+                                                  child: BorderedTextFormField(
+                                                    enabled: false,
+                                                    inputFormatters: [
+                                                      FilteringTextInputFormatter
+                                                          .allow(
+                                                        RegExp(r'[0-9-]'),
+                                                      ),
+                                                    ],
+                                                    onSaved: (value) => Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .createCalendarRequestModel
+                                                        .startTime = value.toString(),
+                                                    hintText: kStartTimeString,
+                                                    keyboardType:
+                                                        TextInputType.datetime,
+                                                    suffixIcon: const Icon(
+                                                      Icons.access_time,
+                                                      size: 18,
+                                                    ),
+                                                    validator: (value) =>
+                                                        value == null ||
+                                                                value.isEmpty
+                                                            ? 'Enter a valid time'
+                                                            : null,
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: (() async {
+                                                  TimeOfDay? selectedTime =
+                                                      await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                              TimeOfDay.now());
+                                                  Get.find<CalendarControllerAdmin>()
+                                                          .createCalendarRequestModel
+                                                          .startTime =
+                                                      selectedTime.toString();
+                                                }),
+                                                child: SizedBox(
+                                                  width: w * 0.45,
+                                                  child: BorderedTextFormField(
+                                                    enabled: false,
+                                                    inputFormatters: [
+                                                      FilteringTextInputFormatter
+                                                          .allow(
+                                                        RegExp(r'[0-9-]'),
+                                                      ),
+                                                    ],
+                                                    onSaved: (value) => Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .createCalendarRequestModel
+                                                        .endTime = value.toString(),
+                                                    hintText: kEndTimeString,
+                                                    keyboardType:
+                                                        TextInputType.datetime,
+                                                    suffixIcon: const Icon(
+                                                      Icons.access_time,
+                                                      size: 18,
+                                                    ),
+                                                    validator: (value) =>
+                                                        value == null ||
+                                                                value.isEmpty
+                                                            ? 'Enter a valid time'
+                                                            : null,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                    kSizedBoxH6,
+                                    Get.find<CalendarControllerAdmin>()
+                                                .selectedCalendarDropdown
+                                                .value ==
+                                            calendarTabList[1]
+                                        ? CustomTextFormField(
+                                            hintText: 'Location',
+                                            onSaved: (value) => Get.find<
+                                                    CalendarControllerAdmin>()
+                                                .createCalendarRequestModel
+                                                .description = value!,
+                                            inputAction: TextInputAction.next,
+                                            inputType:
+                                                TextInputType.emailAddress,
+                                            validator: (value) => Get.find<
+                                                    CalendarControllerAdmin>()
+                                                .subjectValidator(
+                                                    value!, 'Location'),
+                                          )
+                                        : const SizedBox(),
+                                    kSizedBoxH15,
+                                    SizedBox(
+                                      height: h * 0.06,
+                                      width: w,
+                                      child: ElevatedButton(
+                                          onPressed: () => Get.find<
+                                                  CalendarControllerAdmin>()
+                                              .createCalendarItems(),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                CustomColors.blueTextColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Submit',
+                                            style: TextStyle(
+                                              color:
+                                                  CustomColors.whiteCardColor,
+                                            ),
+                                          )),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )),
                     );
                   },
                 );
