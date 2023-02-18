@@ -157,7 +157,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       } else if (selectedCalendarDropdown.value == calendarTabList[1]) {
         createEvent();
       } else {
-        createEvent(); //todo create holiday
+        createHoliday(); 
       }
     }
   }
@@ -197,6 +197,43 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  createHoliday() async {
+    showLoading();
+
+    var model = CreateCalendarRequestModel(
+      employerId: Get.find<LoginController>()
+          .loginResponseModel!
+          .employee!
+          .employer_id
+          .toString(),
+      name: createCalendarRequestModel.name,
+      description: 'description',
+      place: createCalendarRequestModel.place,
+      startDate: createCalendarRequestModel.startDate, //2023-01-15
+      startTime: createCalendarRequestModel.startTime, //11:00 am
+      endDate: createCalendarRequestModel.endDate, //2023-01-15
+      endTime: createCalendarRequestModel.endTime, //11:00 am
+      type: '1',
+      countryId: '1',
+    );
+
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.createHoliday, createEventRequestModelToJson(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      await getHolidays();
+      Get.back();
+      startDateController.clear();
+      endDateController.clear();
+      endTimeController.clear();
+      startTimeController.clear();
+    }
+  }
+
   getTime(String time) {
     final DateTime now = DateTime.parse(time);
     return DateFormat('hh:mm a').format(now);
@@ -211,8 +248,8 @@ class CalendarControllerAdmin extends GetxController with BaseController {
   }
 
   String? subjectValidator(String value, String title) {
-    return GetUtils.isLengthLessThan(value, 5)
-        ? "$title should be minimum 5 characters"
+    return GetUtils.isLengthLessThan(value, 3)
+        ? "$title should be minimum 3 characters"
         : null;
   }
 

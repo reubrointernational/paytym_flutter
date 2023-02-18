@@ -33,4 +33,5 @@ class ApiEndPoints {
   static const deleteEvent = '$kBaseUrl/delete_event';
   static const createEvent = '$kBaseUrl/create_event';
   static const deleteHoliday = '$kBaseUrl/delete_leave';
+  static const createHoliday = '$kBaseUrl/create_leaves';
 }

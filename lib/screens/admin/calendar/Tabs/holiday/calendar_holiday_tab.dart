@@ -9,16 +9,18 @@ class CalendarHolidayTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: Get.find<CalendarControllerAdmin>()
-              .leaveAdminResponseModel
-              .value
-              .leaveList
-              .length,
-          itemBuilder: (context, index) {
-            return CalendarHolidayCardAdmin(index: index);
-          },
-        ));
+    return Obx(
+      () => ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        itemCount: Get.find<CalendarControllerAdmin>()
+            .leaveAdminResponseModel
+            .value
+            .leaveList
+            .length,
+        itemBuilder: (context, index) {
+          return CalendarHolidayCardAdmin(index: index);
+        },
+      ),
+    );
   }
 }
