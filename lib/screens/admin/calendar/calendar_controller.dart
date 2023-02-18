@@ -9,6 +9,7 @@ import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
+import '../../../models/leaves/leaves_admin_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
@@ -19,6 +20,8 @@ class CalendarControllerAdmin extends GetxController with BaseController {
   final eventsResponseModel = EventsResponseModel().obs;
   final selectedCalendarDropdown = calendarTabList.first.obs;
   final formKey = GlobalKey<FormState>();
+  final leaveAdminResponseModel =
+      LeavesAdminResponseModel(leaveList: [], message: '').obs;
   CreateCalendarRequestModel createCalendarRequestModel =
       CreateCalendarRequestModel(
     employerId: '',
@@ -107,6 +110,45 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  getHolidays() async {
+    showLoading();
+    Get.find<BaseClient>().onError = getHolidays;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      leaveAdminResponseModel.value =
+          leavesAdminResponseModelFromJson(responseString);
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  deleteHoliday(int index) async {
+    showLoading();
+    var requestModel = {
+      'id': '${leaveAdminResponseModel.value.leaveList[index].id}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.deleteHoliday, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      leaveAdminResponseModel.value.leaveList.removeAt(index);
+      leaveAdminResponseModel.refresh();
+    }
+  }
+
   createCalendarItems() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -165,6 +207,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     super.onReady();
     getMeeting();
     getEvents();
+    getHolidays();
   }
 
   String? subjectValidator(String value, String title) {

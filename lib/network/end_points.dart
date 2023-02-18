@@ -32,4 +32,5 @@ class ApiEndPoints {
   static const leaveAcceptReject = '$kBaseUrl/leave_requests_accept_reject';
   static const deleteEvent = '$kBaseUrl/delete_event';
   static const createEvent = '$kBaseUrl/create_event';
+  static const deleteHoliday = '$kBaseUrl/delete_leave';
 }
