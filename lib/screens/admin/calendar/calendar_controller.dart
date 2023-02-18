@@ -9,7 +9,7 @@ import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
-import '../../../models/leaves/leaves_admin_response_model.dart';
+import '../../../models/calendar/holiday_admin_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
@@ -21,7 +21,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
   final selectedCalendarDropdown = calendarTabList.first.obs;
   final formKey = GlobalKey<FormState>();
   final leaveAdminResponseModel =
-      LeavesAdminResponseModel(leaveList: [], message: '').obs;
+      HolidayAdminResponseModel(leaveList: [], message: '').obs;
   CreateCalendarRequestModel createCalendarRequestModel =
       CreateCalendarRequestModel(
     employerId: '',
@@ -118,7 +118,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
           '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
+        .post(ApiEndPoints.holidayRequestAdmin, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
@@ -126,7 +126,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     } else {
       hideLoading();
       leaveAdminResponseModel.value =
-          leavesAdminResponseModelFromJson(responseString);
+          holidayAdminResponseModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
     }
   }
@@ -157,7 +157,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       } else if (selectedCalendarDropdown.value == calendarTabList[1]) {
         createEvent();
       } else {
-        createHoliday(); 
+        createHoliday();
       }
     }
   }

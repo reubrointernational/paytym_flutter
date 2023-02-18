@@ -1,77 +1,84 @@
 // To parse this JSON data, do
 //
-//     final leavesAdminResponseModel = leavesAdminResponseModelFromJson(jsonString);
+//     final leavesListAdminModel = leavesListAdminModelFromJson(jsonString);
 
 import 'dart:convert';
 
-LeavesAdminResponseModel leavesAdminResponseModelFromJson(String str) =>
-    LeavesAdminResponseModel.fromJson(json.decode(str));
+LeavesListAdminModel leavesListAdminModelFromJson(String str) =>
+    LeavesListAdminModel.fromJson(json.decode(str));
 
-String leavesAdminResponseModelToJson(LeavesAdminResponseModel data) =>
+String leavesListAdminModelToJson(LeavesListAdminModel data) =>
     json.encode(data.toJson());
 
-class LeavesAdminResponseModel {
-  LeavesAdminResponseModel({
+class LeavesListAdminModel {
+  LeavesListAdminModel({
     required this.message,
-    required this.leaveList,
+    required this.leaveRequest,
   });
 
   String message;
-  List<LeaveList> leaveList;
+  List<LeaveRequest> leaveRequest;
 
-  factory LeavesAdminResponseModel.fromJson(Map<String, dynamic> json) =>
-      LeavesAdminResponseModel(
+  factory LeavesListAdminModel.fromJson(Map<String, dynamic> json) =>
+      LeavesListAdminModel(
         message: json["message"],
-        leaveList: List<LeaveList>.from(
-            json["leave_list"].map((x) => LeaveList.fromJson(x))),
+        leaveRequest: List<LeaveRequest>.from(
+            json["leaveRequest"].map((x) => LeaveRequest.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "leave_list": List<dynamic>.from(leaveList.map((x) => x.toJson())),
+        "leaveRequest": List<dynamic>.from(leaveRequest.map((x) => x.toJson())),
       };
 }
 
-class LeaveList {
-  LeaveList({
+class LeaveRequest {
+  LeaveRequest({
     required this.id,
-    required this.countryId,
-    required this.type,
+    required this.userId,
     required this.employerId,
-    required this.name,
-    required this.date,
+    required this.title,
+    required this.startDate,
+    required this.endDate,
+    required this.type,
+    required this.status,
     required this.createdAt,
     required this.updatedAt,
   });
 
   int id;
-  int countryId;
-  String type;
+  int userId;
   int employerId;
-  String name;
-  String date;
+  String title;
+  String? startDate;
+  String? endDate;
+  String type;
+  String status;
   DateTime createdAt;
   DateTime updatedAt;
 
-  factory LeaveList.fromJson(Map<String, dynamic> json) => LeaveList(
+  factory LeaveRequest.fromJson(Map<String, dynamic> json) => LeaveRequest(
         id: json["id"],
-        countryId: json["country_id"],
-        type: json["type"],
+        userId: json["user_id"],
         employerId: json["employer_id"],
-        name: json["name"],
-        date: json["date"],
+        title: json["title"],
+        startDate: json["start_date"],
+        endDate: json["end_date"],
+        type: json["type"],
+        status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "country_id": countryId,
-        "type": type,
+        "user_id": userId,
         "employer_id": employerId,
-        "name": name,
-        "date":
-            date,
+        "title": title,
+        "start_date": startDate,
+        "end_date": endDate,
+        "type": type,
+        "status": status,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
       };

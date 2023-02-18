@@ -27,11 +27,14 @@ class ApiEndPoints {
   static const resetPasswordWithEmail = '$kBaseUrl/forgotpwd-password-update';
 
   static const attendance = '$kBaseUrl/checkin_checkout_list';
-  static const leaveRequestAdmin =
-      '$kBaseUrl/list_leaves'; // todo change to 'leave_requests_lists'
+  static const holidayRequestAdmin =
+      '$kBaseUrl/list_leaves'; 
   static const leaveAcceptReject = '$kBaseUrl/leave_requests_accept_reject';
   static const deleteEvent = '$kBaseUrl/delete_event';
   static const createEvent = '$kBaseUrl/create_event';
   static const deleteHoliday = '$kBaseUrl/delete_leave';
   static const createHoliday = '$kBaseUrl/create_leaves';
+  static const attendanceAcceptReject = '$kBaseUrl/attendance_approve_reject';
+  static const leaveRequestAdmin =
+      '$kBaseUrl/leave_requests_lists';
 }

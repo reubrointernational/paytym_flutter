@@ -22,6 +22,7 @@ import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
+import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../chat/chat_controller.dart';
@@ -52,14 +53,16 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final payrollClickedButton = 0.obs;
 
   final chatGroupList = dummy_data.obs;
+  int selectedItemIndex = 0;
 
 //for bottomsheet
-  showBottomSheetForReason() {
-    DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
+  showBottomSheetForReason(ReasonButton reasonButton) {
+    DialogHelper.showBottomSheet(ReasonBottomSheetAdmin(
+      reasonButton: reasonButton,
+    ));
   }
 
   String getTime(String? dateTime) {
-    
     if (dateTime == null) return '-';
 
     DateTime? dt = DateTime.parse(dateTime);
@@ -126,6 +129,32 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  approveOrDeclineAttendance(ReasonButton reasonButton) async {
+    showLoading();
+    final model = AttendanceAcceptDeclineRequestModel(
+        employeeId: attendanceResponseModel
+            .value.history[selectedItemIndex].userId
+            .toString(),
+        reason: 'ddd',
+        approvalStatus:
+            reasonButton == ReasonButton.attendanceApprove ? '0' : '1',
+        startDate:
+            attendanceResponseModel.value.history[selectedItemIndex].date!);
+    var responseString = await Get.find<BaseClient>()
+        .post(
+            ApiEndPoints.attendanceAcceptReject,
+            attendanceAcceptDeclineRequestModelToJson(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+    }
+  }
+
   getAttendance() async {
     if (attendanceResponseModel.value.message.isEmpty) {
       showLoading();
@@ -144,9 +173,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         hideLoading();
         attendanceResponseModel.value =
             attendanceAdminModelFromJson(responseString);
-
         attendanceResponseModel.refresh();
-
         Get.find<BaseClient>().onError = null;
       }
     }
