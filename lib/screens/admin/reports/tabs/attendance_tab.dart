@@ -101,13 +101,14 @@ class AttendanceTabAdmin extends StatelessWidget {
         Expanded(
           child: Obx(
             () {
+             
               return ListView.separated(
                 physics: const BouncingScrollPhysics(),
-                itemCount: Get.find<ReportsControllerAdmin>()
-                    .attendanceResponseModel
-                    .value
-                    .history
-                    .length,
+              itemCount: Get.find<ReportsControllerAdmin>()
+                  .attendanceResponseModel
+                  .value
+                  .history
+                  .length,
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
@@ -196,7 +197,7 @@ class AttendanceCardColumn extends StatelessWidget {
                     .value
                     .history[index]
                     .user
-                    .branch,
+                    .company??'',
             style:
                 isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
             overflow: TextOverflow.ellipsis,

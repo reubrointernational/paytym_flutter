@@ -58,8 +58,12 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
   }
 
-  String getTime(DateTime? dateTime) {
-    return DateFormat.jm().format(dateTime ?? DateTime(2023));
+  String getTime(String? dateTime) {
+    
+    if (dateTime == null) return '-';
+
+    DateTime? dt = DateTime.parse(dateTime);
+    return DateFormat.jm().format(dt);
   }
 
   fetchPayslip() async {
@@ -140,7 +144,9 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         hideLoading();
         attendanceResponseModel.value =
             attendanceAdminModelFromJson(responseString);
+
         attendanceResponseModel.refresh();
+
         Get.find<BaseClient>().onError = null;
       }
     }
