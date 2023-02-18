@@ -2,16 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/models/calendar/create_calendar_request_model.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
-import '../../../core/dialog_helper.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
@@ -39,6 +36,8 @@ class CalendarControllerAdmin extends GetxController with BaseController {
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
+  final TextEditingController startTimeController = TextEditingController();
+  final TextEditingController endTimeController = TextEditingController();
 
   List<dynamic> getEventsForDay(DateTime day) => ['HI'];
 
@@ -59,6 +58,14 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       meetingResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
+  }
+
+  String formatTimeOfDay(TimeOfDay? tod) {
+    final now = DateTime.now();
+    final dt = DateTime(
+        now.year, now.month, now.day, tod?.hour ?? 00, tod?.minute ?? 00);
+    final format = DateFormat.jm(); //"6:00 AM"
+    return format.format(dt);
   }
 
   Future<void> getEvents() async {
@@ -115,6 +122,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
 
   createEvent() async {
     showLoading();
+
     var model = CreateCalendarRequestModel(
       employerId: Get.find<LoginController>()
           .loginResponseModel!
@@ -122,25 +130,29 @@ class CalendarControllerAdmin extends GetxController with BaseController {
           .employer_id
           .toString(),
       name: createCalendarRequestModel.name,
-      description: createCalendarRequestModel.description,
+      description: 'description',
       place: createCalendarRequestModel.place,
       startDate: createCalendarRequestModel.startDate, //2023-01-15
       startTime: createCalendarRequestModel.startTime, //11:00 am
-      endDate: createCalendarRequestModel.endDate,     //2023-01-15
-      endTime: createCalendarRequestModel.endTime,     //11:00 am
+      endDate: createCalendarRequestModel.endDate, //2023-01-15
+      endTime: createCalendarRequestModel.endTime, //11:00 am
     );
 
-    // var responseString = await Get.find<BaseClient>()
-    //     .post(ApiEndPoints.createEvent, createEventRequestModelToJson(model),
-    //         Get.find<LoginController>().getHeader())
-    //     .catchError(handleError);
-    // if (responseString == null) {
-    //   return;
-    // } else {
-    //   hideLoading();
-    //   await getEvents();
-    //   Get.back();
-    // }
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.createEvent, createEventRequestModelToJson(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      await getEvents();
+      Get.back();
+      startDateController.clear();
+      endDateController.clear();
+      endTimeController.clear();
+      startTimeController.clear();
+    }
   }
 
   getTime(String time) {
@@ -175,10 +187,6 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     isStartDate
         ? startDateController.text = getDateString(startDate)
         : endDateController.text = getDateString(endDate);
-
-    isStartDate
-        ? createCalendarRequestModel.startDate = getReverseDateString(startDate)
-        : createCalendarRequestModel.endDate = getReverseDateString(endDate);
   }
 
   String getDateString(DateTime? dateTime) {
@@ -189,12 +197,15 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     return DateFormat('dd-MM-yyyy').format(dateTime).toString();
   }
 
-  String getReverseDateString(DateTime? dateTime) {
-    if (dateTime == null) {
+  String getDateReverseString(String? date) {
+    if (date == null) {
       return '';
     }
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    var inputDate = inputFormat.parse(date);
 
-    return DateFormat('yyyy-MM-dd').format(dateTime).toString();
+    var outputFormat = DateFormat('yyyy-MM-dd');
+    return outputFormat.format(inputDate);
   }
 
   String? dateValidator(String value) {

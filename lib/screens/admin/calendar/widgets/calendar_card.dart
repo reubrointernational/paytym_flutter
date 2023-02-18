@@ -111,10 +111,11 @@ class CalendarCardAdmin extends StatelessWidget {
                                   kSizedBoxH6,
                                   CustomTextFormField(
                                     hintText: 'Subject',
-                                    onSaved: (value) =>
-                                        Get.find<CalendarControllerAdmin>()
-                                            .createCalendarRequestModel
-                                            .description = value!,
+                                    onSaved: (value) {
+                                      Get.find<CalendarControllerAdmin>()
+                                          .createCalendarRequestModel
+                                          .name = value!;
+                                    },
                                     inputAction: TextInputAction.next,
                                     inputType: TextInputType.emailAddress,
                                     validator: (value) =>
@@ -137,7 +138,9 @@ class CalendarCardAdmin extends StatelessWidget {
                                           onSaved: (value) => Get.find<
                                                   CalendarControllerAdmin>()
                                               .createCalendarRequestModel
-                                              .startDate = value!,
+                                              .startDate = Get.find<
+                                                  CalendarControllerAdmin>()
+                                              .getDateReverseString(value!),
                                           hintText:
                                               Get.find<CalendarControllerAdmin>()
                                                           .selectedCalendarDropdown
@@ -177,7 +180,10 @@ class CalendarCardAdmin extends StatelessWidget {
                                                 onSaved: (value) => Get.find<
                                                         CalendarControllerAdmin>()
                                                     .createCalendarRequestModel
-                                                    .endDate = value!,
+                                                    .endDate = Get.find<
+                                                        CalendarControllerAdmin>()
+                                                    .getDateReverseString(
+                                                        value!),
                                                 hintText: kEndDateString,
                                                 keyboardType:
                                                     TextInputType.datetime,
@@ -185,7 +191,7 @@ class CalendarCardAdmin extends StatelessWidget {
                                                   onTap: () => Get.find<
                                                           CalendarControllerAdmin>()
                                                       .selectDateTime(
-                                                          context, true),
+                                                          context, false),
                                                   child: const Icon(
                                                       Icons.calendar_month,
                                                       size: 18),
@@ -207,86 +213,127 @@ class CalendarCardAdmin extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            GestureDetector(
-                                              onTap: (() async {
-                                                TimeOfDay? selectedTime =
-                                                    await showTimePicker(
-                                                        context: context,
-                                                        initialTime:
-                                                            TimeOfDay.now());
-                                                Get.find<CalendarControllerAdmin>()
+                                            SizedBox(
+                                              width: w * 0.45,
+                                              child: BorderedTextFormField(
+                                                enabled: true,
+                                                controller: Get.find<
+                                                        CalendarControllerAdmin>()
+                                                    .startTimeController,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                    RegExp(r'[0-9-]'),
+                                                  ),
+                                                ],
+                                                onSaved: (value) {
+                                                  // Get.find<
+                                                  //           CalendarControllerAdmin>()
+                                                  //       .createCalendarRequestModel
+                                                  //       .startTime = Get.find<
+                                                  //           CalendarControllerAdmin>()
+                                                  //       .formatTimeOfDay(
+                                                  //           Get.find<
+                                                  //             CalendarControllerAdmin>().startTimeController.value);
+                                                  // Get.find<
+                                                  //         CalendarControllerAdmin>()
+                                                  //     .startTimeController
+                                                  //     .text = Get.find<
+                                                  //         CalendarControllerAdmin>()
+                                                  //     .formatTimeOfDay(
+                                                  //         selectedTime);
+                                                },
+                                                hintText: kStartTimeString,
+                                                keyboardType:
+                                                    TextInputType.datetime,
+                                                suffixIcon: IconButton(
+                                                  onPressed: () async {
+                                                    TimeOfDay? selectedTime =
+                                                        await showTimePicker(
+                                                            context: context,
+                                                            initialTime:
+                                                                TimeOfDay
+                                                                    .now());
+                                                    Get.find<
+                                                            CalendarControllerAdmin>()
                                                         .createCalendarRequestModel
-                                                        .startTime =
-                                                    selectedTime.toString();
-                                              }),
-                                              child: SizedBox(
-                                                width: w * 0.45,
-                                                child: BorderedTextFormField(
-                                                  enabled: false,
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .allow(
-                                                      RegExp(r'[0-9-]'),
-                                                    ),
-                                                  ],
-                                                  onSaved: (value) => Get.find<
-                                                          CalendarControllerAdmin>()
-                                                      .createCalendarRequestModel
-                                                      .startTime = value.toString(),
-                                                  hintText: kStartTimeString,
-                                                  keyboardType:
-                                                      TextInputType.datetime,
-                                                  suffixIcon: const Icon(
+                                                        .startTime = Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .formatTimeOfDay(
+                                                            selectedTime);
+                                                    Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .startTimeController
+                                                        .text = Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .formatTimeOfDay(
+                                                            selectedTime);
+                                                  },
+                                                  icon: const Icon(
                                                     Icons.access_time,
                                                     size: 18,
                                                   ),
-                                                  validator: (value) =>
-                                                      value == null ||
-                                                              value.isEmpty
-                                                          ? 'Enter a valid time'
-                                                          : null,
                                                 ),
+                                                validator: (value) =>
+                                                    value == null ||
+                                                            value.isEmpty
+                                                        ? 'Enter a valid time'
+                                                        : null,
                                               ),
                                             ),
-                                            GestureDetector(
-                                              onTap: (() async {
-                                                TimeOfDay? selectedTime =
-                                                    await showTimePicker(
-                                                        context: context,
-                                                        initialTime:
-                                                            TimeOfDay.now());
-                                                Get.find<CalendarControllerAdmin>()
+                                            SizedBox(
+                                              width: w * 0.45,
+                                              child: BorderedTextFormField(
+                                                enabled: true,
+                                                controller: Get.find<
+                                                        CalendarControllerAdmin>()
+                                                    .endTimeController,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                    RegExp(r'[0-9-]'),
+                                                  ),
+                                                ],
+                                                // onSaved: (value) => Get.find<
+                                                //         CalendarControllerAdmin>()
+                                                //     .createCalendarRequestModel
+                                                //     .endTime = value.toString(),
+                                                hintText: kEndTimeString,
+                                                keyboardType:
+                                                    TextInputType.datetime,
+                                                suffixIcon: IconButton(
+                                                  onPressed: () async {
+                                                    TimeOfDay? selectedTime =
+                                                        await showTimePicker(
+                                                            context: context,
+                                                            initialTime:
+                                                                TimeOfDay
+                                                                    .now());
+                                                    Get.find<
+                                                            CalendarControllerAdmin>()
                                                         .createCalendarRequestModel
-                                                        .startTime =
-                                                    selectedTime.toString();
-                                              }),
-                                              child: SizedBox(
-                                                width: w * 0.45,
-                                                child: BorderedTextFormField(
-                                                  enabled: false,
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .allow(
-                                                      RegExp(r'[0-9-]'),
-                                                    ),
-                                                  ],
-                                                  onSaved: (value) => Get.find<
-                                                          CalendarControllerAdmin>()
-                                                      .createCalendarRequestModel
-                                                      .endTime = value.toString(),
-                                                  hintText: kEndTimeString,
-                                                  keyboardType:
-                                                      TextInputType.datetime,
-                                                  suffixIcon: const Icon(
+                                                        .endTime = Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .formatTimeOfDay(
+                                                            selectedTime);
+                                                    Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .endTimeController
+                                                        .text = Get.find<
+                                                            CalendarControllerAdmin>()
+                                                        .formatTimeOfDay(
+                                                            selectedTime);
+                                                  },
+                                                  icon: const Icon(
                                                     Icons.access_time,
                                                     size: 18,
                                                   ),
-                                                  validator: (value) =>
-                                                      value == null ||
-                                                              value.isEmpty
-                                                          ? 'Enter a valid time'
-                                                          : null,
                                                 ),
+                                                validator: (value) =>
+                                                    value == null ||
+                                                            value.isEmpty
+                                                        ? 'Enter a valid time'
+                                                        : null,
                                               ),
                                             ),
                                           ],
@@ -301,7 +348,7 @@ class CalendarCardAdmin extends StatelessWidget {
                                           onSaved: (value) => Get.find<
                                                   CalendarControllerAdmin>()
                                               .createCalendarRequestModel
-                                              .description = value!,
+                                              .place = value!,
                                           inputAction: TextInputAction.next,
                                           inputType: TextInputType.emailAddress,
                                           validator: (value) => Get.find<
