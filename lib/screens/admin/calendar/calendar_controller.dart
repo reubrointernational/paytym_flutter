@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/models/calendar/create_calendar_request_model.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
+import 'package:paytym/models/calendar/meeting_list_admin_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import '../../../core/constants/enums.dart';
@@ -16,7 +17,8 @@ import '../../login/login_controller.dart';
 
 class CalendarControllerAdmin extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
-  final meetingResponseModel = MeetingResponseModel().obs;
+  final meetingResponseModel =
+      MeetingListAdminModel(message: '', meetingsListe: []).obs;
   final eventsResponseModel = EventsResponseModel().obs;
   final selectedCalendarDropdown = calendarTabList.first.obs;
   final formKey = GlobalKey<FormState>();
@@ -44,23 +46,44 @@ class CalendarControllerAdmin extends GetxController with BaseController {
 
   List<dynamic> getEventsForDay(DateTime day) => ['HI'];
 
-  //todo add onError in getshedule as in getmeeting
-
   getMeeting() async {
     showLoading();
     Get.find<BaseClient>().onError = getMeeting;
+    var requestModel = {
+      'employer_id': 
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
     var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.meetings, null,
+        .post(ApiEndPoints.meetingsList, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
     } else {
       hideLoading();
-      meetingResponseModel.value = meetingResponseModelFromJson(responseString);
+      meetingResponseModel.value =
+          meetingListAdminModelFromJson(responseString);
       meetingResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
+  }
+
+  deleteMeeting(int index) async {
+    // showLoading();
+    // var requestModel = {
+    //   'id': '${eventsResponseModel.value.events![index]!.id}'
+    // };
+    // var responseString = await Get.find<BaseClient>()
+    //     .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
+    //         Get.find<LoginController>().getHeader())
+    //     .catchError(handleError);
+    // if (responseString == null) {
+    //   return;
+    // } else {
+    //   hideLoading();
+    //   eventsResponseModel.value.events?.removeAt(index);
+    //   eventsResponseModel.refresh();
+    // }
   }
 
   String formatTimeOfDay(TimeOfDay? tod) {

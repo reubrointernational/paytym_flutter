@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/widgets.dart';
@@ -22,14 +23,13 @@ class CalendarMeetingAdmin extends StatelessWidget {
         itemCount: Get.find<CalendarControllerAdmin>()
                 .meetingResponseModel
                 .value
-                .payroll
-                ?.length ??
-            0,
+                .meetingsListe
+                .length,
         itemBuilder: (context, index) {
           final meeting = Get.find<CalendarControllerAdmin>()
               .meetingResponseModel
               .value
-              .payroll?[index];
+              .meetingsListe[index];
           return SizedBox(
             height: 120,
             child: Row(
@@ -39,12 +39,12 @@ class CalendarMeetingAdmin extends StatelessWidget {
                   children: [
                     kSizedBoxH10,
                     Text(
-                      'TUE',
+                      DateFormat('EEE').format(meeting.date),
                       style: kTextStyleS18W600.copyWith(
                           color: CustomColors.grey156x3TextColor),
                     ),
                     Text(
-                      '11',
+                      meeting.date.day.toString(),
                       style: kTextStyleS18W600.copyWith(
                           color: CustomColors.lightBlueColor),
                     ),
@@ -66,13 +66,15 @@ class CalendarMeetingAdmin extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Meeting with Miller',
+                                meeting.location,
+                                // 'Meeting with Miller',
                                 style: kTextStyleS18W600.copyWith(
                                     color: CustomColors.blackTextColor),
                               ),
                               kSizedBoxH4,
                               Text(
-                                'HR Manager',
+meeting.location,
+                                // 'HR Manager',
                                 style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
                                     color: Colors.grey),
                               ),
@@ -86,7 +88,9 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                   ),
                                   kSizedBoxW4,
                                   Text(
-                                    '09:00 AM - 12:00 AM',
+                                    DateFormat.jm().format(meeting.startTime),
+                                    
+                                    // '09:00 AM - 12:00 AM',
                                     style: kTextStyleS14W600Cgrey300LS0p2
                                         .copyWith(color: Colors.grey),
                                   ),
@@ -107,7 +111,10 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                     color: CustomColors.lightBlueColor,
                                   )),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.find<CalendarControllerAdmin>()
+                                        .deleteMeeting(index);
+                                  },
                                   icon: const Icon(
                                     Icons.delete_outline_outlined,
                                     color: CustomColors.redColor,
