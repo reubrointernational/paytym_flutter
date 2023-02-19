@@ -37,4 +37,5 @@ class ApiEndPoints {
   static const attendanceAcceptReject = '$kBaseUrl/attendance_approve_reject';
   static const leaveRequestAdmin =
       '$kBaseUrl/leave_requests_lists';
+        static const deductionsList = '$kBaseUrl/deductions_list';
 }

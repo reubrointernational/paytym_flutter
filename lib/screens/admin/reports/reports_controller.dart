@@ -23,6 +23,7 @@ import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
+import '../../../models/report/deduction_list_admin_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../chat/chat_controller.dart';
@@ -41,7 +42,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final payslipResponseModel = PayslipResponseModel().obs;
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
-  final deductionResponseModel = DeductionResponseModel().obs;
+  final deductionResponseModel = DeductionListAdminModel().obs;
   final attendanceResponseModel =
       AttendanceAdminModel(message: '', history: []).obs;
   String quitCompanyReason = '';
@@ -110,22 +111,24 @@ class ReportsControllerAdmin extends GetxController with BaseController {
 //todo add onError in getattendance as well. Don't forget '()' will not be present on function
 
   getDeduction() async {
-    if (deductionResponseModel.value.deductions == null) {
-      showLoading();
-      Get.find<BaseClient>().onError = getDeduction;
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.deductions, null,
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        hideLoading();
-        deductionResponseModel.value =
-            deductionResponseModelFromJson(responseString);
-        deductionResponseModel.refresh();
-        Get.find<BaseClient>().onError = null;
-      }
+    showLoading();
+    var model = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
+    Get.find<BaseClient>().onError = getDeduction;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.deductionsList, jsonEncode(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      deductionResponseModel.value =
+          deductionListAdminModelFromJson(responseString);
+      deductionResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
     }
   }
 

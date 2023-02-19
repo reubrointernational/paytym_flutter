@@ -69,14 +69,14 @@ class DeductionTabAdmin extends StatelessWidget {
         kSizedBoxH10,
         Expanded(
           child: Obx(
-            () => ListView.builder(
+            () => ListView.separated(
               physics: const BouncingScrollPhysics(),
               itemCount: Get.find<ReportsControllerAdmin>()
                       .deductionResponseModel
                       .value
-                      .deductions
-                      ?.length ??
-                  0,
+                      .details
+                      ?.id ??
+                  1,
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
@@ -110,7 +110,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                               Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?.first.fundDeduction ?? '0')}",
+                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                             ],
@@ -123,7 +123,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                               Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?.first.pTax ?? '0')}",
+                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                             ],
@@ -136,7 +136,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                               Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?.first.pTax ?? '0')}",
+                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                             ],
@@ -149,7 +149,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                               Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?.first.pTax ?? '0')}",
+                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                             ],
@@ -164,7 +164,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                   style: kTextStyleS13W600Cblue,
                                 ),
                                 Text(
-                                  "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?.first.totalDeduction ?? '0')}",
+                                  "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
                                   style: kTextStyleS13W600Cblue.copyWith(
                                       color: Colors.lightBlue),
                                 ),
@@ -198,6 +198,8 @@ class DeductionTabAdmin extends StatelessWidget {
                   ],
                 );
               },
+              separatorBuilder: (BuildContext context, int index) =>
+                  kSizedBoxH10,
             ),
           ),
         ),

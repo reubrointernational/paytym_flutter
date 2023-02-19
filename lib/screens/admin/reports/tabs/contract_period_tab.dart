@@ -15,11 +15,12 @@ class ContractPeriodTabAdmin extends StatelessWidget {
     return Obx(
       () => ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: Get.find<ReportsControllerAdmin>()
-                .deductionResponseModel
-                .value
-                .deductions
-                ?.length ??
+        itemCount:
+            // Get.find<ReportsControllerAdmin>()
+            //         .deductionResponseModel
+            //         .value
+            //         .deductions
+            //         ?.length ??
             0,
         itemBuilder: (context, index) {
           return Container(
