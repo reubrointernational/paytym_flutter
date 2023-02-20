@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:paytym/models/calendar/holiday_admin_response_model.dart';
 import 'package:paytym/models/leaves/leaves_admin_response_model.dart';
 import 'leaves_controller.dart';
 import 'widgets/leave_card.dart';
@@ -11,14 +12,14 @@ class LeavesTabAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      List<LeaveList>? allLeaves;
+      List<LeaveRequest>? allLeaves;
       allLeaves =
           // (leave == 'Today')
           //     ?
           Get.find<LeavesControllerAdmin>()
               .leaveAdminResponseModel
               .value
-              .leaveList;
+              .leaveRequest;
       // : Get.find<LeavesControllerAdmin>()
       //     .leaveAdminResponseModel
       //     .value
@@ -31,7 +32,7 @@ class LeavesTabAdmin extends StatelessWidget {
         itemCount: allLeaves.length,
         itemBuilder: (context, index) {
           final leave = allLeaves?[index];
-          return LeavesCardAdmin(leave: leave);
+          return LeavesCardAdmin(leave: leave, index: index,);
         },
       );
     });

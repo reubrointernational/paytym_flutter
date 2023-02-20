@@ -20,6 +20,8 @@ class CreateCalendarRequestModel {
     required this.startTime,
     required this.endDate,
     required this.endTime,
+    this.type = '1',
+    this.countryId = '1',
   });
 
   String employerId;
@@ -30,6 +32,8 @@ class CreateCalendarRequestModel {
   String startTime;
   String endDate;
   String endTime;
+  String type;
+  String countryId;
 
   factory CreateCalendarRequestModel.fromJson(Map<String, dynamic> json) =>
       CreateCalendarRequestModel(
@@ -49,8 +53,11 @@ class CreateCalendarRequestModel {
         "description": description,
         "place": place,
         "start_date": startDate,
+        "date": startDate,
         "start_time": startTime,
         "end_date": endDate,
         "end_time": endTime,
+        "type": type,
+        "country_id": countryId,
       };
 }

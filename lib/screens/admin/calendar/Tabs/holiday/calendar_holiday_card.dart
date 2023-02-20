@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
 
 import '../../../../../core/colors/colors.dart';
 import '../../../../../core/constants/strings.dart';
@@ -21,31 +23,38 @@ class CalendarHolidayCardAdmin extends StatelessWidget {
             child: Column(
               children: [
                 IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
-                        child: Text(
-                          '26-01-2024',
-                          style: kTextStyleS13W600CustomGrey,
-                        ),
+                    child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                      child: Text(
+                        Get.find<CalendarControllerAdmin>()
+                            .leaveAdminResponseModel
+                            .value
+                            .leaveList[index]
+                            .date,
+                        style: kTextStyleS13W600CustomGrey,
                       ),
-                      VerticalDivider(
-                        width: w * 0.15,
-                        thickness: 3,
-                        color: CustomColors.greenColor,
+                    ),
+                    VerticalDivider(
+                      width: w * 0.15,
+                      thickness: 3,
+                      color: CustomColors.greenColor,
+                    ),
+                    Text(
+                      Get.find<CalendarControllerAdmin>()
+                          .leaveAdminResponseModel
+                          .value
+                          .leaveList[index]
+                          .name,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
                       ),
-                      const Text(
-                        'Republic Day',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  ],
+                )),
                 kSizedBoxH10,
                 const Divider(
                   thickness: 3,
@@ -70,18 +79,22 @@ class CalendarHolidayCardAdmin extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.delete_sharp,
-                            color: CustomColors.redColor,
-                          ),
-                          kSizedBoxW10,
-                          Text(
-                            kDeleteString,
-                            style: kTextStyleS13W600,
-                          ),
-                        ],
+                      GestureDetector(
+                        onTap: () => Get.find<CalendarControllerAdmin>()
+                            .deleteHoliday(index),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.delete_sharp,
+                              color: CustomColors.redColor,
+                            ),
+                            kSizedBoxW10,
+                            Text(
+                              kDeleteString,
+                              style: kTextStyleS13W600,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

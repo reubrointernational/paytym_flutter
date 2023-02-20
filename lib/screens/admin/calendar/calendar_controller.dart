@@ -2,26 +2,28 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/models/calendar/create_calendar_request_model.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
+import 'package:paytym/models/calendar/meeting_list_admin_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
-import '../../../core/dialog_helper.dart';
+import '../../../models/calendar/holiday_admin_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
 
 class CalendarControllerAdmin extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
-  final meetingResponseModel = MeetingResponseModel().obs;
+  final meetingResponseModel =
+      MeetingListAdminModel(message: '', meetingsListe: []).obs;
   final eventsResponseModel = EventsResponseModel().obs;
   final selectedCalendarDropdown = calendarTabList.first.obs;
   final formKey = GlobalKey<FormState>();
+  final leaveAdminResponseModel =
+      HolidayAdminResponseModel(leaveList: [], message: '').obs;
   CreateCalendarRequestModel createCalendarRequestModel =
       CreateCalendarRequestModel(
     employerId: '',
@@ -39,26 +41,57 @@ class CalendarControllerAdmin extends GetxController with BaseController {
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
+  final TextEditingController startTimeController = TextEditingController();
+  final TextEditingController endTimeController = TextEditingController();
 
   List<dynamic> getEventsForDay(DateTime day) => ['HI'];
-
-  //todo add onError in getshedule as in getmeeting
 
   getMeeting() async {
     showLoading();
     Get.find<BaseClient>().onError = getMeeting;
+    var requestModel = {
+      'employer_id': 
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
     var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.meetings, null,
+        .post(ApiEndPoints.meetingsList, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
     } else {
       hideLoading();
-      meetingResponseModel.value = meetingResponseModelFromJson(responseString);
+      meetingResponseModel.value =
+          meetingListAdminModelFromJson(responseString);
       meetingResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
+  }
+
+  deleteMeeting(int index) async {
+    // showLoading();
+    // var requestModel = {
+    //   'id': '${eventsResponseModel.value.events![index]!.id}'
+    // };
+    // var responseString = await Get.find<BaseClient>()
+    //     .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
+    //         Get.find<LoginController>().getHeader())
+    //     .catchError(handleError);
+    // if (responseString == null) {
+    //   return;
+    // } else {
+    //   hideLoading();
+    //   eventsResponseModel.value.events?.removeAt(index);
+    //   eventsResponseModel.refresh();
+    // }
+  }
+
+  String formatTimeOfDay(TimeOfDay? tod) {
+    final now = DateTime.now();
+    final dt = DateTime(
+        now.year, now.month, now.day, tod?.hour ?? 00, tod?.minute ?? 00);
+    final format = DateFormat.jm(); //"6:00 AM"
+    return format.format(dt);
   }
 
   Future<void> getEvents() async {
@@ -100,6 +133,45 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  getHolidays() async {
+    showLoading();
+    Get.find<BaseClient>().onError = getHolidays;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.holidayRequestAdmin, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      leaveAdminResponseModel.value =
+          holidayAdminResponseModelFromJson(responseString);
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  deleteHoliday(int index) async {
+    showLoading();
+    var requestModel = {
+      'id': '${leaveAdminResponseModel.value.leaveList[index].id}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.deleteHoliday, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      leaveAdminResponseModel.value.leaveList.removeAt(index);
+      leaveAdminResponseModel.refresh();
+    }
+  }
+
   createCalendarItems() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -108,13 +180,14 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       } else if (selectedCalendarDropdown.value == calendarTabList[1]) {
         createEvent();
       } else {
-        createEvent(); //todo create holiday
+        createHoliday();
       }
     }
   }
 
   createEvent() async {
     showLoading();
+
     var model = CreateCalendarRequestModel(
       employerId: Get.find<LoginController>()
           .loginResponseModel!
@@ -122,25 +195,66 @@ class CalendarControllerAdmin extends GetxController with BaseController {
           .employer_id
           .toString(),
       name: createCalendarRequestModel.name,
-      description: createCalendarRequestModel.description,
+      description: 'description',
       place: createCalendarRequestModel.place,
       startDate: createCalendarRequestModel.startDate, //2023-01-15
       startTime: createCalendarRequestModel.startTime, //11:00 am
-      endDate: createCalendarRequestModel.endDate,     //2023-01-15
-      endTime: createCalendarRequestModel.endTime,     //11:00 am
+      endDate: createCalendarRequestModel.endDate, //2023-01-15
+      endTime: createCalendarRequestModel.endTime, //11:00 am
     );
 
-    // var responseString = await Get.find<BaseClient>()
-    //     .post(ApiEndPoints.createEvent, createEventRequestModelToJson(model),
-    //         Get.find<LoginController>().getHeader())
-    //     .catchError(handleError);
-    // if (responseString == null) {
-    //   return;
-    // } else {
-    //   hideLoading();
-    //   await getEvents();
-    //   Get.back();
-    // }
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.createEvent, createEventRequestModelToJson(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      await getEvents();
+      Get.back();
+      startDateController.clear();
+      endDateController.clear();
+      endTimeController.clear();
+      startTimeController.clear();
+    }
+  }
+
+  createHoliday() async {
+    showLoading();
+
+    var model = CreateCalendarRequestModel(
+      employerId: Get.find<LoginController>()
+          .loginResponseModel!
+          .employee!
+          .employer_id
+          .toString(),
+      name: createCalendarRequestModel.name,
+      description: 'description',
+      place: createCalendarRequestModel.place,
+      startDate: createCalendarRequestModel.startDate, //2023-01-15
+      startTime: createCalendarRequestModel.startTime, //11:00 am
+      endDate: createCalendarRequestModel.endDate, //2023-01-15
+      endTime: createCalendarRequestModel.endTime, //11:00 am
+      type: '1',
+      countryId: '1',
+    );
+
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.createHoliday, createEventRequestModelToJson(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      await getHolidays();
+      Get.back();
+      startDateController.clear();
+      endDateController.clear();
+      endTimeController.clear();
+      startTimeController.clear();
+    }
   }
 
   getTime(String time) {
@@ -153,11 +267,12 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     super.onReady();
     getMeeting();
     getEvents();
+    getHolidays();
   }
 
   String? subjectValidator(String value, String title) {
-    return GetUtils.isLengthLessThan(value, 5)
-        ? "$title should be minimum 5 characters"
+    return GetUtils.isLengthLessThan(value, 3)
+        ? "$title should be minimum 3 characters"
         : null;
   }
 
@@ -175,10 +290,6 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     isStartDate
         ? startDateController.text = getDateString(startDate)
         : endDateController.text = getDateString(endDate);
-
-    isStartDate
-        ? createCalendarRequestModel.startDate = getReverseDateString(startDate)
-        : createCalendarRequestModel.endDate = getReverseDateString(endDate);
   }
 
   String getDateString(DateTime? dateTime) {
@@ -189,12 +300,15 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     return DateFormat('dd-MM-yyyy').format(dateTime).toString();
   }
 
-  String getReverseDateString(DateTime? dateTime) {
-    if (dateTime == null) {
+  String getDateReverseString(String? date) {
+    if (date == null) {
       return '';
     }
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    var inputDate = inputFormat.parse(date);
 
-    return DateFormat('yyyy-MM-dd').format(dateTime).toString();
+    var outputFormat = DateFormat('yyyy-MM-dd');
+    return outputFormat.format(inputDate);
   }
 
   String? dateValidator(String value) {

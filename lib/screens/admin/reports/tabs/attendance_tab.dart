@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/screens/admin/reports/widgets/rounded_icons.dart';
 
 import '../../../../core/constants/strings.dart';
@@ -129,15 +130,25 @@ class AttendanceTabAdmin extends StatelessWidget {
                         Column(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.find<ReportsControllerAdmin>()
+                                    .selectedItemIndex = index;
+                                Get.find<ReportsControllerAdmin>()
+                                    .approveOrDeclineAttendance(
+                                        ReasonButton.attendanceApprove);
+                              },
                               icon: RoundedIcon(
                                 iconPath: Icons.done,
                                 circleColor: Colors.green.shade100,
                               ),
                             ),
                             IconButton(
-                              onPressed: Get.find<ReportsControllerAdmin>()
-                                  .showBottomSheetForReason,
+                              onPressed: () {
+                                // Get.find<ReportsControllerAdmin>()
+                                //     .selectedItemIndex = index;
+                                // Get.find<ReportsControllerAdmin>()
+                                //     .showBottomSheetForReason(ReasonButton.attendanceApprove);
+                              },
                               icon: RoundedIcon(
                                 iconPath: Icons.edit_outlined,
                                 iconColor: Colors.blue,
@@ -145,8 +156,13 @@ class AttendanceTabAdmin extends StatelessWidget {
                               ),
                             ),
                             IconButton(
-                              onPressed: Get.find<ReportsControllerAdmin>()
-                                  .showBottomSheetForReason,
+                              onPressed: () {
+                                Get.find<ReportsControllerAdmin>()
+                                    .selectedItemIndex = index;
+                                Get.find<ReportsControllerAdmin>()
+                                    .showBottomSheetForReason(
+                                        ReasonButton.attendanceDecline);
+                              },
                               icon: RoundedIcon(
                                 iconPath: Icons.close,
                                 iconColor: Colors.red,
@@ -192,11 +208,12 @@ class AttendanceCardColumn extends StatelessWidget {
             !isRightTab
                 ? 'Branch'
                 : Get.find<ReportsControllerAdmin>()
-                    .attendanceResponseModel
-                    .value
-                    .history[index]
-                    .user
-                    .branch,
+                        .attendanceResponseModel
+                        .value
+                        .history[index]
+                        .user
+                        .company ??
+                    '',
             style:
                 isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
             overflow: TextOverflow.ellipsis,
@@ -224,8 +241,8 @@ class AttendanceCardColumn extends StatelessWidget {
                 isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
           ),
           kSizedBoxH20,
-          const Text(
-            'Check-in',
+          Text(
+            !isRightTab ? 'Check-in' : 'Check-out',
             style: kTextStyleS15W600CBlack,
           ),
           kSizedBoxH4,

@@ -13,6 +13,7 @@ import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../models/calendar/holiday_admin_response_model.dart';
 import '../../../models/leaves/leaves_admin_response_model.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
@@ -21,7 +22,7 @@ import '../widgets/reason_bottomsheet.dart';
 
 class LeavesControllerAdmin extends GetxController with BaseController {
   final leaveAdminResponseModel =
-      LeavesAdminResponseModel(leaveList: [], message: '').obs;
+      LeavesListAdminModel(message: '', leaveRequest: []).obs;
   final formKey = GlobalKey<FormState>();
   LeaveRequestModel leaveRequestModel = LeaveRequestModel();
   final selectedItem = 'annual'.obs;
@@ -31,6 +32,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   final TextEditingController endDateController = TextEditingController();
   final selectedDepartment = departments.first.obs;
   final selectedBranch = branches.first.obs;
+  int selectedItemIndex = 0;
 
   //for bottomsheet
   final requestAdvanceFormKey = GlobalKey<FormState>();
@@ -43,8 +45,10 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   }
 
   //for bottomsheet
-  showBottomSheetForReason() {
-    DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
+  showBottomSheetForReason(ReasonButton reasonButton) {
+    DialogHelper.showBottomSheet(ReasonBottomSheetAdmin(
+      reasonButton: reasonButton,
+    ));
   }
 
   //for bottomsheet validation
@@ -74,10 +78,12 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     // }
   }
 
-  fetchLeaveData() async {
+  fetchLeaveData([int status = 1]) async {
+    //status 1 means all leaves, 
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var requestModel = {
+      'status': status,
       'employer_id':
           '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
@@ -90,7 +96,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     } else {
       hideLoading();
       leaveAdminResponseModel.value =
-          leavesAdminResponseModelFromJson(responseString);
+          leavesListAdminModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
     }
   }
@@ -98,13 +104,12 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   approveOrDeclineLeave(ReasonButton reasonButton) async {
     showLoading();
     final model = LeaveAcceptDeclineRequestModel(
-        employeeId: Get.find<LoginController>()
-            .loginResponseModel!
-            .employee!
-            .id
+        employeeId: leaveAdminResponseModel
+            .value.leaveRequest[selectedItemIndex].userId
             .toString(),
-        approvalStatus: reasonButton == ReasonButton.leaveApprove ? '0' :'1',
-        startDate: '2023-02-03');
+        approvalStatus: reasonButton == ReasonButton.leaveApprove ? '0' : '1',
+        startDate: leaveAdminResponseModel
+            .value.leaveRequest[selectedItemIndex].startDate!);
     var responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.leaveAcceptReject,
@@ -117,22 +122,6 @@ class LeavesControllerAdmin extends GetxController with BaseController {
       hideLoading();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
-    }
-  }
-
-  Future<MessageOnlyResponseModel?> applyForLeave() async {
-    showLoading();
-
-    var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.leave, leaveRequestModelToJson(leaveRequestModel),
-            Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-
-    if (responseString == null) {
-      return null;
-    } else {
-      hideLoading();
-      return messageOnlyResponseModelFromJson(responseString);
     }
   }
 

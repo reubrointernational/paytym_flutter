@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
+import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/screens/employee/leaves/leaves_controller.dart';
 
 import '../../../core/colors/colors.dart';
@@ -59,7 +60,7 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
               onPressed: () {
                 reasonButton.name.contains('leave')
                     ? Get.find<LeavesControllerAdmin>().approveOrDeclineLeave(reasonButton)
-                    : Get.find<LeavesControllerAdmin>().approveOrDeclineLeave(reasonButton);
+                    : Get.find<ReportsControllerAdmin>().approveOrDeclineAttendance(reasonButton);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,

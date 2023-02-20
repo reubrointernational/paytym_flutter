@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 import 'package:paytym/models/report/deduction_response_model.dart';
+import 'package:paytym/models/report/medical_list_admin_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/network/base_controller.dart';
@@ -22,6 +23,8 @@ import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
+import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
+import '../../../models/report/deduction_list_admin_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../chat/chat_controller.dart';
@@ -40,7 +43,9 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final payslipResponseModel = PayslipResponseModel().obs;
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
-  final deductionResponseModel = DeductionResponseModel().obs;
+  final deductionResponseModel = DeductionListAdminModel().obs;
+  final medicalResponseModel =
+      MedicalListAdminModel(message: '', extraDetails: []).obs;
   final attendanceResponseModel =
       AttendanceAdminModel(message: '', history: []).obs;
   String quitCompanyReason = '';
@@ -52,14 +57,20 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final payrollClickedButton = 0.obs;
 
   final chatGroupList = dummy_data.obs;
+  int selectedItemIndex = 0;
 
 //for bottomsheet
-  showBottomSheetForReason() {
-    DialogHelper.showBottomSheet(const ReasonBottomSheetAdmin());
+  showBottomSheetForReason(ReasonButton reasonButton) {
+    DialogHelper.showBottomSheet(ReasonBottomSheetAdmin(
+      reasonButton: reasonButton,
+    ));
   }
 
-  String getTime(DateTime? dateTime) {
-    return DateFormat.jm().format(dateTime ?? DateTime(2023));
+  String getTime(String? dateTime) {
+    if (dateTime == null) return '-';
+
+    DateTime? dt = DateTime.parse(dateTime);
+    return DateFormat.jm().format(dt);
   }
 
   fetchPayslip() async {
@@ -103,22 +114,90 @@ class ReportsControllerAdmin extends GetxController with BaseController {
 //todo add onError in getattendance as well. Don't forget '()' will not be present on function
 
   getDeduction() async {
-    if (deductionResponseModel.value.deductions == null) {
-      showLoading();
-      Get.find<BaseClient>().onError = getDeduction;
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.deductions, null,
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        hideLoading();
-        deductionResponseModel.value =
-            deductionResponseModelFromJson(responseString);
-        deductionResponseModel.refresh();
-        Get.find<BaseClient>().onError = null;
-      }
+    showLoading();
+    var model = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
+    Get.find<BaseClient>().onError = getDeduction;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.deductionsList, jsonEncode(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      deductionResponseModel.value =
+          deductionListAdminModelFromJson(responseString);
+      deductionResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  deleteDeduction(int index) async {
+    // showLoading();
+    // var requestModel = {
+    //   'id': '${deductionResponseModel.value.details![index]!.id}'
+    // };
+    // var responseString = await Get.find<BaseClient>()
+    //     .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
+    //         Get.find<LoginController>().getHeader())
+    //     .catchError(handleError);
+    // if (responseString == null) {
+    //   return;
+    // } else {
+    //   hideLoading();
+    //   deductionResponseModel.value.events?.removeAt(index);
+    //   deductionResponseModel.refresh();
+    // }
+  }
+
+  getMedical() async {
+    showLoading();
+    var model = {
+      'employer_id': '4'
+      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
+    Get.find<BaseClient>().onError = getMedical;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.medicalList, jsonEncode(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      medicalResponseModel.value =
+          medicalListAdminModelFromJson(responseString);
+      medicalResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  approveOrDeclineAttendance(ReasonButton reasonButton) async {
+    showLoading();
+    final model = AttendanceAcceptDeclineRequestModel(
+        employeeId: attendanceResponseModel
+            .value.history[selectedItemIndex].userId
+            .toString(),
+        reason: 'ddd',
+        approvalStatus:
+            reasonButton == ReasonButton.attendanceApprove ? '0' : '1',
+        startDate:
+            attendanceResponseModel.value.history[selectedItemIndex].date!);
+    var responseString = await Get.find<BaseClient>()
+        .post(
+            ApiEndPoints.attendanceAcceptReject,
+            attendanceAcceptDeclineRequestModelToJson(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
   }
 

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/core/constants/widgets.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../models/calendar/holiday_admin_response_model.dart';
 import '../../../../models/leaves/leaves_admin_response_model.dart';
 import '../leaves_controller.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
 
 class LeavesCardAdmin extends StatelessWidget {
-  final LeaveList? leave;
-  const LeavesCardAdmin({super.key, this.leave});
+  final LeaveRequest? leave;
+  final int index;
+  const LeavesCardAdmin({super.key, this.leave, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +44,22 @@ class LeavesCardAdmin extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        leave?.name ?? '',
+                        leave?.startDate ?? '',
                         overflow: TextOverflow.ellipsis,
                         style: kTextStyleS18W600,
                       ),
                       Text(
-                        leave?.id.toString()??'',
+                        leave?.id.toString() ?? '',
                         // '${Get.find<LeavesControllerAdmin>().formatDate(leave?.startDate)}-${Get.find<LeavesControllerAdmin>().formatDate(leave?.endDate)}',
                         style: const TextStyle(
                           color: CustomColors.greyHeadingTextColor,
                         ),
                       ),
                       Text(
-                        leave?.name.toCamelCase()??'',
+                        leave?.title??'',
                         style: TextStyle(
                           fontSize: 15,
-                          color: (leave?.type == kcasualString)
+                          color: leave?.type.toLowerCase().contains(kcasualString)??false
                               ? CustomColors.orangeLabelColor
                               : CustomColors.blueLabelColor,
                         ),
@@ -69,8 +72,13 @@ class LeavesCardAdmin extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: Get.find<LeavesControllerAdmin>()
-                          .showBottomSheetForReason,
+                      onTap: () {
+                        Get.find<LeavesControllerAdmin>().selectedItemIndex =
+                            index;
+                        Get.find<LeavesControllerAdmin>()
+                            .showBottomSheetForReason(
+                                ReasonButton.leaveDecline);
+                      },
                       child: Container(
                         width: 65,
                         alignment: Alignment.center,
@@ -92,8 +100,13 @@ class LeavesCardAdmin extends StatelessWidget {
                     ),
                     kSizedBoxH8,
                     GestureDetector(
-                      onTap: Get.find<LeavesControllerAdmin>()
-                          .showBottomSheetForReason,
+                      onTap: () {
+                        Get.find<LeavesControllerAdmin>().selectedItemIndex =
+                            index;
+                        Get.find<LeavesControllerAdmin>()
+                            .showBottomSheetForReason(
+                                ReasonButton.leaveApprove);
+                      },
                       child: Container(
                         width: 65,
                         alignment: Alignment.center,
