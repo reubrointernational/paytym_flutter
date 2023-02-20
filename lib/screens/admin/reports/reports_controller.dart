@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 import 'package:paytym/models/report/deduction_response_model.dart';
+import 'package:paytym/models/report/medical_list_admin_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/network/base_controller.dart';
@@ -43,6 +44,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   final deductionResponseModel = DeductionListAdminModel().obs;
+  final medicalResponseModel =
+      MedicalListAdminModel(message: '', extraDetails: []).obs;
   final attendanceResponseModel =
       AttendanceAdminModel(message: '', history: []).obs;
   String quitCompanyReason = '';
@@ -128,6 +131,46 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       deductionResponseModel.value =
           deductionListAdminModelFromJson(responseString);
       deductionResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  // deleteDeduction(int index) async {
+  //   showLoading();
+  //   var requestModel = {
+  //     'id': '${deductionResponseModel.value.details![index]!.id}'
+  //   };
+  //   var responseString = await Get.find<BaseClient>()
+  //       .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
+  //           Get.find<LoginController>().getHeader())
+  //       .catchError(handleError);
+  //   if (responseString == null) {
+  //     return;
+  //   } else {
+  //     hideLoading();
+  //     deductionResponseModel.value.events?.removeAt(index);
+  //     deductionResponseModel.refresh();
+  //   }
+  // }
+
+  getMedical() async {
+    showLoading();
+    var model = {
+      'employer_id': '4'
+      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
+    Get.find<BaseClient>().onError = getMedical;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.medicalList, jsonEncode(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      medicalResponseModel.value =
+          medicalListAdminModelFromJson(responseString);
+      medicalResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
   }

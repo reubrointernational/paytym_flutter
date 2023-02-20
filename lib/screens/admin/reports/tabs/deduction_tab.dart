@@ -179,7 +179,10 @@ class DeductionTabAdmin extends StatelessWidget {
                       child: Row(
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.find<ReportsControllerAdmin>()
+                                  .deleteDeduction(index);
+                            },
                             icon: const Icon(
                               Icons.delete_outline_outlined,
                               color: Colors.red,

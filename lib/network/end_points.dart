@@ -37,4 +37,5 @@ class ApiEndPoints {
   static const leaveRequestAdmin = '$kBaseUrl/leave_requests_lists';
   static const deductionsList = '$kBaseUrl/deductions_list';
   static const meetingsList = '$kBaseUrl/list_meetings';
+  static const medicalList = '$kBaseUrl/extra_details';
 }

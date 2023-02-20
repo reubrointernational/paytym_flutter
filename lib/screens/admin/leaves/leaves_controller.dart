@@ -79,6 +79,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   }
 
   fetchLeaveData([int status = 1]) async {
+    //status 1 means all leaves, 
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var requestModel = {
