@@ -135,23 +135,23 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
-  // deleteDeduction(int index) async {
-  //   showLoading();
-  //   var requestModel = {
-  //     'id': '${deductionResponseModel.value.details![index]!.id}'
-  //   };
-  //   var responseString = await Get.find<BaseClient>()
-  //       .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
-  //           Get.find<LoginController>().getHeader())
-  //       .catchError(handleError);
-  //   if (responseString == null) {
-  //     return;
-  //   } else {
-  //     hideLoading();
-  //     deductionResponseModel.value.events?.removeAt(index);
-  //     deductionResponseModel.refresh();
-  //   }
-  // }
+  deleteDeduction(int index) async {
+    // showLoading();
+    // var requestModel = {
+    //   'id': '${deductionResponseModel.value.details![index]!.id}'
+    // };
+    // var responseString = await Get.find<BaseClient>()
+    //     .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
+    //         Get.find<LoginController>().getHeader())
+    //     .catchError(handleError);
+    // if (responseString == null) {
+    //   return;
+    // } else {
+    //   hideLoading();
+    //   deductionResponseModel.value.events?.removeAt(index);
+    //   deductionResponseModel.refresh();
+    // }
+  }
 
   getMedical() async {
     showLoading();
