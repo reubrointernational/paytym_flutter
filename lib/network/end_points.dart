@@ -1,4 +1,6 @@
-const kBaseUrl = 'http://52.40.210.26:2000/api';
+// const kBaseUrl = 'http://52.40.210.26:2000/api';
+const kBaseUrl = 'http://paytym.net/api';
+
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
 const kDomainUrl = 'petty.ga';
 
