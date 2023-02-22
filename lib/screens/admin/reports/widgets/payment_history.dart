@@ -202,20 +202,36 @@ class _PaymentHistoryState extends State<PaymentHistory> {
   }
 }
 
-Widget processButton(String text, Color color) => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(width: 1, color: color),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 10.5,
-          color: color,
+Widget processButton(String text, Color color, Function()? onTap) => InkWell(
+  onTap: onTap,
+  child:   Container(
+  
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+  
+        decoration: BoxDecoration(
+  
+          borderRadius: BorderRadius.circular(6),
+  
+          border: Border.all(width: 1, color: color),
+  
         ),
+  
+        child: Text(
+  
+          text,
+  
+          style: TextStyle(
+  
+            fontSize: 10.5,
+  
+            color: color,
+  
+          ),
+  
+        ),
+  
       ),
-    );
+);
 
 Widget payrollDetails(text, details) => RichText(
       text: TextSpan(

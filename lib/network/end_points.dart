@@ -42,4 +42,5 @@ class ApiEndPoints {
 
   static const createMeetings = '$kBaseUrl/create_meetings';
   static const deleteMeetings = '$kBaseUrl/meetings_delete';
+  static const getOvertime = '$kBaseUrl/list_overtime';
 }
