@@ -1,6 +1,7 @@
-const kBaseUrl = 'http://52.40.210.26:2000/api';
+// const kBaseUrl = 'http://52.40.210.26:2000/api';
+const kBaseUrl = 'http://paytym.net/api';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
-const kDomainUrl = 'petty.ga';
+const kDomainUrl = 'paytym.net';
 
 class ApiEndPoints {
   static const login = '$kBaseUrl/login';
@@ -38,4 +39,7 @@ class ApiEndPoints {
   static const deductionsList = '$kBaseUrl/deductions_list';
   static const meetingsList = '$kBaseUrl/list_meetings';
   static const medicalList = '$kBaseUrl/extra_details';
+
+  static const createMeetings = '$kBaseUrl/create_meetings';
+  static const deleteMeetings = '$kBaseUrl/meetings_delete';
 }

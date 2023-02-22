@@ -23,6 +23,9 @@ import '../widgets/reason_bottomsheet.dart';
 class LeavesControllerAdmin extends GetxController with BaseController {
   final leaveAdminResponseModel =
       LeavesListAdminModel(message: '', leaveRequest: []).obs;
+  final leaveAdminResponseModelPending =
+      LeavesListAdminModel(message: '', leaveRequest: []).obs;
+
   final formKey = GlobalKey<FormState>();
   LeaveRequestModel leaveRequestModel = LeaveRequestModel();
   final selectedItem = 'annual'.obs;
@@ -42,6 +45,26 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   void onReady() {
     super.onReady();
     fetchLeaveData();
+    fetchLeaveData(0);
+  }
+
+  isToday(DateTime dateTime) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final dateTimeInYMD = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    if (dateTimeInYMD == today) return true;
+    return false;
+  }
+
+  isYesterday(DateTime dateTime) {
+    final now = DateTime.now();
+    final yesterday = DateTime(now.year, now.month, now.day - 1);
+    final dateTimeInYMD = DateTime(dateTime.year, dateTime.month, dateTime.day);
+
+    if (dateTimeInYMD == yesterday) {
+      return true;
+    }
+    return false;
   }
 
   //for bottomsheet
@@ -79,7 +102,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   }
 
   fetchLeaveData([int status = 1]) async {
-    //status 1 means all leaves, 
+    //status 1 means all leaves,
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var requestModel = {
@@ -95,8 +118,12 @@ class LeavesControllerAdmin extends GetxController with BaseController {
       return;
     } else {
       hideLoading();
-      leaveAdminResponseModel.value =
-          leavesListAdminModelFromJson(responseString);
+      status == 1
+          ? leaveAdminResponseModel.value =
+              leavesListAdminModelFromJson(responseString)
+          : leaveAdminResponseModelPending.value =
+              leavesListAdminModelFromJson(responseString);
+
       Get.find<BaseClient>().onError = null;
     }
   }

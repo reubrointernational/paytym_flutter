@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
-import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
-import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
-import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 
-import '../../../../../core/constants/strings.dart';
 import '../../../../../core/constants/styles.dart';
-import '../../../../widgets/custom_cached_network_image.dart';
 
 class CalendarMeetingAdmin extends StatelessWidget {
   const CalendarMeetingAdmin({Key? key}) : super(key: key);

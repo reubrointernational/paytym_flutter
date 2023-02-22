@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:paytym/models/calendar/holiday_admin_response_model.dart';
+import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/models/leaves/leaves_admin_response_model.dart';
 import 'leaves_controller.dart';
 import 'widgets/leave_card.dart';
@@ -11,30 +11,59 @@ class LeavesTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      List<LeaveRequest>? allLeaves;
-      allLeaves =
-          // (leave == 'Today')
-          //     ?
-          Get.find<LeavesControllerAdmin>()
-              .leaveAdminResponseModel
-              .value
-              .leaveRequest;
-      // : Get.find<LeavesControllerAdmin>()
-      //     .leaveAdminResponseModel
-      //     .value
-      //     .leaveList
-      //     .where((element) =>
-      //         element.type?.toLowerCase() == leave.toLowerCase())
-      //     .toList();
-      return ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemCount: allLeaves.length,
-        itemBuilder: (context, index) {
-          final leave = allLeaves?[index];
-          return LeavesCardAdmin(leave: leave, index: index,);
-        },
-      );
-    });
+    return leave != leaveTabListAdmin[2]
+        ? Obx(
+            () {
+              List<LeaveRequest>? allLeaves;
+              if (leave == 'Today') {
+                allLeaves = Get.find<LeavesControllerAdmin>()
+                    .leaveAdminResponseModel
+                    .value
+                    .leaveRequest
+                    .where((element) => Get.find<LeavesControllerAdmin>()
+                        .isToday(element.createdAt))
+                    .toList();
+              } else {
+                allLeaves = Get.find<LeavesControllerAdmin>()
+                    .leaveAdminResponseModel
+                    .value
+                    .leaveRequest
+                    .where((element) => Get.find<LeavesControllerAdmin>()
+                        .isYesterday(element.createdAt))
+                    .toList();
+              }
+              return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: allLeaves.length,
+                itemBuilder: (context, index) {
+                  final leave = allLeaves?[index];
+                  return LeavesCardAdmin(
+                    leave: leave,
+                    index: index,
+                  );
+                },
+              );
+            },
+          )
+        : Obx(
+            () {
+              List<LeaveRequest>? allLeaves = Get.find<LeavesControllerAdmin>()
+                  .leaveAdminResponseModelPending
+                  .value
+                  .leaveRequest;
+
+              return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: allLeaves.length,
+                itemBuilder: (context, index) {
+                  final leave = allLeaves[index];
+                  return LeavesCardAdmin(
+                    leave: leave,
+                    index: index,
+                  );
+                },
+              );
+            },
+          );
   }
 }

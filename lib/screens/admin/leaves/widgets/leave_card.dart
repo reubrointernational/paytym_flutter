@@ -6,10 +6,8 @@ import 'package:paytym/core/constants/widgets.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
-import '../../../../models/calendar/holiday_admin_response_model.dart';
 import '../../../../models/leaves/leaves_admin_response_model.dart';
 import '../leaves_controller.dart';
-import 'package:paytym/core/extensions/camelcase.dart';
 
 class LeavesCardAdmin extends StatelessWidget {
   final LeaveRequest? leave;
@@ -26,8 +24,12 @@ class LeavesCardAdmin extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            '${leave?.startDate} - ${leave?.endDate}',
+            style: kTextStyleS15W600CGrey,
+          ),
           Container(
-            height: 90,
+            height: 100,
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -43,8 +45,8 @@ class LeavesCardAdmin extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        leave?.startDate ?? '',
+                      const Text(
+                        'Name',
                         overflow: TextOverflow.ellipsis,
                         style: kTextStyleS18W600,
                       ),
@@ -56,13 +58,20 @@ class LeavesCardAdmin extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        leave?.title??'',
+                        leave?.type ?? '',
                         style: TextStyle(
                           fontSize: 15,
-                          color: leave?.type.toLowerCase().contains(kcasualString)??false
+                          color: leave?.type
+                                      .toLowerCase()
+                                      .contains(kcasualString) ??
+                                  false
                               ? CustomColors.orangeLabelColor
                               : CustomColors.blueLabelColor,
                         ),
+                      ),
+                      Text(
+                        leave?.title ?? '',
+                        style: kTextStyleS13W500Cgrey,
                       ),
                     ],
                   ),
