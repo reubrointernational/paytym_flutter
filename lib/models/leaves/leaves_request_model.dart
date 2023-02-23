@@ -16,12 +16,14 @@ class LeaveRequestModel {
     this.endDate,
     this.type = 'annual',
     this.title,
+    this.employerId,
   });
 
   String? startDate;
   String? endDate;
   String type;
   String? title;
+  String? employerId;
 
   factory LeaveRequestModel.fromJson(Map<String, dynamic> json) =>
       LeaveRequestModel(
@@ -29,6 +31,7 @@ class LeaveRequestModel {
         endDate: json["end_date"],
         type: json["type"],
         title: json["title"],
+        employerId: json["employer_id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -36,5 +39,6 @@ class LeaveRequestModel {
         "end_date": endDate,
         "type": type,
         "title": title,
+        "employer_id":employerId,
       };
 }
