@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,6 +35,10 @@ class DashboardController extends GetxController with BaseController {
       OvertimeApproveEditRequestModel(status: '0', id: '0');
   TextEditingController? overtimeTextEditingController =
       TextEditingController();
+  final employerIdModel = {
+    'employer_id':
+        '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+  };
 
   getWish() {
     DateTime now = DateTime.now();
@@ -252,16 +257,14 @@ class DashboardController extends GetxController with BaseController {
     return DateFormat('EEEE, dd MMM yyyy').format(now);
   }
 
-  startCheckInTimer(bool success) {
-    if (success) {
-      try {
-        checkInOutTimer =
-            Timer.periodic(const Duration(minutes: 1), (timer) async {
-          seconds.value++;
-        });
-      } catch (e) {
-        print(e.toString());
-      }
+  startCheckInTimer() {
+    try {
+      checkInOutTimer =
+          Timer.periodic(const Duration(minutes: 1), (timer) async {
+        seconds.value++;
+      });
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -277,17 +280,27 @@ class DashboardController extends GetxController with BaseController {
       case CheckInOutStatus.checkIn:
         if (!checkInStatus) {
           bool status = await serverCheckInOut(true);
-          if (status) Get.find<SharedPreferenceHelper>().addCheckInDetails();
-          startCheckInTimer(status);
-          checkInStatus = true;
+          if (status) {
+            Get.find<SharedPreferenceHelper>().addCheckInDetails();
+            startCheckInTimer();
+            checkInStatus = true;
+          } else {
+            Get.find<DashboardController>().sliderValue.value = 0;
+            checkInStatus = false;
+          }
         }
         break;
       case CheckInOutStatus.checkOut:
         if (checkInStatus) {
           bool status = await serverCheckInOut(false);
-          if (status) Get.find<SharedPreferenceHelper>().deleteAllCheckInData();
-          cancelCheckInTimer(status);
-          checkInStatus = false;
+          if (status) {
+            Get.find<SharedPreferenceHelper>().deleteAllCheckInData();
+            cancelCheckInTimer(status);
+            checkInStatus = false;
+          } else {
+            Get.find<DashboardController>().sliderValue.value = 100;
+            checkInStatus = true;
+          }
         }
         break;
       case CheckInOutStatus.qrCheckIn:
@@ -295,17 +308,25 @@ class DashboardController extends GetxController with BaseController {
           bool status = await serverCheckInOutByScan(true);
           if (status) {
             Get.find<SharedPreferenceHelper>().addCheckInDetails(true);
+            startCheckInTimer();
+            checkInStatus = true;
+          } else {
+            Get.find<DashboardController>().sliderValue.value = 0;
+            checkInStatus = false;
           }
-          startCheckInTimer(status);
-          checkInStatus = true;
         }
         break;
       case CheckInOutStatus.qrCheckOut:
         if (checkInStatus) {
           bool status = await serverCheckInOutByScan(false);
-          if (status) Get.find<SharedPreferenceHelper>().deleteAllCheckInData();
-          cancelCheckInTimer(status);
-          checkInStatus = false;
+          if (status) {
+            Get.find<SharedPreferenceHelper>().deleteAllCheckInData();
+            cancelCheckInTimer(status);
+            checkInStatus = false;
+          } else {
+            Get.find<DashboardController>().sliderValue.value = 100;
+            checkInStatus = true;
+          }
         }
         break;
       default:
@@ -316,8 +337,10 @@ class DashboardController extends GetxController with BaseController {
 
   Future<bool> serverCheckInOut(bool isCheckIn) async {
     String endPoint = isCheckIn ? ApiEndPoints.checkIn : ApiEndPoints.checkOut;
+
     var responseString = await Get.find<BaseClient>()
-        .post(endPoint, null, Get.find<LoginController>().getHeader())
+        .post(endPoint, jsonEncode(employerIdModel),
+            Get.find<LoginController>().getHeader())
         .catchError(handleError);
 
     return handleResponseForMessageOnlyResponse(responseString);
@@ -326,8 +349,10 @@ class DashboardController extends GetxController with BaseController {
   Future<bool> serverCheckInOutByScan(bool isCheckIn) async {
     String endPoint =
         isCheckIn ? ApiEndPoints.checkInByScan : ApiEndPoints.checkOutByScan;
+
     var responseString = await Get.find<BaseClient>()
-        .post(endPoint, null, Get.find<LoginController>().getHeader())
+        .post(endPoint, jsonEncode(employerIdModel),
+            Get.find<LoginController>().getHeader())
         .catchError(handleError);
     return handleResponseForMessageOnlyResponse(responseString);
   }
