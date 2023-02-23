@@ -13,6 +13,7 @@ class BottomsheetTextField extends StatelessWidget {
   final String? text;
   final void Function(String?)? onSaved;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
   final List<TextInputFormatter>? inputFormatters;
   final int maxLines;
   const BottomsheetTextField(
@@ -25,11 +26,13 @@ class BottomsheetTextField extends StatelessWidget {
       this.onSaved,
       this.inputFormatters,
       this.maxLines = 1,
-      this.suffixIcon, this.maxLength});
+      this.suffixIcon,
+      this.maxLength, this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       initialValue: text,
       validator: validator,
       maxLines: maxLines,

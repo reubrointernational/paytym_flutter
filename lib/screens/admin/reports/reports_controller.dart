@@ -13,10 +13,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 import 'package:paytym/models/report/deduction_response_model.dart';
 import 'package:paytym/models/report/medical_list_admin_model.dart';
+import 'package:paytym/models/report/overtime_approve_edit_request_model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/network/base_controller.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
+import 'package:paytym/screens/employee/dashboard/widgets/request_overtime_bottomsheet.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -28,6 +31,7 @@ import '../../../models/report/attendance/attendance_accept_decline_request_mode
 import '../../../models/report/deduction_list_admin_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
+import '../../employee/dashboard/dashboard_controller.dart';
 import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'widgets/pay_payment.dart';
@@ -42,7 +46,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
-  final requestAdvanceFormKey = GlobalKey<FormState>();
+
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   final deductionResponseModel = DeductionListAdminModel().obs;
   final overtimeResponseModel =
@@ -52,6 +56,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final attendanceResponseModel =
       AttendanceAdminModel(message: '', history: []).obs;
   String quitCompanyReason = '';
+  OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
+      OvertimeApproveEditRequestModel(status: '0', id: '0');
 
   final selectedDepartment = departments.first.obs;
   final selectedBranch = branches.first.obs;
@@ -71,7 +77,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
 
   String getTime(String? dateTime) {
     if (dateTime == null) return '-';
-
     DateTime? dt = DateTime.parse(dateTime);
     return DateFormat.jm().format(dt);
   }
@@ -114,13 +119,14 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       Get.back();
     }
   }
+
 //todo add onError in getattendance as well. Don't forget '()' will not be present on function
 
   getOvertime() async {
     showLoading();
     var model = {
-      'employer_id': '4'
-      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     Get.find<BaseClient>().onError = getOvertime;
     var responseString = await Get.find<BaseClient>()
@@ -135,6 +141,71 @@ class ReportsControllerAdmin extends GetxController with BaseController {
           overtimeListResponseModelFromJson(responseString);
       overtimeResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  approveOrDeclineOvertime(int index, ReasonButton reasonButton) async {
+    if (Get.find<DashboardController>()
+        .requestAdvanceFormKey
+        .currentState!
+        .validate()) {
+      Get.find<DashboardController>()
+          .requestAdvanceFormKey
+          .currentState!
+          .save();
+    } else {
+      return;
+    }
+    showLoading();
+    if (reasonButton == ReasonButton.overtimeApprove) {
+      //approve
+      overtimeApproveEditRequestModel.status = '1';
+    } else if (reasonButton == ReasonButton.overtimeDecline) {
+      //decline
+      overtimeApproveEditRequestModel.status = '2';
+    } else {
+      //edit
+      overtimeApproveEditRequestModel.status = '3';
+      overtimeApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}';
+      //date is obtained from dashboard controller as bottomsheet fills dashboard controller
+      overtimeApproveEditRequestModel.date =
+          Get.find<DashboardController>().overtimeApproveEditRequestModel.date;
+
+      //reason is obtained from dashboard controller as bottomsheet fills dashboard controller
+      overtimeApproveEditRequestModel.reason = Get.find<DashboardController>()
+          .overtimeApproveEditRequestModel
+          .reason;
+
+      //totalHours is obtained from dashboard controller as bottomsheet fills dashboard controller
+      overtimeApproveEditRequestModel.totalHours =
+          Get.find<DashboardController>()
+              .overtimeApproveEditRequestModel
+              .totalHours;
+    }
+    overtimeApproveEditRequestModel.id =
+        overtimeResponseModel.value.employeeList[index].id.toString();
+
+    var responseString = await Get.find<BaseClient>()
+        .post(
+            ApiEndPoints.approveOvertime,
+            overtimeApproveEditRequestModelToJson(
+                overtimeApproveEditRequestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      //close bottomsheet if editing
+      if (reasonButton == ReasonButton.overtimeEdit) Get.back();
+      //reset bottomsheet values
+      Get.find<DashboardController>().overtimeApproveEditRequestModel =
+          OvertimeApproveEditRequestModel(status: '0', id: '0');
+      Get.find<DashboardController>().overtimeTextEditingController =
+          TextEditingController();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
   }
 
@@ -314,34 +385,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
 
   String? notEmptyValidator(String value) {
     return (value.isEmpty) ? 'Value cannot be empty' : null;
-  }
-
-  void requestAdvance() {
-    if (requestAdvanceFormKey.currentState!.validate()) {
-      requestAdvanceFormKey.currentState!.save();
-      requestAdvanceOrSalary(false);
-    }
-  }
-
-  Future<void> requestQuitFromCompany() async {
-    if (requestAdvanceFormKey.currentState!.validate()) {
-      requestAdvanceFormKey.currentState!.save();
-      if (quitCompanyReason.isNotEmpty) {
-        showLoading();
-        String json = jsonEncode({'requests': quitCompanyReason});
-        var responseString = await Get.find<BaseClient>()
-            .post(ApiEndPoints.quitCompany, json,
-                Get.find<LoginController>().getHeader())
-            .catchError(handleError);
-        if (responseString == null) {
-          return;
-        } else {
-          hideLoading();
-          DialogHelper.showToast(desc: 'Request submitted successfully');
-          Get.back();
-        }
-      }
-    }
   }
 
   void requestPayment() {

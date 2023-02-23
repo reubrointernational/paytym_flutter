@@ -354,43 +354,7 @@ List<String> branchesDummyData = [
   'Branches 8',
 ];
 
-List<Map<String, dynamic>> earningsLists = [
-  {
-    'id': '6386282927',
-    'name': 'Akhil Reubro',
-    'salary': 50000,
-    'branch': 'Branch',
-    'days': 23,
-  },
-  {
-    'id': '402921927',
-    'name': 'Robin Reubro',
-    'salary': 60000,
-    'branch': 'Branch',
-    'days': 16,
-  },
-  {
-    'id': '6388882927',
-    'name': 'Sreehari Reubro',
-    'salary': 90000,
-    'branch': 'Branch',
-    'days': 18,
-  },
-  {
-    'id': '4993483927',
-    'name': 'Sooraj Reubro',
-    'salary': 40000,
-    'branch': 'Branch',
-    'days': 22,
-  },
-  {
-    'id': '94842927',
-    'name': 'Sreejith Reubro',
-    'salary': 70000,
-    'branch': 'Branch',
-    'days': 20,
-  },
-];
+
 
 List<String> payrollTabList = ['Pending', 'Payment', 'Payment History'];
 
@@ -571,11 +535,15 @@ const kRequestAdvanceString = 'Request Advance';
 
 const kRequestOvertimeString = 'Request Overtime';
 
+const kEditOvertimeString = 'Edit Overtime';
+
 const kLogoutString = 'Logout';
 
 const kAmountString = 'Amount';
 
 const kStartTimeString = 'Start time';
+
+const kTotalHoursString = 'Total hours';
 
 const kEndTimeString = 'End time';
 

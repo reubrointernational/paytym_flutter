@@ -1,19 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
-import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import 'package:paytym/screens/employee/reports/widgets/bottomsheet_text_field.dart';
 import '../../../../core/colors/colors.dart';
+import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
-import '../../leaves/leaves_controller.dart';
 
 class RequestOvertimeBottomsheet extends StatelessWidget {
-  const RequestOvertimeBottomsheet({super.key});
+  final int? index;
+  const RequestOvertimeBottomsheet({super.key, this.index});
   @override
   Widget build(BuildContext context) {
+    if (index != null) {
+      Get.find<DashboardController>().overtimeTextEditingController!.text =
+          DateFormat('dd-MM-yyyy').format(Get.find<ReportsControllerAdmin>()
+              .overtimeResponseModel
+              .value
+              .employeeList[index!]
+              .date);
+      Get.find<DashboardController>().overtimeApproveEditRequestModel.date =
+          DateFormat('yyyy-MM-dd').format(Get.find<ReportsControllerAdmin>()
+              .overtimeResponseModel
+              .value
+              .employeeList[index!]
+              .date);
+    }
+
     return Container(
       margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       padding: const EdgeInsets.all(28),
@@ -28,7 +45,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            kRequestOvertimeString,
+            index != null ? kEditOvertimeString : kRequestOvertimeString,
             style:
                 kTextStyleS18W600.copyWith(color: CustomColors.blueTextColor),
           ),
@@ -37,77 +54,74 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
             key: Get.find<DashboardController>().requestAdvanceFormKey,
             child: Column(
               children: [
-                //todo change onsaved, validation messages etc to suit overtime
                 BottomsheetTextField(
+                  controller: Get.find<DashboardController>()
+                      .overtimeTextEditingController,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
                   ],
-                  hintText: kStartDateString,
+                  hintText: kDateString.substring(0, 4),
                   keyboardType: TextInputType.datetime,
-                  suffixIcon: const InkWell(
-                    // onTap: () => Get.find<LeavesController>()
-                    //     .selectDateTime(context, true),
-                    child: Padding(
+                  suffixIcon: InkWell(
+                    onTap: () =>
+                        Get.find<DashboardController>().selectDateTime(context),
+                    child: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.calendar_month, size: 18),
                     ),
                   ),
                   validator: (value) =>
                       Get.find<DashboardController>().dateValidator(value!),
-                  // onSaved: (value) => Get.find<DashboardController>()
-                  //     .requestAdvanceModel
-                  //     .amount = value!,
                 ),
                 kSizedBoxH10,
                 BottomsheetTextField(
-                  hintText: kStartTimeString,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  // validator: (value) =>
-                  //     Get.find<ReportsController>().amountValidator(value!),
-                  // onSaved: (value) => Get.find<DashboardController>()
-                  //     .requestAdvanceModel
-                  //     .amount = value!,
-                ),
+                    text: index != null
+                        ? Get.find<ReportsControllerAdmin>()
+                            .overtimeResponseModel
+                            .value
+                            .employeeList[index!]
+                            .totalHours
+                        : null,
+                    onSaved: ((value) => Get.find<DashboardController>()
+                        .overtimeApproveEditRequestModel
+                        .totalHours = value),
+                    hintText: kTotalHoursString,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                      TextInputFormatter.withFunction((oldValue, newValue) {
+                        try {
+                          final text = newValue.text;
+                          if (text.isNotEmpty) double.parse(text);
+                          return newValue;
+                        } catch (e) {}
+                        return oldValue;
+                      }),
+                    ],
+                    validator: (value) {
+                      try {
+                        double.parse(value!);
+                        return null;
+                      } catch (e) {}
+                      return 'Enter a valid number';
+                    }),
                 kSizedBoxH10,
                 BottomsheetTextField(
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
-                  ],
-                  hintText: kEndDateString,
-                  keyboardType: TextInputType.datetime,
-                  suffixIcon: GestureDetector(
-                    onTap: () => Get.find<LeavesController>()
-                        .selectDateTime(context, true),
-                    child: const Icon(Icons.calendar_month, size: 18),
-                  ),
-                  validator: (value) =>
-                      Get.find<DashboardController>().dateValidator(value!),
-                  // onSaved: (value) => Get.find<DashboardController>()
-                  //     .requestAdvanceModel
-                  //     .amount = value!,
-                ),
-                kSizedBoxH10,
-                BottomsheetTextField(
-                  hintText: kEndTimeString,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  // validator: (value) =>
-                  //     Get.find<DashboardController>().reasonValidator(value!),
-                  // onSaved: (value) => Get.find<DashboardController>()
-                  //     .requestAdvanceModel
-                  //     .description = value!,
-                ),
-                kSizedBoxH10,
-                BottomsheetTextField(
+                  text: index != null
+                      ? Get.find<ReportsControllerAdmin>()
+                          .overtimeResponseModel
+                          .value
+                          .employeeList[index!]
+                          .reason
+                      : null,
                   maxLines: 3,
                   maxLength: 80,
                   hintText: kReasonString,
                   validator: (value) =>
                       Get.find<DashboardController>().reasonValidator(value!),
-                  onSaved: (value) => Get.find<DashboardController>()
-                      .requestAdvanceModel
-                      .description = value!,
+                  onSaved: ((value) => Get.find<DashboardController>()
+                      .overtimeApproveEditRequestModel
+                      .reason = value),
                 ),
               ],
             ),
@@ -117,16 +131,19 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => Get.find<DashboardController>().requestAdvance(),
+              onPressed: () => index != null
+                  ? Get.find<ReportsControllerAdmin>().approveOrDeclineOvertime(
+                      index!, ReasonButton.overtimeEdit)
+                  : Get.find<DashboardController>().requestOvertime(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                kRequestOvertimeString,
-                style: TextStyle(
+              child: Text(
+                index != null ? kEditOvertimeString : kRequestOvertimeString,
+                style: const TextStyle(
                   color: CustomColors.whiteTextColor,
                 ),
               ),
@@ -137,3 +154,9 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
     );
   }
 }
+
+
+// Get.find<ReportsControllerAdmin>()
+//                                 .approveOrDeclineOvertime(
+//                                     index,
+//                                     ReasonButton.overtimeEdit);

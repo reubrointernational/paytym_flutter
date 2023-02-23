@@ -1,5 +1,5 @@
 // const kBaseUrl = 'http://52.40.210.26:2000/api';
-const kBaseUrl = 'http://paytym.net/api';
+const kBaseUrl = 'https://paytym.net/api';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
 const kDomainUrl = 'paytym.net';
 
@@ -43,4 +43,5 @@ class ApiEndPoints {
   static const createMeetings = '$kBaseUrl/create_meetings';
   static const deleteMeetings = '$kBaseUrl/meetings_delete';
   static const getOvertime = '$kBaseUrl/list_overtime';
+  static const approveOvertime = '$kBaseUrl/overtime_request_approve_decline_edit';
 }

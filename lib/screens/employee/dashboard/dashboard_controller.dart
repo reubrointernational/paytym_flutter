@@ -14,6 +14,7 @@ import 'package:paytym/screens/login/login_controller.dart';
 import '../../../core/constants/enums.dart';
 import '../../../models/login/user_model.dart';
 import '../../../models/dashboard/request_advance_model.dart';
+import '../../../models/report/overtime_approve_edit_request_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../../network/shared_preference_helper.dart';
@@ -29,6 +30,10 @@ class DashboardController extends GetxController with BaseController {
   bool sliderValueChanged = false;
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
+  OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
+      OvertimeApproveEditRequestModel(status: '0', id: '0');
+  TextEditingController? overtimeTextEditingController =
+      TextEditingController();
 
   getWish() {
     DateTime now = DateTime.now();
@@ -52,21 +57,69 @@ class DashboardController extends GetxController with BaseController {
     }
   }
 
-  void requestAdvance() {
+  Future<void> selectDateTime(BuildContext context) async {
+    final DateTime? dateTime = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1990),
+      lastDate: DateTime(2030),
+    );
+    try {
+      overtimeApproveEditRequestModel.date =
+          DateFormat('yyyy-MM-dd').format(dateTime!);
+      overtimeTextEditingController?.text =
+          DateFormat('dd-MM-yyyy').format(dateTime);
+    } on Exception catch (e) {}
+  }
+
+  requestOvertime() async {
     if (requestAdvanceFormKey.currentState!.validate()) {
       requestAdvanceFormKey.currentState!.save();
-      requestAdvanceOrSalary(false);
+      showLoading();
+      //status 0 for creating overtime
+      //status 1 for approving overtime
+      //status 2 for declining overtime
+      //status 3 for editing overtime
+      overtimeApproveEditRequestModel.status = '0';
+      overtimeApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}';
+      overtimeApproveEditRequestModel.employeeId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
+
+      var responseString = await Get.find<BaseClient>()
+          .post(
+              ApiEndPoints.approveOvertime,
+              overtimeApproveEditRequestModelToJson(
+                  overtimeApproveEditRequestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      if (responseString == null) {
+        return;
+      } else {
+        hideLoading();
+        Get.back();
+        overtimeApproveEditRequestModel =
+            OvertimeApproveEditRequestModel(status: '0', id: '0');
+        overtimeTextEditingController = TextEditingController();
+        DialogHelper.showToast(
+            desc:
+                messageOnlyResponseModelFromJson(responseString).message ?? '');
+      }
     }
   }
 
-  requestAdvanceOrSalary(bool isSalary) async {
-    showLoading();
+  void requestAdvance() {
+    if (requestAdvanceFormKey.currentState!.validate()) {
+      requestAdvanceFormKey.currentState!.save();
+      requestAdvanceOrSalary();
+    }
+  }
 
+  requestAdvanceOrSalary() async {
+    showLoading();
     var responseString = await Get.find<BaseClient>()
         .post(
-            isSalary
-                ? ApiEndPoints.requestPayment
-                : ApiEndPoints.requestAdvance,
+            ApiEndPoints.requestAdvance,
             requestAdvanceModelToJson(requestAdvanceModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
@@ -113,9 +166,7 @@ class DashboardController extends GetxController with BaseController {
   }
 
   String? reasonValidator(String value) {
-    return GetUtils.isLengthLessThan(value, 5)
-        ? "Enter a valid reason"
-        : null;
+    return GetUtils.isLengthLessThan(value, 5) ? "Enter a valid reason" : null;
   }
 
   showLogoutDialog() {

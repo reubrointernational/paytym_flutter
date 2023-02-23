@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/dialog_helper.dart';
+import '../../../employee/dashboard/widgets/request_overtime_bottomsheet.dart';
 import '../widgets/payment_history.dart';
 
 class OvertimeTabAdmin extends StatelessWidget {
@@ -22,7 +25,7 @@ class OvertimeTabAdmin extends StatelessWidget {
               .employeeList
               .length,
           itemBuilder: (context, index) {
-            final employees = earningsLists[index];
+           
             return Padding(
               padding: const EdgeInsets.only(bottom: 2),
               child: GestureDetector(
@@ -54,9 +57,9 @@ class OvertimeTabAdmin extends StatelessWidget {
                                         color: Colors.grey.shade600,
                                         fontSize: 12.5),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Name',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -139,12 +142,27 @@ class OvertimeTabAdmin extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          processButton('Decline', CustomColors.redColor, () {
+                            Get.find<ReportsControllerAdmin>()
+                                .approveOrDeclineOvertime(
+                                    index,
+                                    ReasonButton.overtimeDecline);
+                          }),
+                          kSizedBoxW10,
                           processButton(
-                              'Decline', CustomColors.redColor, () {}),
+                              'Edit', CustomColors.blueCardColor, () {
+                                DialogHelper.showBottomSheet(
+                                RequestOvertimeBottomsheet(index: index,));
+                                
+                              }),
                           kSizedBoxW10,
-                          processButton('Edit', CustomColors.blueCardColor, () {}),
-                          kSizedBoxW10,
-                          processButton('Approve', CustomColors.greenColor, () {}),
+                          processButton(
+                              'Approve', CustomColors.greenColor, () {
+                                Get.find<ReportsControllerAdmin>()
+                                .approveOrDeclineOvertime(
+                                    index,
+                                    ReasonButton.overtimeApprove);
+                              }),
                         ],
                       ),
                       kSizedBoxH10,
