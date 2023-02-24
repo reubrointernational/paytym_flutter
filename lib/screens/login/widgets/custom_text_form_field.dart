@@ -6,6 +6,7 @@ import '../../../core/constants/styles.dart';
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
+  final int? maxLines;
   final TextInputType? inputType;
   final TextInputAction? inputAction;
   final String? Function(String?)? validator;
@@ -17,12 +18,13 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.onSaved,
     this.inputType,
-    this.inputAction,
+    this.inputAction, this.maxLines,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
       obscureText: obscureText,
       keyboardType: inputType,
       textInputAction: inputAction,

@@ -17,22 +17,23 @@ class DeductionListAdminModel {
   });
 
   String? message;
-  Details? details;
+  List<Detail>? details;
 
   factory DeductionListAdminModel.fromJson(Map<String, dynamic> json) =>
       DeductionListAdminModel(
         message: json["message"],
-        details: Details.fromJson(json["Details"]),
+        details:
+            List<Detail>.from(json["Details"].map((x) => Detail.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "Details": details!.toJson(),
+        "Details": List<dynamic>.from(details!.map((x) => x.toJson())),
       };
 }
 
-class Details {
-  Details({
+class Detail {
+  Detail({
     this.id,
     this.employerId,
     this.name,
@@ -49,18 +50,18 @@ class Details {
   String? amount;
   String? percentage;
   String? description;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
-  factory Details.fromJson(Map<String, dynamic> json) => Details(
+  factory Detail.fromJson(Map<String, dynamic> json) => Detail(
         id: json["id"],
         employerId: json["employer_id"],
         name: json["name"],
         amount: json["amount"],
         percentage: json["percentage"],
         description: json["description"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,7 +71,7 @@ class Details {
         "amount": amount,
         "percentage": percentage,
         "description": description,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
+        "created_at": createdAt!.toIso8601String(),
+        "updated_at": updatedAt!.toIso8601String(),
       };
 }

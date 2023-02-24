@@ -11,15 +11,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
-import 'package:paytym/models/report/deduction_response_model.dart';
 import 'package:paytym/models/report/medical_list_admin_model.dart';
 import 'package:paytym/models/report/overtime_approve_edit_request_model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
-import 'package:paytym/screens/employee/dashboard/widgets/request_overtime_bottomsheet.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -28,7 +25,8 @@ import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
-import '../../../models/report/deduction_list_admin_model.dart';
+import '../../../models/report/deduction/deduction_add_request_model.dart';
+import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../employee/dashboard/dashboard_controller.dart';
@@ -42,6 +40,14 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
   final selectedDropdownDay = daysDummyList[0].obs;
+  final formKey = GlobalKey<FormState>();
+  DeductionAddRequestModel deductionAddRequestModel = DeductionAddRequestModel(
+    employerId: '',
+    name: '',
+    amount: '',
+    percentage: '',
+    description: '',
+  );
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
@@ -231,22 +237,54 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  createDeduction() async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      showLoading();
+      //todo - id should be there to know which employee
+      deductionAddRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}';
+      var responseString = await Get.find<BaseClient>()
+          .post(
+              ApiEndPoints.deductionAdd,
+              deductionAddRequestModelToJson(deductionAddRequestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      hideLoading();
+      if (responseString == null) {
+        return;
+      } else {
+        await getDeduction();
+        Get.back();
+        deductionAddRequestModel = DeductionAddRequestModel(
+          employerId: '',
+          name: '',
+          amount: '',
+          percentage: '',
+          description: '',
+        );
+      }
+    }
+  }
+
   deleteDeduction(int index) async {
-    // showLoading();
-    // var requestModel = {
-    //   'id': '${deductionResponseModel.value.details![index]!.id}'
-    // };
-    // var responseString = await Get.find<BaseClient>()
-    //     .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
-    //         Get.find<LoginController>().getHeader())
-    //     .catchError(handleError);
-    // if (responseString == null) {
-    //   return;
-    // } else {
-    //   hideLoading();
-    //   deductionResponseModel.value.events?.removeAt(index);
-    //   deductionResponseModel.refresh();
-    // }
+    showLoading();
+    var requestModel = {
+      'id': '${deductionResponseModel.value.details![index].id}'
+    };
+
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.deductionDelete, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      deductionResponseModel.value.details?.removeAt(index);
+      deductionResponseModel.refresh();
+    }
   }
 
   getMedical() async {
@@ -373,10 +411,11 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   String? amountValidator(String value) {
     if (value.isEmpty) {
       return 'Value cannot be empty';
-    } else if (int.parse(
-            payslipResponseModel.value.payroll?.salary ?? '10000') <
-        int.parse(value)) {
-      return 'Request amount should be less than salary';
+
+      // } else if (int.parse(
+      //         payslipResponseModel.value.payroll?.salary ?? '10000') <
+      //     int.parse(value)) {
+      //   return 'Request amount should be less than salary';
     } else if (int.parse(value) < 50) {
       return 'Request amount should be greater than 50';
     }

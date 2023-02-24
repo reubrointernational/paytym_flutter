@@ -7,7 +7,6 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:paytym/models/report/deduction_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
@@ -17,6 +16,7 @@ import '../../../core/constants/enums.dart';
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../models/report/deduction/deduction_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 

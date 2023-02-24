@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/core/dialog_helper.dart';
+import 'package:paytym/screens/admin/widgets/add_deduction_bottom_sheet.dart';
 
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
@@ -16,54 +18,69 @@ class DeductionTabAdmin extends StatelessWidget {
         (_) => Get.find<ReportsControllerAdmin>().getDeduction());
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            2,
-            (index) => Stack(
-              children: [
-                const Positioned(
-                  right: 12,
-                  top: 2,
-                  child: Icon(
-                    Icons.download_outlined,
-                    color: Colors.green,
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade200),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade200),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.lightBlue),
-                        child: Text(
-                          '16',
-                          style:
-                              kTextStyleS18W600.copyWith(color: Colors.amber),
-                        ),
+        SizedBox(
+          height: 100,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              ...List.generate(
+                2,
+                (index) => Stack(
+                  children: [
+                    const Positioned(
+                      right: 12,
+                      top: 2,
+                      child: Icon(
+                        Icons.download_outlined,
+                        color: Colors.green,
                       ),
-                      kSizedBoxH10,
-                      Text(
-                        index == 0 ? 'Surcharge' : 'Advance',
-                        style: kTextStyleS14W600LS0p2,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade200),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ],
-                  ),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30),
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade200),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.lightBlue),
+                            child: Text(
+                              '16',
+                              style: kTextStyleS18W600.copyWith(
+                                  color: Colors.amber),
+                            ),
+                          ),
+                          kSizedBoxH10,
+                          Text(
+                            index == 0 ? 'Surcharge' : 'Advance',
+                            style: kTextStyleS14W600LS0p2,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              IconButton(
+                onPressed: () {
+                  DialogHelper.showBottomSheet(const AddDeductionBottomSheet());
+                },
+                icon: const Icon(
+                  Icons.add_circle_outline,
+                  size: 40,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
           ),
         ),
         kSizedBoxH10,
@@ -75,8 +92,8 @@ class DeductionTabAdmin extends StatelessWidget {
                       .deductionResponseModel
                       .value
                       .details
-                      ?.id ??
-                  1,
+                      ?.length ??
+                  0,
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
@@ -110,7 +127,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                               Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
+                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                             ],
@@ -123,7 +140,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                               Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
+                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                             ],
@@ -136,7 +153,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                               Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
+                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                             ],
@@ -149,7 +166,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                               Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
+                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
                                 style: kTextStyleS12W600CcustomGrey,
                               ),
                             ],
@@ -164,7 +181,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                   style: kTextStyleS13W600Cblue,
                                 ),
                                 Text(
-                                  "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?.amount ?? '0')}",
+                                  "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
                                   style: kTextStyleS13W600Cblue.copyWith(
                                       color: Colors.lightBlue),
                                 ),
@@ -176,26 +193,15 @@ class DeductionTabAdmin extends StatelessWidget {
                     ),
                     Positioned(
                       right: 0,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Get.find<ReportsControllerAdmin>()
-                                  .deleteDeduction(index);
-                            },
-                            icon: const Icon(
-                              Icons.delete_outline_outlined,
-                              color: Colors.red,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.add_circle_outline,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ],
+                      child: IconButton(
+                        onPressed: () {
+                          Get.find<ReportsControllerAdmin>()
+                              .deleteDeduction(index);
+                        },
+                        icon: const Icon(
+                          Icons.delete_outline_outlined,
+                          color: Colors.red,
+                        ),
                       ),
                     ),
                   ],
