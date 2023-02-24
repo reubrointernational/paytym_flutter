@@ -48,4 +48,7 @@ class ApiEndPoints {
   static const deductionDelete = '$kBaseUrl/deductions_delete';
   static const deductionAdd = '$kBaseUrl/deductions_add';
   static const employeeList = '$kBaseUrl/list_employees';
+  static const chatGroupList = '$kBaseUrl/chat_group';
+  static const chatWindow = '$kBaseUrl/chat_group_detais';
+
 }

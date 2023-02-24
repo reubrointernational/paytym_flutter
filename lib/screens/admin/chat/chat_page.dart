@@ -13,11 +13,15 @@ class ChatPageAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+    final controller = Get.find<ChatControllerAdmin>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Group Name',
+        title: Text(
+          controller
+              .chatGrouplist
+              .value
+              .chats[controller.selectedItemIndex]
+              .groupName,
           style: kTextStyleS18W600white,
         ),
         elevation: 0,

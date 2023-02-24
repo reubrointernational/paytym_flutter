@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:paytym/models/chat/chat_request_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
+import '../../../models/chat/chat_group_list_model.dart' as chat_model;
 import '../../../models/chat/chat_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -12,13 +15,31 @@ class ChatController extends GetxController with BaseController {
   final chatResponseModel = ChatResponseModel().obs;
   final TextEditingController chatTextController = TextEditingController();
   final searchKeyword = ''.obs;
-  List<String> dummy_data = ['John Smith', 'Michael', 'Hohmin', 'Lappa'];
+    final chatGrouplist = chat_model.ChatListGroupModel(message: '', chats: []).obs;
+    int selectedItemIndex = 0;
+  
 
   final ScrollController scrollController = ScrollController();
   @override
   void onReady() {
     super.onReady();
-    fetchChat();
+    fetchChatGroupList();
+    // fetchChat();
+  }
+
+  fetchChatGroupList() async {
+    Get.find<BaseClient>().onError = fetchChatGroupList;
+    var requestModel = {'status': '1'};
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.chatGroupList, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      chatGrouplist.value = chat_model.chatListGroupModelFromJson(responseString);
+      Get.find<BaseClient>().onError = null;
+    }
   }
 
   void fetchChat() async {

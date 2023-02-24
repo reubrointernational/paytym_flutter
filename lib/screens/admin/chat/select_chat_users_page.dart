@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/routes/app_routes.dart';
 import 'package:paytym/screens/admin/chat/chat_controller.dart';
-import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';

@@ -43,22 +43,29 @@ class ChatListingPage extends StatelessWidget {
               child: Column(children: [
                 CustomSearchTextField(
                   iconImg: IconPath.searchIconPng,
-                  
-                  hintText: 'Search', controller: Get.find<ChatController>(),
+                  hintText: 'Search',
+                  controller: Get.find<ChatController>(),
                 ),
                 kSizedBoxH8,
                 Expanded(
                   child: Obx(() {
-                    var dummy = Get.find<ChatController>()
-                        .dummy_data
-                        .where((element) => element.toLowerCase().contains(
-                            Get.find<ChatController>().searchKeyword.value.toLowerCase()))
+                    var chat = Get.find<ChatController>()
+                        .chatGrouplist
+                        .value
+                        .chats
+                        .where((element) => element.groupName
+                            .toLowerCase()
+                            .contains(Get.find<ChatController>()
+                                .searchKeyword
+                                .value
+                                .toLowerCase()))
                         .toList();
                     return ListView.builder(
-                      itemCount: dummy.length,
+                      itemCount: chat.length,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
+                            Get.find<ChatController>().selectedItemIndex = index;
                             Get.toNamed(Routes.chat);
                           },
                           child: Container(
@@ -78,7 +85,7 @@ class ChatListingPage extends StatelessWidget {
                                       backgroundColor: Colors.pink.shade200,
                                       child: Center(
                                           child: Text(
-                                        dummy[index].substring(0, 1),
+                                        chat[index].groupName[0],
                                         style: const TextStyle(
                                           color: Colors.purple,
                                           fontSize: 30,
@@ -109,7 +116,7 @@ class ChatListingPage extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            dummy[index],
+                                            chat[index].groupName,
                                             style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,

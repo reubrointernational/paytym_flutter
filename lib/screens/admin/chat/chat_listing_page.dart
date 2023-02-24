@@ -72,20 +72,26 @@ class ChatListingPageAdmin extends StatelessWidget {
                 kSizedBoxH8,
                 Expanded(
                   child: Obx(() {
-                    var dummy = Get.find<ChatControllerAdmin>()
-                        .dummyData
-                        .where((element) => element.toLowerCase().contains(
-                            Get.find<ChatControllerAdmin>()
+                    var chat = Get.find<ChatControllerAdmin>()
+                        .chatGrouplist
+                        .value
+                        .chats
+                        .where((element) => element.groupName
+                            .toLowerCase()
+                            .contains(Get.find<ChatControllerAdmin>()
                                 .searchKeyword
                                 .value
                                 .toLowerCase()))
                         .toList();
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: dummy.length,
+                      itemCount: chat.length,
                       itemBuilder: (context, index) {
                         return InkWell(
-                          onTap: () => Get.toNamed(Routes.adminChat),
+                          onTap: () {
+                            Get.find<ChatControllerAdmin>().selectedItemIndex = index;
+                            Get.toNamed(Routes.adminChat);
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 12),
@@ -104,7 +110,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                                       backgroundColor: Colors.pink.shade200,
                                       child: Center(
                                           child: Text(
-                                        dummy[index].substring(0, 1),
+                                        chat[index].groupName[0],
                                         style: const TextStyle(
                                           color: Colors.purple,
                                           fontSize: 30,
@@ -135,7 +141,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            dummy[index],
+                                            chat[index].groupName,
                                             style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,

@@ -4,6 +4,7 @@ import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:paytym/models/chat/chat_response_model.dart';
 import 'package:paytym/screens/employee/chats/chat_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
@@ -12,13 +13,13 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<ChatController>();
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.black,
         elevation: 0,
-        title: Obx(() => Text(
-              Get.find<ChatController>().chatResponseModel.value.hod ?? '',
-            )),
+        title: Text(controller
+            .chatGrouplist.value.chats[controller.selectedItemIndex].groupName),
         backgroundColor: CustomColors.backgroundColor,
       ),
       backgroundColor: CustomColors.backgroundColor,
@@ -98,7 +99,6 @@ class ChatPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
-                        
                         controller:
                             Get.find<ChatController>().chatTextController,
                         decoration: const InputDecoration(
