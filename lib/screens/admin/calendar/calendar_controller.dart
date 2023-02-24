@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/models/calendar/create_calendar_request_model.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
 import 'package:paytym/models/calendar/meeting_list_admin_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
+import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
@@ -50,8 +52,8 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     showLoading();
     Get.find<BaseClient>().onError = getMeeting;
     var requestModel = {
-      'employer_id': 
-      '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.meetingsList, jsonEncode(requestModel),
@@ -70,7 +72,6 @@ class CalendarControllerAdmin extends GetxController with BaseController {
 
   createMeeting() async {
     showLoading();
-
     var model = CreateCalendarRequestModel(
       employerId: Get.find<LoginController>()
           .loginResponseModel!
@@ -79,48 +80,52 @@ class CalendarControllerAdmin extends GetxController with BaseController {
           .toString(),
       name: createCalendarRequestModel.name,
       description: 'description',
-      place: createCalendarRequestModel.place,
+      place: createCalendarRequestModel.name,
       startDate: createCalendarRequestModel.startDate, //2023-01-15
-      startTime: createCalendarRequestModel.startTime, //11:00 am
+      startTime:
+          '${createCalendarRequestModel.startDate} ${DateFormat('HH:mm').format(DateFormat.jm().parse(createCalendarRequestModel.startTime))}', //2023-01-15 13:56:00
       endDate: createCalendarRequestModel.endDate, //2023-01-15
-      endTime: createCalendarRequestModel.endTime, //11:00 am
+      endTime:
+          '${createCalendarRequestModel.startDate} ${DateFormat('HH:mm').format(DateFormat.jm().parse(createCalendarRequestModel.endTime))}', //11:00 am
       type: '1',
       countryId: '1',
     );
-
     var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.createHoliday, createEventRequestModelToJson(model),
+        .post(ApiEndPoints.createMeetings, createEventRequestModelToJson(model),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
     hideLoading();
     if (responseString == null) {
       return;
     } else {
-      await getHolidays();
+      await getMeeting();
       Get.back();
       startDateController.clear();
       endDateController.clear();
       endTimeController.clear();
       startTimeController.clear();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message!);
+
     }
   }
 
   deleteMeeting(int index) async {
-    // showLoading();
-    // var requestModel = {
-    //   'id': '${eventsResponseModel.value.events![index]!.id}'
-    // };
-    // var responseString = await Get.find<BaseClient>()
-    //     .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
-    //         Get.find<LoginController>().getHeader())
-    //     .catchError(handleError);
-    // if (responseString == null) {
-    //   return;
-    // } else {
-    //   hideLoading();
-    //   eventsResponseModel.value.events?.removeAt(index);
-    //   eventsResponseModel.refresh();
-    // }
+    showLoading();
+    var requestModel = {
+      'id': '${meetingResponseModel.value.meetingsListe[index].id}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.deleteMeetings, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      meetingResponseModel.value.meetingsListe.removeAt(index);
+      meetingResponseModel.refresh();
+    }
   }
 
   String formatTimeOfDay(TimeOfDay? tod) {
@@ -213,7 +218,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       if (selectedCalendarDropdown.value == calendarTabList.first) {
-        createEvent(); //todo create meeting
+        createMeeting();
       } else if (selectedCalendarDropdown.value == calendarTabList[1]) {
         createEvent();
       } else {
@@ -254,6 +259,9 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       endDateController.clear();
       endTimeController.clear();
       startTimeController.clear();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message!);
+
     }
   }
 
@@ -291,6 +299,9 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       endDateController.clear();
       endTimeController.clear();
       startTimeController.clear();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message!);
+
     }
   }
 

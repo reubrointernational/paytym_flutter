@@ -13,13 +13,13 @@ class CalendarMeetingAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => ListView.builder(
+      () => ListView.separated(
         physics: const BouncingScrollPhysics(),
         itemCount: Get.find<CalendarControllerAdmin>()
-                .meetingResponseModel
-                .value
-                .meetingsListe
-                .length,
+            .meetingResponseModel
+            .value
+            .meetingsListe
+            .length,
         itemBuilder: (context, index) {
           final meeting = Get.find<CalendarControllerAdmin>()
               .meetingResponseModel
@@ -30,20 +30,23 @@ class CalendarMeetingAdmin extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  children: [
-                    kSizedBoxH10,
-                    Text(
-                      DateFormat('EEE').format(meeting.date),
-                      style: kTextStyleS18W600.copyWith(
-                          color: CustomColors.grey156x3TextColor),
-                    ),
-                    Text(
-                      meeting.date.day.toString(),
-                      style: kTextStyleS18W600.copyWith(
-                          color: CustomColors.lightBlueColor),
-                    ),
-                  ],
+                SizedBox(
+                  width: 40,
+                  child: Column(
+                    children: [
+                      kSizedBoxH10,
+                      Text(
+                        DateFormat('EEE').format(meeting.date),
+                        style: kTextStyleS18W600.copyWith(
+                            color: CustomColors.grey156x3TextColor),
+                      ),
+                      Text(
+                        meeting.date.day.toString(),
+                        style: kTextStyleS18W600.copyWith(
+                            color: CustomColors.lightBlueColor),
+                      ),
+                    ],
+                  ),
                 ),
                 kSizedBoxW10,
                 Expanded(
@@ -68,7 +71,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
                               ),
                               kSizedBoxH4,
                               Text(
-meeting.location,
+                                meeting.location,
                                 // 'HR Manager',
                                 style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
                                     color: Colors.grey),
@@ -84,7 +87,7 @@ meeting.location,
                                   kSizedBoxW4,
                                   Text(
                                     DateFormat.jm().format(meeting.startTime),
-                                    
+
                                     // '09:00 AM - 12:00 AM',
                                     style: kTextStyleS14W600Cgrey300LS0p2
                                         .copyWith(color: Colors.grey),
@@ -99,12 +102,6 @@ meeting.location,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.add_circle_outline,
-                                    color: CustomColors.lightBlueColor,
-                                  )),
                               IconButton(
                                   onPressed: () {
                                     Get.find<CalendarControllerAdmin>()
@@ -125,6 +122,7 @@ meeting.location,
             ),
           );
         },
+        separatorBuilder: (BuildContext context, int index) => kSizedBoxH10,
       ),
     );
   }
