@@ -301,7 +301,6 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       startTimeController.clear();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message!);
-
     }
   }
 

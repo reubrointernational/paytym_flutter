@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/styles.dart';
+import '../../dashboard/dashboard_controller.dart';
 import '../reports_controller.dart';
 import '../widgets/medical_title_tag.dart';
 
@@ -12,16 +14,12 @@ class ContractPeriodTabAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<ReportsControllerAdmin>().getDeduction());
-    return Obx(
-      () => ListView.builder(
+    return Obx(() {
+      final employeesList =
+          Get.find<DashboardControllerAdmin>().employeeList.value.employeeList;
+      return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount:
-            // Get.find<ReportsControllerAdmin>()
-            //         .deductionResponseModel
-            //         .value
-            //         .deductions
-            //         ?.length ??
-            0,
+        itemCount: employeesList.length,
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
@@ -30,10 +28,12 @@ class ContractPeriodTabAdmin extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
-                const MedicalTitleTag(
+                MedicalTitleTag(
                   branch: 'Branch',
-                  name: 'Akhil Reubro',
-                  employmentId: '0045786',
+                  name:
+                      '${employeesList[index].firstName} ${employeesList[index].lastName}',
+                  employmentId:
+                      '#${employeesList[index].id.toString().padLeft(5, '0')}',
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +41,7 @@ class ContractPeriodTabAdmin extends StatelessWidget {
                     Text('Employment Period',
                         style: kTextStyleS14C255140x3.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.black)),
-                    Text('6 months',
+                    Text('6 Months',
                         style: kTextStyleS14C255140x3.copyWith(
                             color: Colors.lightBlue)),
                   ],
@@ -50,7 +50,7 @@ class ContractPeriodTabAdmin extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
+      );
+    });
   }
 }

@@ -1,119 +1,124 @@
 // To parse this JSON data, do
 //
-//     final employeeListModel = employeeListModelFromJson(jsonString);
+//     final employeeListAdminModel = employeeListAdminModelFromJson(jsonString);
 
 import 'dart:convert';
 
-EmployeeListModel employeeListModelFromJson(String str) => EmployeeListModel.fromJson(json.decode(str));
+EmployeeListAdminModel employeeListAdminModelFromJson(String str) =>
+    EmployeeListAdminModel.fromJson(json.decode(str));
 
-String employeeListModelToJson(EmployeeListModel data) => json.encode(data.toJson());
+String employeeListAdminModelToJson(EmployeeListAdminModel data) =>
+    json.encode(data.toJson());
 
-class EmployeeListModel {
-    EmployeeListModel({
-        this.message = '',
-        required this.employeeList,
-    });
+class EmployeeListAdminModel {
+  EmployeeListAdminModel({
+    required this.message,
+    required this.employeeList,
+  });
 
-    String message;
-    List<EmployeeList> employeeList;
+  String message;
+  List<EmployeeList> employeeList;
 
-    factory EmployeeListModel.fromJson(Map<String, dynamic> json) => EmployeeListModel(
+  factory EmployeeListAdminModel.fromJson(Map<String, dynamic> json) =>
+      EmployeeListAdminModel(
         message: json["message"],
-        employeeList: List<EmployeeList>.from(json["employee_list"].map((x) => EmployeeList.fromJson(x))),
-    );
+        employeeList: List<EmployeeList>.from(
+            json["employee_list"].map((x) => EmployeeList.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "message": message,
-        "employee_list": List<dynamic>.from(employeeList.map((x) => x.toJson())),
-    };
+        "employee_list":
+            List<dynamic>.from(employeeList.map((x) => x.toJson())),
+      };
 }
 
 class EmployeeList {
-    EmployeeList({
-        this.id,
-        this.employerId,
-        this.employmentStartDate,
-        this.employmentEndDate,
-        this.payedDate,
-        this.bankBranchName,
-        this.businessId,
-        this.departmentId,
-        this.salaryType,
-        this.rate,
-        this.payPeriod,
-        this.workdaysPerWeek,
-        this.totalHoursPerWeek,
-        this.extraHoursAtBaseRate,
-        this.employeeType,
-        this.firstName,
-        this.lastName,
-        this.company,
-        this.branchId,
-        this.position,
-        this.email,
-        this.phone,
-        this.dateOfBirth,
-        this.street,
-        this.city,
-        this.town,
-        this.postcode,
-        this.country,
-        this.tin,
-        this.fnpf,
-        this.bank,
-        this.accountNumber,
-        this.image,
-        this.isFirst,
-        this.otp,
-        this.emailVerifiedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.forgotPassOtp,
-        this.status,
-    });
+  EmployeeList({
+    this.id,
+    this.employerId,
+    this.employmentStartDate,
+    this.employmentEndDate,
+    this.payedDate,
+    this.bankBranchName,
+    this.businessId,
+    this.departmentId,
+    this.salaryType,
+    this.rate,
+    this.payPeriod,
+    this.workdaysPerWeek,
+    this.totalHoursPerWeek,
+    this.extraHoursAtBaseRate,
+    this.employeeType,
+    this.firstName,
+    this.lastName,
+    this.company,
+    this.branchId,
+    this.position,
+    this.email,
+    this.phone,
+    this.dateOfBirth,
+    this.street,
+    this.city,
+    this.town,
+    this.postcode,
+    this.country,
+    this.tin,
+    this.fnpf,
+    this.bank,
+    this.accountNumber,
+    this.image,
+    this.isFirst,
+    this.otp,
+    this.emailVerifiedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.forgotPassOtp,
+    this.status,
+  });
 
-    int? id;
-    int? employerId;
-    String? employmentStartDate;
-    String? employmentEndDate;
-    String? payedDate;
-    String? bankBranchName;
-    String? businessId;
-    int? departmentId;
-    String? salaryType;
-    String? rate;
-    String? payPeriod;
-    String? workdaysPerWeek;
-    String? totalHoursPerWeek;
-    String? extraHoursAtBaseRate;
-    String? employeeType;
-    String? firstName;
-    String? lastName;
-    String? company;
-    int? branchId;
-    int? position;
-    String? email;
-    String? phone;
-    DateTime? dateOfBirth;
-    String? street;
-    String? city;
-    String? town;
-    String? postcode;
-    String? country;
-    String? tin;
-    String? fnpf;
-    String? bank;
-    String? accountNumber;
-    String? image;
-    String? isFirst;
-    String? otp;
-    String? emailVerifiedAt;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    String? forgotPassOtp;
-    int? status;
+  int? id;
+  int? employerId;
+  String? employmentStartDate;
+  String? employmentEndDate;
+  String? payedDate;
+  String? bankBranchName;
+  String? businessId;
+  int? departmentId;
+  String? salaryType;
+  String? rate;
+  String? payPeriod;
+  String? workdaysPerWeek;
+  String? totalHoursPerWeek;
+  String? extraHoursAtBaseRate;
+  String? employeeType;
+  String? firstName;
+  String? lastName;
+  String? company;
+  int? branchId;
+  int? position;
+  String? email;
+  String? phone;
+  DateTime? dateOfBirth;
+  String? street;
+  String? city;
+  String? town;
+  String? postcode;
+  String? country;
+  String? tin;
+  String? fnpf;
+  String? bank;
+  String? accountNumber;
+  String? image;
+  String? isFirst;
+  String? otp;
+  String? emailVerifiedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? forgotPassOtp;
+  int? status;
 
-    factory EmployeeList.fromJson(Map<String, dynamic> json) => EmployeeList(
+  factory EmployeeList.fromJson(Map<String, dynamic> json) => EmployeeList(
         id: json["id"],
         employerId: json["employer_id"],
         employmentStartDate: json["employment_start_date"],
@@ -154,9 +159,9 @@ class EmployeeList {
         updatedAt: DateTime.parse(json["updated_at"]),
         forgotPassOtp: json["forgot_pass_otp"],
         status: json["status"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "employer_id": employerId,
         "employment_start_date": employmentStartDate,
@@ -179,7 +184,8 @@ class EmployeeList {
         "position": position,
         "email": email,
         "phone": phone,
-        "date_of_birth": "${dateOfBirth?.year.toString().padLeft(4, '0')}-${dateOfBirth?.month.toString().padLeft(2, '0')}-${dateOfBirth?.day.toString().padLeft(2, '0')}",
+        "date_of_birth":
+            "${dateOfBirth?.year.toString().padLeft(4, '0')}-${dateOfBirth?.month.toString().padLeft(2, '0')}-${dateOfBirth?.day.toString().padLeft(2, '0')}",
         "street": street,
         "city": city,
         "town": town,
@@ -197,5 +203,5 @@ class EmployeeList {
         "updated_at": updatedAt?.toIso8601String(),
         "forgot_pass_otp": forgotPassOtp,
         "status": status,
-    };
+      };
 }

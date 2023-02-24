@@ -36,6 +36,9 @@ import 'widgets/pay_payment.dart';
 import 'widgets/payment_history.dart';
 import 'widgets/pending_payroll_listview.dart';
 
+//Contract period uses same api of list employee which is present in dashboard 
+//controller of admin session
+
 class ReportsControllerAdmin extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';

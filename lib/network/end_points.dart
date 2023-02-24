@@ -47,5 +47,5 @@ class ApiEndPoints {
       '$kBaseUrl/overtime_request_approve_decline_edit';
   static const deductionDelete = '$kBaseUrl/deductions_delete';
   static const deductionAdd = '$kBaseUrl/deductions_add';
-
+  static const employeeList = '$kBaseUrl/list_employees';
 }
