@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
+import 'package:paytym/network/end_points.dart';
 import 'package:paytym/routes/app_routes.dart';
 
 import '../../../core/colors/colors.dart';
@@ -35,11 +37,11 @@ class ChatListingPageAdmin extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.find<ChatControllerAdmin>()
-                        .chatGroupList
-                        .forEach((element) {
-                      element.isSelected = false;
-                    });
+                    // Get.find<ChatControllerAdmin>()
+                    //     .chatGroupList
+                    //     .forEach((element) {
+                    //   element.isSelected = false;
+                    // });
                     Get.toNamed(Routes.selectChatUsersPage);
                   },
                   child: SvgPicture.asset(
@@ -89,7 +91,8 @@ class ChatListingPageAdmin extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Get.find<ChatControllerAdmin>().selectedItemIndex = index;
+                            Get.find<ChatControllerAdmin>().selectedItemIndex =
+                                index;
                             Get.toNamed(Routes.adminChat);
                           },
                           child: Container(
@@ -109,13 +112,11 @@ class ChatListingPageAdmin extends StatelessWidget {
                                       radius: 25,
                                       backgroundColor: Colors.pink.shade200,
                                       child: Center(
-                                          child: Text(
-                                        chat[index].groupName[0],
-                                        style: const TextStyle(
-                                          color: Colors.purple,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                          child: CachedNetworkImage(
+                                            //todo change to actual image
+                                        imageUrl: kBaseUrl +
+                                            '/' +
+                                            chat[index].profilePic,
                                       )),
                                     ),
                                     const Positioned(

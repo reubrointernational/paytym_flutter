@@ -8,6 +8,7 @@ import 'package:paytym/screens/admin/chat/chat_controller.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/widgets.dart';
+import '../dashboard/dashboard_controller.dart';
 import '../widgets/file_upload_widget.dart';
 
 class CreateGroupPage extends StatelessWidget {
@@ -15,9 +16,18 @@ class CreateGroupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var memberList = Get.find<ChatControllerAdmin>()
-        .chatGroupList
-        .where((element) => element.isSelected)
+
+    var memberList = Get.find<DashboardControllerAdmin>()
+        .employeeList
+        .value
+        .employeeList
+        .where((element) => Get.find<ChatControllerAdmin>()
+            .selectedItemList
+            .contains(Get.find<DashboardControllerAdmin>()
+                .employeeList
+                .value
+                .employeeList
+                .indexOf(element)))
         .toList();
     return CustomAdminScaffold(
       floatingActionButton: FloatingActionButton(
@@ -45,7 +55,7 @@ class CreateGroupPage extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: CircleAvatar(
                       radius: 28,
-                      backgroundImage: NetworkImage(memberList[index].image),
+                      backgroundImage: NetworkImage(memberList[index].image??''),
                     ),
                   );
                 },

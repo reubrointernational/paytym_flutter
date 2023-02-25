@@ -50,5 +50,6 @@ class ApiEndPoints {
   static const employeeList = '$kBaseUrl/list_employees';
   static const chatGroupList = '$kBaseUrl/chat_group';
   static const chatWindow = '$kBaseUrl/chat_group_detais';
+  static const projectsList = '$kBaseUrl/list_projects';
 
 }

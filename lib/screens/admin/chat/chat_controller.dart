@@ -30,16 +30,13 @@ class Model {
 class ChatControllerAdmin extends GetxController with BaseController {
   final selectedDropdownDepartments = Rxn<String>();
   final selectedDropdownBranches = Rxn<String>();
-  final chatGroupList = dummy_data.obs;
+  
   final chatGrouplist = ChatListGroupModel(message: '', chats: []).obs;
   int selectedItemIndex = 0;
+  final selectedItemList = [].obs;
 
   final searchKeyword = ''.obs;
 
-  updateChatSelection(index) {
-    chatGroupList[index].isSelected = !chatGroupList[index].isSelected;
-    chatGroupList.refresh();
-  }
 
   @override
   void onReady() {

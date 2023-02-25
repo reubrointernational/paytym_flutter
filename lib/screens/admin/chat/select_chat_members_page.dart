@@ -3,13 +3,15 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/routes/app_routes.dart';
 import 'package:paytym/screens/admin/chat/chat_controller.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_admin.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../employee/reports/widgets/year_dropdown.dart';
+import '../dashboard/dashboard_controller.dart';
 
-class SelectChatUsersPage extends StatelessWidget {
-  const SelectChatUsersPage({super.key});
+class SelectChatMembersPage extends StatelessWidget {
+  const SelectChatMembersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +76,17 @@ class SelectChatUsersPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: Obx(() {
-                var chatList = Get.find<ChatControllerAdmin>()
-                    .chatGroupList
-                    .where((element) => element.isSelected)
+                final chatController = Get.find<ChatControllerAdmin>();
+                final dashboardController =
+                    Get.find<DashboardControllerAdmin>();
+                var chatList = dashboardController
+                    .employeeList.value.employeeList
+                    .where((element) => chatController.selectedItemList
+                        .contains(Get.find<DashboardControllerAdmin>()
+                            .employeeList
+                            .value
+                            .employeeList
+                            .indexOf(element)))
                     .toList();
 
                 return SizedBox(
@@ -93,7 +103,7 @@ class SelectChatUsersPage extends StatelessWidget {
                               CircleAvatar(
                                 radius: 28,
                                 backgroundImage:
-                                    NetworkImage(chatList[index].image),
+                                    NetworkImage(chatList[index].image ?? ''),
                               ),
                               Positioned(
                                 bottom: 5,
@@ -103,10 +113,9 @@ class SelectChatUsersPage extends StatelessWidget {
                                   backgroundColor: Colors.red,
                                   child: InkWell(
                                     onTap: () {
-                                      chatList[index].isSelected = false;
                                       Get.find<ChatControllerAdmin>()
-                                          .chatGroupList
-                                          .refresh();
+                                          .selectedItemList
+                                          .remove(index);
                                     },
                                     child: const Icon(
                                       Icons.close,
@@ -127,14 +136,26 @@ class SelectChatUsersPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: ListView.builder(
-                  itemCount:
-                      Get.find<ChatControllerAdmin>().chatGroupList.length,
+                  itemCount: Get.find<DashboardControllerAdmin>()
+                      .employeeList
+                      .value
+                      .employeeList
+                      .length,
                   itemBuilder: (context, index) {
-                    var chatList =
-                        Get.find<ChatControllerAdmin>().chatGroupList;
+                    var chatList = Get.find<DashboardControllerAdmin>()
+                        .employeeList
+                        .value
+                        .employeeList;
                     return Obx(() => InkWell(
                           onTap: () => Get.find<ChatControllerAdmin>()
-                              .updateChatSelection(index),
+                                  .selectedItemList
+                                  .contains(index)
+                              ? Get.find<ChatControllerAdmin>()
+                                  .selectedItemList
+                                  .remove(index)
+                              : Get.find<ChatControllerAdmin>()
+                                  .selectedItemList
+                                  .add(index),
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 12),
                             decoration: BoxDecoration(
@@ -144,22 +165,25 @@ class SelectChatUsersPage extends StatelessWidget {
                             ),
                             child: ListTile(
                               title: Text(
-                                chatList[index].name,
+                                '${chatList[index].firstName} ${chatList[index].lastName}',
                                 style: kTextStyleS18W600CBlack,
                               ),
-                              subtitle: Text(chatList[index].id),
+                              subtitle: Text(
+                                  '#${chatList[index].id.toString().padLeft(5, '0')}'),
                               leading: Stack(
                                 children: [
                                   CircleAvatar(
                                     radius: 28,
-                                    backgroundImage:
-                                        NetworkImage(chatList[index].image),
+                                    backgroundImage: NetworkImage(
+                                        chatList[index].image ?? ''),
                                   ),
                                   Positioned(
                                     bottom: 2,
                                     right: 0,
                                     child: Visibility(
-                                      visible: chatList[index].isSelected,
+                                      visible: Get.find<ChatControllerAdmin>()
+                                          .selectedItemList
+                                          .contains(index),
                                       child: const CircleAvatar(
                                         radius: 10,
                                         backgroundColor: Colors.green,
@@ -174,7 +198,8 @@ class SelectChatUsersPage extends StatelessWidget {
                                 ],
                               ),
                               trailing: Text(
-                                chatList[index].branch,
+                                //todo change with branch name
+                                chatList[index].branchId.toString(),
                                 style: kTextStyleS13W500Cgrey,
                               ),
                             ),

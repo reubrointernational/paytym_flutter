@@ -15,7 +15,7 @@ class DashboardAdmin extends StatelessWidget {
   const DashboardAdmin({super.key});
   @override
   Widget build(BuildContext context) {
-        Get.lazyPut(() => DashboardControllerAdmin(),fenix: true);
+    Get.put(DashboardControllerAdmin(), permanent: true);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(Routes.scanTime),

@@ -16,6 +16,7 @@ import 'package:paytym/models/report/overtime_approve_edit_request_model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
+import 'package:paytym/models/report/projects_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
@@ -36,7 +37,7 @@ import 'widgets/pay_payment.dart';
 import 'widgets/payment_history.dart';
 import 'widgets/pending_payroll_listview.dart';
 
-//Contract period uses same api of list employee which is present in dashboard 
+//Contract period uses same api of list employee which is present in dashboard
 //controller of admin session
 
 class ReportsControllerAdmin extends GetxController with BaseController {
@@ -55,6 +56,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
+  final projectlistResponseModel =
+      ProjectListModel(message: '', projectsListe: []).obs;
 
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   final deductionResponseModel = DeductionListAdminModel().obs;
@@ -105,6 +108,37 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       payslipResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
+  }
+
+  fetchProjects() async {
+    showLoading();
+    Get.find<BaseClient>().onError = fetchProjects;
+    var requestModel = {
+      'employer_id':
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.projectsList, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+
+      projectlistResponseModel.value = projectListModelFromJson(responseString);
+      projectlistResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  getStatus(int status) {
+    if (status == 0) {
+      return 'ongoing';
+    } else if (status == 1) {
+      return 'onhold';
+    }
+    return 'Completed';
   }
 
   requestAdvanceOrSalary(bool isSalary) async {
