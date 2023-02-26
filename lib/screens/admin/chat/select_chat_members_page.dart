@@ -15,6 +15,8 @@ class SelectChatMembersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
+        Get.find<DashboardControllerAdmin>().fetchEmployeeList());
     return CustomAdminScaffold(
       title: 'Select Members',
       floatingActionButton: FloatingActionButton(
@@ -27,52 +29,70 @@ class SelectChatMembersPage extends StatelessWidget {
           children: [
             kSizedBoxH15,
             SizedBox(
-              height: 40,
-              child: Obx(
-                () => ListView(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.lightBlue),
-                            borderRadius: BorderRadius.circular(25)),
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        margin: const EdgeInsets.only(right: 10),
-                        child: const Text(
-                          'All',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ),
-                      ...List.generate(
-                        2,
-                        (index) => Container(
+                height: 40,
+                child: Obx(() {
+                  final dept = List.generate(
+                      Get.find<DashboardControllerAdmin>()
+                          .branchDeptList
+                          .value
+                          .departments.length, (index) => Get.find<DashboardControllerAdmin>()
+                      .branchDeptList
+                      .value
+                      .departments[index].depName??'');
+                      final branch = List.generate(
+                      Get.find<DashboardControllerAdmin>()
+                          .branchDeptList
+                          .value
+                          .branches
+                          .length,
+                      (index) => Get.find<DashboardControllerAdmin>()
+                          .branchDeptList
+                          .value
+                          .branches[index]
+                          .name??'');
+                  return ListView(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.lightBlue),
                               borderRadius: BorderRadius.circular(25)),
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
                           margin: const EdgeInsets.only(right: 10),
-                          child: CustomDropdownYearButton(
-                            lists: index == 0 ? departments : branches,
-                            value: Get.find<ChatControllerAdmin>()
-                                .selectedDropdownDepartments
-                                .value,
-                            onChanged: (value) {
-                              Get.find<ChatControllerAdmin>()
-                                  .selectedDropdownDepartments
-                                  .value = value;
-                            },
-                            hint: selectMembersTabs[index],
+                          child: const Text(
+                            'All',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black54,
+                            ),
                           ),
                         ),
-                      ),
-                    ]),
-              ),
-            ),
+                        ...List.generate(
+                          2,
+                          (index) => Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.lightBlue),
+                                borderRadius: BorderRadius.circular(25)),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.only(right: 10),
+                            child: CustomDropdownYearButton(
+                              lists: index == 0 ? dept : branch,
+                              value: Get.find<ChatControllerAdmin>()
+                                  .selectedDropdownDepartments
+                                  .value,
+                              onChanged: (value) {
+                                Get.find<ChatControllerAdmin>()
+                                    .selectedDropdownDepartments
+                                    .value = value;
+                              },
+                              hint: selectMembersTabs[index],
+                            ),
+                          ),
+                        ),
+                      ]);
+                })),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: Obx(() {

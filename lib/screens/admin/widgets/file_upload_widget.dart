@@ -1,9 +1,14 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paytym/core/extensions/camelcase.dart';
+import 'package:paytym/screens/admin/reports/reports_controller.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/widgets.dart';
+import '../../../models/report/files/files_type_list.dart';
+
 class FileUploadWidget extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -17,6 +22,9 @@ class FileUploadWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<ReportsControllerAdmin>();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => controller.fetchFileTypeList());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -37,18 +45,61 @@ class FileUploadWidget extends StatelessWidget {
               ),
             ])),
         kSizedBoxH10,
-        TextFormField(
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
-                borderSide: const BorderSide(
-                    width: 1, color: CustomColors.lightBlueColor),
+        Visibility(
+          visible: title != 'File Name',
+          child: TextFormField(
+            decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: const BorderSide(
+                      width: 1, color: CustomColors.lightBlueColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: const BorderSide(
+                      width: 1, color: CustomColors.lightBlueColor),
+                )),
+          ),
+        ),
+        Visibility(
+          visible: title == 'File Name',
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: CustomColors.lightBlueColor,
+                ),
+                borderRadius: BorderRadius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 5),
+              child: DropdownButtonHideUnderline(
+                child: Obx(() => DropdownButton<FileType>(
+                      isExpanded: true,
+                      value: controller.fileTypeListResponseModel.value
+                          .fileTypes[controller.fileNameDropdownIndex.value],
+                      onChanged: (FileType? value) {
+                        controller.fileNameDropdownIndex.value = controller
+                            .fileTypeListResponseModel.value.fileTypes
+                            .indexOf(value!);
+                      },
+                      items: controller
+                          .fileTypeListResponseModel.value.fileTypes
+                          .map<DropdownMenuItem<FileType>>((value) {
+                        return DropdownMenuItem<FileType>(
+                          value: value,
+                          child: Text(
+                            value.fileType.isEmpty
+                                ? ''
+                                : value.fileType.toCamelCase(),
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    )),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
-                borderSide: const BorderSide(
-                    width: 1, color: CustomColors.lightBlueColor),
-              )),
+            ),
+          ),
         ),
         kSizedBoxH20,
         const Text(

@@ -28,6 +28,7 @@ import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
+import '../../../models/report/files/files_type_list.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../employee/dashboard/dashboard_controller.dart';
@@ -53,9 +54,13 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     description: '',
   );
 
+  final fileNameDropdownIndex = 0.obs;
+
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
+  final fileTypeListResponseModel =
+      FilesTypeListModel(fileTypes: [FileType(id: 0, fileType: '')], message: '').obs;
   final projectlistResponseModel =
       ProjectListModel(message: '', projectsListe: []).obs;
 
@@ -110,12 +115,30 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  fetchFileTypeList() async {
+    showLoading();
+    Get.find<BaseClient>().onError = fetchFileTypeList;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.fileTypeList, null,
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      fileTypeListResponseModel.value =
+          filesTypeListModelFromJson(responseString);
+      fileTypeListResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
   fetchProjects() async {
     showLoading();
     Get.find<BaseClient>().onError = fetchProjects;
     var requestModel = {
       'employer_id':
-      '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.projectsList, jsonEncode(requestModel),

@@ -18,7 +18,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.onSaved,
     this.inputType,
-    this.inputAction, this.maxLines,
+    this.inputAction, this.maxLines = 1,
   }) : super(key: key);
 
   @override

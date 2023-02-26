@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
@@ -17,9 +18,9 @@ import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/report/deduction/deduction_response_model.dart';
+import '../../../models/report/files/employee_files_list_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
-
 
 class ReportsController extends GetxController
     with BaseController, GetTickerProviderStateMixin {
@@ -32,6 +33,8 @@ class ReportsController extends GetxController
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
+  final fileListResponseModel =
+      EmployeeFilesListModel(files: [], message: '').obs;
 
   final deductionResponseModel = DeductionResponseModel().obs;
 
@@ -54,6 +57,30 @@ class ReportsController extends GetxController
       hideLoading();
       payslipResponseModel.value = payslipResponseModelFromJson(responseString);
       payslipResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  fetchFiles() async {
+    showLoading();
+    Get.find<BaseClient>().onError = fetchFiles;
+    var requestModel = {
+      'status': '0',
+      //todo change employer id
+      'employee_id': '3'
+      // '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      fileListResponseModel.value =
+          employeeFilesListModelFromJson(responseString);
+      fileListResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
   }
@@ -94,8 +121,6 @@ class ReportsController extends GetxController
     final formatNum = NumberFormat('#.00');
     return formatNum.format(int.parse(value));
   }
-
-
 
   String? amountValidator(String value) {
     if (value.isEmpty) {
@@ -143,8 +168,6 @@ class ReportsController extends GetxController
       );
     }
   }
-
-  
 
   String? notEmptyValidator(String value) {
     return (value.isEmpty) ? 'Value cannot be empty' : null;

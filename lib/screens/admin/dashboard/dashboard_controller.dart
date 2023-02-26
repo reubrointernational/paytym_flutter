@@ -3,12 +3,15 @@ import 'package:get/get.dart';
 import 'package:paytym/models/report/employee_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 
+import '../../../models/branch_dept_list_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
 
 class DashboardControllerAdmin extends GetxController with BaseController {
   final employeeList = EmployeeListModel(employeeList: []).obs;
+  final branchDeptList =
+      BranchDeptListModel(branches: [], departments: [], message: '').obs;
   Map<String, List<EmployeeList>> branchwiseEmployeeMap = {};
   Map<String, List<EmployeeList>> deptwiseEmployeeMap = {};
 
@@ -73,6 +76,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
         employeeList.value = employeeListModelFromJson(responseString);
         Get.find<BaseClient>().onError = null;
         classifyEmployeeListByBranchAndDept();
+        fetchBranchDeptList();
       }
     }
   }
@@ -88,6 +92,27 @@ class DashboardControllerAdmin extends GetxController with BaseController {
         deptwiseEmployeeMap[element.departmentId.toString()] = [element];
       } else {
         deptwiseEmployeeMap[element.departmentId.toString()]!.add(element);
+      }
+    }
+  }
+
+  fetchBranchDeptList() async {
+    if (branchDeptList.value.message.isEmpty) {
+      Get.find<BaseClient>().onError = fetchBranchDeptList;
+      var requestModel = {
+        //todo change employer id
+        'employer_id': '4'
+            // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.branchDeptList, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      if (responseString == null) {
+        return;
+      } else {
+        branchDeptList.value = branchDeptListModelFromJson(responseString);
+        Get.find<BaseClient>().onError = null;
       }
     }
   }
