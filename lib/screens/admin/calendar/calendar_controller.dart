@@ -46,7 +46,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
   final TextEditingController startTimeController = TextEditingController();
   final TextEditingController endTimeController = TextEditingController();
 
-  List<dynamic> getEventsForDay(DateTime day) => ['HI'];
+  List<dynamic> getEventsForDay(DateTime day) => [];
 
   getMeeting() async {
     showLoading();

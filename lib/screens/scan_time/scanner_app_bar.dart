@@ -26,7 +26,6 @@ class ScannerAppBar extends StatelessWidget {
               ),
             ],
           ),
-          const CustomSVG(IconPath.settingsSvg, size: 23),
         ],
       ),
     );

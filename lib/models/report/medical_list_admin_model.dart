@@ -83,7 +83,7 @@ class ExtraDetail {
         commissionBonus: json["commission_bonus"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        users: Users.fromJson(json["users"]),
+        users: json["users"] != null ? Users.fromJson(json["users"]) : null,
       );
 
   Map<String, dynamic> toJson() => {

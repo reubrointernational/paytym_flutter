@@ -70,7 +70,7 @@ class DeductionTab extends StatelessWidget {
                               style: kTextStyleS12W600CcustomGrey,
                             ),
                             Text(
-                              "\$${Get.find<ReportsController>().formatNumber(Get.find<ReportsController>().deductionResponseModel.value.deductions?.first.fundDeduction ?? '0')}",
+                              "\$${Get.find<ReportsController>().formatNumber(Get.find<ReportsController>().deductionResponseModel.value.deductions?.first.totalDeduction ?? '0')}",
                               style: kTextStyleS12W600CcustomGrey,
                             ),
                           ],
@@ -98,7 +98,7 @@ class DeductionTab extends StatelessWidget {
                                 style: kTextStyleS13W600Cblue,
                               ),
                               Text(
-                                "\$${Get.find<ReportsController>().formatNumber(Get.find<ReportsController>().deductionResponseModel.value.deductions?.first.totalDeduction ?? '0')}",
+                                "\$${Get.find<ReportsController>().formatNumber((int.parse(Get.find<ReportsController>().deductionResponseModel.value.deductions?.first.pTax ?? '0') + int.parse(Get.find<ReportsController>().deductionResponseModel.value.deductions?.first.totalDeduction ?? '0')).toString())}",
                                 style: kTextStyleS13W600Cblue,
                               ),
                             ],
