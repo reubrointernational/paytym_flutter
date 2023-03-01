@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -16,7 +15,7 @@ import 'package:paytym/models/report/overtime_approve_edit_request_model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
-import 'package:paytym/models/report/projects_list_model.dart';
+import 'package:paytym/models/report/projects/projects_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
@@ -59,8 +58,9 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
-  final fileTypeListResponseModel =
-      FilesTypeListModel(fileTypes: [FileType(id: 0, fileType: '')], message: '').obs;
+  final fileTypeListResponseModel = FilesTypeListModel(
+          fileTypes: [FileType(id: 0, fileType: '')], message: '')
+      .obs;
   final projectlistResponseModel =
       ProjectListModel(message: '', projectsListe: []).obs;
 
@@ -84,6 +84,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
 
   final chatGroupList = dummy_data.obs;
   int selectedItemIndex = 0;
+  String projectName = '';
+  // final projectDetailsResponseModel = ProjectDetailsModel(message: '', projectsListe: []).obs;
 
 //for bottomsheet
   showBottomSheetForReason(ReasonButton reasonButton) {
@@ -148,7 +150,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       return;
     } else {
       hideLoading();
-
       projectlistResponseModel.value = projectListModelFromJson(responseString);
       projectlistResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
@@ -166,7 +167,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
 
   requestAdvanceOrSalary(bool isSalary) async {
     showLoading();
-
     var responseString = await Get.find<BaseClient>()
         .post(
             isSalary
@@ -364,6 +364,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       hideLoading();
       medicalResponseModel.value =
           medicalListAdminModelFromJson(responseString);
+     
       medicalResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }

@@ -46,15 +46,6 @@ class MedicalTabAdmin extends StatelessWidget {
                 ),
                 Column(
                   children: [
-//                     List medicalValues = [
-//   'Hypertension\nSugar',
-//   'Peanuts',
-//   'Medicine name',
-//   'O+',
-//   '170 lbs',
-//   '6\'7"',
-//   'Spouse: 9494949494\nDoctor: 9494949494'
-// ];
                     ...List.generate(
                       5,
                       ((col_index) {

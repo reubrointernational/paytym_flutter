@@ -464,6 +464,8 @@ const kAllString = 'All';
 
 const kcasualString = 'casual';
 
+const kHalfDayString = 'halfday';
+
 const kOtherString = 'Other';
 
 const kSickString = 'Sick';

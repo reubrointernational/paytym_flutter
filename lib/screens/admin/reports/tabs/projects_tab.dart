@@ -60,6 +60,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                               kSizedBoxH8,
                               GestureDetector(
                                 onTap: () {
+                                  reportController.projectName = projects[index].name??'';
                                   Get.toNamed(Routes.projectEmployeeList);
                                 },
                                 child: SizedBox(
