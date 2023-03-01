@@ -19,6 +19,7 @@ import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/report/deduction/deduction_response_model.dart';
 import '../../../models/report/files/employee_files_list_model.dart';
+import '../../../models/report/medical_list_admin_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 
@@ -29,6 +30,8 @@ class ReportsController extends GetxController
 
   late TabController controller;
   late TabController subTabController;
+  final medicalResponseModel =
+      MedicalListAdminModel(message: '', extraDetails: []).obs;
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
@@ -61,27 +64,51 @@ class ReportsController extends GetxController
     }
   }
 
-  fetchFiles() async {
+  getMedical() async {
     showLoading();
-    Get.find<BaseClient>().onError = fetchFiles;
-    var requestModel = {
-      'status': '0',
-      //todo change employer id
-      'employee_id': '3'
-      // '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+    var model = {
+      'employer_id': '4'
+      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
+    Get.find<BaseClient>().onError = getMedical;
     var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
+        .post(ApiEndPoints.medicalList, jsonEncode(model),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
     } else {
       hideLoading();
-      fileListResponseModel.value =
-          employeeFilesListModelFromJson(responseString);
-      fileListResponseModel.refresh();
+      medicalResponseModel.value =
+          medicalListAdminModelFromJson(responseString);
+      medicalResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  fetchFiles() async {
+    if (fileListResponseModel.value.message.isEmpty) {
+      showLoading();
+      Get.find<BaseClient>().onError = fetchFiles;
+      var requestModel = {
+        'status': '0',
+        //todo change employer id
+        'employee_id': '3'
+        // '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      if (responseString == null) {
+        return;
+      } else {
+        hideLoading();
+        fileListResponseModel.value =
+            employeeFilesListModelFromJson(responseString);
+        fileListResponseModel.refresh();
+        Get.find<BaseClient>().onError = null;
+      }
     }
   }
 
@@ -120,19 +147,6 @@ class ReportsController extends GetxController
   String formatNumber(String value) {
     final formatNum = NumberFormat('#.00');
     return formatNum.format(int.parse(value));
-  }
-
-  String? amountValidator(String value) {
-    if (value.isEmpty) {
-      return 'Value cannot be empty';
-    } else if (int.parse(
-            payslipResponseModel.value.payroll?.salary ?? '10000') <
-        int.parse(value)) {
-      return 'Request amount should be less than salary';
-    } else if (int.parse(value) < 50) {
-      return 'Request amount should be greater than 50';
-    }
-    return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
   }
 
   downloadPdf(String? url) async {
