@@ -24,81 +24,73 @@ class CalendarHolidayCardAdmin extends StatelessWidget {
               children: [
                 IntrinsicHeight(
                     child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                      child: Text(
-                        Get.find<CalendarControllerAdmin>()
-                            .leaveAdminResponseModel
-                            .value
-                            .leaveList[index]
-                            .date,
-                        style: kTextStyleS13W600CustomGrey,
-                      ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                          child: Text(
+                            Get.find<CalendarControllerAdmin>()
+                                .leaveAdminResponseModel
+                                .value
+                                .leaveList[index]
+                                .date,
+                            style: kTextStyleS13W600CustomGrey,
+                          ),
+                        ),
+                        VerticalDivider(
+                          width: w * 0.15,
+                          thickness: 3,
+                          color: CustomColors.greenColor,
+                        ),
+                        Text(
+                          Get.find<CalendarControllerAdmin>()
+                              .leaveAdminResponseModel
+                              .value
+                              .leaveList[index]
+                              .name,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ],
                     ),
-                    VerticalDivider(
-                      width: w * 0.15,
-                      thickness: 3,
-                      color: CustomColors.greenColor,
-                    ),
-                    Text(
-                      Get.find<CalendarControllerAdmin>()
-                          .leaveAdminResponseModel
-                          .value
-                          .leaveList[index]
-                          .name,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w800,
+                    GestureDetector(
+                      onTap: () => Get.find<CalendarControllerAdmin>()
+                          .deleteHoliday(index),
+                      child: const Icon(
+                        Icons.delete_outline,
+                        color: CustomColors.redColor,
                       ),
                     ),
                   ],
                 )),
-                kSizedBoxH10,
+                /*kSizedBoxH10,
                 const Divider(
                   thickness: 3,
                   indent: 10,
                   endIndent: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 5, 25, 0),
+                GestureDetector(
+                  onTap: () =>
+                      Get.find<CalendarControllerAdmin>().deleteHoliday(index),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.add_circle_outline,
-                            color: CustomColors.greenColor,
-                          ),
-                          kSizedBoxW10,
-                          Text(
-                            kAddString,
-                            style: kTextStyleS13W600,
-                          ),
-                        ],
+                    children: const [
+                      Icon(
+                        Icons.delete_sharp,
+                        color: CustomColors.redColor,
                       ),
-                      GestureDetector(
-                        onTap: () => Get.find<CalendarControllerAdmin>()
-                            .deleteHoliday(index),
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.delete_sharp,
-                              color: CustomColors.redColor,
-                            ),
-                            kSizedBoxW10,
-                            Text(
-                              kDeleteString,
-                              style: kTextStyleS13W600,
-                            ),
-                          ],
-                        ),
+                      kSizedBoxW10,
+                      Text(
+                        kDeleteString,
+                        style: kTextStyleS13W600,
                       ),
                     ],
                   ),
-                ),
+                ),*/
               ],
             ),
           ),

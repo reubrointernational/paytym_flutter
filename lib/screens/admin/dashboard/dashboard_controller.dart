@@ -18,11 +18,11 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   seeDetailsPage(index) {
     switch (index) {
       case 0:
-        Get.find<LoginController>().initialIndex = 2;
+        Get.find<LoginController>().initialIndex = 3;
         Get.find<LoginController>().bottomNavigationAdminIndex.value = 4;
         break;
       case 1:
-        Get.find<LoginController>().initialIndex = 3;
+        Get.find<LoginController>().initialIndex = 4;
         Get.find<LoginController>().bottomNavigationAdminIndex.value = 4;
         break;
       case 2:
@@ -102,7 +102,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       var requestModel = {
         //todo change employer id
         'employer_id': '4'
-            // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+        // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
       };
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.branchDeptList, jsonEncode(requestModel),

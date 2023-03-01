@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/screens/employee/bottom_nav/bottom_nav_page.dart';
@@ -12,6 +14,7 @@ import '../../../../core/constants/widgets.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../employee/calendar/widgets/custom_svg.dart';
 import '../../../employee/dashboard/dashboard_controller.dart';
+import '../../../login/login_controller.dart';
 import '../../../widgets/paytym_logo.dart';
 import '../../bottom_nav/bottom_nav_page.dart';
 
@@ -53,9 +56,26 @@ class HrAppBar extends StatelessWidget {
           ).toList(),
           onSelected: (DashboardDropDown value) =>
               Get.find<DashboardController>().onClickMenuItem(value),
-          child: const CircleAvatar(
-            radius: 20,
-            backgroundColor: CustomColors.whiteCardColor,
+          child: CachedNetworkImage(
+            imageUrl: Get.find<LoginController>()
+                    .loginResponseModel
+                    ?.employee
+                    ?.image ??
+                '',
+            imageBuilder: (context, imageProvider) => CircleAvatar(
+              backgroundColor: CustomColors.whiteCardColor,
+              radius: 17,
+              child: CircleAvatar(
+                backgroundColor: Colors.grey.shade300,
+                radius: 15,
+                backgroundImage: imageProvider,
+              ),
+            ),
+            placeholder: (context, url) => const SpinKitDoubleBounce(
+              color: Colors.white,
+              size: 7.5,
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       ],
