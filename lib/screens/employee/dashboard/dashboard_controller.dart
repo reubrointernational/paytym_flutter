@@ -55,6 +55,20 @@ class DashboardController extends GetxController with BaseController {
     return '';
   }
 
+   String? amountValidator(String value) {
+    //todo uncomment
+    // if (value.isEmpty) {
+    //   return 'Value cannot be empty';
+    // } else if (int.parse(
+    //         payslipResponseModel.value.payroll?.salary ?? '10000') <
+    //     int.parse(value)) {
+    //   return 'Request amount should be less than salary';
+    // } else if (int.parse(value) < 50) {
+    //   return 'Request amount should be greater than 50';
+    // }
+    // return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
+  }
+
   changeSliderPosition(double value) {
     if ((sliderValue.value - value).abs() < 20) {
       sliderValue.value = value;

@@ -45,7 +45,7 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   //todo amount validator need salary details of the employee
                   validator: (value) =>
-                      Get.find<ReportsController>().amountValidator(value!),
+                      Get.find<DashboardController>().amountValidator(value!),
                   onSaved: (value) => Get.find<DashboardController>()
                       .requestAdvanceModel
                       .amount = value!,

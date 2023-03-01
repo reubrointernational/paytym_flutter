@@ -49,17 +49,6 @@ class LeavesCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        leave?.title ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: CustomColors.greyHeadingTextColor,
-                        ),
-                      ),
-                      Text(
-                        '${Get.find<LeavesController>().formatDate(leave?.startDate)}-${Get.find<LeavesController>().formatDate(leave?.endDate)}',
-                        style: kTextStyleS18W600,
-                      ),
-                      Text(
                         leave?.type?.toCamelCase() ?? '',
                         style: TextStyle(
                           fontSize: 15,
@@ -68,6 +57,18 @@ class LeavesCard extends StatelessWidget {
                               : CustomColors.blueLabelColor,
                         ),
                       ),
+                      Text(
+                        leave?.type == kHalfDayString ? Get.find<LeavesController>().formatDate(leave?.startDate) : '${Get.find<LeavesController>().formatDate(leave?.startDate)}-${Get.find<LeavesController>().formatDate(leave?.endDate)}',
+                        style: kTextStyleS18W600,
+                      ),
+                      Text(
+                        leave?.title ?? '',
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: CustomColors.greyHeadingTextColor,
+                        ),
+                      ),
+                      
                     ],
                   ),
                 ),

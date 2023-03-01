@@ -9,7 +9,6 @@ import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../widgets/bordered_text_form_field.dart';
 
-
 class LeaveDialogue extends StatelessWidget {
   const LeaveDialogue({
     Key? key,
@@ -116,76 +115,76 @@ class LeaveDialogue extends StatelessWidget {
                         Get.find<LeavesController>().dateValidator(value!),
                   ),
                   kSizedBoxH6,
-                  Obx(() => Visibility(
-                        visible: Get.find<LeavesController>()
-                            .isTimeFieldVisible
-                            .value,
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: (() async {
-                                TimeOfDay? selectedTime = await showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now());
-                                print(selectedTime.toString());
-                              }),
-                              child: BorderedTextFormField(
-                                enabled: false,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(r'[0-9-]'),
-                                  ),
-                                ],
-                                // onSaved: (value) => Get.find<LeavesController>()
-                                //     .leaveRequestModel
-                                //     .startDate = value,
-                                controller: Get.find<LeavesController>()
-                                    .startDateController,
-                                hintText: kStartTimeString,
-                                keyboardType: TextInputType.datetime,
-                                suffixIcon: const Icon(
-                                  Icons.access_time,
-                                  size: 18,
-                                ),
-                                // validator: (value) =>
-                                //     Get.find<LeavesController>()
-                                //         .dateValidator(value!),
-                              ),
-                            ),
-                            kSizedBoxH6,
-                            GestureDetector(
-                              onTap: (() async {
-                                TimeOfDay? selectedTime = await showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now());
-                                print(selectedTime.toString());
-                              }),
-                              child: BorderedTextFormField(
-                                enabled: false,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(r'[0-9-]'),
-                                  ),
-                                ],
-                                // onSaved: (value) => Get.find<LeavesController>()
-                                //     .leaveRequestModel
-                                //     .startDate = value,
-                                controller: Get.find<LeavesController>()
-                                    .startDateController,
-                                hintText: kEndTimeString,
-                                keyboardType: TextInputType.datetime,
-                                suffixIcon: const Icon(
-                                  Icons.access_time,
-                                  size: 18,
-                                ),
-                                // validator: (value) =>
-                                //     Get.find<LeavesController>()
-                                //         .dateValidator(value!),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
+                  // Obx(() => Visibility(
+                  //       visible: Get.find<LeavesController>()
+                  //           .isTimeFieldVisible
+                  //           .value,
+                  //       child: Column(
+                  //         children: [
+                  //           GestureDetector(
+                  //             onTap: (() async {
+                  //               TimeOfDay? selectedTime = await showTimePicker(
+                  //                   context: context,
+                  //                   initialTime: TimeOfDay.now());
+                  //               print(selectedTime.toString());
+                  //             }),
+                  //             child: BorderedTextFormField(
+                  //               enabled: false,
+                  //               inputFormatters: [
+                  //                 FilteringTextInputFormatter.allow(
+                  //                   RegExp(r'[0-9-]'),
+                  //                 ),
+                  //               ],
+                  //               // onSaved: (value) => Get.find<LeavesController>()
+                  //               //     .leaveRequestModel
+                  //               //     .startDate = value,
+                  //               controller: Get.find<LeavesController>()
+                  //                   .startDateController,
+                  //               hintText: kStartTimeString,
+                  //               keyboardType: TextInputType.datetime,
+                  //               suffixIcon: const Icon(
+                  //                 Icons.access_time,
+                  //                 size: 18,
+                  //               ),
+                  //               // validator: (value) =>
+                  //               //     Get.find<LeavesController>()
+                  //               //         .dateValidator(value!),
+                  //             ),
+                  //           ),
+                  //           kSizedBoxH6,
+                  //           GestureDetector(
+                  //             onTap: (() async {
+                  //               TimeOfDay? selectedTime = await showTimePicker(
+                  //                   context: context,
+                  //                   initialTime: TimeOfDay.now());
+                  //               print(selectedTime.toString());
+                  //             }),
+                  //             child: BorderedTextFormField(
+                  //               enabled: false,
+                  //               inputFormatters: [
+                  //                 FilteringTextInputFormatter.allow(
+                  //                   RegExp(r'[0-9-]'),
+                  //                 ),
+                  //               ],
+                  //               // onSaved: (value) => Get.find<LeavesController>()
+                  //               //     .leaveRequestModel
+                  //               //     .startDate = value,
+                  //               controller: Get.find<LeavesController>()
+                  //                   .startDateController,
+                  //               hintText: kEndTimeString,
+                  //               keyboardType: TextInputType.datetime,
+                  //               suffixIcon: const Icon(
+                  //                 Icons.access_time,
+                  //                 size: 18,
+                  //               ),
+                  //               // validator: (value) =>
+                  //               //     Get.find<LeavesController>()
+                  //               //         .dateValidator(value!),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     )),
                   kSizedBoxH6,
                   BorderedTextFormField(
                     maxLines: 5,
@@ -206,7 +205,6 @@ class LeaveDialogue extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  print(Get.find<LeavesController>().selectedItem.value);
                   Get.find<LeavesController>().validateAndApplyForLeave();
                 },
                 style: ElevatedButton.styleFrom(
