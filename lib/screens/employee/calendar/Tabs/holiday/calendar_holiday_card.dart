@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../core/colors/colors.dart';
 import '../../../../../core/constants/strings.dart';
 import '../../../../../core/constants/styles.dart';
+import '../../calendar_controller.dart';
 
 class CalendarHolidayCard extends StatelessWidget {
   final int index;
@@ -19,8 +21,12 @@ class CalendarHolidayCard extends StatelessWidget {
             padding: const EdgeInsets.all(18.0),
             child: Row(
               children: [
-                const Text(
-                  '26-01-2024',
+                Text(
+                  Get.find<CalendarController>()
+                      .leaveAdminResponseModel
+                      .value
+                      .leaveList[index]
+                      .date,
                   style: kTextStyleS13W600CustomGrey,
                 ),
                 VerticalDivider(
@@ -28,10 +34,14 @@ class CalendarHolidayCard extends StatelessWidget {
                   thickness: 3,
                   color: CustomColors.greenColor,
                 ),
-                const Text(
-                  'Republic Day',
+                Text(
+                  Get.find<CalendarController>()
+                      .leaveAdminResponseModel
+                      .value
+                      .leaveList[index]
+                      .name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
                   ),

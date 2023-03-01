@@ -9,9 +9,7 @@ import '../../../core/constants/strings.dart';
 import '../../widgets/custom_tab_bar.dart';
 import 'Tabs/meeting/calendar_meeting_tab.dart';
 import 'Tabs/event/calendar_event_tab.dart';
-import 'Tabs/schedule/calendar_schedule_tab.dart';
 import 'calendar_controller.dart';
-import '../../admin/widgets/custom_floating_action_button.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({Key? key}) : super(key: key);

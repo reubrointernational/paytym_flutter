@@ -3,9 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/employee/calendar/Tabs/event/calendar_event_card.dart';
 import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
-import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
-import '../../../../../core/constants/strings.dart';
 import '../../../../../core/constants/styles.dart';
 
 class CalendarEvent extends StatelessWidget {
