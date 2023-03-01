@@ -7,6 +7,7 @@ import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../routes/app_routes.dart';
 import '../../employee/calendar/widgets/custom_svg.dart';
+import '../../login/login_controller.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/custom_cards.dart';
 import 'widgets/check_in_out_card_admin.dart';
@@ -43,8 +44,8 @@ class DashboardAdmin extends StatelessWidget {
                           horizontal: 20, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Welcome',
                             style: TextStyle(
                               fontSize: 13,
@@ -54,8 +55,8 @@ class DashboardAdmin extends StatelessWidget {
                           ),
                           kSizedBoxH4,
                           Text(
-                            'John Doe',
-                            style: TextStyle(
+                            '${Get.find<LoginController>().loginResponseModel?.employee?.firstName} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName}',
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                               color: CustomColors.whiteTextColor,

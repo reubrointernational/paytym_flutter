@@ -7,6 +7,7 @@ import 'package:paytym/core/constants/widgets.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../models/leaves/leaves_admin_response_model.dart';
+import '../../../../models/leaves/leaves_status_model.dart';
 import '../leaves_controller.dart';
 
 class LeavesCardAdmin extends StatelessWidget {
@@ -16,8 +17,7 @@ class LeavesCardAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // LeaveStatusModel leaveStatusModel =
-    //     Get.find<LeavesControllerAdmin>().getLeaveStatusModel(leave?.status);
+    LeaveStatusModel leaveStatusModel = Get.find<LeavesControllerAdmin>().getLeaveStatusModel(leave?.status);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(

@@ -44,8 +44,8 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   @override
   void onReady() {
     super.onReady();
-    fetchLeaveData();
     fetchLeaveData(0);
+    //fetchLeaveData(0);
   }
 
   isToday(DateTime dateTime) {
@@ -114,6 +114,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
         .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print(responseString);
     if (responseString == null) {
       return;
     } else {

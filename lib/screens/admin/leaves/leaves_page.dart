@@ -11,7 +11,6 @@ class LeavesPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(LeavesControllerAdmin());
-    
     return CustomAdminScaffoldWithTabBar(
       tabList: leaveTabListAdmin,
       title: kLeavesString,

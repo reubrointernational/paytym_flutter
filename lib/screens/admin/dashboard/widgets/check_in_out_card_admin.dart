@@ -41,47 +41,51 @@ class CheckInOutCardAdmin extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Container(
-                              height: 18,
-                              decoration: BoxDecoration(
-                                  color: CustomColors.lightBlueColor,
-                                  borderRadius: BorderRadius.circular(9)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Container(
+                                height: 18,
+                                decoration: BoxDecoration(
+                                    color: CustomColors.lightBlueColor,
+                                    borderRadius: BorderRadius.circular(9)),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Obx(() => SliderTheme(
-                            data: SliderThemeData(
-                              overlayShape: SliderComponentShape.noOverlay,
-                              thumbShape: const CustomRoundSliderThumbShape(
-                                enabledThumbRadius: 18.0,
+                        Obx(() => SliderTheme(
+                              data: SliderThemeData(
+                                overlayShape: SliderComponentShape.noOverlay,
+                                thumbShape: const CustomRoundSliderThumbShape(
+                                  enabledThumbRadius: 18.0,
+                                ),
                               ),
-                            ),
-                            child: Slider(
-                              value: Get.find<DashboardController>()
-                                  .sliderValue
-                                  .value,
-                              max: 100,
-                              thumbColor: CustomColors.lightBlueColor,
-                              inactiveColor: CustomColors.lightBlueColor,
-                              activeColor: CustomColors.whiteTextColor,
-                              onChanged: (double value) {
-                                Get.find<DashboardController>()
-                                    .changeSliderPosition(value);
-                              },
-                              onChangeEnd: (double value) =>
+                              child: Slider(
+                                value: Get.find<DashboardController>()
+                                    .sliderValue
+                                    .value,
+                                max: 100,
+                                thumbColor: CustomColors.lightBlueColor,
+                                inactiveColor: CustomColors.lightBlueColor,
+                                activeColor: CustomColors.whiteTextColor,
+                                onChanged: (double value) {
                                   Get.find<DashboardController>()
-                                      .sliderController(value),
-                            ),
-                          )),
-                    ],
+                                      .changeSliderPosition(value);
+                                },
+                                onChangeEnd: (double value) =>
+                                    Get.find<DashboardController>()
+                                        .sliderController(value),
+                              ),
+                            )),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(

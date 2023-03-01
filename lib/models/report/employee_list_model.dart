@@ -78,7 +78,7 @@ class EmployeeList {
     String? employmentEndDate;
     String? payedDate;
     String? bankBranchName;
-    String? businessId;
+    int? businessId;
     int? departmentId;
     String? salaryType;
     String? rate;

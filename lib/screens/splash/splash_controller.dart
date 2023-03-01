@@ -13,7 +13,7 @@ class SplashController extends GetxController {
   void onReady() {
     super.onReady();
     Timer(const Duration(seconds: 4), () async {
-      Map<String, String> storageMap =
+      /*Map<String, String> storageMap =
           await Get.find<SharedPreferenceHelper>().getStorageData();
       if (storageMap['loginDetails'] != null) {
         Get.find<LoginController>().loginResponseModel =
@@ -22,7 +22,8 @@ class SplashController extends GetxController {
         
       } else {
         Get.offAndToNamed(Routes.login);
-      }
+      }*/
+      Get.offAndToNamed(Routes.login);
     });
   }
 }

@@ -107,6 +107,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         .post(
             ApiEndPoints.payslip, null, Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print("payslip: $responseString");
     if (responseString == null) {
       return;
     } else {
@@ -364,7 +365,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       hideLoading();
       medicalResponseModel.value =
           medicalListAdminModelFromJson(responseString);
-     
+
       medicalResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
