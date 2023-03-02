@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
+import 'package:paytym/screens/admin/reports/csv_download.dart';
+import 'package:paytym/screens/admin/reports/reports_controller.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../core/custom_slider_thumb.dart';
 import '../../../../core/dialog_helper.dart';
+import '../../../employee/dashboard/dashboard_controller.dart';
 
 class PendingPayrollListview extends StatefulWidget {
   const PendingPayrollListview({super.key});
@@ -17,241 +22,275 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemCount: payrollList.length,
-        itemBuilder: (context, index) {
-          final employees = payrollList[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 2),
-            child: GestureDetector(
-              onTap: () {},
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1, color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 100),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Branch',
-                                  style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 12.5),
-                                ),
-                                Text(
-                                  employees['name']!,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Text(
-                                  'ID: ${employees['id']!}',
-                                  style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //Finance only
-                                const Icon(
-                                  Icons.download,
-                                  size: 18,
-                                  color: CustomColors.orangeColor,
-                                ),
-                                //Only for HR
-                                SizedBox(
-                                  height: h * 0.05,
-                                  width: w * 0.3,
-                                  //color: Colors.yellow,
-                                  child: Stack(
-                                    children: [
-                                      Positioned.fill(
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Container(
-                                            height: 6,
-                                            decoration: BoxDecoration(
-                                                color: CustomColors.orangeColor,
-                                                /*gradient: const LinearGradient(
-                                                    begin: Alignment.topCenter,
-                                                    end: Alignment.bottomCenter,
-                                                    colors: [
-                                                      Color.fromARGB(255, 28, 41, 226),
-                                                      Color.fromARGB(255, 14, 130, 238)
-                                                    ]),*/
-                                                borderRadius:
-                                                    BorderRadius.circular(7.5)),
-                                          ),
-                                        ),
-                                      ),
-                                      SliderTheme(
-                                        data: SliderThemeData(
-                                          trackHeight: 0,
-                                          //activeTrackColor: Colors.red,
-                                          /*inactiveTrackColor:
-                                              const Color.fromARGB(255, 2, 69, 124),*/
-                                          overlayShape:
-                                              SliderComponentShape.noOverlay,
-                                          thumbShape:
-                                              const CustomRoundSliderThumbShape(
-                                            enabledThumbRadius: 10.0,
-                                            // thumbColor:
-                                            //     CustomColors.whiteTextColor,
-                                          ),
-                                        ),
-                                        child: Slider(
-                                          thumbColor: CustomColors.orangeColor,
-                                          inactiveColor:
-                                              CustomColors.orangeColor,
-                                          activeColor: CustomColors.greenColor,
-                                          value: employees['processValue'],
-                                          max: 100,
-                                          onChanged: (double value) {
-                                            setState(() {
-                                              employees['processValue'] = value;
-                                            });
-                                          },
-                                          onChangeEnd: (double value) {
-                                            print(value);
-                                            if (value == 100) {
-                                              DialogHelper.showConfirmDialog(
-                                                title: 'Process Payroll',
-                                                desc:
-                                                    'Do you like to process payroll?',
-                                              );
-                                            } else if (value == 0) {
-                                              DialogHelper.showConfirmDialog(
-                                                title: 'Reverse Payroll',
-                                                desc:
-                                                    'Do you like to reverse process payroll?',
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                /*Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: Row(
-                                    children: [
-                                      //Process & Reverse is for HR
-                                      processButton(
-                                          'Process', CustomColors.greenColor),
-                                      kSizedBoxW10,
-                                      processButton(
-                                          'Reverse', CustomColors.redColor),
-                                    ],
-                                  ),
-                                ),*/
-                                RichText(
-                                  text: TextSpan(
-                                    text: 'Gross : ',
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: '\$${employees['gross_salary']}',
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: CustomColors.lightBlueColor,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      employees['isExpanded'] =
-                                          !employees['isExpanded'];
-                                    });
-                                  },
-                                  child: Icon(
-                                    employees['isExpanded']
-                                        ? Icons.expand_less
-                                        : Icons.expand_more,
-                                    color: Colors.grey,
-                                    size: 20,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
+      child: SizedBox(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 100,
+                child: Card(
+                  color: CustomColors.whiteCardColor,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'PROCESS PAYROLL',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: CustomColors.blackTextColor,
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: employees['isExpanded'],
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Divider(
-                              thickness: 1,
-                              height: 15,
-                              color: Colors.grey.shade300,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                payrollDetails('Basic Salary: ',
-                                    employees['basic_salary']),
-                                payrollDetails('Tax: ', employees['tax']),
-                              ],
-                            ),
-                            kSizedBoxH6,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                payrollDetails(
-                                    'Allowance: ', employees['allowance']),
-                                payrollDetails(
-                                    'Deduction: ', employees['deduction']),
-                              ],
-                            ),
-                            kSizedBoxH6,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                payrollDetails('Bonus: ', employees['bonus']),
-                                payrollDetails(
-                                    'Commission: ', employees['commission']),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                        kSizedBoxH10,
+                        Obx(() => SliderTheme(
+                              data: SliderThemeData(
+                                overlayShape: SliderComponentShape.noOverlay,
+                                thumbShape: const CustomRoundSliderThumbShape(
+                                  enabledThumbRadius: 18.0,
+                                ),
+                              ),
+                              child: Slider(
+                                value: Get.find<ReportsControllerAdmin>()
+                                    .sliderValue
+                                    .value,
+                                max: 100,
+                                thumbColor: CustomColors.lightBlueColor,
+                                inactiveColor: CustomColors.lightBlueColor,
+                                activeColor: CustomColors.orangeColor,
+                                onChanged: (double value) {
+                                  Get.find<ReportsControllerAdmin>()
+                                      .changeSliderPosition(value);
+                                },
+                                onChangeStart: (value) =>
+                                    Get.find<ReportsControllerAdmin>()
+                                        .sliderStartValue = value,
+                                onChangeEnd: (double value) =>
+                                    Get.find<ReportsControllerAdmin>()
+                                        .sliderController(),
+                              ),
+                            )),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Payroll Details',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: CustomColors.blackTextColor,
+                  ),
+                ),
+              ),
+              Obx(() {
+                final employeeList = Get.find<DashboardControllerAdmin>()
+                    .employeeList
+                    .value
+                    .employeeList
+                    .where((element) => element.status == 1)
+                    .toList();
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: employeeList.length,
+                  itemBuilder: (context, index) {
+                    final employees = employeeList[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 2),
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                width: 1, color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxHeight: 100),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            employees.branch?.toString() ?? '',
+                                            style: TextStyle(
+                                                color: Colors.grey.shade600,
+                                                fontSize: 12.5),
+                                          ),
+                                          Text(
+                                            '${employees.firstName} ${employees.lastName}',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            'ID: #${employees.id.toString().padLeft(5, '0')}',
+                                            style: TextStyle(
+                                              color: Colors.grey.shade600,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          //Finance only
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.download,
+                                              size: 18,
+                                              color: CustomColors.orangeColor,
+                                            ),
+                                            onPressed: () {
+                                              CsvDownloader().downloadCsv(employeeList);
+                                            },
+                                          ),
+                                          //Only for HR
+
+                                          /*Padding(
+                                                        padding: const EdgeInsets.only(bottom: 10),
+                                                        child: Row(
+                                            children: [
+                                              //Process & Reverse is for HR
+                                              processButton(
+                                                  'Process', CustomColors.greenColor),
+                                              kSizedBoxW10,
+                                              processButton(
+                                                  'Reverse', CustomColors.redColor),
+                                            ],
+                                          ),
+                                        ),*/
+                                          RichText(
+                                            text: TextSpan(
+                                              text: 'Gross : ',
+                                              style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 12,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      '\$ ${employees.payroll?.grossSalary}',
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: CustomColors
+                                                        .lightBlueColor,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                employees.isExpanded =
+                                                    !employees.isExpanded;
+                                              });
+                                            },
+                                            child: Icon(
+                                              employees.isExpanded
+                                                  ? Icons.expand_less
+                                                  : Icons.expand_more,
+                                              color: Colors.grey,
+                                              size: 20,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: employees.isExpanded,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Divider(
+                                        thickness: 1,
+                                        height: 15,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          payrollDetails('Basic Salary: ',
+                                              employees.payroll?.baseSalary??'0'),
+                                          payrollDetails('Tax: ',
+                                              employees.payroll?.totalTax ?? 0),
+                                        ],
+                                      ),
+                                      kSizedBoxH6,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          payrollDetails('Allowance: ',
+                                              employees.payroll?.totalAllowance??'0'),
+                                          payrollDetails('Deduction: ',
+                                              employees.payroll?.totalDeduction??'0'),
+                                        ],
+                                      ),
+                                      kSizedBoxH6,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          payrollDetails('Bonus: ',
+                                              employees.payroll?.totalBonus??'0'),
+                                          payrollDetails(
+                                              'Commission: ',
+                                              employees
+                                                  .payroll?.totalCommission??'0'),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }),
+            ],
+          ),
+        ),
       ),
     );
   }

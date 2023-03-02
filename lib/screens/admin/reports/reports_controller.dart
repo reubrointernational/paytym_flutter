@@ -17,6 +17,7 @@ import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/models/report/projects/projects_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -54,6 +55,44 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   );
 
   final fileNameDropdownIndex = 0.obs;
+  final sliderValue = 0.0.obs;
+  double sliderStartValue = 0;
+
+  changeSliderPosition(double value) {
+    sliderValue.value = value;
+  }
+
+  sliderController() {
+    if ((sliderValue.value - sliderStartValue).abs() > 95) {
+      if (sliderValue.value > 95) {
+        sliderValue.value = 100;
+        showDialogue();
+      } else if (sliderValue.value < 5) {
+        sliderValue.value = 0;
+        showDialogue();
+      } else {
+        sliderValue.value = sliderStartValue;
+      }
+    } else {
+      sliderValue.value = sliderStartValue;
+    }
+  }
+
+  showDialogue() {
+    DialogHelper.showConfirmDialog(
+      title: sliderValue.value == 100 ? 'Process Payroll' : 'Reverse Payroll',
+      desc: sliderValue.value == 100
+          ? 'Do you like to process payroll?'
+          : 'Do you like to reverse process payroll?',
+      onConfirm: () {
+        processPayroll();
+        Get.find<DashboardControllerAdmin>().fetchEmployeeList();
+      },
+      onCancel: () {
+        sliderValue.value = sliderValue.value == 100 ? 0 : 100;
+      },
+    );
+  }
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
@@ -556,6 +595,26 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   void onClose() {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
     super.onClose();
+  }
+
+  void processPayroll() async {
+    showLoading();
+    var requestModel = {
+      'employer_id': '2'
+      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+      Get.back();
+    }
   }
 
   // onClickMenuItem(ReportsDropDown value) {

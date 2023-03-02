@@ -54,6 +54,8 @@ class ApiEndPoints {
   static const branchDeptList = '$kBaseUrl/list_branch_departments';
    static const employeeFileList = '$kBaseUrl/list_files';
    static const fileTypeList = '$kBaseUrl/list_file_types';
+   static const processPayroll = '$kBaseUrl/payroll-calculation';
+
 
 
 }

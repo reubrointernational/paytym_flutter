@@ -17,6 +17,7 @@ import '../../../core/constants/enums.dart';
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../core/download_path.dart';
 import '../../../models/report/deduction/deduction_response_model.dart';
 import '../../../models/report/files/employee_files_list_model.dart';
 import '../../../models/report/medical_list_admin_model.dart';
@@ -46,6 +47,7 @@ class ReportsController extends GetxController
   final selectedDropdownDay = daysDummyList.first.obs;
 
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
+
 
   fetchPayslip() async {
     showLoading();
@@ -156,7 +158,7 @@ class ReportsController extends GetxController
       await FlutterDownloader.enqueue(
         url: url,
         saveInPublicStorage: true,
-        savedDir: '/storage/emulated/0/Download',
+        savedDir: await DownloadPath().getDownloadPath(),
         showNotification: true,
         openFileFromNotification: false,
         // fileName: 'payslip.pdf',
