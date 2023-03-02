@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -27,6 +28,7 @@ import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
+import '../../../models/report/file_upload_request.dart';
 import '../../../models/report/files/files_type_list.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -36,6 +38,7 @@ import '../widgets/reason_bottomsheet.dart';
 import 'widgets/pay_payment.dart';
 import 'widgets/payment_history.dart';
 import 'widgets/pending_payroll_listview.dart';
+import 'package:http/http.dart' as http;
 
 //Contract period uses same api of list employee which is present in dashboard
 //controller of admin session
@@ -54,12 +57,13 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   );
 
   final fileNameDropdownIndex = 0.obs;
+  final filePath = ''.obs;
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
   final fileTypeListResponseModel = FilesTypeListModel(
-          fileTypes: [FileType(id: 0, fileType: '')], message: '')
+          fileTypes: [FileTypes(id: 0, fileType: '')], message: '')
       .obs;
   final projectlistResponseModel =
       ProjectListModel(message: '', projectsListe: []).obs;
@@ -134,6 +138,48 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       fileTypeListResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
+  }
+
+  fetchFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      print(file.name);
+      filePath.value = file.path!;
+    }
+  }
+
+  uploadFiles() async {
+    showLoading();
+    var request =
+        http.MultipartRequest("POST", Uri.parse(ApiEndPoints.uploadFiles));
+    FileUploadRequestModel fileUploadRequestModel = FileUploadRequestModel(
+      employerId: Get.find<LoginController>()
+              .loginResponseModel
+              ?.employee
+              ?.employer_id
+              .toString() ??
+          '',
+      fileTypeId: fileNameDropdownIndex.value.toString(),
+      userId: Get.find<LoginController>()
+              .loginResponseModel
+              ?.employee
+              ?.id
+              .toString() ??
+          '',
+      status: '0',
+      id: '4',
+    );
+    request.fields.addAll(fileUploadRequestModel.toJson());
+    request.headers.addAll(Get.find<LoginController>().getHeader()!);
+    var multipartFile =
+        await http.MultipartFile.fromPath('file', filePath.value);
+    request.files.add(multipartFile);
+    var streamResponse = await request.send();
+    var response = await http.Response.fromStream(streamResponse);
+    print(response.body);
+    hideLoading();
+    DialogHelper.showToast(desc: 'File uploaded');
   }
 
   fetchProjects() async {
