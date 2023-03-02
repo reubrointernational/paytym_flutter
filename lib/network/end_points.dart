@@ -57,8 +57,5 @@ class ApiEndPoints {
    static const processPayroll = '$kBaseUrl/payroll-calculation';
    static const adminDashboard = '$kBaseUrl/admin_dashboard';
    static const dashboard = '$kBaseUrl/dashboard';
-
-
-
-
+  static const uploadFiles = '$kBaseUrl/upload_files';
 }

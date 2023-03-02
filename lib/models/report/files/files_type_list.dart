@@ -17,13 +17,13 @@ class FilesTypeListModel {
   });
 
   String message;
-  List<FileType> fileTypes;
+  List<FileTypes> fileTypes;
 
   factory FilesTypeListModel.fromJson(Map<String, dynamic> json) =>
       FilesTypeListModel(
         message: json["message"],
-        fileTypes: List<FileType>.from(
-            json["file_types"].map((x) => FileType.fromJson(x))),
+        fileTypes: List<FileTypes>.from(
+            json["file_types"].map((x) => FileTypes.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,8 +32,8 @@ class FilesTypeListModel {
       };
 }
 
-class FileType {
-  FileType({
+class FileTypes {
+  FileTypes({
     required this.id,
     required this.fileType,
   });
@@ -41,7 +41,7 @@ class FileType {
   int id;
   String fileType;
 
-  factory FileType.fromJson(Map<String, dynamic> json) => FileType(
+  factory FileTypes.fromJson(Map<String, dynamic> json) => FileTypes(
         id: json["id"],
         fileType: json["file_type"],
       );

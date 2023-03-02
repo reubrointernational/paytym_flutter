@@ -72,31 +72,40 @@ class FileUploadWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: 10, right: 5),
               child: DropdownButtonHideUnderline(
-                child: Obx(() => DropdownButton<FileType>(
-                      isExpanded: true,
-                      value: controller.fileTypeListResponseModel.value
-                          .fileTypes[controller.fileNameDropdownIndex.value],
-                      onChanged: (FileType? value) {
-                        controller.fileNameDropdownIndex.value = controller
-                            .fileTypeListResponseModel.value.fileTypes
-                            .indexOf(value!);
-                      },
-                      items: controller
+                child: Obx(() {
+                  /* var list = controller
+                      .fileTypeListResponseModel.value.fileTypes
+                      .map((e) => e.fileType)
+                      .toSet()
+                      .toList();
+                  print("lists: $list");*/
+                  return DropdownButton<FileTypes>(
+                    isExpanded: true,
+                    value: controller.fileTypeListResponseModel.value
+                        .fileTypes[controller.fileNameDropdownIndex.value],
+                    onChanged: (FileTypes? value) {
+                      controller.fileNameDropdownIndex.value = controller
                           .fileTypeListResponseModel.value.fileTypes
-                          .map<DropdownMenuItem<FileType>>((value) {
-                        return DropdownMenuItem<FileType>(
-                          value: value,
-                          child: Text(
-                            value.fileType.isEmpty
-                                ? ''
-                                : value.fileType.toCamelCase(),
-                            style: const TextStyle(
-                              color: Colors.grey,
+                          .indexOf(value!);
+                    },
+                    items: controller.fileTypeListResponseModel.value.fileTypes
+                        .map<DropdownMenuItem<FileTypes>>((value) {
+                          return DropdownMenuItem<FileTypes>(
+                            value: value,
+                            child: Text(
+                              value.fileType.isEmpty
+                                  ? ''
+                                  : value.fileType.toCamelCase(),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                    )),
+                          );
+                        })
+                        .toSet()
+                        .toList(),
+                  );
+                }),
               ),
             ),
           ),

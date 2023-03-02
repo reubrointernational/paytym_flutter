@@ -14,6 +14,7 @@ dependencies:
   csv: ^5.0.1
   cupertino_icons: ^1.0.2
   dotted_border: ^2.0.0+3
+  file_picker: ^5.2.5
   firebase_core: ^2.1.1
   firebase_messaging: ^14.2.6
   flutter:
