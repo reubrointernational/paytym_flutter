@@ -59,7 +59,7 @@ class History {
   String? date;
   String? createdAt;
   String? updatedAt;
-  User user;
+  User? user;
 
   factory History.fromJson(Map<String, dynamic> json) => History(
         id: json["id"],
@@ -89,7 +89,7 @@ class History {
             date,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "user": user.toJson(),
+        "user": user!.toJson(),
       };
 }
 
