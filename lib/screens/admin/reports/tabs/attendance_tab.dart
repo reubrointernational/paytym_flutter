@@ -212,7 +212,7 @@ class AttendanceCardColumn extends StatelessWidget {
                         .value
                         .history[index]
                         .user
-                        .company ??
+                        !.company ??
                     '',
             style:
                 isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
@@ -222,7 +222,7 @@ class AttendanceCardColumn extends StatelessWidget {
           Text(
             !isRightTab
                 ? 'Name'
-                : '${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user.firstName} ${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user.lastName}',
+                : '${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user!.firstName} ${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user!.lastName}',
             style:
                 isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
           ),
@@ -235,7 +235,7 @@ class AttendanceCardColumn extends StatelessWidget {
                     .value
                     .history[index]
                     .user
-                    .employerId
+                    !.employerId
                     .toString(),
             style:
                 isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,

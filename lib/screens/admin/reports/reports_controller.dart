@@ -258,17 +258,20 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   }
 
   approveOrDeclineOvertime(int index, ReasonButton reasonButton) async {
-    if (Get.find<DashboardController>()
-        .requestAdvanceFormKey
-        .currentState!
-        .validate()) {
-      Get.find<DashboardController>()
+    if (reasonButton == ReasonButton.overtimeEdit) {
+      if (Get.find<DashboardController>()
           .requestAdvanceFormKey
           .currentState!
-          .save();
-    } else {
-      return;
+          .validate()) {
+        Get.find<DashboardController>()
+            .requestAdvanceFormKey
+            .currentState!
+            .save();
+      } else {
+        return;
+      }
     }
+
     showLoading();
     if (reasonButton == ReasonButton.overtimeApprove) {
       //approve
