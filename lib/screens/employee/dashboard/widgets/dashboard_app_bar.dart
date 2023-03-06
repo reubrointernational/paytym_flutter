@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
@@ -67,10 +68,13 @@ class DashboardAppBar extends StatelessWidget {
                         ?.employee
                         ?.image ??
                     '',
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundColor: Colors.grey.shade300,
-                  radius: 15,
-                  backgroundImage: imageProvider,
+                imageBuilder: (context, imageProvider) => Animate(
+                  effects: [ScaleEffect(duration: Duration(microseconds: 500))],
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey.shade300,
+                    radius: 15,
+                    backgroundImage: imageProvider,
+                  ),
                 ),
                 placeholder: (context, url) => const SpinKitDoubleBounce(
                   color: Colors.white,

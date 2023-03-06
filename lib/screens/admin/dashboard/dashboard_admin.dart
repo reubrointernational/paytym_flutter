@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
@@ -18,12 +19,18 @@ class DashboardAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(DashboardControllerAdmin(), permanent: true);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(Routes.scanTime),
-        backgroundColor: CustomColors.lightBlueColor,
-        child: const CustomSVG(
-          IconPath.scanIconSvg,
-          size: 23,
+      floatingActionButton: Animate(
+        effects: const [
+          ShakeEffect(hz: 0.8, rotation: 90, duration: Duration(seconds: 2)),
+          SlideEffect()
+        ],
+        child: FloatingActionButton(
+          onPressed: () => Get.toNamed(Routes.scanTime),
+          backgroundColor: CustomColors.lightBlueColor,
+          child: const CustomSVG(
+            IconPath.scanIconSvg,
+            size: 23,
+          ),
         ),
       ),
       backgroundColor: CustomColors.lightBlueColor,
@@ -59,9 +66,9 @@ class DashboardAdmin extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
-                              color: CustomColors.whiteTextColor,
+                              color: CustomColors.blackTextColor,
                             ),
-                          ),
+                          ).animate().tint(color: Colors.white),
                         ],
                       ),
                     ),

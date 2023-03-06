@@ -1,3 +1,4 @@
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
@@ -39,17 +40,27 @@ class CalendarPage extends StatelessWidget {
                 ),
               ),
               kSizedBoxH8,
-              const Expanded(
+              Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 18),
-                  child: TabBarView(
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      CalendarMeeting(),
-                      CalendarEvent(),
-                      // CalendarSchedule(),
-                      CalendarHolidayTab()
-                    ],
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Animate(
+                    effects: const [FadeEffect()],
+                    child: TabBarView(
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        Animate(
+                          effects: const [FadeEffect()],
+                          child: const CalendarMeeting(),
+                        ),
+                        Animate(
+                            effects: const [FadeEffect()],
+                            child: const CalendarEvent()),
+                        Animate(
+                            effects: const [FadeEffect()],
+                            child: const CalendarHolidayTab()),
+                        // CalendarSchedule(),
+                      ],
+                    ),
                   ),
                 ),
               ),

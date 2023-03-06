@@ -1,3 +1,4 @@
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/screens/admin/calendar/widgets/calendar_card.dart';
@@ -53,16 +54,26 @@ class CalendarPageAdmin extends StatelessWidget {
                         ),
                       ),
                       kSizedBoxH15,
-                      const Expanded(
+                      Expanded(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 18),
+                          padding: const EdgeInsets.symmetric(horizontal: 18),
                           child: TabBarView(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             children: [
-                              CalendarMeetingAdmin(),
-                              CalendarEventAdmin(),
+                              Animate(
+                                effects: const [FadeEffect()],
+                                child: const CalendarMeetingAdmin(),
+                              ),
+                              Animate(
+                                effects: const [FadeEffect()],
+                                child: const CalendarEventAdmin(),
+                              ),
+
+                              Animate(
+                                  effects: const [FadeEffect()],
+                                  child: const CalendarHolidayTabAdmin()),
+
                               // CalendarScheduleAdmin(),
-                              CalendarHolidayTabAdmin()
                             ],
                           ),
                         ),

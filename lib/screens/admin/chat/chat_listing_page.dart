@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -112,12 +113,13 @@ class ChatListingPageAdmin extends StatelessWidget {
                                       radius: 25,
                                       backgroundColor: Colors.pink.shade200,
                                       child: Center(
-                                         /* child: CachedNetworkImage(
+                                          /* child: CachedNetworkImage(
                                             //todo change to actual image
                                         imageUrl: kBaseUrl +
                                             '/' +
                                             chat[index].profilePic,
-                                      )*/),
+                                      )*/
+                                          ),
                                     ),
                                     const Positioned(
                                       right: 2,
