@@ -32,6 +32,11 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
+        ).copyWith(
+          pageTransitionsTheme: const PageTransitionsTheme(
+              builders: <TargetPlatform, PageTransitionsBuilder>{
+                TargetPlatform.android: ZoomPageTransitionsBuilder(),
+              }),
         ),
         debugShowCheckedModeBanner: false,
         initialRoute: AppPages.initial,

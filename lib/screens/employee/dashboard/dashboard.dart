@@ -1,3 +1,5 @@
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/styles.dart';
@@ -21,12 +23,18 @@ class DashboardPage extends StatelessWidget {
     Get.lazyPut(() => DashboardController(), fenix: true);
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(Routes.scanTime),
-        backgroundColor: CustomColors.fabColor,
-        child: const CustomSVG(
-          IconPath.scanIconSvg,
-          size: 23,
+      floatingActionButton: Animate(
+        effects: const [
+          ShakeEffect(hz: 0.8, rotation: 90, duration: Duration(seconds: 2)),
+          SlideEffect()
+        ],
+        child: FloatingActionButton(
+          onPressed: () => Get.toNamed(Routes.scanTime),
+          backgroundColor: CustomColors.fabColor,
+          child: const CustomSVG(
+            IconPath.scanIconSvg,
+            size: 23,
+          ),
         ),
       ),
       body: SafeArea(
@@ -61,11 +69,11 @@ class DashboardPage extends StatelessWidget {
                             Text(
                               '${Get.find<LoginController>().loginResponseModel?.employee?.firstName ?? ''} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName ?? ''}',
                               style: const TextStyle(
-                                color: CustomColors.blackTextColor,
+                                color: CustomColors.lightBlueColor,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                               ),
-                            ),
+                            ).animate().tint(color: Colors.black),
                             kSizedBoxH15,
                             const CheckInOutCard(),
                           ],

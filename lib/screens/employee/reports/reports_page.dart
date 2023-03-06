@@ -1,3 +1,4 @@
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/employee/reports/tabs/my_files_tab.dart';
@@ -116,19 +117,36 @@ class ReportsPage extends StatelessWidget {
                           ),
                         ],
                       ),*/
-                      const Expanded(
+                      Expanded(
                         flex: 10,
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                           child: TabBarView(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             children: [
-                              MyFilesTab(),
-                              SplitPaymentTab(),
-                              PayslipTab(),
-                              DeductionTab(),
-                              AttendanceTab(),
-                              MedicalTab(),
+                              Animate(
+                                  effects: const [FadeEffect()],
+                                  child: const MyFilesTab()),
+                              Animate(
+                                effects: const [FadeEffect()],
+                                child: const SplitPaymentTab(),
+                              ),
+                              Animate(
+                                effects: const [FadeEffect()],
+                                child: const PayslipTab(),
+                              ),
+                              Animate(
+                                effects: const [FadeEffect()],
+                                child: const DeductionTab(),
+                              ),
+                              Animate(
+                                effects: const [FadeEffect()],
+                                child: const AttendanceTab(),
+                              ),
+                              Animate(
+                                effects: const [FadeEffect()],
+                                child: const MedicalTab(),
+                              ),
                             ],
                           ),
                         ),

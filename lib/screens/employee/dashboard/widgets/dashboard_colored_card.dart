@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
@@ -68,20 +69,38 @@ class DashboardColoredCard extends StatelessWidget {
             ],
           ),
         ),
-        const Positioned(
-          right: -40,
-          top: -20,
-          child: CircleAvatar(
-            backgroundColor: CustomColors.cardBackgroundCircleColor,
-            radius: 60,
+        Animate(
+          effects: const [
+            SlideEffect(
+                begin: Offset(-2, 2),
+                end: Offset(0, 0),
+                curve: Curves.easeInOut,
+                duration: Duration(seconds: 2)),
+          ],
+          child: const Positioned(
+            right: -40,
+            top: -20,
+            child: CircleAvatar(
+              backgroundColor: CustomColors.cardBackgroundCircleColor,
+              radius: 60,
+            ),
           ),
         ),
-        const Positioned(
-          right: -40,
-          bottom: -20,
-          child: CircleAvatar(
-            backgroundColor: CustomColors.cardBackgroundCircleColor,
-            radius: 60,
+        Animate(
+          effects: const [
+            SlideEffect(
+                begin: Offset(-2, -2),
+                end: Offset(0, 0),
+                curve: Curves.easeInOut,
+                duration: Duration(seconds: 2)),
+          ],
+          child: const Positioned(
+            right: -40,
+            bottom: -20,
+            child: CircleAvatar(
+              backgroundColor: CustomColors.cardBackgroundCircleColor,
+              radius: 60,
+            ),
           ),
         ),
       ],

@@ -1,3 +1,4 @@
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/reports/tabs/deduction_tab.dart';
@@ -33,15 +34,36 @@ class ReportsPageAdmin extends StatelessWidget {
     return CustomAdminScaffoldWithTabBar(
       tabList: reportsTabListAdmin,
       title: kReportsString,
-      children: const [
-        UploadsTabAdmin(),
-        PayrollTab(),
-        OvertimeTabAdmin(),
-        ProjectsTabAdmin(),
-        AttendanceTabAdmin(),
-        DeductionTabAdmin(),
-        MedicalTabAdmin(),
-        ContractPeriodTabAdmin(),
+      children: [
+        Animate(effects: const [FadeEffect()], child: const UploadsTabAdmin()),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const PayrollTab(),
+        ),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const OvertimeTabAdmin(),
+        ),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const ProjectsTabAdmin(),
+        ),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const AttendanceTabAdmin(),
+        ),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const DeductionTabAdmin(),
+        ),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const MedicalTabAdmin(),
+        ),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const ContractPeriodTabAdmin(),
+        ),
       ],
     );
   }

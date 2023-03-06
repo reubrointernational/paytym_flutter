@@ -100,27 +100,27 @@ class CalendarMeetingAdmin extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    Get.find<CalendarControllerAdmin>()
-                                        .deleteMeeting(index);
-                                  },
-                                  icon: const Icon(
-                                    Icons.delete_outline_outlined,
-                                    color: CustomColors.redColor,
-                                  )),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      Get.find<CalendarControllerAdmin>()
+                                          .deleteMeeting(index);
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete_outline_outlined,
+                                      color: CustomColors.redColor,
+                                    )),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                    ],
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           );
