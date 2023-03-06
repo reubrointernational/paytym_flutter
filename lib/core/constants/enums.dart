@@ -12,4 +12,6 @@ enum PaymentMethods { windcave, mpaisa, mycash }
 
 enum SharingOrDownloading { sharing, downloading, idle }
 
+enum SelectChatMemberTab {all, branch, department}
+
 enum ReasonButton { leaveApprove, leaveDecline, attendanceApprove, attendanceDecline, overtimeApprove, overtimeDecline, overtimeEdit }

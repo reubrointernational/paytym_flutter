@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:paytym/models/chat/chat_group_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 
+import '../../../core/constants/enums.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
+import '../dashboard/dashboard_controller.dart';
+import '../../../models/employee_list_model.dart';
 
 List<Model> dummy_data = [
   Model('Group1', '0004', 'branch1',
@@ -30,13 +32,13 @@ class Model {
 class ChatControllerAdmin extends GetxController with BaseController {
   final selectedDropdownDepartments = Rxn<String>();
   final selectedDropdownBranches = Rxn<String>();
-  
+
   final chatGrouplist = ChatListGroupModel(message: '', chats: []).obs;
   int selectedItemIndex = 0;
   final selectedItemList = [].obs;
 
   final searchKeyword = ''.obs;
-
+  final selectMemberTab = SelectChatMemberTab.all.obs;
 
   @override
   void onReady() {
@@ -56,6 +58,35 @@ class ChatControllerAdmin extends GetxController with BaseController {
     } else {
       chatGrouplist.value = chatListGroupModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  resetTabs(SelectChatMemberTab tab) {
+    selectMemberTab.value = tab;
+    if (tab == SelectChatMemberTab.all) {
+      selectedDropdownDepartments.value = null;
+      selectedDropdownBranches.value = null;
+    }
+  }
+
+  getEmployees() {
+    switch (selectMemberTab.value) {
+      case SelectChatMemberTab.branch:
+        return selectedDropdownDepartments.value == null
+            ? Get.find<DashboardControllerAdmin>()
+                .branchwiseEmployeeMap[selectedDropdownBranches.value]
+            : Get.find<DashboardControllerAdmin>()
+                .deptwiseEmployeeMap[selectedDropdownDepartments.value]
+                ?.where(
+                (element) => element.branch?.name == selectedDropdownBranches.value);
+      case SelectChatMemberTab.department:
+        return Get.find<DashboardControllerAdmin>()
+            .deptwiseEmployeeMap[selectedDropdownDepartments.value];
+      default:
+        return Get.find<DashboardControllerAdmin>()
+            .employeeList
+            .value
+            .employeeList;
     }
   }
 }

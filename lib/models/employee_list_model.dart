@@ -124,8 +124,8 @@ class EmployeeList {
   dynamic forgotPassOtp;
   int? status;
   Payroll? payroll;
-  dynamic department;
-  dynamic branch;
+  Department? department;
+  Branch? branch;
   bool isExpanded;
 
   factory EmployeeList.fromJson(Map<String, dynamic> json) => EmployeeList(
@@ -171,8 +171,8 @@ class EmployeeList {
         forgotPassOtp: json["forgot_pass_otp"],
         status: json["status"],
         payroll: Payroll.fromJson(json["payroll"]),
-        department: json["department"],
-        branch: json["branch"],
+        department: Department.fromJson(json["department"]),
+        branch: Branch.fromJson(json["branch"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -223,47 +223,157 @@ class EmployeeList {
         "forgot_pass_otp": forgotPassOtp,
         "status": status,
         "payroll": payroll?.toJson(),
-        "department": department,
-        "branch": branch,
+        "department": department?.toJson(),
+        "branch": branch?.toJson(),
+      };
+}
+
+class Branch {
+  Branch({
+    this.id,
+    this.employerId,
+    this.employerBusinessId,
+    this.name,
+    this.city,
+    this.town,
+    this.postcode,
+    this.country,
+    this.bank,
+    this.accountNumber,
+    this.qrCode,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? employerId;
+  int? employerBusinessId;
+  String? name;
+  String? city;
+  String? town;
+  String? postcode;
+  String? country;
+  String? bank;
+  String? accountNumber;
+  String? qrCode;
+  int? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory Branch.fromJson(Map<String, dynamic> json) => Branch(
+        id: json["id"],
+        employerId: json["employer_id"],
+        employerBusinessId: json["employer_business_id"],
+        name: json["name"],
+        city: json["city"],
+        town: json["town"],
+        postcode: json["postcode"],
+        country: json["country"],
+        bank: json["bank"],
+        accountNumber: json["account_number"],
+        qrCode: json["qr_code"],
+        status: json["status"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "employer_id": employerId,
+        "employer_business_id": employerBusinessId,
+        "name": name,
+        "city": city,
+        "town": town,
+        "postcode": postcode,
+        "country": country,
+        "bank": bank,
+        "account_number": accountNumber,
+        "qr_code": qrCode,
+        "status": status,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
+}
+
+class Department {
+  Department({
+    this.id,
+    this.employerId,
+    this.branchId,
+    this.depName,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? employerId;
+  int? branchId;
+  String? depName;
+  int? status;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  factory Department.fromJson(Map<String, dynamic> json) => Department(
+        id: json["id"],
+        employerId: json["employer_id"],
+        branchId: json["branch_id"],
+        depName: json["dep_name"],
+        status: json["status"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "employer_id": employerId,
+        "branch_id": branchId,
+        "dep_name": depName,
+        "status": status,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
       };
 }
 
 class Payroll {
   Payroll({
-    required this.id,
-    required this.userId,
-    required this.employerId,
-    required this.baseSalary,
-    required this.netSalary,
-    required this.grossSalary,
-    required this.paidSalary,
+    this.id,
+    this.userId,
+    this.employerId,
+    this.baseSalary,
+    this.netSalary,
+    this.grossSalary,
+    this.paidSalary,
     this.paySlip,
     this.totalTax,
-    required this.totalDeduction,
-    required this.totalAllowance,
-    required this.totalBonus,
-    required this.totalCommission,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
+    this.totalDeduction,
+    this.totalAllowance,
+    this.totalBonus,
+    this.totalCommission,
+    this.status,
+    this.payrollStatus,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  int id;
-  int userId;
-  int employerId;
-  String baseSalary;
-  String netSalary;
-  String grossSalary;
-  String paidSalary;
+  int? id;
+  int? userId;
+  int? employerId;
+  String? baseSalary;
+  String? netSalary;
+  String? grossSalary;
+  String? paidSalary;
   dynamic paySlip;
   dynamic totalTax;
-  String totalDeduction;
-  String totalAllowance;
-  String totalBonus;
-  String totalCommission;
-  int status;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String? totalDeduction;
+  String? totalAllowance;
+  String? totalBonus;
+  String? totalCommission;
+  int? status;
+  String? payrollStatus;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   factory Payroll.fromJson(Map<String, dynamic> json) => Payroll(
         id: json["id"],
@@ -280,6 +390,7 @@ class Payroll {
         totalBonus: json["total_bonus"],
         totalCommission: json["total_commission"],
         status: json["status"],
+        payrollStatus: json["payroll_status"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
       );
@@ -299,7 +410,8 @@ class Payroll {
         "total_bonus": totalBonus,
         "total_commission": totalCommission,
         "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "payroll_status": payrollStatus,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }
