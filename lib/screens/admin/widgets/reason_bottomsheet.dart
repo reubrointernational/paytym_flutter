@@ -47,7 +47,7 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                   validator: (value) => Get.find<LeavesControllerAdmin>()
                       .notEmptyValidator(value!),
                   onSaved: (value) => Get.find<LeavesControllerAdmin>()
-                      .quitCompanyReason = value!,
+                      .acceptRejectReason = value!,
                 ),
               ],
             ),
@@ -59,8 +59,10 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 reasonButton.name.contains('leave')
-                    ? Get.find<LeavesControllerAdmin>().approveOrDeclineLeave(reasonButton)
-                    : Get.find<ReportsControllerAdmin>().approveOrDeclineAttendance(reasonButton);
+                    ? Get.find<LeavesControllerAdmin>()
+                        .approveOrDeclineLeave(reasonButton)
+                    : Get.find<ReportsControllerAdmin>()
+                        .approveOrDeclineAttendance(reasonButton);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/core/extensions/camelcase.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
@@ -51,19 +52,19 @@ class LeavesCardAdmin extends StatelessWidget {
                         style: kTextStyleS18W600,
                       ),
                       Text(
-                        leave?.id.toString() ?? '',
+                        '#${leave?.id.toString().padLeft(5, '0') ?? ''}',
                         // '${Get.find<LeavesControllerAdmin>().formatDate(leave?.startDate)}-${Get.find<LeavesControllerAdmin>().formatDate(leave?.endDate)}',
                         style: const TextStyle(
                           color: CustomColors.greyHeadingTextColor,
                         ),
                       ),
                       Text(
-                        leave?.type ?? '',
+                        leave?.type.toCamelCase() ?? '',
                         style: TextStyle(
                           fontSize: 15,
                           color: leave?.type
-                                      .toLowerCase()
-                                      .contains(kcasualString) ??
+                                 .toLowerCase()
+                                 .contains(kcasualString) ??
                                   false
                               ? CustomColors.orangeLabelColor
                               : CustomColors.blueLabelColor,
