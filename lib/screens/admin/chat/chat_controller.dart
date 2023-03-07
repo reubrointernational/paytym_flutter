@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:paytym/models/chat/chat_group_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
+import 'package:http/http.dart' as http;
 
-import '../../../core/constants/enums.dart';
+import '../../../core/dialog_helper.dart';
+import '../../../models/chat/chat_create_request.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
@@ -35,6 +39,12 @@ class ChatControllerAdmin extends GetxController with BaseController {
 
   final searchKeyword = ''.obs;
 
+  final members = [].obs;
+  final picker = ''.obs;
+
+  ImagePicker imagePicker = ImagePicker();
+  TextEditingController groupNameController = TextEditingController();
+
   @override
   void onReady() {
     super.onReady();
@@ -54,6 +64,59 @@ class ChatControllerAdmin extends GetxController with BaseController {
     } else {
       chatGrouplist.value = chatListGroupModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  Future<void> uploadProfileImageFromCamera() async {
+    XFile? image = await imagePicker.pickImage(source: ImageSource.camera);
+    if (image == null) {
+      DialogHelper.showToast(desc: 'No image selected');
+    } else {
+      picker.value = image.path;
+    }
+    Get.back();
+  }
+
+  Future<void> uploadProfileImageFromGallery() async {
+    XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      DialogHelper.showToast(desc: 'No image selected');
+    } else {
+      picker.value = image.path;
+    }
+    Get.back();
+  }
+
+  createChatGroup() async {
+    if (members.isEmpty) {
+      DialogHelper.showToast(desc: 'Group members should not be empty', backgroundColor: Colors.red);
+    } else if (groupNameController.text.isEmpty) {
+      DialogHelper.showToast(desc: 'Please provide a Group name', backgroundColor: Colors.red);
+    } else if (picker.value.isEmpty) {
+      DialogHelper.showToast(desc: 'Please upload a image', backgroundColor: Colors.red);
+    } else {
+      showLoading();
+      var request = http.MultipartRequest(
+          "POST", Uri.parse(ApiEndPoints.createChatGroup));
+      ChatCreateRequestModel chatCreateRequestModel = ChatCreateRequestModel(
+          employerId: Get.find<LoginController>()
+                  .loginResponseModel
+                  ?.employee
+                  ?.employerId
+                  .toString() ??
+              '',
+          groupName: groupNameController.text,
+          members: members.toString());
+      request.fields.addAll(chatCreateRequestModel.toJson());
+      request.headers.addAll(Get.find<LoginController>().getHeader()!);
+      var multipartFile =
+          await http.MultipartFile.fromPath('profile_pic', picker.value);
+      request.files.add(multipartFile);
+      var streamResponse = await request.send();
+      var response = await http.Response.fromStream(streamResponse);
+      print(response.body);
+      hideLoading();
+      DialogHelper.showToast(desc: 'New Chat Group Created');
     }
   }
 }

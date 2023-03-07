@@ -95,13 +95,13 @@ class DialogHelper {
 
   //show toast
 
-  static void showToast({String desc = 'Something went wrong'}) {
+  static void showToast({String desc = 'Something went wrong', Color backgroundColor = Colors.blue}) {
     Fluttertoast.showToast(
         msg: desc,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.blue,
+        backgroundColor: backgroundColor,
         textColor: Colors.white,
         fontSize: 16.0);
   }
