@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/widgets.dart';
 import '../dashboard/dashboard_controller.dart';
+import '../reports/reports_controller.dart';
 import '../widgets/file_upload_widget.dart';
 
 class CreateGroupPage extends StatelessWidget {
@@ -16,7 +19,7 @@ class CreateGroupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    Get.put(ReportsControllerAdmin());
     var memberList = Get.find<DashboardControllerAdmin>()
         .employeeList
         .value
@@ -29,9 +32,13 @@ class CreateGroupPage extends StatelessWidget {
                 .employeeList
                 .indexOf(element)))
         .toList();
+    Get.find<ChatControllerAdmin>().members.value = memberList
+        .map((member) => '${member.firstName} ${member.lastName}')
+        .toList();
+    print(Get.find<ChatControllerAdmin>().members.value);
     return CustomAdminScaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Get.find<ChatControllerAdmin>().createChatGroup(),
         backgroundColor: CustomColors.lightBlueColor,
         child: const Icon(
           Icons.done,
@@ -55,7 +62,8 @@ class CreateGroupPage extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: CircleAvatar(
                       radius: 28,
-                      backgroundImage: NetworkImage(memberList[index].image??''),
+                      backgroundImage:
+                          NetworkImage(memberList[index].image ?? ''),
                     ),
                   );
                 },
@@ -64,27 +72,27 @@ class CreateGroupPage extends StatelessWidget {
           ),
           kSizedBoxH10,
           FileUploadWidget(
+            textController: Get.find<ChatControllerAdmin>().groupNameController,
             title: 'Group Name',
             subtitle: 'Upload a PNG, JPG or GIF Image of max 10MB',
             onTap: () {
               DialogHelper.showBottomSheet(
                 Container(
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                    ),
-                  ),
+                      borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20),
+                  )),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ...['Image', 'Camera'].map(
                         (e) => InkWell(
                           onTap: () => e == 'Image'
-                              ? ImagePicker()
-                                  .pickImage(source: ImageSource.gallery)
-                              : ImagePicker()
-                                  .pickImage(source: ImageSource.camera),
+                              ? Get.find<ChatControllerAdmin>()
+                                  .uploadProfileImageFromGallery()
+                              : Get.find<ChatControllerAdmin>()
+                                  .uploadProfileImageFromCamera(),
                           child: Container(
                             decoration: const BoxDecoration(
                               border: Border(
@@ -106,9 +114,32 @@ class CreateGroupPage extends StatelessWidget {
               );
             },
           ),
+          kSizedBoxH15,
+          Obx(() {
+            return Container(
+              height: h * 0.35,
+              width: w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                border:
+                    Border.all(width: 1.2, color: CustomColors.greyTextColor),
+              ),
+              child: Get.find<ChatControllerAdmin>().picker.value.isNotEmpty
+                  ? Image.file(
+                      File(Get.find<ChatControllerAdmin>().picker.value),
+                      fit: BoxFit.contain,
+                    )
+                  : Container(
+                      child: const Icon(
+                        Icons.photo_outlined,
+                        size: 50,
+                        color: CustomColors.greyTextColor,
+                      ),
+                    ),
+            );
+          }),
         ]),
       ),
     );
   }
 }
-

@@ -69,7 +69,7 @@ class DashboardAppBar extends StatelessWidget {
                         ?.image ??
                     '',
                 imageBuilder: (context, imageProvider) => Animate(
-                  effects: [ScaleEffect(duration: Duration(microseconds: 500))],
+                  effects: const[ScaleEffect(duration: Duration(microseconds: 500))],
                   child: CircleAvatar(
                     backgroundColor: Colors.grey.shade300,
                     radius: 15,

@@ -12,11 +12,13 @@ import '../../../models/report/files/files_type_list.dart';
 class FileUploadWidget extends StatelessWidget {
   final String title;
   final String subtitle;
+  final TextEditingController? textController;
   final void Function()? onTap;
   const FileUploadWidget({
     Key? key,
     required this.title,
     required this.subtitle,
+    this.textController,
     this.onTap,
   }) : super(key: key);
 
@@ -48,6 +50,7 @@ class FileUploadWidget extends StatelessWidget {
         Visibility(
           visible: title != 'File Name',
           child: TextFormField(
+            controller: textController,
             decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
