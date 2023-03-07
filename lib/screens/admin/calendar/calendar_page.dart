@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
-import '../widgets/custom_floating_action_button.dart';
+import '../dashboard/dashboard_controller.dart';
 import '../../widgets/custom_tab_bar.dart';
 import 'Tabs/holiday/calendar_holiday_tab.dart';
 import 'Tabs/meeting/calendar_meeting_tab.dart';
 import 'Tabs/event/calendar_event_tab.dart';
-import 'Tabs/schedule/calendar_schedule_tab.dart';
 import 'calendar_controller.dart';
 
 class CalendarPageAdmin extends StatelessWidget {
@@ -20,6 +19,8 @@ class CalendarPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(CalendarControllerAdmin());
+    Get.find<DashboardControllerAdmin>().isSelectMembersPageFromChat = false;
+    Get.find<DashboardControllerAdmin>().selectedItemList.clear();
     return DefaultTabController(
       length: calendarTabList.length,
       child: Scaffold(

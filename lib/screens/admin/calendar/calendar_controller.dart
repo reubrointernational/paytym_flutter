@@ -16,6 +16,8 @@ import '../../../models/calendar/holiday_admin_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
+import '../dashboard/dashboard_controller.dart';
+import '../../../models/employee_list_model.dart';
 
 class CalendarControllerAdmin extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
@@ -72,6 +74,16 @@ class CalendarControllerAdmin extends GetxController with BaseController {
 
   createMeeting() async {
     showLoading();
+     final List<EmployeeList> selectedEmployees = Get.find<DashboardControllerAdmin>()
+                    .getEmployees()
+                    .where((element) => Get.find<DashboardControllerAdmin>()
+                        .selectedItemList
+                        .contains(Get.find<DashboardControllerAdmin>()
+                            .employeeList
+                            .value
+                            .employeeList
+                            .indexOf(element)))
+                    .toList();
     var model = CreateCalendarRequestModel(
       employerId: Get.find<LoginController>()
           .loginResponseModel!
@@ -80,6 +92,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
           .toString(),
       name: createCalendarRequestModel.name,
       description: 'description',
+      attendees: selectedEmployees.map((e) => e.id!).toList(),
       place: createCalendarRequestModel.name,
       startDate: createCalendarRequestModel.startDate, //2023-01-15
       startTime:
@@ -365,4 +378,8 @@ class CalendarControllerAdmin extends GetxController with BaseController {
         ? null
         : "Enter a valid date";
   }
+  
+
+
+  
 }

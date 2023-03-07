@@ -21,7 +21,7 @@ class CreateGroupPage extends StatelessWidget {
         .employeeList
         .value
         .employeeList
-        .where((element) => Get.find<ChatControllerAdmin>()
+        .where((element) => Get.find<DashboardControllerAdmin>()
             .selectedItemList
             .contains(Get.find<DashboardControllerAdmin>()
                 .employeeList

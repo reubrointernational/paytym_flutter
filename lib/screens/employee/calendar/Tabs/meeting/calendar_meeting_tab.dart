@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/widgets.dart';
@@ -49,7 +50,7 @@ class CalendarMeeting extends StatelessWidget {
                       Expanded(
                         child: Center(
                           child: Text(
-                            "${Get.find<CalendarController>().getTime(meeting?.startTime ?? '2022-11-23 06:26:47')} - ${Get.find<CalendarController>().getTime(meeting?.endTime ?? '2022-11-23 06:26:47')}  ${meeting?.location ?? ''}",
+                            "${Get.find<CalendarController>().getTime(meeting?.startTime ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().getTime(meeting?.endTime ?? '0000-00-00 00:00:00')}",
                             overflow: TextOverflow.ellipsis,
                             style: kTextStyleS13W600CustomGrey,
                           ),
@@ -87,7 +88,7 @@ class CalendarMeeting extends StatelessWidget {
                             ),
                             kSizedBoxH4,
                             Text(
-                              meeting?.user?.position ?? 'HR Manager',
+                              meeting?.user?.position ?? '',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontSize: 14,
@@ -101,8 +102,27 @@ class CalendarMeeting extends StatelessWidget {
                     ],
                   ),
                 ),
-                
-                
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 5, 18, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          meeting?.location ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style: kTextStyleS13W600CustomGrey,
+                        ),
+                      ),
+                      Text(
+                        DateFormat('dd-MM-yyyy').format(
+                            DateTime.parse(meeting?.date ?? '0000-00-00')),
+                        overflow: TextOverflow.ellipsis,
+                        style: kTextStyleS13W600CustomGrey,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           );

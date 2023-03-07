@@ -2,17 +2,24 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:paytym/network/base_controller.dart';
 
+import '../../../core/constants/enums.dart';
 import '../../../models/employee_list_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
 
 class DashboardControllerAdmin extends GetxController with BaseController {
-  final employeeList = EmployeeListAdminModel(employeeList: [], message: '').obs;
+  final employeeList =
+      EmployeeListAdminModel(employeeList: [], message: '').obs;
   // final branchDeptList =
   //     BranchDeptListModel(branches: [], departments: [], message: '').obs;
   Map<String, List<EmployeeList>> branchwiseEmployeeMap = {};
   Map<String, List<EmployeeList>> deptwiseEmployeeMap = {};
+  final selectMemberTab = SelectChatMemberTab.all.obs;
+  final selectedDropdownDepartments = Rxn<String>();
+  final selectedDropdownBranches = Rxn<String>();
+  final selectedItemList = <int>[].obs;
+  bool isSelectMembersPageFromChat = true;
 
   seeDetailsPage(index) {
     switch (index) {
@@ -82,15 +89,16 @@ class DashboardControllerAdmin extends GetxController with BaseController {
 
   classifyEmployeeListByBranchAndDept() {
     for (var element in employeeList.value.employeeList) {
-      if (!branchwiseEmployeeMap.keys.contains(element.branch?.name??'')) {
-        branchwiseEmployeeMap[element.branch?.name??''] = [element];
+      if (!branchwiseEmployeeMap.keys.contains(element.branch?.name ?? '')) {
+        branchwiseEmployeeMap[element.branch?.name ?? ''] = [element];
       } else {
         branchwiseEmployeeMap[element.branch?.name ?? '']!.add(element);
       }
-      if (!deptwiseEmployeeMap.keys.contains(element.department?.depName??'')) {
-        deptwiseEmployeeMap[element.department?.depName??''] = [element];
+      if (!deptwiseEmployeeMap.keys
+          .contains(element.department?.depName ?? '')) {
+        deptwiseEmployeeMap[element.department?.depName ?? ''] = [element];
       } else {
-        deptwiseEmployeeMap[element.department?.depName??'']!.add(element);
+        deptwiseEmployeeMap[element.department?.depName ?? '']!.add(element);
       }
     }
   }
@@ -115,4 +123,33 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   //     }
   //   }
   // }
+
+  resetTabs(SelectChatMemberTab tab) {
+    selectMemberTab.value = tab;
+    if (tab == SelectChatMemberTab.all) {
+      selectedDropdownDepartments.value = null;
+      selectedDropdownBranches.value = null;
+    }
+  }
+
+  getEmployees() {
+    switch (selectMemberTab.value) {
+      case SelectChatMemberTab.branch:
+        return selectedDropdownDepartments.value == null
+            ? Get.find<DashboardControllerAdmin>()
+                .branchwiseEmployeeMap[selectedDropdownBranches.value]
+            : Get.find<DashboardControllerAdmin>()
+                .deptwiseEmployeeMap[selectedDropdownDepartments.value]
+                ?.where((element) =>
+                    element.branch?.name == selectedDropdownBranches.value);
+      case SelectChatMemberTab.department:
+        return Get.find<DashboardControllerAdmin>()
+            .deptwiseEmployeeMap[selectedDropdownDepartments.value];
+      default:
+        return Get.find<DashboardControllerAdmin>()
+            .employeeList
+            .value
+            .employeeList;
+    }
+  }
 }

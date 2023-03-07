@@ -36,12 +36,13 @@ class CalendarMeetingAdmin extends StatelessWidget {
                     children: [
                       kSizedBoxH10,
                       Text(
-                        DateFormat('EEE').format(meeting.date),
+                        DateFormat('EEE')
+                            .format(meeting.date ?? DateTime(0000, 00, 00)),
                         style: kTextStyleS18W600.copyWith(
                             color: CustomColors.grey156x3TextColor),
                       ),
                       Text(
-                        meeting.date.day.toString(),
+                        meeting.date?.day.toString() ?? '',
                         style: kTextStyleS18W600.copyWith(
                             color: CustomColors.lightBlueColor),
                       ),
@@ -64,15 +65,18 @@ class CalendarMeetingAdmin extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                meeting.location,
-                                // 'Meeting with Miller',
+                                meeting.name ?? '',
                                 style: kTextStyleS18W600.copyWith(
                                     color: CustomColors.blackTextColor),
                               ),
                               kSizedBoxH4,
                               Text(
-                                meeting.location,
-                                // 'HR Manager',
+                                '${meeting.user?.firstName ?? ''} ${meeting.user?.lastName ?? ''}',
+                                style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
+                                    color: Colors.grey),
+                              ),
+                              Text(
+                                '${meeting.user?.position ?? ''}',
                                 style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
                                     color: Colors.grey),
                               ),
@@ -86,9 +90,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                   ),
                                   kSizedBoxW4,
                                   Text(
-                                    DateFormat.jm().format(meeting.startTime),
-
-                                    // '09:00 AM - 12:00 AM',
+                                    '${DateFormat.jm().format(meeting.startTime ?? DateTime(0000, 00, 00))} - ${DateFormat.jm().format(meeting.endTime ?? DateTime(0000, 00, 00))}',
                                     style: kTextStyleS14W600Cgrey300LS0p2
                                         .copyWith(color: Colors.grey),
                                   ),

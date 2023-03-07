@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
+import 'package:paytym/routes/app_routes.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../core/constants/strings.dart';
@@ -13,6 +15,7 @@ import '../../../../core/constants/widgets.dart';
 import '../../../login/widgets/custom_text_form_field.dart';
 import '../../../widgets/bordered_text_form_field.dart';
 import '../calendar_controller.dart';
+import 'package:badges/badges.dart' as badges;
 
 class CalendarCardAdmin extends StatelessWidget {
   const CalendarCardAdmin({super.key});
@@ -213,8 +216,7 @@ class CalendarCardAdmin extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            SizedBox(
-                                              width: w * 0.45,
+                                            Expanded(
                                               child: BorderedTextFormField(
                                                 enabled: true,
                                                 controller: Get.find<
@@ -281,8 +283,8 @@ class CalendarCardAdmin extends StatelessWidget {
                                                         : null,
                                               ),
                                             ),
-                                            SizedBox(
-                                              width: w * 0.45,
+                                            kSizedBoxW4,
+                                            Expanded(
                                               child: BorderedTextFormField(
                                                 enabled: true,
                                                 controller: Get.find<
@@ -357,10 +359,60 @@ class CalendarCardAdmin extends StatelessWidget {
                                                   value!, 'Location'),
                                         )
                                       : const SizedBox(),
+                                  Visibility(
+                                    visible: Get.find<CalendarControllerAdmin>()
+                                            .selectedCalendarDropdown
+                                            .value ==
+                                        calendarTabList[0],
+                                    child: Obx(() => badges.Badge(
+                                          badgeContent: Text(
+                                            Get.find<DashboardControllerAdmin>()
+                                                .selectedItemList
+                                                .length
+                                                .toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                          position: badges.BadgePosition.topEnd(
+                                              top: -5, end: -2),
+                                          badgeAnimation: const badges
+                                              .BadgeAnimation.rotation(
+                                            animationDuration:
+                                                Duration(seconds: 1),
+                                            colorChangeAnimationDuration:
+                                                Duration(seconds: 1),
+                                            loopAnimation: false,
+                                            curve: Curves.fastOutSlowIn,
+                                            colorChangeAnimationCurve:
+                                                Curves.easeInCubic,
+                                          ),
+                                          child: SizedBox(
+                                            height: 50,
+                                            width: double.infinity,
+                                            child: OutlinedButton(
+                                              onPressed: () => Get.toNamed(
+                                                  Routes.selectChatUsersPage),
+                                              style: OutlinedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              child: const Text(
+                                                'Select Employees',
+                                                style: TextStyle(
+                                                  color: CustomColors
+                                                      .grey156x3TextColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
                                   kSizedBoxH15,
                                   SizedBox(
-                                    height: h * 0.06,
-                                    width: w,
+                                    height: 50,
+                                    width: double.infinity,
                                     child: ElevatedButton(
                                       onPressed: () =>
                                           Get.find<CalendarControllerAdmin>()

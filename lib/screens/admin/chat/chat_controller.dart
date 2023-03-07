@@ -30,20 +30,16 @@ class Model {
 }
 
 class ChatControllerAdmin extends GetxController with BaseController {
-  final selectedDropdownDepartments = Rxn<String>();
-  final selectedDropdownBranches = Rxn<String>();
-
   final chatGrouplist = ChatListGroupModel(message: '', chats: []).obs;
   int selectedItemIndex = 0;
-  final selectedItemList = [].obs;
 
   final searchKeyword = ''.obs;
-  final selectMemberTab = SelectChatMemberTab.all.obs;
 
   @override
   void onReady() {
     super.onReady();
     fetchChatGroupList();
+    
   }
 
   fetchChatGroupList() async {
@@ -58,35 +54,6 @@ class ChatControllerAdmin extends GetxController with BaseController {
     } else {
       chatGrouplist.value = chatListGroupModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
-    }
-  }
-
-  resetTabs(SelectChatMemberTab tab) {
-    selectMemberTab.value = tab;
-    if (tab == SelectChatMemberTab.all) {
-      selectedDropdownDepartments.value = null;
-      selectedDropdownBranches.value = null;
-    }
-  }
-
-  getEmployees() {
-    switch (selectMemberTab.value) {
-      case SelectChatMemberTab.branch:
-        return selectedDropdownDepartments.value == null
-            ? Get.find<DashboardControllerAdmin>()
-                .branchwiseEmployeeMap[selectedDropdownBranches.value]
-            : Get.find<DashboardControllerAdmin>()
-                .deptwiseEmployeeMap[selectedDropdownDepartments.value]
-                ?.where(
-                (element) => element.branch?.name == selectedDropdownBranches.value);
-      case SelectChatMemberTab.department:
-        return Get.find<DashboardControllerAdmin>()
-            .deptwiseEmployeeMap[selectedDropdownDepartments.value];
-      default:
-        return Get.find<DashboardControllerAdmin>()
-            .employeeList
-            .value
-            .employeeList;
     }
   }
 }

@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.18.2 <3.3.6"
 
 dependencies:
+  badges: ^3.0.2
   cached_network_image: ^3.2.2
   csv: ^5.0.1
   cupertino_icons: ^1.0.2

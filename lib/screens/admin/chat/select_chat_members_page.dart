@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/routes/app_routes.dart';
-import 'package:paytym/screens/admin/chat/chat_controller.dart';
-import 'package:paytym/screens/admin/dashboard/dashboard_admin.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
@@ -12,7 +10,9 @@ import '../../employee/reports/widgets/year_dropdown.dart';
 import '../dashboard/dashboard_controller.dart';
 
 class SelectChatMembersPage extends StatelessWidget {
-  const SelectChatMembersPage({super.key});
+  const SelectChatMembersPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,14 @@ class SelectChatMembersPage extends StatelessWidget {
     return CustomAdminScaffold(
       title: 'Select Members',
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(Routes.createGroupPage),
-        child: const Icon(Icons.arrow_forward),
+        onPressed: () =>
+            Get.find<DashboardControllerAdmin>().isSelectMembersPageFromChat
+                ? Get.toNamed(Routes.createGroupPage)
+                : Get.back(),
+        child: Icon(
+            Get.find<DashboardControllerAdmin>().isSelectMembersPageFromChat
+                ? Icons.arrow_forward
+                : Icons.done),
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -45,12 +51,12 @@ class SelectChatMembersPage extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       children: [
                         GestureDetector(
-                          onTap: () => Get.find<ChatControllerAdmin>()
+                          onTap: () => Get.find<DashboardControllerAdmin>()
                               .resetTabs(SelectChatMemberTab.all),
                           child: Obx(() => Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                    color: Get.find<ChatControllerAdmin>()
+                                    color: Get.find<DashboardControllerAdmin>()
                                                 .selectMemberTab
                                                 .value ==
                                             SelectChatMemberTab.all
@@ -65,7 +71,7 @@ class SelectChatMembersPage extends StatelessWidget {
                                   'All',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: Get.find<ChatControllerAdmin>()
+                                    color: Get.find<DashboardControllerAdmin>()
                                                 .selectMemberTab
                                                 .value ==
                                             SelectChatMemberTab.all
@@ -86,21 +92,21 @@ class SelectChatMembersPage extends StatelessWidget {
                             child: CustomDropdownYearButton(
                               lists: index == 0 ? dept : branch,
                               value: index == 0
-                                  ? Get.find<ChatControllerAdmin>()
+                                  ? Get.find<DashboardControllerAdmin>()
                                       .selectedDropdownDepartments
                                       .value
-                                  : Get.find<ChatControllerAdmin>()
+                                  : Get.find<DashboardControllerAdmin>()
                                       .selectedDropdownBranches
                                       .value,
                               onChanged: (value) {
                                 index == 0
-                                    ? Get.find<ChatControllerAdmin>()
+                                    ? Get.find<DashboardControllerAdmin>()
                                         .selectedDropdownDepartments
                                         .value = value
-                                    : Get.find<ChatControllerAdmin>()
+                                    : Get.find<DashboardControllerAdmin>()
                                         .selectedDropdownBranches
                                         .value = value;
-                                Get.find<ChatControllerAdmin>().resetTabs(
+                                Get.find<DashboardControllerAdmin>().resetTabs(
                                     index == 0
                                         ? SelectChatMemberTab.department
                                         : SelectChatMemberTab.branch);
@@ -114,9 +120,9 @@ class SelectChatMembersPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: Obx(() {
-                var chatList = Get.find<ChatControllerAdmin>()
+                var chatList = Get.find<DashboardControllerAdmin>()
                     .getEmployees()
-                    .where((element) => Get.find<ChatControllerAdmin>()
+                    .where((element) => Get.find<DashboardControllerAdmin>()
                         .selectedItemList
                         .contains(Get.find<DashboardControllerAdmin>()
                             .employeeList
@@ -148,7 +154,7 @@ class SelectChatMembersPage extends StatelessWidget {
                                   backgroundColor: Colors.red,
                                   child: InkWell(
                                     onTap: () {
-                                      Get.find<ChatControllerAdmin>()
+                                      Get.find<DashboardControllerAdmin>()
                                           .selectedItemList
                                           .remove(index);
                                     },
@@ -172,18 +178,18 @@ class SelectChatMembersPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Obx(() {
                   final chatList =
-                      Get.find<ChatControllerAdmin>().getEmployees();
+                      Get.find<DashboardControllerAdmin>().getEmployees();
                   return ListView.builder(
                     itemCount: chatList.length,
                     itemBuilder: (context, index) {
                       return Obx(() => InkWell(
-                            onTap: () => Get.find<ChatControllerAdmin>()
+                            onTap: () => Get.find<DashboardControllerAdmin>()
                                     .selectedItemList
                                     .contains(index)
-                                ? Get.find<ChatControllerAdmin>()
+                                ? Get.find<DashboardControllerAdmin>()
                                     .selectedItemList
                                     .remove(index)
-                                : Get.find<ChatControllerAdmin>()
+                                : Get.find<DashboardControllerAdmin>()
                                     .selectedItemList
                                     .add(index),
                             child: Container(
@@ -211,9 +217,10 @@ class SelectChatMembersPage extends StatelessWidget {
                                       bottom: 2,
                                       right: 0,
                                       child: Visibility(
-                                        visible: Get.find<ChatControllerAdmin>()
-                                            .selectedItemList
-                                            .contains(index),
+                                        visible:
+                                            Get.find<DashboardControllerAdmin>()
+                                                .selectedItemList
+                                                .contains(index),
                                         child: const CircleAvatar(
                                           radius: 10,
                                           backgroundColor: Colors.green,

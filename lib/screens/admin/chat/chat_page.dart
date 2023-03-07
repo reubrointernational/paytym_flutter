@@ -7,6 +7,7 @@ import 'package:paytym/screens/admin/chat/chat_controller.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/styles.dart';
+import '../dashboard/dashboard_controller.dart';
 
 class ChatPageAdmin extends StatelessWidget {
   const ChatPageAdmin({super.key});
@@ -14,13 +15,12 @@ class ChatPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ChatControllerAdmin>();
+    Get.find<DashboardControllerAdmin>().isSelectMembersPageFromChat = true;
+    Get.find<DashboardControllerAdmin>().selectedItemList.clear();
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          controller
-              .chatGrouplist
-              .value
-              .chats[controller.selectedItemIndex]
+          controller.chatGrouplist.value.chats[controller.selectedItemIndex]
               .groupName,
           style: kTextStyleS18W600white,
         ),
