@@ -22,13 +22,13 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
               .overtimeResponseModel
               .value
               .employeeList[index!]
-              .date);
+              .date??DateTime(0000,00,00));
       Get.find<DashboardController>().overtimeApproveEditRequestModel.date =
           DateFormat('yyyy-MM-dd').format(Get.find<ReportsControllerAdmin>()
               .overtimeResponseModel
               .value
               .employeeList[index!]
-              .date);
+              .date??DateTime(0000,00,00));
     }
 
     return Container(
