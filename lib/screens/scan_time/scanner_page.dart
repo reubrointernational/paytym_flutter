@@ -5,6 +5,7 @@ import 'package:paytym/core/constants/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 
+import '../../core/constants/enums.dart';
 import '../../core/constants/strings.dart';
 import 'scanner_app_bar.dart';
 
@@ -19,7 +20,7 @@ class _ScanTimeState extends State<ScanTime> {
   // final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   // QRViewController? controller;
   // Barcode? result;
-  String? code;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,68 +29,27 @@ class _ScanTimeState extends State<ScanTime> {
         child: Column(
           children: [
             const ScannerAppBar(),
-            Expanded(
+            SizedBox(
+              height: h * 0.5,
               child: MobileScanner(
                   allowDuplicates: false,
                   onDetect: (barcode, args) {
                     if (barcode.rawValue == null) {
                       debugPrint('Failed to scan Barcode');
                     } else {
-                      code = barcode.rawValue!;
-                      debugPrint('success to scan Barcode $code');
-                      Get.find<DashboardController>().updateCheckInOut(code);
-                      setState(() {
-                        code;
-                      });
+                      Get.find<DashboardController>().qr = barcode.rawValue;
+                      Get.find<DashboardController>().sliderValueChanged = true;
+                      Get.find<DashboardController>().sliderController(
+                        Get.find<DashboardController>().sliderValue.value == 0
+                            ? 100
+                            : 0,
+                      );
                     }
                   }),
             ),
-            SizedBox(
-              height: h * 0.13,
-              child: Center(
-                child: (code != null)
-                    ? Text(
-                        "$kDataString $code",
-                      )
-                    : const Text(
-                        kScanCodeString,
-                      ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.blueTextColor,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  kSubmitString,
-                  style: TextStyle(
-                    color: CustomColors.whiteTextColor,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ),
-            kSizedBoxH40,
           ],
         ),
       ),
     );
   }
-
-  // void onQRViewCreated(QRViewController controller) {
-  //   this.controller = controller;
-  //   controller.scannedDataStream.listen((event) {
-  //     setState(() {
-  //       result = event;
-  //     });
-  //   });
-  // }
 }

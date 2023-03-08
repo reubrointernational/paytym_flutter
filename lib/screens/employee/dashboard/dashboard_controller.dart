@@ -39,6 +39,8 @@ class DashboardController extends GetxController with BaseController {
     'employer_id':
         '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
   };
+  String? qr;
+  bool isCheckedInWithQR = false;
 
   getWish() {
     DateTime now = DateTime.now();
@@ -55,7 +57,7 @@ class DashboardController extends GetxController with BaseController {
     return '';
   }
 
-   String? amountValidator(String value) {
+  String? amountValidator(String value) {
     //todo uncomment
     // if (value.isEmpty) {
     //   return 'Value cannot be empty';
@@ -153,7 +155,9 @@ class DashboardController extends GetxController with BaseController {
     }
   }
 
-  sliderController(double value) {
+  sliderController(
+    double value,
+  ) {
     if (sliderValueChanged) {
       if (value > 95) {
         sliderValue.value = 100;
@@ -162,9 +166,33 @@ class DashboardController extends GetxController with BaseController {
       } else {
         sliderValue.value = checkInStatus ? 100 : 0;
       }
-      sliderValue.value == 100
-          ? updateCheckInOut(CheckInOutStatus.checkIn)
-          : updateCheckInOut(CheckInOutStatus.checkOut);
+
+      if (qr == null) {
+        if (sliderValue.value == 100) {
+          //checkin
+          updateCheckInOut(CheckInOutStatus.checkIn);
+        } else if (isCheckedInWithQR && sliderValue.value == 0) {
+          //checkout not possible if checkedin with qrcode
+          Get.find<DashboardController>().sliderValue.value = 100;
+          checkInStatus = true;
+          DialogHelper.showToast(desc: 'Use QR scanner to checkout');
+        } else {
+          updateCheckInOut(CheckInOutStatus.checkOut);
+        }
+      } else {
+        if (sliderValue.value == 100) {
+          //checkin
+          updateCheckInOut(CheckInOutStatus.qrCheckIn);
+        } else if (!isCheckedInWithQR && sliderValue.value == 0) {
+          Get.find<DashboardController>().sliderValue.value = 100;
+          checkInStatus = true;
+          DialogHelper.showToast(desc: 'Use Slider to checkout');
+          Get.back();
+        } else {
+          updateCheckInOut(CheckInOutStatus.qrCheckOut);
+        }
+        qr = null;
+      }
 
       sliderValueChanged = false;
     }
@@ -251,10 +279,13 @@ class DashboardController extends GetxController with BaseController {
 
     if (storageMap['checkIn'] != null) {
       //already checked-in
+
       sliderValue.value = 100;
       DateTime startTime = DateTime.parse(storageMap['checkIn']!);
       seconds.value = now.difference(startTime).inMinutes;
     } else if (storageMap['checkInQr'] != null) {
+      //if the checkin is using qr code we need to checkout using qr code.
+      isCheckedInWithQR = true;
       sliderValue.value = 100;
       DateTime startTime = DateTime.parse(storageMap['checkInQr']!);
       seconds.value = now.difference(startTime).inMinutes;
@@ -292,6 +323,7 @@ class DashboardController extends GetxController with BaseController {
   updateCheckInOut(checkInOutStatus) async {
     switch (checkInOutStatus) {
       case CheckInOutStatus.checkIn:
+        print('checkin');
         if (!checkInStatus) {
           bool status = await serverCheckInOut(true);
           if (status) {
@@ -305,6 +337,7 @@ class DashboardController extends GetxController with BaseController {
         }
         break;
       case CheckInOutStatus.checkOut:
+        print('checkout');
         if (checkInStatus) {
           bool status = await serverCheckInOut(false);
           if (status) {
@@ -318,12 +351,14 @@ class DashboardController extends GetxController with BaseController {
         }
         break;
       case CheckInOutStatus.qrCheckIn:
+        print('qrcheckin');
         if (!checkInStatus) {
           bool status = await serverCheckInOutByScan(true);
           if (status) {
             Get.find<SharedPreferenceHelper>().addCheckInDetails(true);
             startCheckInTimer();
             checkInStatus = true;
+            isCheckedInWithQR = true;
           } else {
             Get.find<DashboardController>().sliderValue.value = 0;
             checkInStatus = false;
@@ -331,17 +366,20 @@ class DashboardController extends GetxController with BaseController {
         }
         break;
       case CheckInOutStatus.qrCheckOut:
+        print('qrcheckout');
         if (checkInStatus) {
           bool status = await serverCheckInOutByScan(false);
           if (status) {
             Get.find<SharedPreferenceHelper>().deleteAllCheckInData();
             cancelCheckInTimer(status);
             checkInStatus = false;
+            isCheckedInWithQR = false;
           } else {
             Get.find<DashboardController>().sliderValue.value = 100;
             checkInStatus = true;
           }
         }
+
         break;
       default:
     }
@@ -363,20 +401,36 @@ class DashboardController extends GetxController with BaseController {
   Future<bool> serverCheckInOutByScan(bool isCheckIn) async {
     String endPoint =
         isCheckIn ? ApiEndPoints.checkInByScan : ApiEndPoints.checkOutByScan;
-
+    showLoading();
+    // employerIdModel['qr_code'] = qr!;
+    employerIdModel['qr_code'] = 'ss123';
     var responseString = await Get.find<BaseClient>()
         .post(endPoint, jsonEncode(employerIdModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    return handleResponseForMessageOnlyResponse(responseString);
+
+    print('qr = null');
+    employerIdModel.remove('qr_code');
+    hideLoading();
+    return handleResponseForMessageOnlyResponse(responseString, true);
   }
 
-  bool handleResponseForMessageOnlyResponse(String? responseString) {
+  bool handleResponseForMessageOnlyResponse(String? responseString,
+      [bool isFromQr = false]) {
     if (responseString == null) {
       return false;
     } else {
-      DialogHelper.showToast(
-          desc: messageOnlyResponseModelFromJson(responseString).message!);
+      final message = messageOnlyResponseModelFromJson(responseString).message!;
+      DialogHelper.showToast(desc: message);
+      if (isFromQr) {
+        if (message.toLowerCase().contains('success')) {
+          Get.back();
+          return true;
+        } else if (!message.toLowerCase().contains('success')) {
+          Get.back();
+          return false;
+        }
+      }
       return true;
     }
   }
