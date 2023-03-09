@@ -14,4 +14,4 @@ enum SharingOrDownloading { sharing, downloading, idle }
 
 enum SelectChatMemberTab {all, branch, department}
 
-enum ReasonButton { leaveApprove, leaveDecline, attendanceApprove, attendanceDecline, overtimeApprove, overtimeDecline, overtimeEdit }
+enum ReasonButton { leaveApprove, leaveDecline, attendanceApprove, attendanceDecline, attendanceEdit, overtimeApprove, overtimeDecline, overtimeEdit }

@@ -35,6 +35,7 @@ class ApiEndPoints {
   static const deleteHoliday = '$kBaseUrl/delete_leave';
   static const createHoliday = '$kBaseUrl/create_leaves';
   static const attendanceAcceptReject = '$kBaseUrl/attendance_approve_reject';
+  static const attendanceEdit = '$kBaseUrl/attendance_edit';
   static const leaveRequestAdmin = '$kBaseUrl/leave_requests_lists';
   static const deductionsList = '$kBaseUrl/deductions_list';
   static const meetingsList = '$kBaseUrl/list_meetings';

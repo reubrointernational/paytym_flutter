@@ -5,19 +5,21 @@ import 'package:paytym/screens/employee/chats/chat_controller.dart';
 class CustomSearchTextField extends StatelessWidget {
   final String? hintText;
   final String iconImg;
-  final controller;
+  final dynamic controller;
 
   const CustomSearchTextField(
-      {super.key, this.hintText, required this.iconImg, required this.controller});
+      {super.key, this.hintText, required this.iconImg, this.controller});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        onChanged: (value) =>
-            controller.searchKeyword.value = value,
-            initialValue: controller.searchKeyword.value,
+        onChanged: controller != null
+            ? (value) => controller.searchKeyword.value = value
+            : (value) {},
+        initialValue:
+            controller != null ? controller.searchKeyword.value : "",
         decoration: InputDecoration(
           hintText: hintText,
           suffixIcon: Image.asset(

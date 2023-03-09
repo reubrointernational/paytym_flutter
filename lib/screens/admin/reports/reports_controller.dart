@@ -27,6 +27,7 @@ import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
+import '../../../models/report/attendance/attendance_edit_request.dart';
 import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/file_upload_request.dart';
@@ -151,6 +152,17 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final projectDetailsResponseModel =
       ProjectDetailsModel(message: '', projectsListe: []).obs;
 
+  TextEditingController checkInTimeController = TextEditingController();
+  TextEditingController checkOutTimeController = TextEditingController();
+
+  // Edit attendance for HR
+  final editAttendanceDate = ''.obs;
+  final editAttendanceCheckInTime = ''.obs;
+  final editAttendanceCheckOutTime = ''.obs;
+  final editAttendanceReason = ''.obs;
+
+  // final projectDetailsResponseModel = ProjectDetailsModel(message: '', projectsListe: []).obs;
+
 //for bottomsheet
   showBottomSheetForReason(ReasonButton reasonButton) {
     DialogHelper.showBottomSheet(ReasonBottomSheetAdmin(
@@ -242,6 +254,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     } else {
       hideLoading();
       projectlistResponseModel.value = projectListModelFromJson(responseString);
+      print(projectlistResponseModel.value);
       projectlistResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
@@ -474,7 +487,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         approvalStatus:
             reasonButton == ReasonButton.attendanceApprove ? '0' : '1',
         startDate:
-            attendanceResponseModel.value.history[selectedItemIndex].date!);
+            attendanceResponseModel.value.history[selectedItemIndex].date);
     var responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.attendanceAcceptReject,
@@ -512,6 +525,27 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         Get.find<BaseClient>().onError = null;
       }
     }
+  }
+
+  updateAttendance() async {
+    showLoading();
+    AttendanceEditRequestModel attendanceEditRequestModel =
+        AttendanceEditRequestModel(
+            employeeId: "5",
+            date: selectedDropdownDay.value,
+            checkIn: editAttendanceCheckInTime.value,
+            checkOut: editAttendanceCheckOutTime.value,
+            reason: editAttendanceReason.value);
+
+    var responseString = await Get.find<BaseClient>()
+        .post(
+          ApiEndPoints.attendanceEdit,
+          attendanceEditRequestModelToJson(attendanceEditRequestModel),
+          Get.find<LoginController>().getHeader(),
+        )
+        .catchError(handleError);
+    print(responseString);
+    hideLoading();
   }
 
   Widget getPayrollTab() {

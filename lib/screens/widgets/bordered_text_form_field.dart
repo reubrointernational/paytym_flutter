@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../../core/colors/colors.dart';
 import '../../core/constants/styles.dart';
+import '../admin/reports/reports_controller.dart';
 
 class BorderedTextFormField extends StatelessWidget {
   final String hintText;
+  final String? label;
   final bool obscureText;
   final bool? enabled;
+  final InputBorder? inputBorder;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
@@ -19,15 +23,18 @@ class BorderedTextFormField extends StatelessWidget {
   const BorderedTextFormField({
     Key? key,
     required this.hintText,
+    this.label,
     this.validator,
     this.obscureText = false,
     this.onSaved,
     this.suffixIcon,
     this.keyboardType,
     this.controller,
+    this.inputBorder,
     this.inputFormatters,
     this.maxLines = 1,
-    this.maxLength = 33, this.enabled,
+    this.maxLength = 33,
+    this.enabled,
   }) : super(key: key);
 
   @override
@@ -52,6 +59,7 @@ class BorderedTextFormField extends StatelessWidget {
         suffixIcon: suffixIcon,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        label: Text(label!),
         hintText: hintText,
         counterText: '',
         hintStyle: const TextStyle(
