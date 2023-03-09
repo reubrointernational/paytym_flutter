@@ -118,7 +118,7 @@ class CheckInOutCardAdmin extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      "$kNowIsString 07:59 AM",
+                      "$kNowIsString ${Get.find<DashboardController>().time.value}",
                       style: kTextStyleS14C255140x3.copyWith(
                         color: CustomColors.blackTextColor,
                       ),
@@ -131,7 +131,7 @@ class CheckInOutCardAdmin extends StatelessWidget {
                       endIndent: 2,
                     ),
                     Text(
-                      "Wednesday, 12 Sep 2022",
+                      Get.find<DashboardController>().getDate(),
                       style: kTextStyleS14C255140x3.copyWith(
                         color: CustomColors.blackTextColor,
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/enums.dart';
+import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
 import 'package:paytym/screens/admin/reports/widgets/rounded_icons.dart';
 
 import '../../../../core/constants/strings.dart';
@@ -39,6 +40,7 @@ class AttendanceTabAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<ReportsControllerAdmin>().getAttendance());
+    Get.put(LeavesControllerAdmin());
     return Column(
       children: [
         SizedBox(
@@ -118,12 +120,11 @@ class AttendanceTabAdmin extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AttendanceCardColumn(
+                        /*AttendanceCardColumn(
                           index: index,
-                        ),
+                        ),*/
                         Expanded(
                           child: AttendanceCardColumn(
-                            isRightTab: true,
                             index: index,
                           ),
                         ),
@@ -144,10 +145,11 @@ class AttendanceTabAdmin extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () {
-                                // Get.find<ReportsControllerAdmin>()
-                                //     .selectedItemIndex = index;
-                                // Get.find<ReportsControllerAdmin>()
-                                //     .showBottomSheetForReason(ReasonButton.attendanceApprove);
+                                Get.find<ReportsControllerAdmin>()
+                                    .selectedItemIndex = index;
+                                Get.find<ReportsControllerAdmin>()
+                                    .showBottomSheetForReason(
+                                        ReasonButton.attendanceEdit);
                               },
                               icon: RoundedIcon(
                                 iconPath: Icons.edit_outlined,
@@ -189,11 +191,9 @@ class AttendanceTabAdmin extends StatelessWidget {
 }
 
 class AttendanceCardColumn extends StatelessWidget {
-  final bool isRightTab;
   final int index;
   const AttendanceCardColumn({
     Key? key,
-    this.isRightTab = false,
     required this.index,
   }) : super(key: key);
 
@@ -204,64 +204,128 @@ class AttendanceCardColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            !isRightTab
-                ? 'Branch'
-                : Get.find<ReportsControllerAdmin>()
-                        .attendanceResponseModel
-                        .value
-                        .history[index]
-                        .user
-                        !.company ??
-                    '',
-            style:
-                isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
-            overflow: TextOverflow.ellipsis,
+          Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: Text(
+                  'Branch',
+                  style: kTextStyleS15W600CGrey,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  Get.find<ReportsControllerAdmin>()
+                      .attendanceResponseModel
+                      .value
+                      .history[index]
+                      .user!
+                      .company
+                      .toString(),
+                  style: kTextStyleS15W600CBlack,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
           kSizedBoxH4,
-          Text(
-            !isRightTab
-                ? 'Name'
-                : '${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user!.firstName} ${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user!.lastName}',
-            style:
-                isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
+          Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: Text(
+                  'Name',
+                  style: kTextStyleS15W600CGrey,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  '${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user!.firstName} ${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user!.lastName}',
+                  style: kTextStyleS15W600CBlack,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
           kSizedBoxH4,
-          Text(
-            !isRightTab
-                ? 'Employee ID'
-                : Get.find<ReportsControllerAdmin>()
-                    .attendanceResponseModel
-                    .value
-                    .history[index]
-                    .user
-                    !.employerId
-                    .toString(),
-            style:
-                isRightTab ? kTextStyleS15W600CBlack : kTextStyleS15W600CGrey,
+          Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: Text(
+                  'ID',
+                  style: kTextStyleS15W600CGrey,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  Get.find<ReportsControllerAdmin>()
+                      .attendanceResponseModel
+                      .value
+                      .history[index]
+                      .user!
+                      .employerId
+                      .toString(),
+                  style: kTextStyleS15W600CBlack,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
           kSizedBoxH20,
-          Text(
-            !isRightTab ? 'Check-in' : 'Check-out',
-            style: kTextStyleS15W600CBlack,
-          ),
-          kSizedBoxH4,
-          Text(
-            !isRightTab
-                ? Get.find<ReportsControllerAdmin>().getTime(
-                    Get.find<ReportsControllerAdmin>()
-                        .attendanceResponseModel
-                        .value
-                        .history[index]
-                        .checkIn)
-                : Get.find<ReportsControllerAdmin>().getTime(
-                    Get.find<ReportsControllerAdmin>()
-                        .attendanceResponseModel
-                        .value
-                        .history[index]
-                        .checkOut),
-            style: kTextStyleS15W600CBlack.copyWith(
-                color: !isRightTab ? Colors.green : Colors.red),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Check-in',
+                      style: kTextStyleS15W600CBlack,
+                    ),
+                    Text(
+                      Get.find<ReportsControllerAdmin>().getTime(
+                          Get.find<ReportsControllerAdmin>()
+                              .attendanceResponseModel
+                              .value
+                              .history[index]
+                              .checkIn),
+                      style:
+                          kTextStyleS15W600CBlack.copyWith(color: Colors.red),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Check-out',
+                      style: kTextStyleS15W600CBlack,
+                    ),
+                    Text(
+                      Get.find<ReportsControllerAdmin>().getTime(
+                          Get.find<ReportsControllerAdmin>()
+                              .attendanceResponseModel
+                              .value
+                              .history[index]
+                              .checkOut),
+                      style:
+                          kTextStyleS15W600CBlack.copyWith(color: Colors.green),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),

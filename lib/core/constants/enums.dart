@@ -12,4 +12,4 @@ enum PaymentMethods { windcave, mpaisa, mycash }
 
 enum SharingOrDownloading { sharing, downloading, idle }
 
-enum ReasonButton { leaveApprove, leaveDecline, attendanceApprove, attendanceDecline, overtimeApprove, overtimeDecline, overtimeEdit }
+enum ReasonButton { leaveApprove, leaveDecline, attendanceApprove, attendanceDecline, attendanceEdit, overtimeApprove, overtimeDecline, overtimeEdit }
