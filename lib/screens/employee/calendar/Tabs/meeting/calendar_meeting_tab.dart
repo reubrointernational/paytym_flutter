@@ -7,7 +7,6 @@ import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 
-import '../../../../../core/constants/strings.dart';
 import '../../../../../core/constants/styles.dart';
 import '../../../../widgets/custom_cached_network_image.dart';
 
@@ -22,14 +21,14 @@ class CalendarMeeting extends StatelessWidget {
         itemCount: Get.find<CalendarController>()
                 .meetingResponseModel
                 .value
-                .payroll
+                .meetings
                 ?.length ??
             0,
         itemBuilder: (context, index) {
           final meeting = Get.find<CalendarController>()
               .meetingResponseModel
               .value
-              .payroll?[index];
+              .meetings?[index];
           return Card(
             color: CustomColors.whiteTabColor,
             elevation: 10,
@@ -50,7 +49,7 @@ class CalendarMeeting extends StatelessWidget {
                       Expanded(
                         child: Center(
                           child: Text(
-                            "${Get.find<CalendarController>().getTime(meeting?.startTime ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().getTime(meeting?.endTime ?? '0000-00-00 00:00:00')}",
+                            "${Get.find<CalendarController>().getTime(meeting?.startTime.toString() ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().getTime(meeting?.endTime.toString() ?? '0000-00-00 00:00:00')}",
                             overflow: TextOverflow.ellipsis,
                             style: kTextStyleS13W600CustomGrey,
                           ),
@@ -88,7 +87,7 @@ class CalendarMeeting extends StatelessWidget {
                             ),
                             kSizedBoxH4,
                             Text(
-                              meeting?.user?.position ?? '',
+                              meeting?.user?.position?.roleName ?? '',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontSize: 14,
@@ -115,8 +114,8 @@ class CalendarMeeting extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        DateFormat('dd-MM-yyyy').format(
-                            DateTime.parse(meeting?.date ?? '0000-00-00')),
+                        DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                            meeting?.date.toString() ?? '0000-00-00')),
                         overflow: TextOverflow.ellipsis,
                         style: kTextStyleS13W600CustomGrey,
                       ),

@@ -12,7 +12,7 @@ class UploadsTabAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => ListView.builder(
-          itemCount: Get.find<DashboardControllerAdmin>().employeeList.value.employeeList.length,
+          itemCount: Get.find<DashboardControllerAdmin>().employeeList.value.employeeList?.length??0,
           itemBuilder: (context, index) {
             var chatList = Get.find<DashboardControllerAdmin>()
                 .employeeList
@@ -28,16 +28,16 @@ class UploadsTabAdmin extends StatelessWidget {
                 ),
                 child: ListTile(
                   title: Text(
-                    '${chatList[index].firstName} ${chatList[index].lastName}',
+                    '${chatList?[index].firstName} ${chatList?[index].lastName}',
                     style: kTextStyleS18W600CBlack,
                   ),
-                  subtitle: Text('#${chatList[index].id.toString().padLeft(5,'0')}'),
+                  subtitle: Text('#${chatList?[index].id.toString().padLeft(5,'0')}'),
                   leading: CircleAvatar(
                     radius: 28,
-                    backgroundImage: NetworkImage(chatList[index].image??''),
+                    backgroundImage: NetworkImage(chatList?[index].image??''),
                   ),
                   trailing: Text(
-                    chatList[index].branch?.name??'',
+                    chatList?[index].branch?.name??'',
                     style: kTextStyleS13W500Cgrey,
                   ),
                 ),

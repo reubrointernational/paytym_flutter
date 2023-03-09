@@ -19,7 +19,7 @@ class ContractPeriodTabAdmin extends StatelessWidget {
           Get.find<DashboardControllerAdmin>().employeeList.value.employeeList;
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: employeesList.length,
+        itemCount: employeesList?.length??0,
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
@@ -31,9 +31,9 @@ class ContractPeriodTabAdmin extends StatelessWidget {
                 MedicalTitleTag(
                   branch: 'Branch',
                   name:
-                      '${employeesList[index].firstName} ${employeesList[index].lastName}',
+                      '${employeesList?[index].firstName} ${employeesList?[index].lastName}',
                   employmentId:
-                      '#${employeesList[index].id.toString().padLeft(5, '0')}',
+                      '#${employeesList?[index].id.toString().padLeft(5, '0')}',
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

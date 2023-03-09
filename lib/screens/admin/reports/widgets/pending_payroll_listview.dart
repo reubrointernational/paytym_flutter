@@ -97,14 +97,14 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                     .employeeList
                     .value
                     .employeeList
-                    .where((element) => element.status == 1)
+                    ?.where((element) => element.status == 1)
                     .toList();
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: employeeList.length,
+                  itemCount: employeeList?.length??0,
                   itemBuilder: (context, index) {
-                    final employees = employeeList[index];
+                    final employees = employeeList?[index];
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 2),
                       child: GestureDetector(
@@ -137,19 +137,19 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            employees.branch?.toString() ?? '',
+                                            employees?.branch?.toString() ?? '',
                                             style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 12.5),
                                           ),
                                           Text(
-                                            '${employees.firstName} ${employees.lastName}',
+                                            '${employees?.firstName} ${employees?.lastName}',
                                             style: const TextStyle(
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                           Text(
-                                            'ID: #${employees.id.toString().padLeft(5, '0')}',
+                                            'ID: #${employees?.id.toString().padLeft(5, '0')}',
                                             style: TextStyle(
                                               color: Colors.grey.shade600,
                                               fontSize: 13,
@@ -171,7 +171,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                               color: CustomColors.orangeColor,
                                             ),
                                             onPressed: () {
-                                              CsvDownloader().downloadCsv(employeeList);
+                                             if (employeeList!=null) CsvDownloader().downloadCsv(employeeList);
                                             },
                                           ),
                                           //Only for HR
@@ -199,7 +199,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                               children: [
                                                 TextSpan(
                                                   text:
-                                                      '\$ ${employees.payroll?.grossSalary}',
+                                                      '\$ ${employees?.payroll?.grossSalary}',
                                                   style: const TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600,
@@ -214,12 +214,12 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                           GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                employees.isExpanded =
+                                                employees?.isExpanded =
                                                     !employees.isExpanded;
                                               });
                                             },
                                             child: Icon(
-                                              employees.isExpanded
+                                              employees?.isExpanded??false
                                                   ? Icons.expand_less
                                                   : Icons.expand_more,
                                               color: Colors.grey,
@@ -232,7 +232,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                   ),
                                 ),
                                 Visibility(
-                                  visible: employees.isExpanded,
+                                  visible: employees?.isExpanded??false,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -247,9 +247,9 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           payrollDetails('Basic Salary: ',
-                                              employees.payroll?.baseSalary??'0'),
+                                              employees?.payroll?.baseSalary??'0'),
                                           payrollDetails('Tax: ',
-                                              employees.payroll?.totalTax ?? 0),
+                                              employees?.payroll?.totalTax ?? 0),
                                         ],
                                       ),
                                       kSizedBoxH6,
@@ -258,9 +258,9 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           payrollDetails('Allowance: ',
-                                              employees.payroll?.totalAllowance??'0'),
+                                              employees?.payroll?.totalAllowance??'0'),
                                           payrollDetails('Deduction: ',
-                                              employees.payroll?.totalDeduction??'0'),
+                                              employees?.payroll?.totalDeduction??'0'),
                                         ],
                                       ),
                                       kSizedBoxH6,
@@ -269,11 +269,11 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           payrollDetails('Bonus: ',
-                                              employees.payroll?.totalBonus??'0'),
+                                              employees?.payroll?.totalBonus??'0'),
                                           payrollDetails(
                                               'Commission: ',
                                               employees
-                                                  .payroll?.totalCommission??'0'),
+                                                  ?.payroll?.totalCommission??'0'),
                                         ],
                                       ),
                                     ],
