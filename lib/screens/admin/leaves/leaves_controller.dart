@@ -25,6 +25,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
       LeavesListAdminModel(message: '', leaveRequest: []).obs;
   final leaveAdminResponseModelPending =
       LeavesListAdminModel(message: '', leaveRequest: []).obs;
+  final searchKeyword = ''.obs;
 
   final formKey = GlobalKey<FormState>();
   LeaveRequestModel leaveRequestModel = LeaveRequestModel();

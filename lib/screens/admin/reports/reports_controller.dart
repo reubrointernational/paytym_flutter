@@ -29,6 +29,7 @@ import '../../../models/report/attendance/attendance_accept_decline_request_mode
 import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/files/files_type_list.dart';
+import '../../../models/report/projects/project_details_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../employee/dashboard/dashboard_controller.dart';
@@ -57,6 +58,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
+  final projectDetails = ProjectDetailsModel().obs;
 
   changeSliderPosition(double value) {
     sliderValue.value = value;
@@ -101,7 +103,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
           fileTypes: [FileType(id: 0, fileType: '')], message: '')
       .obs;
   final projectlistResponseModel =
-      ProjectListModel(message: '', projectsListe: []).obs;
+      ProjectListModel(message: '', projectsLists: []).obs;
 
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   final deductionResponseModel = DeductionListAdminModel().obs;
@@ -124,7 +126,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final chatGroupList = dummy_data.obs;
   int selectedItemIndex = 0;
   String projectName = '';
-  // final projectDetailsResponseModel = ProjectDetailsModel(message: '', projectsListe: []).obs;
+  final projectDetailsResponseModel = ProjectDetailsModel(message: '', projectsListe: []).obs;
 
 //for bottomsheet
   showBottomSheetForReason(ReasonButton reasonButton) {
@@ -403,7 +405,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       hideLoading();
       medicalResponseModel.value =
           medicalListAdminModelFromJson(responseString);
-     
+
       medicalResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }

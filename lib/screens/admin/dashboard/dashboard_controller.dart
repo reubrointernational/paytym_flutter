@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/network/base_controller.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../core/constants/icons.dart';
+import '../../../models/dashboard/dashboard_admin_response_model.dart';
 import '../../../models/employee_list_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -20,6 +23,8 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   final selectedDropdownBranches = Rxn<String>();
   final selectedItemList = <int>[].obs;
   bool isSelectMembersPageFromChat = true;
+  DashboardAdminResponseModel dashboardDetails = DashboardAdminResponseModel();
+  
 
   seeDetailsPage(index) {
     switch (index) {
@@ -44,6 +49,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   void onReady() {
     super.onReady();
     // fetchDashboardData();
+    
     fetchEmployeeList();
   }
 
@@ -84,6 +90,66 @@ class DashboardControllerAdmin extends GetxController with BaseController {
         classifyEmployeeListByBranchAndDept();
         // fetchBranchDeptList();
       }
+    }
+  }
+
+  fetchDashboardDetails() async {
+    if (dashboardDetails.message?.isEmpty ?? true) {
+      Get.find<BaseClient>().onError = fetchDashboardDetails;
+      var requestModel = {
+        'employer_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.adminDashboard, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      if (responseString == null) {
+        return;
+      } else {
+        dashboardDetails =
+            dashboardAdminResponseModelFromJson(responseString);
+        Get.find<BaseClient>().onError = null;
+      }
+    }
+  }
+
+  Map<String, dynamic> getCardDetails(int index) {
+    List<Map<String, dynamic>> totalEmployeesDetails = [
+      {
+        'icon': IconPath.projectIconPng,
+        'title': 'Total Projects',
+        'count': dashboardDetails.projectsCount ?? '',
+        'color': Colors.pink,
+      },
+      {
+        'icon': IconPath.attendanceIconPng,
+        'title': 'Total Attendance',
+        'count': dashboardDetails.attendanceCount ?? '',
+        'color': Colors.purple,
+      },
+      {
+        'icon': IconPath.absenteesIconPng,
+        'title': 'Total Absentees',
+        'count': dashboardDetails.absenteesCount ?? '',
+        'color': Colors.red,
+      },
+      {
+        'icon': IconPath.meetingsIconPng,
+        'title': 'Total Meetings',
+        'count': dashboardDetails.meetingsCount ?? '',
+        'color': Colors.orange,
+      },
+    ];
+    switch (index) {
+      case 0:
+        return totalEmployeesDetails[0];
+      case 1:
+        return totalEmployeesDetails[1];
+      case 2:
+        return totalEmployeesDetails[2];
+      default:
+        return totalEmployeesDetails[3];
     }
   }
 

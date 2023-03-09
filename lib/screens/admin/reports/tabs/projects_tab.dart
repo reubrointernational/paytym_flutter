@@ -18,10 +18,10 @@ class ProjectsTabAdmin extends StatelessWidget {
     return Obx(() {
       final reportController = Get.find<ReportsControllerAdmin>();
       final projects =
-          reportController.projectlistResponseModel.value.projectsListe;
+          reportController.projectlistResponseModel.value.projectsLists;
       return ListView.builder(
           physics: const BouncingScrollPhysics(),
-          itemCount: projects.length,
+          itemCount: projects?.length ?? 0,
           itemBuilder: (context, index) {
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 8),
@@ -41,14 +41,14 @@ class ProjectsTabAdmin extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                projects[index].name ?? '',
+                                projects?[index].name ?? '',
                                 style: kTextStyleS18W600.copyWith(
                                     color: CustomColors.blackTextColor),
                               ),
                               kSizedBoxH10,
                               Text(
                                 reportController
-                                    .getStatus(projects[index].status ?? 0),
+                                    .getStatus(projects?[index].status ?? 0),
                                 style: kTextStyleS15W600CGreen,
                               ),
                               kSizedBoxH10,
@@ -60,7 +60,8 @@ class ProjectsTabAdmin extends StatelessWidget {
                               kSizedBoxH8,
                               GestureDetector(
                                 onTap: () {
-                                  reportController.projectName = projects[index].name??'';
+                                  reportController.projectName =
+                                      projects?[index].name ?? '';
                                   Get.toNamed(Routes.projectEmployeeList);
                                 },
                                 child: SizedBox(
@@ -187,7 +188,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                       ),
                                       kSizedBoxW4,
                                       Text(
-                                        projects[index].startDate ??
+                                        projects?[index].startDate ??
                                             'Not provided',
                                         style: const TextStyle(
                                           color: CustomColors.blackTextColor,
@@ -206,7 +207,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                       ),
                                       kSizedBoxW4,
                                       Text(
-                                        projects[index].endDate ??
+                                        projects?[index].endDate ??
                                             'Not provided',
                                         style: const TextStyle(
                                           color: CustomColors.blackTextColor,

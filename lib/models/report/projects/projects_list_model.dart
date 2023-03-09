@@ -12,29 +12,32 @@ String projectListModelToJson(ProjectListModel data) =>
 
 class ProjectListModel {
   ProjectListModel({
-    required this.message,
-    required this.projectsListe,
+    this.message,
+    this.projectsLists,
   });
 
-  String message;
-  List<ProjectsListe> projectsListe;
+  String? message;
+  List<ProjectsList>? projectsLists;
 
   factory ProjectListModel.fromJson(Map<String, dynamic> json) =>
       ProjectListModel(
         message: json["message"],
-        projectsListe: List<ProjectsListe>.from(
-            json["projects liste"].map((x) => ProjectsListe.fromJson(x))),
+        projectsLists: json["projects lists"] == null
+            ? []
+            : List<ProjectsList>.from(
+                json["projects lists"]!.map((x) => ProjectsList.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "projects liste":
-            List<dynamic>.from(projectsListe.map((x) => x.toJson())),
+        "projects lists": projectsLists == null
+            ? []
+            : List<dynamic>.from(projectsLists!.map((x) => x.toJson())),
       };
 }
 
-class ProjectsListe {
-  ProjectsListe({
+class ProjectsList {
+  ProjectsList({
     this.id,
     this.employerId,
     this.branchId,
@@ -52,15 +55,15 @@ class ProjectsListe {
   int? employerId;
   int? branchId;
   int? departmentId;
-  String? startDate;
-  String? endDate;
+  dynamic startDate;
+  dynamic endDate;
   String? name;
   String? description;
   int? status;
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  factory ProjectsListe.fromJson(Map<String, dynamic> json) => ProjectsListe(
+  factory ProjectsList.fromJson(Map<String, dynamic> json) => ProjectsList(
         id: json["id"],
         employerId: json["employer_id"],
         branchId: json["branch_id"],
@@ -70,8 +73,12 @@ class ProjectsListe {
         name: json["name"],
         description: json["description"],
         status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {

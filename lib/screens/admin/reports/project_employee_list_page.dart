@@ -17,7 +17,12 @@ class ProjectEmployeeListPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 10),
           child: Obx(
             () => ListView.builder(
-              itemCount: 3,
+              itemCount: Get.find<ReportsControllerAdmin>()
+                      .projectDetails
+                      .value
+                      .projectsListe
+                      ?.length ??
+                  0,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding:

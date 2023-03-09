@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/icons.dart';
-import '../../../core/constants/strings.dart';
 import '../dashboard/widgets/custom_text_form_field.dart';
 
 showCustomBottomSheet(context, controller) {
@@ -31,7 +31,8 @@ showCustomBottomSheet(context, controller) {
                     ),
                     CustomSearchTextField(
                       iconImg: IconPath.searchIconPng,
-                      hintText: 'Search', controller: null,
+                      hintText: 'Search',
+                      controller: null,
                     ),
                   ]),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -70,9 +71,13 @@ showCustomBottomSheet(context, controller) {
                   child: Obx(
                     () => DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        value: controller.selectedDepartment.value,
+                        value: Get.find<DashboardControllerAdmin>()
+                            .selectedDropdownDepartments
+                            .value,
                         onChanged: (String? value) {
-                          controller.selectedDepartment.value = value!;
+                          Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownDepartments
+                              .value = value!;
                         },
                         hint: const Text('Department'),
                         isExpanded: true,
@@ -81,7 +86,10 @@ showCustomBottomSheet(context, controller) {
                           height: 20,
                           width: 20,
                         ),
-                        items: departments
+                        items: Get.find<DashboardControllerAdmin>()
+                            .deptwiseEmployeeMap
+                            .keys
+                            .toList()
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                               value: value, child: Text(value));
@@ -106,26 +114,28 @@ showCustomBottomSheet(context, controller) {
                           width: 1.2,
                           color: const Color.fromRGBO(182, 182, 182, 1))),
                   child: Obx(() {
-                    return DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: controller.selectedBranch.value,
-                        onChanged: (String? value) {
-                          controller.selectedBranch.value = value!;
-                        },
-                        hint: const Text('branches'),
-                        isExpanded: true,
-                        icon: Image.asset(
-                          IconPath.dropdownIconPng,
-                          height: 20,
-                          width: 20,
-                        ),
-                        items: branches
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                              value: value, child: Text(value));
-                        }).toList(),
-                      ),
-                    );
+                    return
+                        // DropdownButtonHideUnderline(
+                        //   child: DropdownButton<String>(
+                        //     value: 'g',
+                        //     onChanged: (String? value) {
+                        //       controller.selectedBranch.value = value!;
+                        //     },
+                        //     hint: const Text('branches'),
+                        //     isExpanded: true,
+                        //     icon: Image.asset(
+                        //       IconPath.dropdownIconPng,
+                        //       height: 20,
+                        //       width: 20,
+                        //     ),
+                        //     items: branches
+                        //         .map<DropdownMenuItem<String>>((String value) {
+                        //       return DropdownMenuItem<String>(
+                        //           value: value, child: Text(value));
+                        //     }).toList(),
+                        //   ),
+                        // );
+                        const SizedBox();
                   }),
                 ),
               ]),

@@ -217,32 +217,7 @@ List<Map<String, dynamic>> financeDetails = [
   },
 ];
 
-List<Map<String, dynamic>> totalEmployeesDetails = [
-  {
-    'icon': IconPath.projectIconPng,
-    'title': 'Total Projects',
-    'count': 200,
-    'color': Colors.pink,
-  },
-  {
-    'icon': IconPath.attendanceIconPng,
-    'title': 'Total Attendance',
-    'count': 400,
-    'color': Colors.purple,
-  },
-  {
-    'icon': IconPath.absenteesIconPng,
-    'title': 'Total Absentees',
-    'count': 80,
-    'color': Colors.red,
-  },
-  {
-    'icon': IconPath.meetingsIconPng,
-    'title': 'Total Meetings',
-    'count': 10,
-    'color': Colors.orange,
-  },
-];
+
 
 List<String> selectMembersTabs = ['Departments ', 'Branches '];
 

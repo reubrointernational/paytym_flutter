@@ -76,10 +76,10 @@ class DashboardAdmin extends StatelessWidget {
                         ),
                         child: ListView(
                           physics: const BouncingScrollPhysics(),
-                          children: [
-                            const CheckInOutCardAdmin(),
+                          children: const [
+                            CheckInOutCardAdmin(),
                             kSizedBoxH10,
-                            CustomCardDetails(details: totalEmployeesDetails),
+                            CustomCardDetails(),
                           ],
                         ),
                       ),

@@ -12,33 +12,37 @@ String dashboardAdminResponseModelToJson(DashboardAdminResponseModel data) =>
 
 class DashboardAdminResponseModel {
   DashboardAdminResponseModel({
-    required this.message,
-    required this.casual,
-    required this.absence,
-    required this.annual,
-    required this.halfday,
+    this.message,
+    this.projectsCount,
+    this.attendanceCount,
+    this.absenteesCount,
+    this.employeesCount,
+    this.meetingsCount,
   });
 
-  String message;
-  int casual;
-  int absence;
-  int annual;
-  int halfday;
+  String? message;
+  int? projectsCount;
+  int? attendanceCount;
+  int? absenteesCount;
+  int? employeesCount;
+  int? meetingsCount;
 
   factory DashboardAdminResponseModel.fromJson(Map<String, dynamic> json) =>
       DashboardAdminResponseModel(
         message: json["message"],
-        casual: json["casual"],
-        absence: json["absence"],
-        annual: json["annual"],
-        halfday: json["halfday"],
+        projectsCount: json["projects_count"],
+        attendanceCount: json["attendance_count"],
+        absenteesCount: json["absentees_count"],
+        employeesCount: json["employees_count"],
+        meetingsCount: json["meetings_count"],
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "casual": casual,
-        "absence": absence,
-        "annual": annual,
-        "halfday": halfday,
+        "projects_count": projectsCount,
+        "attendance_count": attendanceCount,
+        "absentees_count": absenteesCount,
+        "employees_count": employeesCount,
+        "meetings_count": meetingsCount,
       };
 }
