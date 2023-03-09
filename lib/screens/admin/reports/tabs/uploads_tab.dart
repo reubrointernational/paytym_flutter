@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/routes/app_routes.dart';
-import 'package:paytym/screens/admin/dashboard/dashboard_admin.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
-import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import '../../../../core/constants/styles.dart';
 
 class UploadsTabAdmin extends StatelessWidget {
