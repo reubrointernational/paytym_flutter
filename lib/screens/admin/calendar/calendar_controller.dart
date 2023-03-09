@@ -55,7 +55,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     Get.find<BaseClient>().onError = getMeeting;
     var requestModel = {
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.meetingsList, jsonEncode(requestModel),
@@ -89,7 +89,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       employerId: Get.find<LoginController>()
           .loginResponseModel!
           .employee!
-          .employer_id
+          .employerId
           .toString(),
       name: createCalendarRequestModel.name,
       description: 'description',
@@ -154,7 +154,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     Get.find<BaseClient>().onError = getEvents;
     var requestModel = {
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.events, jsonEncode(requestModel),
@@ -193,7 +193,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     Get.find<BaseClient>().onError = getHolidays;
     var requestModel = {
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.holidayRequestAdmin, jsonEncode(requestModel),
@@ -247,7 +247,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       employerId: Get.find<LoginController>()
           .loginResponseModel!
           .employee!
-          .employer_id
+          .employerId
           .toString(),
       name: createCalendarRequestModel.name,
       description: 'description',
@@ -284,7 +284,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       employerId: Get.find<LoginController>()
           .loginResponseModel!
           .employee!
-          .employer_id
+          .employerId
           .toString(),
       name: createCalendarRequestModel.name,
       description: 'description',

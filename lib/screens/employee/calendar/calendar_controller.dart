@@ -56,7 +56,7 @@ class CalendarController extends GetxController with BaseController {
       Get.find<BaseClient>().onError = getHolidays;
       var requestModel = {
         'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.holidayRequestAdmin, jsonEncode(requestModel),
@@ -80,7 +80,7 @@ class CalendarController extends GetxController with BaseController {
       Get.find<BaseClient>().onError = getEvents;
       var requestModel = {
         'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.events, jsonEncode(requestModel),

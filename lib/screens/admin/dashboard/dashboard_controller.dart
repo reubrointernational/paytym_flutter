@@ -76,7 +76,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       Get.find<BaseClient>().onError = fetchEmployeeList;
       var requestModel = {
         'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.employeeList, jsonEncode(requestModel),
@@ -98,7 +98,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       Get.find<BaseClient>().onError = fetchDashboardDetails;
       var requestModel = {
         'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.adminDashboard, jsonEncode(requestModel),

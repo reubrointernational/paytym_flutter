@@ -164,6 +164,7 @@ class LoginController extends GetxController with BaseController {
     }
   }
 
+
   goToMainOrOtpPage() async {
     bool isSuccess = await fetchLoginData();
     if (isSuccess) {

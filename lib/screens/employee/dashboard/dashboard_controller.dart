@@ -37,7 +37,7 @@ class DashboardController extends GetxController with BaseController {
       TextEditingController();
   final employerIdModel = {
     'employer_id':
-        '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+        '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
   };
   String? qr;
   bool isCheckedInWithQR = false;
@@ -58,17 +58,16 @@ class DashboardController extends GetxController with BaseController {
   }
 
   String? amountValidator(String value) {
-    //todo uncomment
-    // if (value.isEmpty) {
-    //   return 'Value cannot be empty';
-    // } else if (int.parse(
-    //         payslipResponseModel.value.payroll?.salary ?? '10000') <
-    //     int.parse(value)) {
-    //   return 'Request amount should be less than salary';
-    // } else if (int.parse(value) < 50) {
-    //   return 'Request amount should be greater than 50';
-    // }
-    // return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
+    if (value.isEmpty) {
+      return 'Value cannot be empty';
+    } else if (int.parse(
+            Get.find<LoginController>().loginResponseModel?.employee?.rate ?? '1000') <
+        int.parse(value)) {
+      return 'Request amount should be less than salary';
+    } else if (int.parse(value) < 50) {
+      return 'Request amount should be greater than 50';
+    }
+    return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
   }
 
   changeSliderPosition(double value) {
@@ -103,7 +102,7 @@ class DashboardController extends GetxController with BaseController {
       //status 3 for editing overtime
       overtimeApproveEditRequestModel.status = '0';
       overtimeApproveEditRequestModel.employerId =
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}';
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
       overtimeApproveEditRequestModel.employeeId =
           '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
 

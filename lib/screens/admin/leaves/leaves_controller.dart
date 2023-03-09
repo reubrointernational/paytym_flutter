@@ -109,7 +109,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     var requestModel = {
       'status': status,
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),

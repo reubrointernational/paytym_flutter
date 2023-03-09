@@ -181,7 +181,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     Get.find<BaseClient>().onError = fetchProjects;
     var requestModel = {
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.projectsList, jsonEncode(requestModel),
@@ -233,7 +233,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     showLoading();
     var model = {
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     Get.find<BaseClient>().onError = getOvertime;
     var responseString = await Get.find<BaseClient>()
@@ -274,7 +274,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       //edit
       overtimeApproveEditRequestModel.status = '3';
       overtimeApproveEditRequestModel.employerId =
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}';
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
       //date is obtained from dashboard controller as bottomsheet fills dashboard controller
       overtimeApproveEditRequestModel.date =
           Get.find<DashboardController>().overtimeApproveEditRequestModel.date;
@@ -320,7 +320,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     showLoading();
     var model = {
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     Get.find<BaseClient>().onError = getDeduction;
     var responseString = await Get.find<BaseClient>()
@@ -344,7 +344,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       showLoading();
       //todo - id should be there to know which employee
       deductionAddRequestModel.employerId =
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}';
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
       var responseString = await Get.find<BaseClient>()
           .post(
               ApiEndPoints.deductionAdd,
@@ -443,7 +443,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       Get.find<BaseClient>().onError = getAttendance;
       var attendanceRequestModel = {
         'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.attendance, jsonEncode(attendanceRequestModel),

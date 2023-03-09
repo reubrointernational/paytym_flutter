@@ -49,7 +49,7 @@ class LeavesController extends GetxController with BaseController {
   Future<MessageOnlyResponseModel?> applyForLeave() async {
     showLoading();
     leaveRequestModel.employerId =
-        '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}';
+        '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.leave, leaveRequestModelToJson(leaveRequestModel),
             Get.find<LoginController>().getHeader())

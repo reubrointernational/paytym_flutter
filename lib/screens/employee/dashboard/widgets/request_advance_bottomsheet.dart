@@ -43,7 +43,7 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                   hintText: kAmountString,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  //todo amount validator need salary details of the employee
+                  
                   validator: (value) =>
                       Get.find<DashboardController>().amountValidator(value!),
                   onSaved: (value) => Get.find<DashboardController>()

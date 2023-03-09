@@ -64,14 +64,14 @@ class ReportsPage extends StatelessWidget {
                             kSizedBoxH4,
                             Obx(
                               () => Text(
-                                '#${reportsController.payslipResponseModel.value.payroll?.userId?.toString().padLeft(7, '0') ?? "4578300"}',
+                                '#${Get.find<LoginController>().loginResponseModel?.employee?.id?.toString().padLeft(5, '0') ?? "#00000"}',
                                 style: kTextStyleS13W500Cgrey,
                               ),
                             ),
                             kSizedBoxH4,
                             Obx(
                               () => Text(
-                                "$kNetPayString \$${reportsController.payslipResponseModel.value.payroll?.salary}",
+                                "$kNetPayString \$${Get.find<LoginController>().loginResponseModel?.employee?.rate} ${Get.find<LoginController>().loginResponseModel?.employee?.salaryType=='0'?'/month':'/hour'}",
                                 style: kTextStyleS13W500Cgrey,
                               ),
                             ),
