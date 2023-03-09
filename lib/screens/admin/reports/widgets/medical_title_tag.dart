@@ -41,7 +41,7 @@ class MedicalTitleTag extends StatelessWidget {
         Divider(
           thickness: 1,
           height: 24,
-          color: Colors.grey.shade200,
+          color: Colors.grey.shade300,
         ),
       ],
     );

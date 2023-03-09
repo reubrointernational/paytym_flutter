@@ -59,7 +59,7 @@ class BorderedTextFormField extends StatelessWidget {
         suffixIcon: suffixIcon,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        label: Text(label!),
+        //label: Text(label ?? ""),
         hintText: hintText,
         counterText: '',
         hintStyle: const TextStyle(

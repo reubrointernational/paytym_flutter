@@ -250,8 +250,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   getOvertime() async {
     showLoading();
     var model = {
-      'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      'employer_id': '4'
+      //'${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     Get.find<BaseClient>().onError = getOvertime;
     var responseString = await Get.find<BaseClient>()
@@ -412,7 +412,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   getMedical() async {
     showLoading();
     var model = {
-      'employer_id': '4'
+      'employer_id': '1'
       // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     Get.find<BaseClient>().onError = getMedical;

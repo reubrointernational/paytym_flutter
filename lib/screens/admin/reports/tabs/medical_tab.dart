@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../dummy_data.dart';
@@ -24,65 +25,68 @@ class MedicalTabAdmin extends StatelessWidget {
         itemCount: medicalDetails.length,
         itemBuilder: (context, index) {
           var medicalUnit = medicalDetails[index];
-          return Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade200),
-                borderRadius: BorderRadius.circular(10)),
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: MedicalTitleTag(
-                        branch: 'Branch',
-                        name:
-                            '${medicalUnit.users?.firstName} ${medicalUnit.users?.lastName}',
-                        employmentId: medicalUnit.users?.id.toString() ?? '',
+          return Material(
+            elevation: 2,
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(10)),
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: MedicalTitleTag(
+                          branch: 'Branch',
+                          name:
+                              '${medicalUnit.users?.firstName} ${medicalUnit.users?.lastName}',
+                          employmentId: medicalUnit.users?.id.toString() ?? '',
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    ...List.generate(
-                      5,
-                      ((col_index) {
-                        var med = [
-                          medicalUnit.medicalIssues,
-                          medicalUnit.allergies,
-                          '',
-                          medicalUnit.bloodGrp,
-                          medicalUnit.measurement,
-                        ];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  medicalKeys[col_index],
-                                  style: kTextStyleS14W600Cgrey300LS0p2
-                                      .copyWith(color: Colors.black),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      ...List.generate(
+                        4,
+                        ((col_index) {
+                          var med = [
+                            medicalUnit.medicalIssues,
+                            medicalUnit.allergies,
+                            medicalUnit.bloodGrp,
+                            medicalUnit.measurement,
+                          ];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    medicalKeys[col_index],
+                                    style: kTextStyleS14W600Cgrey300LS0p2
+                                        .copyWith(color: Colors.black),
+                                  ),
                                 ),
-                              ),
-                              kSizedBoxW12,
-                              Expanded(
-                                child: Text(
-                                  med[col_index] ?? '',
-                                  style: kTextStyleS14C255140x3.copyWith(
-                                      color: Colors.lightBlue),
+                                kSizedBoxW12,
+                                Expanded(
+                                  child: Text(
+                                    med[col_index] ?? '',
+                                    style: kTextStyleS14C255140x3.copyWith(
+                                        color: CustomColors.lightBlueColor),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-              ],
+                              ],
+                            ),
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },
