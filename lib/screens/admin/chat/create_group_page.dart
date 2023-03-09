@@ -21,13 +21,13 @@ class CreateGroupPage extends StatelessWidget {
         .employeeList
         .value
         .employeeList
-        .where((element) => Get.find<DashboardControllerAdmin>()
+        ?.where((element) => Get.find<DashboardControllerAdmin>()
             .selectedItemList
             .contains(Get.find<DashboardControllerAdmin>()
                 .employeeList
                 .value
                 .employeeList
-                .indexOf(element)))
+                ?.indexOf(element)))
         .toList();
     return CustomAdminScaffold(
       floatingActionButton: FloatingActionButton(
@@ -45,17 +45,17 @@ class CreateGroupPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SizedBox(
-              height: memberList.isEmpty ? 0 : 60,
+              height: (memberList?.isEmpty??true) ? 0 : 60,
               width: double.infinity,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: memberList.length,
+                itemCount: memberList?.length??0,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: CircleAvatar(
                       radius: 28,
-                      backgroundImage: NetworkImage(memberList[index].image??''),
+                      backgroundImage: NetworkImage(memberList?[index].image??''),
                     ),
                   );
                 },

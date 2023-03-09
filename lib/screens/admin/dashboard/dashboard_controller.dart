@@ -72,7 +72,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   // }
 
   fetchEmployeeList([bool isFromPayroll = false]) async {
-    if (employeeList.value.message.isEmpty || isFromPayroll) {
+    if ((employeeList.value.message?.isEmpty??true) || isFromPayroll) {
       Get.find<BaseClient>().onError = fetchEmployeeList;
       var requestModel = {
         'employer_id':
@@ -154,7 +154,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   }
 
   classifyEmployeeListByBranchAndDept() {
-    for (var element in employeeList.value.employeeList) {
+    for (var element in employeeList.value.employeeList??[]) {
       if (!branchwiseEmployeeMap.keys.contains(element.branch?.name ?? '')) {
         branchwiseEmployeeMap[element.branch?.name ?? ''] = [element];
       } else {

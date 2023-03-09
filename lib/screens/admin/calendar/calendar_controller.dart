@@ -74,16 +74,17 @@ class CalendarControllerAdmin extends GetxController with BaseController {
 
   createMeeting() async {
     showLoading();
-     final List<EmployeeList> selectedEmployees = Get.find<DashboardControllerAdmin>()
-                    .getEmployees()
-                    .where((element) => Get.find<DashboardControllerAdmin>()
-                        .selectedItemList
-                        .contains(Get.find<DashboardControllerAdmin>()
-                            .employeeList
-                            .value
-                            .employeeList
-                            .indexOf(element)))
-                    .toList();
+    final List<EmployeeList> selectedEmployees =
+        Get.find<DashboardControllerAdmin>()
+            .getEmployees()
+            .where((element) => Get.find<DashboardControllerAdmin>()
+                .selectedItemList
+                .contains(Get.find<DashboardControllerAdmin>()
+                    .employeeList
+                    .value
+                    .employeeList
+                    ?.indexOf(element)))
+            .toList();
     var model = CreateCalendarRequestModel(
       employerId: Get.find<LoginController>()
           .loginResponseModel!
@@ -119,7 +120,6 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       startTimeController.clear();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message!);
-
     }
   }
 
@@ -274,7 +274,6 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       startTimeController.clear();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message!);
-
     }
   }
 
@@ -378,8 +377,4 @@ class CalendarControllerAdmin extends GetxController with BaseController {
         ? null
         : "Enter a valid date";
   }
-  
-
-
-  
 }

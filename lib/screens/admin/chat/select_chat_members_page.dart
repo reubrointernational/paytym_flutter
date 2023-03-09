@@ -128,7 +128,7 @@ class SelectChatMembersPage extends StatelessWidget {
                             .employeeList
                             .value
                             .employeeList
-                            .indexOf(element)))
+                            ?.indexOf(element)))
                     .toList();
                 return SizedBox(
                     height: chatList.isEmpty ? 0 : 60,

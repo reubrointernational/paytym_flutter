@@ -13,32 +13,35 @@ String meetingResponseModelToJson(MeetingResponseModel data) =>
 class MeetingResponseModel {
   MeetingResponseModel({
     this.message,
-    this.payroll,
+    this.meetings,
   });
 
   String? message;
-  List<Payroll>? payroll;
+  List<Meeting>? meetings;
 
   factory MeetingResponseModel.fromJson(Map<String, dynamic> json) =>
       MeetingResponseModel(
         message: json["message"],
-        payroll: json["payroll"] != null
-            ? List<Payroll>.from(
-                json["payroll"].map((x) => Payroll.fromJson(x)))
-            : null,
+        meetings: json["meetings"] == null
+            ? []
+            : List<Meeting>.from(
+                json["meetings"]!.map((x) => Meeting.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "payroll": List<dynamic>.from(payroll!.map((x) => x.toJson())),
+        "meetings": meetings == null
+            ? []
+            : List<dynamic>.from(meetings!.map((x) => x.toJson())),
       };
 }
 
-class Payroll {
-  Payroll({
+class Meeting {
+  Meeting({
     this.id,
     this.userId,
-    this.attendeeId,
+    this.employerId,
+    this.name,
     this.date,
     this.startTime,
     this.endTime,
@@ -50,38 +53,49 @@ class Payroll {
 
   int? id;
   int? userId;
-  int? attendeeId;
-  String? date;
-  String? startTime;
-  String? endTime;
+  int? employerId;
+  String? name;
+  DateTime? date;
+  DateTime? startTime;
+  DateTime? endTime;
   String? location;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   User? user;
 
-  factory Payroll.fromJson(Map<String, dynamic> json) => Payroll(
+  factory Meeting.fromJson(Map<String, dynamic> json) => Meeting(
         id: json["id"],
         userId: json["user_id"],
-        attendeeId: json["attendee_id"],
-        date: json["date"],
-        startTime: json["start_time"],
-        endTime: json["end_time"],
+        employerId: json["employer_id"],
+        name: json["name"],
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
+        startTime: json["start_time"] == null
+            ? null
+            : DateTime.parse(json["start_time"]),
+        endTime:
+            json["end_time"] == null ? null : DateTime.parse(json["end_time"]),
         location: json["location"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        user: User.fromJson(json["user"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "user_id": userId,
-        "attendee_id": attendeeId,
-        "date": date,
-        "start_time": startTime,
-        "end_time": endTime,
+        "employer_id": employerId,
+        "name": name,
+        "date":
+            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
+        "start_time": startTime?.toIso8601String(),
+        "end_time": endTime?.toIso8601String(),
         "location": location,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
         "user": user?.toJson(),
       };
 }
@@ -89,10 +103,24 @@ class Payroll {
 class User {
   User({
     this.id,
+    this.employerId,
+    this.employmentStartDate,
+    this.employmentEndDate,
+    this.payedDate,
+    this.bankBranchName,
+    this.businessId,
+    this.departmentId,
+    this.salaryType,
+    this.rate,
+    this.payPeriod,
+    this.workdaysPerWeek,
+    this.totalHoursPerWeek,
+    this.extraHoursAtBaseRate,
+    this.employeeType,
     this.firstName,
     this.lastName,
     this.company,
-    this.branch,
+    this.branchId,
     this.position,
     this.email,
     this.phone,
@@ -112,17 +140,33 @@ class User {
     this.emailVerifiedAt,
     this.createdAt,
     this.updatedAt,
+    this.forgotPassOtp,
+    this.status,
   });
 
   int? id;
+  int? employerId;
+  dynamic employmentStartDate;
+  dynamic employmentEndDate;
+  dynamic payedDate;
+  dynamic bankBranchName;
+  dynamic businessId;
+  int? departmentId;
+  String? salaryType;
+  dynamic rate;
+  dynamic payPeriod;
+  dynamic workdaysPerWeek;
+  dynamic totalHoursPerWeek;
+  dynamic extraHoursAtBaseRate;
+  dynamic employeeType;
   String? firstName;
   String? lastName;
   String? company;
-  String? branch;
-  String? position;
+  int? branchId;
+  Position? position;
   String? email;
   String? phone;
-  String? dateOfBirth;
+  DateTime? dateOfBirth;
   String? street;
   String? city;
   String? town;
@@ -135,20 +179,40 @@ class User {
   String? image;
   String? isFirst;
   String? otp;
-  String? emailVerifiedAt;
-  String? createdAt;
-  String? updatedAt;
+  dynamic emailVerifiedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  dynamic forgotPassOtp;
+  int? status;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
+        employerId: json["employer_id"],
+        employmentStartDate: json["employment_start_date"],
+        employmentEndDate: json["employment_end_date"],
+        payedDate: json["payed_date"],
+        bankBranchName: json["bank_branch_name"],
+        businessId: json["business_id"],
+        departmentId: json["department_id"],
+        salaryType: json["salary_type"],
+        rate: json["rate"],
+        payPeriod: json["pay_period"],
+        workdaysPerWeek: json["workdays_per_week"],
+        totalHoursPerWeek: json["total_hours_per_week"],
+        extraHoursAtBaseRate: json["extra_hours_at_base_rate"],
+        employeeType: json["employee_type"],
         firstName: json["first_name"],
         lastName: json["last_name"],
         company: json["company"],
-        branch: json["branch"],
-        position: json["position"],
+        branchId: json["branch_id"],
+        position: json["position"] == null
+            ? null
+            : Position.fromJson(json["position"]),
         email: json["email"],
         phone: json["phone"],
-        dateOfBirth: json["date_of_birth"],
+        dateOfBirth: json["date_of_birth"] == null
+            ? null
+            : DateTime.parse(json["date_of_birth"]),
         street: json["street"],
         city: json["city"],
         town: json["town"],
@@ -162,20 +226,41 @@ class User {
         isFirst: json["isFirst"],
         otp: json["otp"],
         emailVerifiedAt: json["email_verified_at"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        forgotPassOtp: json["forgot_pass_otp"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "employer_id": employerId,
+        "employment_start_date": employmentStartDate,
+        "employment_end_date": employmentEndDate,
+        "payed_date": payedDate,
+        "bank_branch_name": bankBranchName,
+        "business_id": businessId,
+        "department_id": departmentId,
+        "salary_type": salaryType,
+        "rate": rate,
+        "pay_period": payPeriod,
+        "workdays_per_week": workdaysPerWeek,
+        "total_hours_per_week": totalHoursPerWeek,
+        "extra_hours_at_base_rate": extraHoursAtBaseRate,
+        "employee_type": employeeType,
         "first_name": firstName,
         "last_name": lastName,
         "company": company,
-        "branch": branch,
-        "position": position,
+        "branch_id": branchId,
+        "position": position?.toJson(),
         "email": email,
         "phone": phone,
-        "date_of_birth": dateOfBirth,
+        "date_of_birth":
+            "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
         "street": street,
         "city": city,
         "town": town,
@@ -189,7 +274,29 @@ class User {
         "isFirst": isFirst,
         "otp": otp,
         "email_verified_at": emailVerifiedAt,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "forgot_pass_otp": forgotPassOtp,
+        "status": status,
+      };
+}
+
+class Position {
+  Position({
+    this.id,
+    this.roleName,
+  });
+
+  int? id;
+  String? roleName;
+
+  factory Position.fromJson(Map<String, dynamic> json) => Position(
+        id: json["id"],
+        roleName: json["role_name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "role_name": roleName,
       };
 }
