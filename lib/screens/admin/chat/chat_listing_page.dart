@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/network/end_points.dart';
@@ -71,6 +72,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                   child: CustomSearchTextField(
                     controller: Get.find<ChatController>(),
                     iconImg: IconPath.searchIconPng,
+                    fillColor: CustomColors.whiteTextColor,
                     hintText: 'Search for chats & messages',
                   ),
                 ),
@@ -81,6 +83,8 @@ class ChatListingPageAdmin extends StatelessWidget {
                         .chatGrouplist
                         .value
                         .chats
+                        .reversed
+                        .toList()
                         .where((element) => element.groupName
                             .toLowerCase()
                             .contains(Get.find<ChatController>()
@@ -134,7 +138,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(
-                                  width: 10,
+                                  width: 15,
                                 ),
                                 Expanded(
                                   child: Column(
@@ -153,9 +157,16 @@ class ChatListingPageAdmin extends StatelessWidget {
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                          const Text(
-                                            '1/2/2022',
-                                            style: TextStyle(
+                                          Text(
+                                            DateFormat('dd/MM/yyyy').format(
+                                                DateTime.parse(
+                                                    Get.find<ChatController>()
+                                                        .chatGrouplist
+                                                        .value
+                                                        .chats[index]
+                                                        .createdAt
+                                                        .toString())),
+                                            style: const TextStyle(
                                               fontSize: 13,
                                               color: CustomColors.greyIconColor,
                                             ),
