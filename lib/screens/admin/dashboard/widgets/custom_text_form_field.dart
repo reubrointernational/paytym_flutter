@@ -5,10 +5,11 @@ import 'package:paytym/screens/employee/chats/chat_controller.dart';
 class CustomSearchTextField extends StatelessWidget {
   final String? hintText;
   final String iconImg;
+  final Color? fillColor;
   final dynamic controller;
 
   const CustomSearchTextField(
-      {super.key, this.hintText, required this.iconImg, this.controller});
+      {super.key, this.hintText, required this.iconImg, this.controller, this.fillColor});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +19,10 @@ class CustomSearchTextField extends StatelessWidget {
         onChanged: controller != null
             ? (value) => controller.searchKeyword.value = value
             : (value) {},
-        initialValue:
-            controller != null ? controller.searchKeyword.value : "",
+        initialValue: controller != null ? controller.searchKeyword.value : "",
         decoration: InputDecoration(
+          filled: true,
+          fillColor: fillColor,
           hintText: hintText,
           suffixIcon: Image.asset(
             iconImg,

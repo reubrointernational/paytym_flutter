@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/routes/app_routes.dart';
@@ -44,6 +45,7 @@ class ChatListingPage extends StatelessWidget {
                 CustomSearchTextField(
                   iconImg: IconPath.searchIconPng,
                   hintText: 'Search',
+                  fillColor: CustomColors.whiteTextColor,
                   controller: Get.find<ChatController>(),
                 ),
                 kSizedBoxH8,
@@ -53,6 +55,8 @@ class ChatListingPage extends StatelessWidget {
                         .chatGrouplist
                         .value
                         .chats
+                        .reversed
+                        .toList()
                         .where((element) => element.groupName
                             .toLowerCase()
                             .contains(Get.find<ChatController>()
@@ -105,7 +109,7 @@ class ChatListingPage extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(
-                                  width: 10,
+                                  width: 15,
                                 ),
                                 Expanded(
                                   child: Column(
@@ -124,9 +128,16 @@ class ChatListingPage extends StatelessWidget {
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                          const Text(
-                                            '1/2/2022',
-                                            style: TextStyle(
+                                          Text(
+                                            DateFormat('dd/MM/yyyy').format(
+                                                DateTime.parse(
+                                                    Get.find<ChatController>()
+                                                        .chatGrouplist
+                                                        .value
+                                                        .chats[index]
+                                                        .createdAt
+                                                        .toString())),
+                                            style: const TextStyle(
                                               fontSize: 13,
                                               color: CustomColors.greyIconColor,
                                             ),

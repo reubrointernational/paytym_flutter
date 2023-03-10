@@ -24,7 +24,6 @@ class ChatPageAdmin extends StatelessWidget {
     final controller = Get.find<ChatControllerAdmin>();
     Get.find<DashboardControllerAdmin>().isSelectMembersPageFromChat = true;
     Get.find<DashboardControllerAdmin>().selectedItemList.clear();
-    
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -59,11 +58,10 @@ class ChatPageAdmin extends StatelessWidget {
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   itemCount: Get.find<ChatController>()
-                          .chatResponseModel
-                          .value
-                          .chats
-                          ?.length ??
-                      0,
+                      .chatResponseModel
+                      .value
+                      .chats!
+                      .length,
                   itemBuilder: (context, index) {
                     final chat = Get.find<ChatController>()
                         .chatResponseModel
@@ -111,14 +109,25 @@ class ChatPageAdmin extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       userId != chat.userId
-                                          ? const Padding(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 10),
-                                              child: Text(
-                                                '876543234',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 6),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    chat.employee?.firstName ??
+                                                        '',
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             )
                                           : Container(),
@@ -214,8 +223,8 @@ class ChatPageAdmin extends StatelessWidget {
                             Get.find<ChatController>()
                                 .chatResponseModel
                                 .value
-                                .chatHistory
-                                ?.first
+                                .chatHistory!
+                                .first
                                 .employerId),
                         icon: SvgPicture.asset(
                           IconPath.sendSvg,

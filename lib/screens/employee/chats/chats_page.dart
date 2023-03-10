@@ -1,5 +1,6 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
@@ -18,7 +19,7 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ChatController());
     final controller = Get.find<ChatController>();
-    
+
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.black,
@@ -52,11 +53,10 @@ class ChatPage extends StatelessWidget {
                         //controller: Get.find<ChatController>().scrollController,
                         physics: const BouncingScrollPhysics(),
                         itemCount: Get.find<ChatController>()
-                                .chatResponseModel
-                                .value
-                                .chats
-                                ?.length ??
-                            0,
+                            .chatResponseModel
+                            .value
+                            .chats!
+                            .length,
                         itemBuilder: (context, index) {
                           final chat = Get.find<ChatController>()
                               .chatResponseModel
@@ -150,16 +150,16 @@ class ChatPage extends StatelessWidget {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
-                                                      children: const [
-                                                        Text(
-                                                          '876543234',
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                          ),
+                                                      children: [
+                                                        const SizedBox(
+                                                          width: 10,
                                                         ),
                                                         Text(
-                                                          'John',
-                                                          style: TextStyle(
+                                                          chat.employee
+                                                                  ?.firstName ??
+                                                              '',
+                                                          style:
+                                                              const TextStyle(
                                                             color: Colors.white,
                                                           ),
                                                         ),
@@ -178,11 +178,13 @@ class ChatPage extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      const Align(
+                                      Align(
                                         alignment: Alignment.bottomRight,
                                         child: Text(
-                                          '11:45AM',
-                                          style: TextStyle(
+                                          DateFormat('hh:mm a').format(
+                                              DateTime.parse(
+                                                  chat.createdAt.toString())),
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.white,
                                           ),
@@ -228,8 +230,8 @@ class ChatPage extends StatelessWidget {
                               Get.find<ChatController>()
                                   .chatResponseModel
                                   .value
-                                  .chatHistory
-                                  ?.first
+                                  .chatHistory!
+                                  .first
                                   .employerId),
                           icon: SvgPicture.asset(
                             IconPath.sendSvg,

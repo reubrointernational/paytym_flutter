@@ -46,7 +46,7 @@ class ChatController extends GetxController with BaseController {
 
   fetchChat() async {
     showLoading();
-    print('h');
+  
     Get.find<BaseClient>().onError = fetchChat;
     var responseString = await Get.find<BaseClient>()
         .get(ApiEndPoints.getChat, Get.find<LoginController>().getHeader())
@@ -67,7 +67,7 @@ class ChatController extends GetxController with BaseController {
         message.isNotEmpty &&
         employerId != null &&
         Get.find<LoginController>().loginResponseModel?.employee?.id != null) {
-      chatResponseModel.value.chats?.add(
+      chatResponseModel.value.chats!.add(
         Chat(
             userId:
                 Get.find<LoginController>().loginResponseModel!.employee!.id,
@@ -88,7 +88,7 @@ class ChatController extends GetxController with BaseController {
           .catchError(handleError);
 
       if (responseString == null) {
-        chatResponseModel.value.chats?.removeLast();
+        chatResponseModel.value.chats!.removeLast();
         chatResponseModel.refresh();
         chatTextController.text = text;
       }
