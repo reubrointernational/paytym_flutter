@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,6 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/dialog_helper.dart';
 import '../../../models/chat/chat_create_request.dart';
-import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
 import '../dashboard/dashboard_controller.dart';
@@ -45,6 +43,7 @@ class ChatControllerAdmin extends GetxController with BaseController {
   ImagePicker imagePicker = ImagePicker();
   TextEditingController groupNameController = TextEditingController();
 
+  /*fetchChatGroupList() async {
   @override
   void onReady() {
     super.onReady();
@@ -65,7 +64,7 @@ class ChatControllerAdmin extends GetxController with BaseController {
       chatGrouplist.value = chatListGroupModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
     }
-  }
+  }*/
 
   Future<void> uploadProfileImageFromCamera() async {
     XFile? image = await imagePicker.pickImage(source: ImageSource.camera);

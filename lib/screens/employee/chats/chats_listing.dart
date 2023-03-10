@@ -65,7 +65,8 @@ class ChatListingPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Get.find<ChatController>().selectedItemIndex = index;
+                            Get.find<ChatController>().selectedItemIndex =
+                                index;
                             Get.toNamed(Routes.chat);
                           },
                           child: Container(
