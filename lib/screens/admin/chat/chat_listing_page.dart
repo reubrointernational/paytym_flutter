@@ -10,6 +10,7 @@ import 'package:paytym/routes/app_routes.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/widgets.dart';
+import '../../employee/chats/chat_controller.dart';
 import '../dashboard/widgets/custom_text_form_field.dart';
 import 'chat_controller.dart';
 
@@ -18,7 +19,8 @@ class ChatListingPageAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ChatControllerAdmin());
+    Get.put(ChatController());
+
     return Scaffold(
       backgroundColor: CustomColors.lightBlueColor,
       body: SafeArea(
@@ -67,7 +69,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: CustomSearchTextField(
-                    controller: Get.find<ChatControllerAdmin>(),
+                    controller: Get.find<ChatController>(),
                     iconImg: IconPath.searchIconPng,
                     hintText: 'Search for chats & messages',
                   ),
@@ -75,13 +77,13 @@ class ChatListingPageAdmin extends StatelessWidget {
                 kSizedBoxH8,
                 Expanded(
                   child: Obx(() {
-                    var chat = Get.find<ChatControllerAdmin>()
+                    var chat = Get.find<ChatController>()
                         .chatGrouplist
                         .value
                         .chats
                         .where((element) => element.groupName
                             .toLowerCase()
-                            .contains(Get.find<ChatControllerAdmin>()
+                            .contains(Get.find<ChatController>()
                                 .searchKeyword
                                 .value
                                 .toLowerCase()))
@@ -92,7 +94,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Get.find<ChatControllerAdmin>().selectedItemIndex =
+                            Get.find<ChatController>().selectedItemIndex =
                                 index;
                             Get.toNamed(Routes.adminChat);
                           },

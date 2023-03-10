@@ -47,13 +47,7 @@ class ChatControllerAdmin extends GetxController with BaseController {
   ImagePicker imagePicker = ImagePicker();
   TextEditingController groupNameController = TextEditingController();
 
-  @override
-  void onReady() {
-    super.onReady();
-    fetchChatGroupList();
-  }
-
-  fetchChatGroupList() async {
+  /*fetchChatGroupList() async {
     Get.find<BaseClient>().onError = fetchChatGroupList;
     var requestModel = {'status': '1'};
     var responseString = await Get.find<BaseClient>()
@@ -66,7 +60,7 @@ class ChatControllerAdmin extends GetxController with BaseController {
       chatGrouplist.value = chatListGroupModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
     }
-  }
+  }*/
 
   Future<void> uploadProfileImageFromCamera() async {
     XFile? image = await imagePicker.pickImage(source: ImageSource.camera);

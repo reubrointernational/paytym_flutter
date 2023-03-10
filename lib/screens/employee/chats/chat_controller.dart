@@ -15,16 +15,16 @@ class ChatController extends GetxController with BaseController {
   final chatResponseModel = ChatResponseModel().obs;
   final TextEditingController chatTextController = TextEditingController();
   final searchKeyword = ''.obs;
-    final chatGrouplist = chat_model.ChatListGroupModel(message: '', chats: []).obs;
-    int selectedItemIndex = 0;
-  
+  final chatGrouplist =
+      chat_model.ChatListGroupModel(message: '', chats: []).obs;
+  int selectedItemIndex = 0;
 
-  final ScrollController scrollController = ScrollController();
+  //final ScrollController scrollController = ScrollController();
   @override
   void onReady() {
     super.onReady();
     fetchChatGroupList();
-    // fetchChat();
+  
   }
 
   fetchChatGroupList() async {
@@ -37,22 +37,26 @@ class ChatController extends GetxController with BaseController {
     if (responseString == null) {
       return;
     } else {
-      chatGrouplist.value = chat_model.chatListGroupModelFromJson(responseString);
+      chatGrouplist.value =
+          chat_model.chatListGroupModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
     }
+    fetchChat();
   }
 
-  void fetchChat() async {
+  fetchChat() async {
     showLoading();
+    print('h');
     Get.find<BaseClient>().onError = fetchChat;
     var responseString = await Get.find<BaseClient>()
         .get(ApiEndPoints.getChat, Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print(responseString);
 
     if (responseString != null) {
       chatResponseModel.value = chatResponseModelFromJson(responseString);
       chatResponseModel.refresh();
-      _jumpDown();
+      //_jumpDown();
       hideLoading();
       Get.find<BaseClient>().onError = null;
     }
@@ -74,7 +78,7 @@ class ChatController extends GetxController with BaseController {
 
       String text = chatTextController.text;
       chatTextController.clear();
-      _scrollDown();
+      //_scrollDown();
       var responseString = await Get.find<BaseClient>()
           .post(
               ApiEndPoints.sendChat,
@@ -91,7 +95,7 @@ class ChatController extends GetxController with BaseController {
     }
   }
 
-  void _scrollDown() async {
+  /* void _scrollDown() async {
     await Future.delayed(const Duration(milliseconds: 100));
     scrollController.animateTo(
       scrollController.position.maxScrollExtent,
@@ -105,5 +109,5 @@ class ChatController extends GetxController with BaseController {
     scrollController.jumpTo(
       scrollController.position.maxScrollExtent,
     );
-  }
+  }*/
 }
