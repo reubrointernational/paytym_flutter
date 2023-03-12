@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:paytym/core/constants/widgets.dart';
 
 import '../../../../core/constants/styles.dart';
 import '../../dashboard/dashboard_controller.dart';
@@ -17,9 +17,9 @@ class ContractPeriodTabAdmin extends StatelessWidget {
     return Obx(() {
       final employeesList =
           Get.find<DashboardControllerAdmin>().employeeList.value.employeeList;
-      return ListView.builder(
+      return ListView.separated(
         physics: const BouncingScrollPhysics(),
-        itemCount: employeesList?.length??0,
+        itemCount: employeesList?.length ?? 0,
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
@@ -29,7 +29,7 @@ class ContractPeriodTabAdmin extends StatelessWidget {
             child: Column(
               children: [
                 MedicalTitleTag(
-                  branch: 'Branch',
+                  branch: employeesList?[index].branch?.name??'',
                   name:
                       '${employeesList?[index].firstName} ${employeesList?[index].lastName}',
                   employmentId:
@@ -50,6 +50,7 @@ class ContractPeriodTabAdmin extends StatelessWidget {
             ),
           );
         },
+        separatorBuilder: (BuildContext context, int index) => kSizedBoxH10,
       );
     });
   }

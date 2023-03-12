@@ -102,7 +102,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: employeeList?.length??0,
+                  itemCount: employeeList?.length ?? 0,
                   itemBuilder: (context, index) {
                     final employees = employeeList?[index];
                     return Padding(
@@ -137,7 +137,9 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            employees?.branch?.toString() ?? '',
+                                            employees?.branch?.name
+                                                    .toString() ??
+                                                '',
                                             style: TextStyle(
                                                 color: Colors.grey.shade600,
                                                 fontSize: 12.5),
@@ -171,7 +173,9 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                               color: CustomColors.orangeColor,
                                             ),
                                             onPressed: () {
-                                             if (employeeList!=null) CsvDownloader().downloadCsv(employeeList);
+                                              if (employeeList != null)
+                                                CsvDownloader()
+                                                    .downloadCsv(employeeList);
                                             },
                                           ),
                                           //Only for HR
@@ -219,7 +223,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                               });
                                             },
                                             child: Icon(
-                                              employees?.isExpanded??false
+                                              employees?.isExpanded ?? false
                                                   ? Icons.expand_less
                                                   : Icons.expand_more,
                                               color: Colors.grey,
@@ -232,7 +236,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                   ),
                                 ),
                                 Visibility(
-                                  visible: employees?.isExpanded??false,
+                                  visible: employees?.isExpanded ?? false,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -246,10 +250,14 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          payrollDetails('Basic Salary: ',
-                                              employees?.payroll?.baseSalary??'0'),
-                                          payrollDetails('Tax: ',
-                                              employees?.payroll?.totalTax ?? 0),
+                                          payrollDetails(
+                                              'Basic Salary: ',
+                                              employees?.payroll?.baseSalary ??
+                                                  '0'),
+                                          payrollDetails(
+                                              'Tax: ',
+                                              employees?.payroll?.totalTax ??
+                                                  0),
                                         ],
                                       ),
                                       kSizedBoxH6,
@@ -257,10 +265,16 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          payrollDetails('Allowance: ',
-                                              employees?.payroll?.totalAllowance??'0'),
-                                          payrollDetails('Deduction: ',
-                                              employees?.payroll?.totalDeduction??'0'),
+                                          payrollDetails(
+                                              'Allowance: ',
+                                              employees?.payroll
+                                                      ?.totalAllowance ??
+                                                  '0'),
+                                          payrollDetails(
+                                              'Deduction: ',
+                                              employees?.payroll
+                                                      ?.totalDeduction ??
+                                                  '0'),
                                         ],
                                       ),
                                       kSizedBoxH6,
@@ -268,12 +282,15 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          payrollDetails('Bonus: ',
-                                              employees?.payroll?.totalBonus??'0'),
+                                          payrollDetails(
+                                              'Bonus: ',
+                                              employees?.payroll?.totalBonus ??
+                                                  '0'),
                                           payrollDetails(
                                               'Commission: ',
-                                              employees
-                                                  ?.payroll?.totalCommission??'0'),
+                                              employees?.payroll
+                                                      ?.totalCommission ??
+                                                  '0'),
                                         ],
                                       ),
                                     ],

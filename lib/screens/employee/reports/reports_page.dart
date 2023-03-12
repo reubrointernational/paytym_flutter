@@ -22,7 +22,7 @@ class ReportsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReportsController reportsController = Get.put(ReportsController());
+    Get.put(ReportsController());
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -62,12 +62,10 @@ class ReportsPage extends StatelessWidget {
                               ),
                             ),
                             kSizedBoxH4,
-                            Obx(
-                              () => Text(
+                            Text(
                                 '#${Get.find<LoginController>().loginResponseModel?.employee?.id?.toString().padLeft(5, '0') ?? "#00000"}',
                                 style: kTextStyleS13W500Cgrey,
                               ),
-                            ),
                             kSizedBoxH4,
                             Obx(
                               () => Text(

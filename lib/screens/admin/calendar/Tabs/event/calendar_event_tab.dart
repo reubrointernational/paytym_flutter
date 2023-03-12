@@ -28,7 +28,7 @@ class CalendarEventAdmin extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 5),
                 child: Text(
-                  '${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index]?.startDate ?? ""} - ${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index]?.endDate ?? ""}',
+                  '${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index].startDate ?? ""} - ${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index].endDate ?? ""}',
                   style: kTextStyleS13W600CustomGrey,
                 ),
               ),

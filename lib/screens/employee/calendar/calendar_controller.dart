@@ -7,15 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:paytym/screens/employee/calendar/widgets/add_meeting_dialogue.dart';
 
 import '../../../core/constants/enums.dart';
-import '../../../core/dialog_helper.dart';
 import '../../../models/calendar/holiday_admin_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
-import '../dashboard/widgets/request_advance_bottomsheet.dart';
 
 class CalendarController extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
@@ -91,7 +88,7 @@ class CalendarController extends GetxController with BaseController {
       } else {
         hideLoading();
         eventsResponseModel.value =
-            eventsResponseModelFromJson(responseString)!;
+            eventsResponseModelFromJson(responseString);
         eventsResponseModel.refresh();
         Get.find<BaseClient>().onError = null;
       }
@@ -107,6 +104,6 @@ class CalendarController extends GetxController with BaseController {
   void onReady() {
     super.onReady();
     getMeeting();
-    getEvents();
+    
   }
 }

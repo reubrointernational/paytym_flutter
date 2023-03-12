@@ -25,7 +25,7 @@ class EventRow extends StatelessWidget {
                         .eventsResponseModel
                         .value
                         .events?[index]
-                        ?.startTime ??
+                        .startTime ??
                     '',
                 style: kTextStyleS13W600CustomGrey,
               ),
@@ -35,7 +35,7 @@ class EventRow extends StatelessWidget {
                         .eventsResponseModel
                         .value
                         .events?[index]
-                        ?.endTime ??
+                        .endTime ??
                     '',
                 style: kTextStyleS13W600CustomGrey,
               ),
@@ -55,7 +55,7 @@ class EventRow extends StatelessWidget {
                           .eventsResponseModel
                           .value
                           .events?[index]
-                          ?.name ??
+                          .name ??
                       '',
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -69,7 +69,7 @@ class EventRow extends StatelessWidget {
                           .eventsResponseModel
                           .value
                           .events?[index]
-                          ?.place ??
+                          .place ??
                       '',
                   overflow: TextOverflow.ellipsis,
                   style: kTextStyleS13W600CustomGrey,

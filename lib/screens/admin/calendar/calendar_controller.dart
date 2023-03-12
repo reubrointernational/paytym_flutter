@@ -164,7 +164,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       return;
     } else {
       hideLoading();
-      eventsResponseModel.value = eventsResponseModelFromJson(responseString)!;
+      eventsResponseModel.value = eventsResponseModelFromJson(responseString);
       eventsResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
@@ -173,7 +173,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
   deleteEvent(int index) async {
     showLoading();
     var requestModel = {
-      'id': '${eventsResponseModel.value.events![index]!.id}'
+      'id': '${eventsResponseModel.value.events![index].id}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
