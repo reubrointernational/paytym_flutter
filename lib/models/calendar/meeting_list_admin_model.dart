@@ -12,12 +12,12 @@ String meetingListAdminModelToJson(MeetingListAdminModel data) =>
 
 class MeetingListAdminModel {
   MeetingListAdminModel({
-    required this.message,
-    required this.meetingsListe,
+    this.message,
+    this.meetingsListe,
   });
 
-  String message;
-  List<MeetingsListe> meetingsListe;
+  String? message;
+  List<MeetingsListe>? meetingsListe;
 
   factory MeetingListAdminModel.fromJson(Map<String, dynamic> json) =>
       MeetingListAdminModel(
@@ -32,7 +32,7 @@ class MeetingListAdminModel {
         "message": message,
         "meetings liste": meetingsListe == null
             ? []
-            : List<dynamic>.from(meetingsListe.map((x) => x.toJson())),
+            : List<dynamic>.from(meetingsListe!.map((x) => x.toJson())),
       };
 }
 
@@ -54,7 +54,7 @@ class MeetingsListe {
   int? id;
   int? userId;
   int? employerId;
-  dynamic name;
+  String? name;
   DateTime? date;
   DateTime? startTime;
   DateTime? endTime;
@@ -138,6 +138,7 @@ class User {
     this.image,
     this.isFirst,
     this.otp,
+    this.deviceId,
     this.emailVerifiedAt,
     this.createdAt,
     this.updatedAt,
@@ -155,8 +156,8 @@ class User {
   int? businessId;
   int? departmentId;
   String? salaryType;
-  dynamic rate;
-  dynamic payPeriod;
+  String? rate;
+  String? payPeriod;
   String? workdaysPerWeek;
   String? totalHoursPerWeek;
   String? extraHoursAtBaseRate;
@@ -165,7 +166,7 @@ class User {
   String? lastName;
   String? company;
   int? branchId;
-  dynamic position;
+  Position? position;
   String? email;
   String? phone;
   DateTime? dateOfBirth;
@@ -181,6 +182,7 @@ class User {
   String? image;
   String? isFirst;
   String? otp;
+  dynamic deviceId;
   dynamic emailVerifiedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -215,7 +217,9 @@ class User {
         lastName: json["last_name"],
         company: json["company"],
         branchId: json["branch_id"],
-        position: json["position"],
+        position: json["position"] == null
+            ? null
+            : Position.fromJson(json["position"]),
         email: json["email"],
         phone: json["phone"],
         dateOfBirth: json["date_of_birth"] == null
@@ -233,6 +237,7 @@ class User {
         image: json["image"],
         isFirst: json["isFirst"],
         otp: json["otp"],
+        deviceId: json["device_id"],
         emailVerifiedAt: json["email_verified_at"],
         createdAt: json["created_at"] == null
             ? null
@@ -269,7 +274,7 @@ class User {
         "last_name": lastName,
         "company": company,
         "branch_id": branchId,
-        "position": position,
+        "position": position?.toJson(),
         "email": email,
         "phone": phone,
         "date_of_birth":
@@ -286,10 +291,31 @@ class User {
         "image": image,
         "isFirst": isFirst,
         "otp": otp,
+        "device_id": deviceId,
         "email_verified_at": emailVerifiedAt,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "forgot_pass_otp": forgotPassOtp,
         "status": status,
+      };
+}
+
+class Position {
+  Position({
+    this.id,
+    this.roleName,
+  });
+
+  int? id;
+  String? roleName;
+
+  factory Position.fromJson(Map<String, dynamic> json) => Position(
+        id: json["id"],
+        roleName: json["role_name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "role_name": roleName,
       };
 }

@@ -126,7 +126,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
   deleteMeeting(int index) async {
     showLoading();
     var requestModel = {
-      'id': '${meetingResponseModel.value.meetingsListe[index].id}'
+      'id': '${meetingResponseModel.value.meetingsListe?[index].id}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.deleteMeetings, jsonEncode(requestModel),
@@ -136,7 +136,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       return;
     } else {
       hideLoading();
-      meetingResponseModel.value.meetingsListe.removeAt(index);
+      meetingResponseModel.value.meetingsListe?.removeAt(index);
       meetingResponseModel.refresh();
     }
   }

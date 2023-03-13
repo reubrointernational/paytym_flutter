@@ -87,13 +87,13 @@ class EmployeeList {
   });
 
   int? id;
-  bool isExpanded;
   int? employerId;
+  bool isExpanded;
   DateTime? employmentStartDate;
   DateTime? employmentEndDate;
   DateTime? payedDate;
   DateTime? payDate;
-  dynamic bankBranchName;
+  String? bankBranchName;
   int? businessId;
   int? departmentId;
   String? salaryType;
@@ -102,12 +102,12 @@ class EmployeeList {
   String? workdaysPerWeek;
   String? totalHoursPerWeek;
   String? extraHoursAtBaseRate;
-  dynamic employeeType;
+  String? employeeType;
   String? firstName;
   String? lastName;
   String? company;
   int? branchId;
-  dynamic position;
+  int? position;
   String? email;
   String? phone;
   DateTime? dateOfBirth;
@@ -122,14 +122,14 @@ class EmployeeList {
   String? accountNumber;
   String? image;
   String? isFirst;
-  String? otp;
+  dynamic otp;
   dynamic deviceId;
-  dynamic emailVerifiedAt;
+  DateTime? emailVerifiedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
   dynamic forgotPassOtp;
   int? status;
-  dynamic payroll;
+  Payroll? payroll;
   Department? department;
   Branch? branch;
 
@@ -180,7 +180,9 @@ class EmployeeList {
         isFirst: json["isFirst"],
         otp: json["otp"],
         deviceId: json["device_id"],
-        emailVerifiedAt: json["email_verified_at"],
+        emailVerifiedAt: json["email_verified_at"] == null
+            ? null
+            : DateTime.parse(json["email_verified_at"]),
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -189,7 +191,8 @@ class EmployeeList {
             : DateTime.parse(json["updated_at"]),
         forgotPassOtp: json["forgot_pass_otp"],
         status: json["status"],
-        payroll: json["payroll"],
+        payroll:
+            json["payroll"] == null ? null : Payroll.fromJson(json["payroll"]),
         department: json["department"] == null
             ? null
             : Department.fromJson(json["department"]),
@@ -239,12 +242,12 @@ class EmployeeList {
         "isFirst": isFirst,
         "otp": otp,
         "device_id": deviceId,
-        "email_verified_at": emailVerifiedAt,
+        "email_verified_at": emailVerifiedAt?.toIso8601String(),
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "forgot_pass_otp": forgotPassOtp,
         "status": status,
-        "payroll": payroll,
+        "payroll": payroll?.toJson(),
         "department": department?.toJson(),
         "branch": branch?.toJson(),
       };
@@ -359,5 +362,93 @@ class Department {
         "status": status,
         "created_at": createdAt,
         "updated_at": updatedAt,
+      };
+}
+
+class Payroll {
+  Payroll({
+    this.id,
+    this.userId,
+    this.employerId,
+    this.baseSalary,
+    this.netSalary,
+    this.grossSalary,
+    this.paidSalary,
+    this.paySlip,
+    this.totalTax,
+    this.totalDeduction,
+    this.totalAllowance,
+    this.totalBonus,
+    this.totalCommission,
+    this.totalFnpf,
+    this.status,
+    this.payrollStatus,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? userId;
+  int? employerId;
+  String? baseSalary;
+  String? netSalary;
+  String? grossSalary;
+  String? paidSalary;
+  dynamic paySlip;
+  String? totalTax;
+  String? totalDeduction;
+  String? totalAllowance;
+  String? totalBonus;
+  String? totalCommission;
+  String? totalFnpf;
+  int? status;
+  String? payrollStatus;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory Payroll.fromJson(Map<String, dynamic> json) => Payroll(
+        id: json["id"],
+        userId: json["user_id"],
+        employerId: json["employer_id"],
+        baseSalary: json["base_salary"],
+        netSalary: json["net_salary"],
+        grossSalary: json["gross_salary"],
+        paidSalary: json["paid_salary"],
+        paySlip: json["pay_slip"],
+        totalTax: json["total_tax"],
+        totalDeduction: json["total_deduction"],
+        totalAllowance: json["total_allowance"],
+        totalBonus: json["total_bonus"],
+        totalCommission: json["total_commission"],
+        totalFnpf: json["total_fnpf"],
+        status: json["status"],
+        payrollStatus: json["payroll_status"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "employer_id": employerId,
+        "base_salary": baseSalary,
+        "net_salary": netSalary,
+        "gross_salary": grossSalary,
+        "paid_salary": paidSalary,
+        "pay_slip": paySlip,
+        "total_tax": totalTax,
+        "total_deduction": totalDeduction,
+        "total_allowance": totalAllowance,
+        "total_bonus": totalBonus,
+        "total_commission": totalCommission,
+        "total_fnpf": totalFnpf,
+        "status": status,
+        "payroll_status": payrollStatus,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

@@ -60,8 +60,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   double sliderStartValue = 0;
   final projectDetails = ProjectDetailsModel().obs;
 
-
-String getMedicalDetails(int index) {
+  String getMedicalDetails(int index) {
     switch (index) {
       case 0:
         return medicalResponseModel.value.extraDetails?.first.medicalIssues ??
@@ -77,6 +76,7 @@ String getMedicalDetails(int index) {
         return '';
     }
   }
+
   changeSliderPosition(double value) {
     sliderValue.value = value;
   }
@@ -104,7 +104,8 @@ String getMedicalDetails(int index) {
           ? 'Do you like to process payroll?'
           : 'Do you like to reverse process payroll?',
       onConfirm: () {
-        processPayroll();
+        //0 for process payroll and 1 for reverse payroll
+        sliderValue.value == 100 ? processPayroll(1) : processPayroll(0);
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
       },
       onCancel: () {
@@ -143,7 +144,8 @@ String getMedicalDetails(int index) {
   final chatGroupList = dummy_data.obs;
   int selectedItemIndex = 0;
   String projectName = '';
-  final projectDetailsResponseModel = ProjectDetailsModel(message: '', projectsListe: []).obs;
+  final projectDetailsResponseModel =
+      ProjectDetailsModel(message: '', projectsListe: []).obs;
 
 //for bottomsheet
   showBottomSheetForReason(ReasonButton reasonButton) {
@@ -409,7 +411,7 @@ String getMedicalDetails(int index) {
     showLoading();
     var model = {
       'employer_id':
-      '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     Get.find<BaseClient>().onError = getMedical;
     var responseString = await Get.find<BaseClient>()
@@ -616,11 +618,12 @@ String getMedicalDetails(int index) {
     super.onClose();
   }
 
-  void processPayroll() async {
+  void processPayroll(payrollStatus) async {
     showLoading();
     var requestModel = {
-      'employer_id': '2'
-      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      'payroll_status': payrollStatus.toString(),
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),

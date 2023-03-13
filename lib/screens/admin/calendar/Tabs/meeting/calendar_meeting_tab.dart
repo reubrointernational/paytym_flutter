@@ -16,15 +16,16 @@ class CalendarMeetingAdmin extends StatelessWidget {
       () => ListView.separated(
         physics: const BouncingScrollPhysics(),
         itemCount: Get.find<CalendarControllerAdmin>()
-            .meetingResponseModel
-            .value
-            .meetingsListe
-            .length,
+                .meetingResponseModel
+                .value
+                .meetingsListe
+                ?.length ??
+            0,
         itemBuilder: (context, index) {
           final meeting = Get.find<CalendarControllerAdmin>()
               .meetingResponseModel
               .value
-              .meetingsListe[index];
+              .meetingsListe?[index];
           return SizedBox(
             height: 120,
             child: Row(
@@ -37,12 +38,12 @@ class CalendarMeetingAdmin extends StatelessWidget {
                       kSizedBoxH10,
                       Text(
                         DateFormat('EEE')
-                            .format(meeting.date ?? DateTime(0000, 00, 00)),
+                            .format(meeting?.date ?? DateTime(0000, 00, 00)),
                         style: kTextStyleS18W600.copyWith(
                             color: CustomColors.grey156x3TextColor),
                       ),
                       Text(
-                        meeting.date?.day.toString() ?? '',
+                        meeting?.date?.day.toString() ?? '',
                         style: kTextStyleS18W600.copyWith(
                             color: CustomColors.lightBlueColor),
                       ),
@@ -65,18 +66,18 @@ class CalendarMeetingAdmin extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                meeting.name ?? '',
+                                meeting?.name ?? '',
                                 style: kTextStyleS18W600.copyWith(
                                     color: CustomColors.blackTextColor),
                               ),
                               kSizedBoxH4,
                               Text(
-                                '${meeting.user?.firstName ?? ''} ${meeting.user?.lastName ?? ''}',
+                                '${meeting?.user?.firstName ?? ''} ${meeting?.user?.lastName ?? ''}',
                                 style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
                                     color: Colors.grey),
                               ),
                               Text(
-                                '${meeting.user?.position ?? ''}',
+                                meeting?.user?.position?.roleName ?? '',
                                 style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
                                     color: Colors.grey),
                               ),
@@ -90,7 +91,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                   ),
                                   kSizedBoxW4,
                                   Text(
-                                    '${DateFormat.jm().format(meeting.startTime ?? DateTime(0000, 00, 00))} - ${DateFormat.jm().format(meeting.endTime ?? DateTime(0000, 00, 00))}',
+                                    '${DateFormat.jm().format(meeting?.startTime ?? DateTime(0000, 00, 00))} - ${DateFormat.jm().format(meeting?.endTime ?? DateTime(0000, 00, 00))}',
                                     style: kTextStyleS14W600Cgrey300LS0p2
                                         .copyWith(color: Colors.grey),
                                   ),
