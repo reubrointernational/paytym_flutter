@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
 
 import '../../../../core/colors/colors.dart';
@@ -17,8 +18,9 @@ class LeavesCardAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // LeaveStatusModel leaveStatusModel =
-    //     Get.find<LeavesControllerAdmin>().getLeaveStatusModel(leave?.status);
+    Get.put(ReportsControllerAdmin());
+    LeaveStatusModel leaveStatusModel =
+        Get.find<LeavesControllerAdmin>().getLeaveStatusModel(leave?.status);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(
@@ -29,6 +31,7 @@ class LeavesCardAdmin extends StatelessWidget {
             '${leave?.startDate} - ${leave?.endDate}',
             style: kTextStyleS15W600CGrey,
           ),
+          kSizedBoxH10,
           Container(
             height: 100,
             padding: const EdgeInsets.all(10),
@@ -46,8 +49,8 @@ class LeavesCardAdmin extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Name',
+                      Text(
+                        '${leave?.user?.firstName} ${leave?.user?.lastName}',
                         overflow: TextOverflow.ellipsis,
                         style: kTextStyleS18W600,
                       ),
@@ -62,9 +65,9 @@ class LeavesCardAdmin extends StatelessWidget {
                         leave?.type.toCamelCase() ?? '',
                         style: TextStyle(
                           fontSize: 15,
-                          color: leave?.type
-                                 .toLowerCase()
-                                 .contains(kcasualString) ??
+                          color: leave?.type!
+                                      .toLowerCase()
+                                      .contains(kcasualString) ??
                                   false
                               ? CustomColors.orangeLabelColor
                               : CustomColors.blueLabelColor,

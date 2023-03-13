@@ -94,12 +94,12 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                   validator: (value) => Get.find<LeavesControllerAdmin>()
                       .notEmptyValidator(value!),
                   onSaved: (value) {
-                    //todo uncommend
-                    // Get.find<LeavesControllerAdmin>().reason =
-                    //     value!;
-                    // Get.find<ReportsControllerAdmin>()
-                    //     .editAttendanceReason
-                    //     .value = value;
+                    Get.find<LeavesControllerAdmin>().acceptRejectReason =
+                        value!;
+
+                    Get.find<ReportsControllerAdmin>()
+                        .editAttendanceReason
+                        .value = value;
                   },
                 ),
               ],
@@ -120,6 +120,7 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                         .save();
 
                     if (reasonButton.name != 'attendanceEdit') {
+                      print(reasonButton.name.contains('leave'));
                       reasonButton.name.contains('leave')
                           ? Get.find<LeavesControllerAdmin>()
                               .approveOrDeclineLeave(reasonButton)
@@ -128,7 +129,6 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                     } else {
                       Get.find<ReportsControllerAdmin>().updateAttendance();
                     }
-                    
                   }
                 },
                 style: ElevatedButton.styleFrom(

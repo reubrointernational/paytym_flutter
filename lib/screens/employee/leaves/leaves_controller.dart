@@ -24,6 +24,8 @@ class LeavesController extends GetxController with BaseController {
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
+  final TextEditingController startTimeController = TextEditingController();
+  final TextEditingController endTimeController = TextEditingController();
 
   @override
   void onReady() {
@@ -37,6 +39,7 @@ class LeavesController extends GetxController with BaseController {
     var responseString = await Get.find<BaseClient>()
         .get(ApiEndPoints.leave, Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print(responseString);
     if (responseString == null) {
       return;
     } else {
@@ -54,7 +57,7 @@ class LeavesController extends GetxController with BaseController {
         .post(ApiEndPoints.leave, leaveRequestModelToJson(leaveRequestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-
+    
     if (responseString == null) {
       return null;
     } else {
@@ -122,13 +125,21 @@ class LeavesController extends GetxController with BaseController {
         DialogHelper.showToast(desc: model.message!);
         LeaveRequest leaveRequest = LeaveRequest(
             title: leaveRequestModel.title,
-            startDate: getDateReverseString(leaveRequestModel.startDate),
-            endDate: getDateReverseString(leaveRequestModel.endDate),
+            startDate: (selectedItem.value == 'halfday')
+                ? '${getDateReverseString(leaveRequestModel.startDate)} ${startTimeController.text}'
+                : getDateReverseString(leaveRequestModel.startDate),
+            endDate: (selectedItem.value == 'halfday')
+                ? '${getDateReverseString(leaveRequestModel.endDate)} ${endTimeController.text}'
+                : getDateReverseString(leaveRequestModel.startDate),
+
+            //startDate: getDateReverseString(leaveRequestModel.startDate),
+            //endDate: getDateReverseString(leaveRequestModel.endDate),
             type: leaveRequestModel.type);
         leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
         leaveRequestModel = LeaveRequestModel();
         startDate = DateTime.now();
         endDate = DateTime.now();
+
         startDateController.text = kStartDateString;
         endDateController.text = kEndDateString;
         Get.back();

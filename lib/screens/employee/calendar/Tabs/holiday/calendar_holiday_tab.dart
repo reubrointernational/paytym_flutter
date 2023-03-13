@@ -8,9 +8,9 @@ class CalendarHolidayTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    /*WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.find<CalendarController>().getHolidays();
-    });
+    });*/
     return Obx(() => ListView.builder(
           physics: const BouncingScrollPhysics(),
           itemCount: Get.find<CalendarController>()

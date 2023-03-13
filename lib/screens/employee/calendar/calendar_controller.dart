@@ -31,8 +31,12 @@ class CalendarController extends GetxController with BaseController {
     if (meetingResponseModel.value.message?.isEmpty ?? true) {
       showLoading();
       Get.find<BaseClient>().onError = getMeeting;
+      var requestModel = {
+        'employer_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      };
       var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.meetings, null,
+          .post(ApiEndPoints.meetings, jsonEncode(requestModel),
               Get.find<LoginController>().getHeader())
           .catchError(handleError);
       if (responseString == null) {
@@ -103,7 +107,8 @@ class CalendarController extends GetxController with BaseController {
   @override
   void onReady() {
     super.onReady();
-    getMeeting();
-    
+    //getMeeting();
+    getEvents();
+    //getHolidays();
   }
 }

@@ -37,6 +37,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   final selectedDepartment = departments.first.obs;
   final selectedBranch = branches.first.obs;
   int selectedItemIndex = 0;
+  int leaveStatus = 0;
 
   //for bottomsheet
   final requestAdvanceFormKey = GlobalKey<FormState>();
@@ -45,8 +46,8 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   @override
   void onReady() {
     super.onReady();
-    fetchLeaveData();
-    fetchLeaveData(0);
+    fetchLeaveData(leaveStatus);
+    //fetchLeaveData(0);
   }
 
   isToday(DateTime dateTime) {
@@ -107,7 +108,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var requestModel = {
-      'status': status,
+      'status': '0',
       'employer_id':
           '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
@@ -115,10 +116,12 @@ class LeavesControllerAdmin extends GetxController with BaseController {
         .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+
     if (responseString == null) {
       return;
     } else {
       hideLoading();
+      leaveStatus = status;
       status == 1
           ? leaveAdminResponseModel.value =
               leavesListAdminModelFromJson(responseString)
@@ -130,33 +133,35 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   }
 
   approveOrDeclineLeave(ReasonButton reasonButton) async {
-    if (requestAdvanceFormKey.currentState!.validate()) {
-      requestAdvanceFormKey.currentState!.save();
-      showLoading();
-      final model = LeaveAcceptDeclineRequestModel(
-          reason: acceptRejectReason,
-          employeeId: leaveAdminResponseModel
-              .value.leaveRequest[selectedItemIndex].userId
-              .toString(),
-          approvalStatus: reasonButton == ReasonButton.leaveApprove ? '0' : '1',
-          startDate: leaveAdminResponseModel
-              .value.leaveRequest[selectedItemIndex].startDate!);
-      var responseString = await Get.find<BaseClient>()
-          .post(
-              ApiEndPoints.leaveAcceptReject,
-              leaveAcceptDeclineRequestModelToJson(model),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        acceptRejectReason = '';
-        hideLoading();
-        DialogHelper.showToast(
-            desc:
-                messageOnlyResponseModelFromJson(responseString).message ?? '');
-        Get.back();
-      }
+   
+    showLoading();
+    final model = LeaveAcceptDeclineRequestModel(
+        reason: acceptRejectReason,
+        employeeId: leaveStatus != 1
+            ? leaveAdminResponseModelPending
+                .value.leaveRequest![selectedItemIndex].userId
+                .toString()
+            : leaveAdminResponseModel
+                .value.leaveRequest![selectedItemIndex].userId
+                .toString(),
+        approvalStatus: reasonButton == ReasonButton.leaveApprove ? '0' : '1',
+        startDate: leaveStatus != 1
+            ? leaveAdminResponseModelPending
+                .value.leaveRequest![selectedItemIndex].startDate!
+            : leaveAdminResponseModel
+                .value.leaveRequest![selectedItemIndex].startDate!);
+    var responseString = await Get.find<BaseClient>()
+        .post(
+            ApiEndPoints.leaveAcceptReject,
+            leaveAcceptDeclineRequestModelToJson(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
   }
 

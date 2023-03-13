@@ -11,8 +11,9 @@ class CalendarEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<CalendarController>().getEvents());
+    /*WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<CalendarController>().getEvents();
+    });*/
     return Obx(
       () => ListView.builder(
         physics: const BouncingScrollPhysics(),
