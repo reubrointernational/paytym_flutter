@@ -15,7 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dotted_border: ^2.0.0+3
   firebase_core: ^2.1.1
-  firebase_messaging: ^14.0.4
+  firebase_messaging: ^14.2.6
   flutter:
     sdk: flutter
   flutter_cached_pdfview: ^0.4.1
@@ -63,7 +63,6 @@ fonts:
     fonts:
       - asset: assets/fonts/dm_serif/DMSerifDisplay-Regular.ttf
       - asset: assets/fonts/dm_serif/DMSerifDisplay-Italic.ttf
-
 # fonts:
 #   - family: Schyler
 #     fonts:

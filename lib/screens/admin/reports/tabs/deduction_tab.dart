@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/screens/admin/widgets/add_deduction_bottom_sheet.dart';
@@ -18,71 +19,71 @@ class DeductionTabAdmin extends StatelessWidget {
         (_) => Get.find<ReportsControllerAdmin>().getDeduction());
     return Column(
       children: [
-        SizedBox(
-          height: 100,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              ...List.generate(
-                2,
-                (index) => Stack(
-                  children: [
-                    const Positioned(
-                      right: 12,
-                      top: 2,
-                      child: Icon(
-                        Icons.download_outlined,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30),
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade200),
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.lightBlue),
-                            child: Text(
-                              '16',
-                              style: kTextStyleS18W600.copyWith(
-                                  color: Colors.amber),
-                            ),
-                          ),
-                          kSizedBoxH10,
-                          Text(
-                            index == 0 ? 'Surcharge' : 'Advance',
-                            style: kTextStyleS14W600LS0p2,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  DialogHelper.showBottomSheet(const AddDeductionBottomSheet());
-                },
-                icon: const Icon(
-                  Icons.add_circle_outline,
-                  size: 40,
-                  color: Colors.blue,
-                ),
-              ),
-            ],
-          ),
-        ),
+        // SizedBox(
+        //   height: 100,
+        //   child: ListView(
+        //     scrollDirection: Axis.horizontal,
+        //     children: [
+        //       ...List.generate(
+        //         2,
+        //         (index) => Stack(
+        //           children: [
+        //             const Positioned(
+        //               right: 12,
+        //               top: 2,
+        //               child: Icon(
+        //                 Icons.download_outlined,
+        //                 color: Colors.green,
+        //               ),
+        //             ),
+        //             Container(
+        //               decoration: BoxDecoration(
+        //                 border: Border.all(color: Colors.grey.shade200),
+        //                 borderRadius: BorderRadius.circular(10),
+        //               ),
+        //               margin: const EdgeInsets.symmetric(horizontal: 10),
+        //               padding: const EdgeInsets.symmetric(
+        //                   vertical: 10, horizontal: 30),
+        //               child: Column(
+        //                 children: [
+        //                   Container(
+        //                     alignment: Alignment.center,
+        //                     height: 50,
+        //                     width: 50,
+        //                     decoration: BoxDecoration(
+        //                         border: Border.all(color: Colors.grey.shade200),
+        //                         borderRadius: BorderRadius.circular(10),
+        //                         color: Colors.lightBlue),
+        //                     child: Text(
+        //                       '16',
+        //                       style: kTextStyleS18W600.copyWith(
+        //                           color: Colors.amber),
+        //                     ),
+        //                   ),
+        //                   kSizedBoxH10,
+        //                   Text(
+        //                     index == 0 ? 'Surcharge' : 'Advance',
+        //                     style: kTextStyleS14W600LS0p2,
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       IconButton(
+        //         onPressed: () {
+        //           DialogHelper.showBottomSheet(const AddDeductionBottomSheet());
+        //         },
+        //         icon: const Icon(
+        //           Icons.add_circle_outline,
+        //           size: 40,
+        //           color: Colors.blue,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         kSizedBoxH10,
         Expanded(
           child: Obx(
@@ -98,7 +99,8 @@ class DeductionTabAdmin extends StatelessWidget {
                 return Stack(
                   children: [
                     Container(
-                      height: 260,
+                      // height: 260,
+
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey.shade200),
                           borderRadius: BorderRadius.circular(10)),
@@ -119,86 +121,142 @@ class DeductionTabAdmin extends StatelessWidget {
                                           .details?[index]
                                           .name ??
                                       '',
-                                  employmentId:
-                                      Get.find<ReportsControllerAdmin>()
-                                              .deductionResponseModel
-                                              .value
-                                              .details?[index]
-                                              .description ??
-                                          '',
+                                  employmentId: '',
                                 ),
                               ),
                             ],
                           ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                kFundDeductionsString,
-                                style: kTextStyleS12W600CcustomGrey,
-                              ),
-                              Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
-                                style: kTextStyleS12W600CcustomGrey,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                kProfessionalTaxString,
-                                style: kTextStyleS12W600CcustomGrey,
-                              ),
-                              Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
-                                style: kTextStyleS12W600CcustomGrey,
+                              Expanded(
+                                child: Text(
+                                  Get.find<ReportsControllerAdmin>()
+                                          .deductionResponseModel
+                                          .value
+                                          .details?[index]
+                                          .description ??
+                                      '',
+                                  style: kTextStyleS12W600CcustomGrey,
+                                ),
                               ),
                             ],
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Surcharge',
-                                style: kTextStyleS12W600CcustomGrey,
-                              ),
-                              Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
-                                style: kTextStyleS12W600CcustomGrey,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Advance',
-                                style: kTextStyleS12W600CcustomGrey,
-                              ),
-                              Text(
-                                "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
-                                style: kTextStyleS12W600CcustomGrey,
-                              ),
-                            ],
-                          ),
+                          kSizedBoxH6,
                           Padding(
-                            padding: const EdgeInsets.only(top: 15),
+                            padding: const EdgeInsets.only(bottom: 6),
+                            child: Visibility(
+                              visible: Get.find<ReportsControllerAdmin>()
+                                      .deductionResponseModel
+                                      .value
+                                      .details?[index]
+                                      .amount
+                                      ?.isNotEmpty ??
+                                  false,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Amount',
+                                    style: kTextStyleS12W600CcustomGrey,
+                                  ),
+                                  Text(
+                                    "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
+                                    style: kTextStyleS12W600CcustomGrey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: Get.find<ReportsControllerAdmin>()
+                                    .deductionResponseModel
+                                    .value
+                                    .details?[index]
+                                    .percentage
+                                    ?.isNotEmpty ??
+                                false,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  kTotalString,
-                                  style: kTextStyleS13W600Cblue,
+                                  'Percentage',
+                                  style: kTextStyleS12W600CcustomGrey,
                                 ),
                                 Text(
-                                  "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
-                                  style: kTextStyleS13W600Cblue.copyWith(
-                                      color: Colors.lightBlue),
+                                  '${Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].percentage}%',
+                                  style: kTextStyleS12W600CcustomGrey,
                                 ),
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Created at',
+                                  style: kTextStyleS12W600CcustomGrey,
+                                ),
+                                Text(
+                                  DateFormat('dd-MM-yyyy').format(
+                                      Get.find<ReportsControllerAdmin>()
+                                              .deductionResponseModel
+                                              .value
+                                              .details?[index]
+                                              .createdAt ??
+                                          DateTime(0000, 00, 00)),
+                                  style: kTextStyleS12W600CcustomGrey,
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     const Text(
+                          //       'Surcharge',
+                          //       style: kTextStyleS12W600CcustomGrey,
+                          //     ),
+                          //     Text(
+                          //       "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
+                          //       style: kTextStyleS12W600CcustomGrey,
+                          //     ),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     const Text(
+                          //       'Advance',
+                          //       style: kTextStyleS12W600CcustomGrey,
+                          //     ),
+                          //     Text(
+                          //       "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
+                          //       style: kTextStyleS12W600CcustomGrey,
+                          //     ),
+                          //   ],
+                          // ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top: 15),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       const Text(
+                          //         kTotalString,
+                          //         style: kTextStyleS13W600Cblue,
+                          //       ),
+                          //       Text(
+                          //         "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
+                          //         style: kTextStyleS13W600Cblue.copyWith(
+                          //             color: Colors.lightBlue),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
