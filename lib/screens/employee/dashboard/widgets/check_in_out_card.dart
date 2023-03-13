@@ -176,48 +176,48 @@ class CheckInOutCard extends StatelessWidget {
                 ),
               ),
               kSizedBoxH10,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    kNextShiftString,
-                    style: TextStyle(
-                      color: CustomColors.whiteTextColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Row(
-                    children: const [
-                      Icon(
-                        Icons.calendar_month,
-                        size: 13,
-                        color: CustomColors.lightBlueColor,
-                      ),
-                      kSizedBoxW4,
-                      Text(
-                        kSep20String,
-                        style: kTextStyleS14C255140x3,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: const [
-                      Icon(
-                        Icons.schedule,
-                        size: 13,
-                        color: CustomColors.lightBlueColor,
-                      ),
-                      kSizedBoxW4,
-                      Text(
-                        k08PMString,
-                        style: kTextStyleS14C255140x3,
-                      ),
-                    ],
-                  ),
-                  kSizedBoxW25,
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     const Text(
+              //       kNextShiftString,
+              //       style: TextStyle(
+              //         color: CustomColors.whiteTextColor,
+              //         fontSize: 14,
+              //         fontWeight: FontWeight.w700,
+              //       ),
+              //     ),
+              //     Row(
+              //       children: const [
+              //         Icon(
+              //           Icons.calendar_month,
+              //           size: 13,
+              //           color: CustomColors.lightBlueColor,
+              //         ),
+              //         kSizedBoxW4,
+              //         Text(
+              //           kSep20String,
+              //           style: kTextStyleS14C255140x3,
+              //         ),
+              //       ],
+              //     ),
+              //     Row(
+              //       children: const [
+              //         Icon(
+              //           Icons.schedule,
+              //           size: 13,
+              //           color: CustomColors.lightBlueColor,
+              //         ),
+              //         kSizedBoxW4,
+              //         Text(
+              //           k08PMString,
+              //           style: kTextStyleS14C255140x3,
+              //         ),
+              //       ],
+              //     ),
+              //     kSizedBoxW25,
+              //   ],
+              // ),
             ],
           ),
         ),

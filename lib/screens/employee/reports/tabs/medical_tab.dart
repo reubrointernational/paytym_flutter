@@ -1,45 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paytym/models/report/medical_list_admin_model.dart';
-import '../../../admin/reports/dummy_data.dart';
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/styles.dart';
+import '../../../../core/constants/widgets.dart';
 import '../reports_controller.dart';
 
 class MedicalTab extends StatelessWidget {
   const MedicalTab({super.key});
   @override
   Widget build(BuildContext context) {
-    final medical = Get.find<ReportsController>()
-            .medicalResponseModel
-            .value
-            .extraDetails
-            .isEmpty
-        ? ExtraDetail()
-        : Get.find<ReportsController>()
-            .medicalResponseModel
-            .value
-            .extraDetails
-            .firstWhere((element) => element.employeeId == 1
-                // Get.find<LoginController>().loginResponseModel?.employee?.id,
-                );
-    var med = [
-      medical.medicalIssues,
-      medical.allergies,
-      '',
-      medical.bloodGrp,
-      medical.measurement,
-    ];
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<ReportsController>().getMedical();
+    });
     return Container(
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      child: ListView.separated(
+      child: Obx(() => ListView.separated(
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                medicalKeys[index],
-                style: const TextStyle(fontSize: 13),
-              ),
-              subtitle: Text(med[index] ?? ''),
+            return Column(
+              children: [
+                ...List.generate(
+                  4,
+                  ((subIndex) {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: 20, left: 8, right: 8),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              medicalList[subIndex],
+                              style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
+                                  color: Colors.black),
+                            ),
+                          ),
+                          kSizedBoxW12,
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                Get.find<ReportsController>()
+                                    .getMedicalDetails(subIndex),
+                                style: kTextStyleS14C255140x3.copyWith(
+                                    color: Colors.lightBlue),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              ],
             );
           },
           separatorBuilder: (context, index) {
@@ -47,7 +60,12 @@ class MedicalTab extends StatelessWidget {
               height: 0,
             );
           },
-          itemCount: med.length),
+          itemCount: Get.find<ReportsController>()
+                  .medicalResponseModel
+                  .value
+                  .extraDetails
+                  ?.length ??
+              0)),
     );
   }
 }

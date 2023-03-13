@@ -18,7 +18,7 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(()=>DashboardController(),fenix: true);
+    Get.lazyPut(() => DashboardController(), fenix: true);
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       floatingActionButton: FloatingActionButton(
@@ -74,30 +74,37 @@ class DashboardPage extends StatelessWidget {
                     ),
                     Container(
                       color: CustomColors.dashboardGreyBackgroundColor,
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(20),
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemCount: employeeLeaves.length,
-                        itemBuilder: (context, index) {
-                          return Stack(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: employeeLeaves[index]["bgColor"],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: DashboardColoredCard(
-                                  index: index,
-                                ),
-                              ),
-                            ],
+                      child: FutureBuilder(
+                        future: Get.find<DashboardController>()
+                            .fetchDashboardDetails(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(20),
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                            ),
+                            itemCount: employeeLeaves.length,
+                            itemBuilder: (context, index) {
+                              return Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: employeeLeaves[index]["bgColor"],
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: DashboardColoredCard(
+                                      index: index,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
                       ),

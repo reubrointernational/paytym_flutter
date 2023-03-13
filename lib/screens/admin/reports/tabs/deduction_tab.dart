@@ -109,12 +109,23 @@ class DeductionTabAdmin extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            children: const [
+                            children: [
                               Expanded(
                                 child: MedicalTitleTag(
-                                  branch: 'Branch',
-                                  name: 'Akhil Reubro',
-                                  employmentId: '0045786',
+                                  branch: '',
+                                  name: Get.find<ReportsControllerAdmin>()
+                                          .deductionResponseModel
+                                          .value
+                                          .details?[index]
+                                          .name ??
+                                      '',
+                                  employmentId:
+                                      Get.find<ReportsControllerAdmin>()
+                                              .deductionResponseModel
+                                              .value
+                                              .details?[index]
+                                              .description ??
+                                          '',
                                 ),
                               ),
                             ],

@@ -60,6 +60,23 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   double sliderStartValue = 0;
   final projectDetails = ProjectDetailsModel().obs;
 
+
+String getMedicalDetails(int index) {
+    switch (index) {
+      case 0:
+        return medicalResponseModel.value.extraDetails?.first.medicalIssues ??
+            '';
+      case 1:
+        return medicalResponseModel.value.extraDetails?.first.allergies ?? '';
+      case 2:
+        return medicalResponseModel.value.extraDetails?.first.bloodGrp ?? '';
+      case 3:
+        return medicalResponseModel.value.extraDetails?.first.measurement ?? '';
+
+      default:
+        return '';
+    }
+  }
   changeSliderPosition(double value) {
     sliderValue.value = value;
   }
@@ -391,8 +408,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   getMedical() async {
     showLoading();
     var model = {
-      'employer_id': '4'
-      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      'employer_id':
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     Get.find<BaseClient>().onError = getMedical;
     var responseString = await Get.find<BaseClient>()

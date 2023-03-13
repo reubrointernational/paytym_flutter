@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../screens/employee/dashboard/dashboard_controller.dart';
 import '../../screens/login/login_controller.dart';
 import 'icons.dart';
 
@@ -67,22 +68,24 @@ List<Map<String, dynamic>> employeeLeaves = [
     //todo change percentage by calculating
     "bgColor": const Color.fromRGBO(0, 148, 66, 1),
     'total':
-        "${Get.find<LoginController>().loginResponseModel?.absence ?? '0'}",
+        "${Get.find<DashboardController>().dashboardModel.value.absence ?? '0'}",
     'icon': Icons.people_outline,
     "title": "Absentees",
-    "attendance_percentage": 98,
+    "attendance_percentage": '98',
   },
   {
     "bgColor": const Color.fromRGBO(250, 42, 20, 1),
     //todo change casual to sick leave in api
-    'total': "${Get.find<LoginController>().loginResponseModel?.casual ?? '0'}",
+    'total':
+        "${Get.find<DashboardController>().dashboardModel.value.casual ?? '0'}",
     'icon': Icons.text_snippet_outlined,
     "title": "Sick Leave",
     "attendance_percentage": 98,
   },
   {
     "bgColor": const Color.fromRGBO(255, 92, 17, 1),
-    'total': "${Get.find<LoginController>().loginResponseModel?.annual ?? '0'}",
+    'total':
+        "${Get.find<DashboardController>().dashboardModel.value.annual ?? '0'}",
     'icon': Icons.event,
     "title": 'Annual Leave',
     "attendance_percentage": 98,
@@ -90,7 +93,7 @@ List<Map<String, dynamic>> employeeLeaves = [
   {
     "bgColor": const Color.fromRGBO(18, 115, 205, 1),
     'total':
-        "${Get.find<LoginController>().loginResponseModel?.halfday ?? '0'}",
+        "${Get.find<DashboardController>().dashboardModel.value.halfday ?? '0'}",
     'icon': Icons.schedule,
     //todo change halfday to late arrival in api
     "title": 'Late Arrival',
@@ -106,6 +109,13 @@ List<String> leaveTypes = [
   'casual',
   'sick',
   'halfday'
+];
+
+final medicalList = [
+  'Medical condition',
+  'Allergies & Reaction',
+  'Blood type',
+  'Weight'
 ];
 
 Map<String, double> datamap = {
@@ -217,8 +227,6 @@ List<Map<String, dynamic>> financeDetails = [
   },
 ];
 
-
-
 List<String> selectMembersTabs = ['Departments ', 'Branches '];
 
 List<Map<String, dynamic>> payrollList = [
@@ -328,8 +336,6 @@ List<String> branchesDummyData = [
   'Branches 7',
   'Branches 8',
 ];
-
-
 
 List<String> payrollTabList = ['Pending', 'Payment', 'Payment History'];
 

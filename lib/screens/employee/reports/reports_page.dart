@@ -63,15 +63,13 @@ class ReportsPage extends StatelessWidget {
                             ),
                             kSizedBoxH4,
                             Text(
-                                '#${Get.find<LoginController>().loginResponseModel?.employee?.id?.toString().padLeft(5, '0') ?? "#00000"}',
-                                style: kTextStyleS13W500Cgrey,
-                              ),
+                              '#${Get.find<LoginController>().loginResponseModel?.employee?.id?.toString().padLeft(5, '0') ?? "#00000"}',
+                              style: kTextStyleS13W500Cgrey,
+                            ),
                             kSizedBoxH4,
-                            Obx(
-                              () => Text(
-                                "$kNetPayString \$${Get.find<LoginController>().loginResponseModel?.employee?.rate} ${Get.find<LoginController>().loginResponseModel?.employee?.salaryType=='0'?'/month':'/hour'}",
-                                style: kTextStyleS13W500Cgrey,
-                              ),
+                            Text(
+                              "$kNetPayString \$${Get.find<LoginController>().loginResponseModel?.employee?.rate} ${Get.find<LoginController>().loginResponseModel?.employee?.salaryType == '0' ? '/month' : '/hour'}",
+                              style: kTextStyleS13W500Cgrey,
                             ),
                           ],
                         ),

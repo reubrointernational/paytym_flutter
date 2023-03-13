@@ -22,13 +22,17 @@ class DeductionListAdminModel {
   factory DeductionListAdminModel.fromJson(Map<String, dynamic> json) =>
       DeductionListAdminModel(
         message: json["message"],
-        details:
-            List<Detail>.from(json["Details"].map((x) => Detail.fromJson(x))),
+        details: json["Details"] == null
+            ? []
+            : List<Detail>.from(
+                json["Details"]!.map((x) => Detail.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "Details": List<dynamic>.from(details!.map((x) => x.toJson())),
+        "Details": details == null
+            ? []
+            : List<dynamic>.from(details!.map((x) => x.toJson())),
       };
 }
 
@@ -60,8 +64,12 @@ class Detail {
         amount: json["amount"],
         percentage: json["percentage"],
         description: json["description"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,7 +79,7 @@ class Detail {
         "amount": amount,
         "percentage": percentage,
         "description": description,
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

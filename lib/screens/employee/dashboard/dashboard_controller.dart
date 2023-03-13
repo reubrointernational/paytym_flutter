@@ -13,6 +13,7 @@ import 'package:paytym/screens/employee/dashboard/widgets/request_overtime_botto
 import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/constants/enums.dart';
+import '../../../models/dashboard/dashboard_response_model.dart';
 import '../../../models/login/user_model.dart';
 import '../../../models/dashboard/request_advance_model.dart';
 import '../../../models/report/overtime_approve_edit_request_model.dart';
@@ -41,6 +42,7 @@ class DashboardController extends GetxController with BaseController {
   };
   String? qr;
   bool isCheckedInWithQR = false;
+  final dashboardModel = DashboardResponseModel().obs;
 
   getWish() {
     DateTime now = DateTime.now();
@@ -61,7 +63,8 @@ class DashboardController extends GetxController with BaseController {
     if (value.isEmpty) {
       return 'Value cannot be empty';
     } else if (int.parse(
-            Get.find<LoginController>().loginResponseModel?.employee?.rate ?? '1000') <
+            Get.find<LoginController>().loginResponseModel?.employee?.rate ??
+                '1000') <
         int.parse(value)) {
       return 'Request amount should be less than salary';
     } else if (int.parse(value) < 50) {
@@ -268,6 +271,20 @@ class DashboardController extends GetxController with BaseController {
     });
     //update check-in data when app starts
     updateCheckInData();
+  }
+
+  fetchDashboardDetails() async {
+    Get.find<BaseClient>().onError = fetchDashboardDetails;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.dashboard, null,
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      dashboardModel.value = dashboardResponseModelFromJson(responseString);
+      Get.find<BaseClient>().onError = null;
+    }
   }
 
   updateCheckInData() async {

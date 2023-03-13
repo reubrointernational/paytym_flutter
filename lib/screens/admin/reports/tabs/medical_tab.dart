@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
-import '../dummy_data.dart';
 import '../reports_controller.dart';
 import '../widgets/medical_title_tag.dart';
 
@@ -21,9 +20,9 @@ class MedicalTabAdmin extends StatelessWidget {
           .extraDetails;
       return ListView.separated(
         physics: const BouncingScrollPhysics(),
-        itemCount: medicalDetails.length,
+        itemCount: medicalDetails?.length ?? 0,
         itemBuilder: (context, index) {
-          var medicalUnit = medicalDetails[index];
+          
           return Container(
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade200),
@@ -36,10 +35,11 @@ class MedicalTabAdmin extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: MedicalTitleTag(
-                        branch: 'Branch',
+                        branch: '',
                         name:
-                            '${medicalUnit.users?.firstName} ${medicalUnit.users?.lastName}',
-                        employmentId: medicalUnit.users?.id.toString() ?? '',
+                            '${medicalDetails?[index].users?.firstName} ${medicalDetails?[index].users?.lastName}',
+                        employmentId:
+                            '#${medicalDetails?[index].users?.id?.toString().padLeft(5, '0') ?? ''}',
                       ),
                     ),
                   ],
@@ -47,22 +47,16 @@ class MedicalTabAdmin extends StatelessWidget {
                 Column(
                   children: [
                     ...List.generate(
-                      5,
-                      ((col_index) {
-                        var med = [
-                          medicalUnit.medicalIssues,
-                          medicalUnit.allergies,
-                          '',
-                          medicalUnit.bloodGrp,
-                          medicalUnit.measurement,
-                        ];
+                      4,
+                      ((subIndex) {
+                        
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: Row(
                             children: [
                               Expanded(
                                 child: Text(
-                                  medicalKeys[col_index],
+                                  medicalList[subIndex],
                                   style: kTextStyleS14W600Cgrey300LS0p2
                                       .copyWith(color: Colors.black),
                                 ),
@@ -70,7 +64,7 @@ class MedicalTabAdmin extends StatelessWidget {
                               kSizedBoxW12,
                               Expanded(
                                 child: Text(
-                                  med[col_index] ?? '',
+                                 Get.find<ReportsControllerAdmin>().getMedicalDetails(subIndex),
                                   style: kTextStyleS14C255140x3.copyWith(
                                       color: Colors.lightBlue),
                                 ),

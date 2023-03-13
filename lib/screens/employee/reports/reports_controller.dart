@@ -49,6 +49,24 @@ class ReportsController extends GetxController
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
 
 
+
+  String getMedicalDetails(int index) {
+    switch (index) {
+      case 0:
+        return medicalResponseModel.value.extraDetails?.first.medicalIssues ??
+            '';
+      case 1:
+        return medicalResponseModel.value.extraDetails?.first.allergies ?? '';
+      case 2:
+        return medicalResponseModel.value.extraDetails?.first.bloodGrp ?? '';
+      case 3:
+        return medicalResponseModel.value.extraDetails?.first.measurement ?? '';
+
+      default:
+        return '';
+    }
+  }
+
   fetchPayslip() async {
     showLoading();
     Get.find<BaseClient>().onError = fetchPayslip;
@@ -69,8 +87,10 @@ class ReportsController extends GetxController
   getMedical() async {
     showLoading();
     var model = {
-      'employer_id': '4'
-      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      'employee_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.id}',
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     Get.find<BaseClient>().onError = getMedical;
     var responseString = await Get.find<BaseClient>()
