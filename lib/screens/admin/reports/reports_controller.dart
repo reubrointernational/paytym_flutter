@@ -160,22 +160,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     return DateFormat.jm().format(dt);
   }
 
-  fetchPayslip() async {
-    showLoading();
-    Get.find<BaseClient>().onError = fetchPayslip;
-    var responseString = await Get.find<BaseClient>()
-        .post(
-            ApiEndPoints.payslip, null, Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-    if (responseString == null) {
-      return;
-    } else {
-      hideLoading();
-      payslipResponseModel.value = payslipResponseModelFromJson(responseString);
-      payslipResponseModel.refresh();
-      Get.find<BaseClient>().onError = null;
-    }
-  }
+  
 
   fetchFileTypeList() async {
     showLoading();
@@ -562,12 +547,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   String getDate(String date) {
     final DateTime now = DateTime.parse(date);
     return DateFormat('dd-MM-yyyy').format(now);
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    fetchPayslip();
   }
 
   //for downloading

@@ -214,11 +214,6 @@ class ReportsController extends GetxController
     return DateFormat('dd-MM-yyyy').format(now);
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    fetchPayslip();
-  }
 
   //for downloading
 

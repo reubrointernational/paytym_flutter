@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/screens/admin/reports/widgets/pending_payroll_listview.dart';
+import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../employee/reports/widgets/year_dropdown.dart';
 
@@ -17,6 +18,12 @@ class PayrollTab extends StatefulWidget {
 
 class _PayrollTabState extends State<PayrollTab> {
   @override
+  void initState() {
+    super.initState();
+    Get.find<ReportsController>().fetchPayslip();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -25,20 +32,20 @@ class _PayrollTabState extends State<PayrollTab> {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              Obx(() {
-                return CustomDropdownYearButton(
-                  lists: years,
-                  value: Get.find<ReportsControllerAdmin>()
-                      .selectedDropdownYear
-                      .value,
-                  onChanged: (value) {
-                    Get.find<ReportsControllerAdmin>()
-                        .selectedDropdownYear
-                        .value = value!;
-                  },
-                  hint: '2022 ',
-                );
-              }),
+              // Obx(() {
+              //   return CustomDropdownYearButton(
+              //     lists: years,
+              //     value: Get.find<ReportsControllerAdmin>()
+              //         .selectedDropdownYear
+              //         .value,
+              //     onChanged: (value) {
+              //       Get.find<ReportsControllerAdmin>()
+              //           .selectedDropdownYear
+              //           .value = value!;
+              //     },
+              //     hint: '2022 ',
+              //   );
+              // }),
               ...List.generate(
                 3,
                 (index) => InkWell(
