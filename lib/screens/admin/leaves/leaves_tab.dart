@@ -19,24 +19,31 @@ class LeavesTabAdmin extends StatelessWidget {
                 allLeaves = Get.find<LeavesControllerAdmin>()
                     .leaveAdminResponseModel
                     .value
-                    .leaveRequest
+                    .leaveRequest!
                     .where((element) => Get.find<LeavesControllerAdmin>()
-                        .isToday(element.createdAt))
+                        .isToday(element.createdAt ?? DateTime.now()))
                     .toList();
-              } else {
+              } else if (leave == 'Yesterday') {
                 allLeaves = Get.find<LeavesControllerAdmin>()
                     .leaveAdminResponseModel
                     .value
-                    .leaveRequest
+                    .leaveRequest!
                     .where((element) => Get.find<LeavesControllerAdmin>()
-                        .isYesterday(element.createdAt))
+                        .isYesterday(element.createdAt ?? DateTime.now()))
                     .toList();
+              } else {
+                allLeaves = Get.find<LeavesControllerAdmin>()
+                    .leaveAdminResponseModelPending
+                    .value
+                    .leaveRequest;
               }
+
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: allLeaves.length,
+                itemCount: allLeaves?.length,
                 itemBuilder: (context, index) {
                   final leave = allLeaves?[index];
+
                   return LeavesCardAdmin(
                     leave: leave,
                     index: index,
@@ -54,9 +61,10 @@ class LeavesTabAdmin extends StatelessWidget {
 
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: allLeaves.length,
+                itemCount: allLeaves!.length,
                 itemBuilder: (context, index) {
                   final leave = allLeaves[index];
+
                   return LeavesCardAdmin(
                     leave: leave,
                     index: index,

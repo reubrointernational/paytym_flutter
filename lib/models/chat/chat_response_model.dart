@@ -30,7 +30,7 @@ class ChatResponseModel {
         message: json["message"],
         chats: List<Chat>.from(json["chats"].map((x) => Chat.fromJson(x))),
         hod: json["hod"]!,
-        hodImage: json["hod_image"]!,
+        hodImage: json["hod_image"] ?? '',
         chatHistory:
             List<Chat>.from(json["chat_history"].map((x) => Chat.fromJson(x))),
       );

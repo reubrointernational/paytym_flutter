@@ -96,6 +96,7 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                   onSaved: (value) {
                     Get.find<LeavesControllerAdmin>().quitCompanyReason =
                         value!;
+
                     Get.find<ReportsControllerAdmin>()
                         .editAttendanceReason
                         .value = value;
@@ -119,6 +120,7 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                         .save();
 
                     if (reasonButton.name != 'attendanceEdit') {
+                      print(reasonButton.name.contains('leave'));
                       reasonButton.name.contains('leave')
                           ? Get.find<LeavesControllerAdmin>()
                               .approveOrDeclineLeave(reasonButton)
@@ -127,7 +129,6 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                     } else {
                       Get.find<ReportsControllerAdmin>().updateAttendance();
                     }
-                    
                   }
                 },
                 style: ElevatedButton.styleFrom(

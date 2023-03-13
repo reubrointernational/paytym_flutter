@@ -20,6 +20,7 @@ class CreateGroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ReportsControllerAdmin());
+    
     var memberList = Get.find<DashboardControllerAdmin>()
         .employeeList
         .value

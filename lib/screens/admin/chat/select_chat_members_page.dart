@@ -15,6 +15,7 @@ class SelectChatMembersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ChatControllerAdmin());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
         Get.find<DashboardControllerAdmin>().fetchEmployeeList());
     return CustomAdminScaffold(
