@@ -18,12 +18,6 @@ class PayrollTab extends StatefulWidget {
 
 class _PayrollTabState extends State<PayrollTab> {
   @override
-  void initState() {
-    super.initState();
-    Get.find<ReportsController>().fetchPayslip();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: [

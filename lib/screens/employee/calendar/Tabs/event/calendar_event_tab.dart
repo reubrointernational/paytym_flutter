@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/employee/calendar/Tabs/event/calendar_event_card.dart';
 import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
@@ -11,9 +12,9 @@ class CalendarEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.find<CalendarController>().getEvents();
-    });*/
+    });
     return Obx(
       () => ListView.builder(
         physics: const BouncingScrollPhysics(),
@@ -31,7 +32,7 @@ class CalendarEvent extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  '${Get.find<CalendarController>().eventsResponseModel.value.events?[index].startDate ?? ""} - ${Get.find<CalendarController>().eventsResponseModel.value.events?[index].endDate ?? ""}',
+                  '${DateFormat('dd-MM-yyyy').format(Get.find<CalendarController>().eventsResponseModel.value.events?[index].startDate??DateTime(0000,00,00))} - ${DateFormat('dd-MM-yyyy').format(Get.find<CalendarController>().eventsResponseModel.value.events?[index].endDate ?? DateTime(0000, 00, 00))}',
                   style: kTextStyleS13W600CustomGrey,
                 ),
               ),

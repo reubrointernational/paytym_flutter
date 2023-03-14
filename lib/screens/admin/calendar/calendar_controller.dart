@@ -321,14 +321,6 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     return DateFormat('hh:mm a').format(now);
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    getMeeting();
-    getEvents();
-    getHolidays();
-  }
-
   String? subjectValidator(String value, String title) {
     return GetUtils.isLengthLessThan(value, 3)
         ? "$title should be minimum 3 characters"

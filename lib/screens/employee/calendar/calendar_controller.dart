@@ -104,11 +104,5 @@ class CalendarController extends GetxController with BaseController {
     return DateFormat('hh:mm a').format(now);
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    //getMeeting();
-    getEvents();
-    //getHolidays();
-  }
+
 }

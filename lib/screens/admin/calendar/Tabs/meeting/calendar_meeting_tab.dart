@@ -12,6 +12,9 @@ class CalendarMeetingAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<CalendarControllerAdmin>().getMeeting();
+    });
     return Obx(
       () => ListView.separated(
         physics: const BouncingScrollPhysics(),
@@ -100,27 +103,27 @@ class CalendarMeetingAdmin extends StatelessWidget {
                             ],
                           ),
                         ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      Get.find<CalendarControllerAdmin>()
-                                          .deleteMeeting(index);
-                                    },
-                                    icon: const Icon(
-                                      Icons.delete_outline_outlined,
-                                      color: CustomColors.redColor,
-                                    )),
-                              ],
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Get.find<CalendarControllerAdmin>()
+                                        .deleteMeeting(index);
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete_outline_outlined,
+                                    color: CustomColors.redColor,
+                                  )),
+                            ],
                           ),
-                    ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
+                ),
               ],
             ),
           );

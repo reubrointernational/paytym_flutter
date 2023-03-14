@@ -15,6 +15,9 @@ class CalendarMeeting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<CalendarController>().getMeeting();
+    });
     return Obx(
       () => ListView.builder(
         physics: const BouncingScrollPhysics(),

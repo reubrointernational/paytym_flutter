@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
 
@@ -11,6 +12,9 @@ class CalendarEventAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<CalendarControllerAdmin>().getEvents();
+    });
     return Obx(
       () => ListView.builder(
         physics: const BouncingScrollPhysics(),
@@ -28,7 +32,7 @@ class CalendarEventAdmin extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 5),
                 child: Text(
-                  '${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index].startDate ?? ""} - ${Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index].endDate ?? ""}',
+                  '${DateFormat('dd-MM-yyyy').format(Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index].startDate ?? DateTime(0000,00,00))} - ${DateFormat('dd-MM-yyyy').format(Get.find<CalendarControllerAdmin>().eventsResponseModel.value.events?[index].endDate ?? DateTime(0000, 00, 00))}',
                   style: kTextStyleS13W600CustomGrey,
                 ),
               ),

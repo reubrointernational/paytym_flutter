@@ -47,7 +47,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   void onReady() {
     super.onReady();
     fetchLeaveData(leaveStatus);
-    //fetchLeaveData(0);
+    // fetchLeaveData(1);
   }
 
   isToday(DateTime dateTime) {
@@ -108,7 +108,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var requestModel = {
-      'status': '0',
+      'status': status,
       'employer_id':
           '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
@@ -133,7 +133,6 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   }
 
   approveOrDeclineLeave(ReasonButton reasonButton) async {
-   
     showLoading();
     final model = LeaveAcceptDeclineRequestModel(
         reason: acceptRejectReason,

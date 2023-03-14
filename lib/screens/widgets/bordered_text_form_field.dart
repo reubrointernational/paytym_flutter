@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
 import '../../core/colors/colors.dart';
 import '../../core/constants/styles.dart';
-import '../admin/reports/reports_controller.dart';
 
 class BorderedTextFormField extends StatelessWidget {
   final String hintText;
@@ -59,7 +57,7 @@ class BorderedTextFormField extends StatelessWidget {
         suffixIcon: suffixIcon,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        label: Text(label!),
+        label: Text(label ?? ''),
         hintText: hintText,
         counterText: '',
         hintStyle: const TextStyle(
