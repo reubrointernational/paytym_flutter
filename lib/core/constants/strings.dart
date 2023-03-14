@@ -337,7 +337,7 @@ List<String> branchesDummyData = [
   'Branches 8',
 ];
 
-List<String> payrollTabList = ['Pending', 'Payment', 'Payment History'];
+List<String> payrollTabList = ['Pending', 'Payment'];
 
 List<Map<String, dynamic>> chatList = [
   {

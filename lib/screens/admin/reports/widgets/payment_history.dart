@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
@@ -17,9 +19,17 @@ class _PaymentHistoryState extends State<PaymentHistory> {
     return Expanded(
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: payrollList.length,
+        itemCount: Get.find<DashboardControllerAdmin>()
+                .employeeList
+                .value
+                .employeeList
+                ?.length ??
+            0,
         itemBuilder: (context, index) {
-          final employees = payrollList[index];
+          final employees = Get.find<DashboardControllerAdmin>()
+              .employeeList
+              .value
+              .employeeList?[index];
           return Padding(
             padding: const EdgeInsets.only(bottom: 2),
             child: GestureDetector(
@@ -46,19 +56,19 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Branch',
+                                  employees?.branch?.name ?? '',
                                   style: TextStyle(
                                       color: Colors.grey.shade600,
                                       fontSize: 12.5),
                                 ),
                                 Text(
-                                  employees['name']!,
+                                  '${employees?.firstName} ${employees?.lastName}',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 Text(
-                                  'ID: ${employees['id']!}',
+                                  'ID: #${employees?.id.toString().padLeft(5, '0')}',
                                   style: TextStyle(
                                     color: Colors.grey.shade600,
                                     fontSize: 13,
@@ -74,7 +84,10 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                 Row(
                                   children: [
                                     payrollDetails(
-                                        'Account: ', employees['allowance']),
+                                        //todo account amount not allowance
+                                        'Account: ',
+                                        employees?.payroll?.totalAllowance ??
+                                            ''),
                                     kSizedBoxW4,
                                     Container(
                                       padding: const EdgeInsets.all(5),
@@ -93,7 +106,11 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                 Row(
                                   children: [
                                     payrollDetails(
-                                        'MPesa: ', employees['allowance']),
+
+                                        //mpesa amount, not allowance
+                                        'MPesa: ',
+                                        employees?.payroll?.totalAllowance ??
+                                            ''),
                                     kSizedBoxW4,
                                     Container(
                                       padding: const EdgeInsets.all(5),
@@ -112,7 +129,10 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                 Row(
                                   children: [
                                     payrollDetails(
-                                        'MyCash: ', employees['allowance']),
+                                        //mycash amount not allowance
+                                        'MyCash: ',
+                                        employees?.payroll?.totalAllowance ??
+                                            ''),
                                     kSizedBoxW4,
                                     Container(
                                       padding: const EdgeInsets.all(5),
@@ -138,7 +158,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: '\$${employees['gross_salary']}',
+                                        text:
+                                            '\$${employees?.payroll?.grossSalary ?? ''}',
                                         style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
@@ -164,28 +185,30 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              payrollDetails('Basic Salary: ',
+                                  employees?.payroll?.baseSalary ?? ''),
                               payrollDetails(
-                                  'Basic Salary: ', employees['basic_salary']),
-                              payrollDetails('Tax: ', employees['tax']),
+                                  'Tax: ', employees?.payroll?.totalTax ?? ''),
                             ],
                           ),
                           kSizedBoxH6,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              payrollDetails(
-                                  'Allowance: ', employees['allowance']),
-                              payrollDetails(
-                                  'Deduction: ', employees['deduction']),
+                              payrollDetails('Allowance: ',
+                                  employees?.payroll?.totalAllowance ?? ''),
+                              payrollDetails('Deduction: ',
+                                  employees?.payroll?.totalDeduction ?? ''),
                             ],
                           ),
                           kSizedBoxH6,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              payrollDetails('Bonus: ', employees['bonus']),
-                              payrollDetails(
-                                  'Commission: ', employees['commission']),
+                              payrollDetails('Bonus: ',
+                                  employees?.payroll?.totalBonus ?? ''),
+                              payrollDetails('Commission: ',
+                                  employees?.payroll?.totalCommission ?? ''),
                             ],
                           ),
                         ],
@@ -203,35 +226,22 @@ class _PaymentHistoryState extends State<PaymentHistory> {
 }
 
 Widget processButton(String text, Color color, Function()? onTap) => InkWell(
-  onTap: onTap,
-  child:   Container(
-  
+      onTap: onTap,
+      child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-  
         decoration: BoxDecoration(
-  
           borderRadius: BorderRadius.circular(6),
-  
           border: Border.all(width: 1, color: color),
-  
         ),
-  
         child: Text(
-  
           text,
-  
           style: TextStyle(
-  
             fontSize: 10.5,
-  
             color: color,
-  
           ),
-  
         ),
-  
       ),
-);
+    );
 
 Widget payrollDetails(text, details) => RichText(
       text: TextSpan(

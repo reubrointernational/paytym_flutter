@@ -8,6 +8,7 @@ import 'package:paytym/screens/admin/reports/widgets/pending_payroll_listview.da
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../employee/reports/widgets/year_dropdown.dart';
+import '../widgets/pay_payment.dart';
 
 class PayrollTab extends StatefulWidget {
   const PayrollTab({super.key});
@@ -41,7 +42,7 @@ class _PayrollTabState extends State<PayrollTab> {
               //   );
               // }),
               ...List.generate(
-                3,
+                2,
                 (index) => InkWell(
                   onTap: () => Get.find<ReportsControllerAdmin>()
                       .payrollClickedButton
@@ -74,7 +75,12 @@ class _PayrollTabState extends State<PayrollTab> {
           ),
         ),
         Obx(() {
-          return Get.find<ReportsControllerAdmin>().getPayrollTab();
+          return Get.find<ReportsControllerAdmin>()
+                      .payrollClickedButton
+                      .value ==
+                  0
+              ? const PendingPayrollListview()
+              : const PayPayment();
         })
       ],
     );

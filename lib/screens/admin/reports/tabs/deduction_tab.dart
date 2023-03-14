@@ -7,6 +7,7 @@ import 'package:paytym/screens/admin/widgets/add_deduction_bottom_sheet.dart';
 
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
+import '../../dashboard/dashboard_controller.dart';
 import '../reports_controller.dart';
 import '../widgets/medical_title_tag.dart';
 
@@ -15,8 +16,10 @@ class DeductionTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsControllerAdmin>().getDeduction());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ReportsControllerAdmin>().getDeduction();
+      Get.find<DashboardControllerAdmin>().clearFilter();
+    });
     return Column(
       children: [
         // SizedBox(

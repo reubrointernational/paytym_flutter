@@ -87,8 +87,8 @@ class LeavesCardAdmin extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.find<LeavesControllerAdmin>().selectedItemIndex =
-                            index;
+                        Get.find<LeavesControllerAdmin>().selectedLeaveRequest =
+                            leave!;
                         Get.find<LeavesControllerAdmin>()
                             .showBottomSheetForReason(
                                 ReasonButton.leaveDecline);
@@ -115,8 +115,8 @@ class LeavesCardAdmin extends StatelessWidget {
                     kSizedBoxH8,
                     GestureDetector(
                       onTap: () {
-                        Get.find<LeavesControllerAdmin>().selectedItemIndex =
-                            index;
+                        Get.find<LeavesControllerAdmin>().selectedLeaveRequest =
+                            leave!;
                         Get.find<LeavesControllerAdmin>()
                             .showBottomSheetForReason(
                                 ReasonButton.leaveApprove);

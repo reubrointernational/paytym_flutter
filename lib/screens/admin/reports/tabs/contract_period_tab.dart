@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 
 import '../../../../core/constants/styles.dart';
+import '../../../../models/employee_list_model.dart';
 import '../../dashboard/dashboard_controller.dart';
 import '../reports_controller.dart';
 import '../widgets/medical_title_tag.dart';
@@ -12,11 +13,13 @@ class ContractPeriodTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsControllerAdmin>().getDeduction());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ReportsControllerAdmin>().getDeduction();
+      Get.find<DashboardControllerAdmin>().clearFilter();
+    });
     return Obx(() {
-      final employeesList =
-          Get.find<DashboardControllerAdmin>().employeeList.value.employeeList;
+       List<EmployeeList>? employeesList =
+          Get.find<DashboardControllerAdmin>().getFilteredEmployeeList();
       return ListView.separated(
         physics: const BouncingScrollPhysics(),
         itemCount: employeesList?.length ?? 0,
@@ -29,7 +32,7 @@ class ContractPeriodTabAdmin extends StatelessWidget {
             child: Column(
               children: [
                 MedicalTitleTag(
-                  branch: employeesList?[index].branch?.name??'',
+                  branch: employeesList?[index].branch?.name ?? '',
                   name:
                       '${employeesList?[index].firstName} ${employeesList?[index].lastName}',
                   employmentId:

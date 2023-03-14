@@ -16,25 +16,23 @@ showCustomBottomSheet(context, controller) {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Search',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomSearchTextField(
-                      iconImg: IconPath.searchIconPng,
-                      hintText: 'Search',
-                      controller: null,
-                    ),
-                  ]),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text(
+                  'Search',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomSearchTextField(
+                  iconImg: IconPath.searchIconPng,
+                  hintText: 'Search',
+                  controller: Get.find<DashboardControllerAdmin>(),
+                ),
+              ]),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const Text(
                   'Advanced Search',
@@ -113,37 +111,55 @@ showCustomBottomSheet(context, controller) {
                       border: Border.all(
                           width: 1.2,
                           color: const Color.fromRGBO(182, 182, 182, 1))),
-                  child: Obx(() {
-                    return
-                        // DropdownButtonHideUnderline(
-                        //   child: DropdownButton<String>(
-                        //     value: 'g',
-                        //     onChanged: (String? value) {
-                        //       controller.selectedBranch.value = value!;
-                        //     },
-                        //     hint: const Text('branches'),
-                        //     isExpanded: true,
-                        //     icon: Image.asset(
-                        //       IconPath.dropdownIconPng,
-                        //       height: 20,
-                        //       width: 20,
-                        //     ),
-                        //     items: branches
-                        //         .map<DropdownMenuItem<String>>((String value) {
-                        //       return DropdownMenuItem<String>(
-                        //           value: value, child: Text(value));
-                        //     }).toList(),
-                        //   ),
-                        // );
-                        const SizedBox();
-                  }),
+                  child: Obx(
+                    () => DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: Get.find<DashboardControllerAdmin>()
+                            .selectedDropdownBranches
+                            .value,
+                        onChanged: (String? value) {
+                          Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownBranches
+                              .value = value!;
+                        },
+                        hint: const Text('Branches'),
+                        isExpanded: true,
+                        icon: Image.asset(
+                          IconPath.dropdownIconPng,
+                          height: 20,
+                          width: 20,
+                        ),
+                        items: Get.find<DashboardControllerAdmin>()
+                            .branchwiseEmployeeMap
+                            .keys
+                            .toList()
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                              value: value, child: Text(value));
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          Get.find<DashboardControllerAdmin>().clearFilter();
+                        },
+                        child: const Text(
+                          'Clear',
+                          style: TextStyle(color: Colors.blue),
+                        )),
+                  ],
                 ),
               ]),
               SizedBox(
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Get.back(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: CustomColors.lightBlueColor,
                       shape: const RoundedRectangleBorder(

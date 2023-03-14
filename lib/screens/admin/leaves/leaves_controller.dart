@@ -36,19 +36,11 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   final TextEditingController endDateController = TextEditingController();
   final selectedDepartment = departments.first.obs;
   final selectedBranch = branches.first.obs;
-  int selectedItemIndex = 0;
-  int leaveStatus = 0;
+  LeaveRequest selectedLeaveRequest = LeaveRequest();
 
   //for bottomsheet
   final requestAdvanceFormKey = GlobalKey<FormState>();
   String acceptRejectReason = '';
-
-  @override
-  void onReady() {
-    super.onReady();
-    fetchLeaveData(leaveStatus);
-    // fetchLeaveData(1);
-  }
 
   isToday(DateTime dateTime) {
     final now = DateTime.now();
@@ -116,12 +108,10 @@ class LeavesControllerAdmin extends GetxController with BaseController {
         .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-
+    hideLoading();
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
-      leaveStatus = status;
       status == 1
           ? leaveAdminResponseModel.value =
               leavesListAdminModelFromJson(responseString)
@@ -136,19 +126,10 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     showLoading();
     final model = LeaveAcceptDeclineRequestModel(
         reason: acceptRejectReason,
-        employeeId: leaveStatus != 1
-            ? leaveAdminResponseModelPending
-                .value.leaveRequest![selectedItemIndex].userId
-                .toString()
-            : leaveAdminResponseModel
-                .value.leaveRequest![selectedItemIndex].userId
-                .toString(),
+        employeeId: selectedLeaveRequest.userId.toString(),
         approvalStatus: reasonButton == ReasonButton.leaveApprove ? '0' : '1',
-        startDate: leaveStatus != 1
-            ? leaveAdminResponseModelPending
-                .value.leaveRequest![selectedItemIndex].startDate!
-            : leaveAdminResponseModel
-                .value.leaveRequest![selectedItemIndex].startDate!);
+        startDate: selectedLeaveRequest.startDate!);
+
     var responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.leaveAcceptReject,
@@ -162,6 +143,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
+    selectedLeaveRequest = LeaveRequest();
   }
 
   String formatDate(String? date) {

@@ -23,8 +23,8 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   final selectedDropdownBranches = Rxn<String>();
   final selectedItemList = <int>[].obs;
   bool isSelectMembersPageFromChat = true;
+  final searchKeyword = ''.obs;
   DashboardAdminResponseModel dashboardDetails = DashboardAdminResponseModel();
-  
 
   seeDetailsPage(index) {
     switch (index) {
@@ -49,7 +49,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   void onReady() {
     super.onReady();
     // fetchDashboardData();
-    
+
     fetchEmployeeList();
   }
 
@@ -72,7 +72,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   // }
 
   fetchEmployeeList([bool isFromPayroll = false]) async {
-    if ((employeeList.value.message?.isEmpty??true) || isFromPayroll) {
+    if ((employeeList.value.message?.isEmpty ?? true) || isFromPayroll) {
       Get.find<BaseClient>().onError = fetchEmployeeList;
       var requestModel = {
         'employer_id':
@@ -107,8 +107,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       if (responseString == null) {
         return;
       } else {
-        dashboardDetails =
-            dashboardAdminResponseModelFromJson(responseString);
+        dashboardDetails = dashboardAdminResponseModelFromJson(responseString);
         Get.find<BaseClient>().onError = null;
       }
     }
@@ -154,7 +153,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   }
 
   classifyEmployeeListByBranchAndDept() {
-    for (var element in employeeList.value.employeeList??[]) {
+    for (var element in employeeList.value.employeeList ?? []) {
       if (!branchwiseEmployeeMap.keys.contains(element.branch?.name ?? '')) {
         branchwiseEmployeeMap[element.branch?.name ?? ''] = [element];
       } else {
@@ -217,5 +216,40 @@ class DashboardControllerAdmin extends GetxController with BaseController {
             .value
             .employeeList;
     }
+  }
+
+  List<EmployeeList>? getFilteredEmployeeList() {
+    List<EmployeeList>? chatList;
+    if (selectedDropdownDepartments.value != null) {
+      chatList = deptwiseEmployeeMap[selectedDropdownDepartments.value];
+    } else if (chatList != null && selectedDropdownBranches.value != null) {
+      chatList
+          .where((element) =>
+              element.branch?.name == selectedDropdownBranches.value)
+          .toList();
+    } else if (chatList == null && selectedDropdownBranches.value != null) {
+      chatList = branchwiseEmployeeMap[selectedDropdownBranches.value];
+    } else {
+      chatList = employeeList.value.employeeList;
+    }
+    chatList = chatList
+        ?.where(
+          (element) =>
+              element.firstName
+                  ?.toLowerCase()
+                  .contains(searchKeyword.value.toLowerCase()) ??
+              false,
+        )
+        .toList();
+    return chatList;
+  }
+
+  
+
+  clearFilter() {
+    selectedDropdownDepartments.value =
+        null;
+    selectedDropdownBranches.value = null;
+    searchKeyword.value = '';
   }
 }

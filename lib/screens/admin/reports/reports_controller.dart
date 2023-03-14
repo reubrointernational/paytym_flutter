@@ -39,7 +39,6 @@ import '../../employee/dashboard/dashboard_controller.dart';
 import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'widgets/pay_payment.dart';
-import 'widgets/payment_history.dart';
 import 'widgets/pending_payroll_listview.dart';
 import 'package:http/http.dart' as http;
 
@@ -81,6 +80,32 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  // getFilteredDeductionList(list) {
+  //   var chatList;
+  //   if (selectedDropdownDepartments.value != null) {
+  //     chatList = deptwiseEmployeeMap[selectedDropdownDepartments.value];
+  //   } else if (chatList != null && selectedDropdownBranches.value != null) {
+  //     chatList
+  //         .where((element) =>
+  //             element.branch?.name == selectedDropdownBranches.value)
+  //         .toList();
+  //   } else if (chatList == null && selectedDropdownBranches.value != null) {
+  //     chatList = branchwiseEmployeeMap[selectedDropdownBranches.value];
+  //   } else {
+  //     chatList = employeeList.value.employeeList;
+  //   }
+  //   chatList = chatList
+  //       ?.where(
+  //         (element) =>
+  //             element.firstName
+  //                 ?.toLowerCase()
+  //                 .contains(searchKeyword.value.toLowerCase()) ??
+  //             false,
+  //       )
+  //       .toList();
+  //   return chatList;
+  // }
+
   changeSliderPosition(double value) {
     sliderValue.value = value;
   }
@@ -117,6 +142,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       },
     );
   }
+
   final filePath = ''.obs;
 
   //Sharing or downloading enum will be idle at the start
@@ -175,8 +201,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     DateTime? dt = DateTime.parse(dateTime);
     return DateFormat.jm().format(dt);
   }
-
-  
 
   fetchFileTypeList() async {
     showLoading();
@@ -508,6 +532,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       showLoading();
       Get.find<BaseClient>().onError = getAttendance;
       var attendanceRequestModel = {
+        'date': '2023-03-14',
         'employer_id':
             '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
@@ -546,16 +571,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         .catchError(handleError);
     print(responseString);
     hideLoading();
-  }
-
-  Widget getPayrollTab() {
-    if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value == 0) {
-      return const PendingPayrollListview();
-    } else if (Get.find<ReportsControllerAdmin>().payrollClickedButton.value ==
-        1) {
-      return const PayPayment();
-    }
-    return const PaymentHistory();
   }
 
   String formatNumber(String value) {
