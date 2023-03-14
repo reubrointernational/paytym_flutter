@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import '../../../../core/constants/strings.dart';
@@ -11,13 +13,16 @@ class AttendanceTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Get.find<ReportsController>().getAttendance());
+    var attendance = Get.put(ReportsController());
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           PieChart(
-              dataMap: datamap,
+              dataMap: attendance.pieChartData,
               chartRadius: w / 3.2,
               chartLegendSpacing: 60,
               colorList: CustomColors.cardColorList,
@@ -25,10 +30,10 @@ class AttendanceTab extends StatelessWidget {
                 showChartValues: false,
               ),
               legendLabels: <String, String>{
-                "OnTime": "On Time : ${datamap["OnTime"]}",
-                "Leaves": "Leaves : ${datamap["Leaves"]}",
-                "Late": "Late : ${datamap["Late"]}",
-                "EarlyOut": "Early Out : ${datamap["EarlyOut"]}"
+                "OnTime": "On Time : ${attendance.pieChartData["OnTime"]}",
+                "Leaves": "Leaves : ${attendance.pieChartData["Leaves"]}",
+                "Late": "Late : ${attendance.pieChartData["Late"]}",
+                "EarlyOut": "Early Out : ${attendance.pieChartData["EarlyOut"]}"
               }),
           kSizedBoxH10,
           const Text(
@@ -42,8 +47,10 @@ class AttendanceTab extends StatelessWidget {
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 3,
+            itemCount: attendance.attendanceResponseModel.value.history!.length,
             itemBuilder: (context, index) {
+              final history =
+                  attendance.attendanceResponseModel.value.history![index];
               return Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -55,14 +62,14 @@ class AttendanceTab extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             kDateString,
                             style: kTextStyleS12W600Cblue,
                           ),
                           Text(
-                            "10-18-2022",
-                            style: TextStyle(
+                            attendance.getDate(history.date.toString()),
+                            style: const TextStyle(
                               fontSize: 12,
                             ),
                           ),
@@ -71,14 +78,16 @@ class AttendanceTab extends StatelessWidget {
                       kSizedBoxH10,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             kPunchInString,
                             style: kTextStyleS12W600Cblue,
                           ),
                           Text(
-                            "09:00 AM",
-                            style: TextStyle(
+                            history.checkIn != null
+                                ? attendance.getTime(history.checkIn.toString())
+                                : '00:00',
+                            style: const TextStyle(
                               fontSize: 12,
                             ),
                           ),
@@ -87,14 +96,17 @@ class AttendanceTab extends StatelessWidget {
                       kSizedBoxH10,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             kPunchOutString,
                             style: kTextStyleS12W600Cblue,
                           ),
                           Text(
-                            "05:20 PM",
-                            style: TextStyle(
+                            history.checkOut != null
+                                ? attendance
+                                    .getTime(history.checkOut.toString())
+                                : "00:00",
+                            style: const TextStyle(
                               fontSize: 12,
                             ),
                           ),
