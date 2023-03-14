@@ -9,6 +9,7 @@ import 'package:paytym/core/extensions/camelcase.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../models/leaves/leaves_admin_response_model.dart';
+import '../../../../models/leaves/leaves_status_model.dart';
 import '../leaves_controller.dart';
 
 class LeavesCardAdmin extends StatelessWidget {
@@ -62,7 +63,7 @@ class LeavesCardAdmin extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        leave?.type.toCamelCase() ?? '',
+                        leave?.type?.toCamelCase() ?? '',
                         style: TextStyle(
                           fontSize: 15,
                           color: leave?.type!

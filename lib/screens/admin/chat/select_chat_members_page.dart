@@ -8,6 +8,7 @@ import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../employee/reports/widgets/year_dropdown.dart';
 import '../dashboard/dashboard_controller.dart';
+import 'chat_controller.dart';
 
 class SelectChatMembersPage extends StatelessWidget {
   const SelectChatMembersPage({
