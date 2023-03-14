@@ -94,11 +94,12 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                   validator: (value) => Get.find<LeavesControllerAdmin>()
                       .notEmptyValidator(value!),
                   onSaved: (value) {
-                    Get.find<LeavesControllerAdmin>().quitCompanyReason =
-                        value!;
-                    Get.find<ReportsControllerAdmin>()
-                        .editAttendanceReason
-                        .value = value;
+                    //todo uncommend
+                    // Get.find<LeavesControllerAdmin>().reason =
+                    //     value!;
+                    // Get.find<ReportsControllerAdmin>()
+                    //     .editAttendanceReason
+                    //     .value = value;
                   },
                 ),
               ],
