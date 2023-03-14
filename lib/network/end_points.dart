@@ -18,6 +18,7 @@ class ApiEndPoints {
   static const requestAdvance = '$kBaseUrl/request_advance';
   static const requestPayment = '$kBaseUrl/request_payment';
   static const deductions = '$kBaseUrl/deductions';
+  static const employeeAttendance = '$kBaseUrl/attendance';
   static const meetings = '$kBaseUrl/meetings';
   static const getChat = '$kBaseUrl/get-chat';
   static const sendChat = '$kBaseUrl/send-chat';

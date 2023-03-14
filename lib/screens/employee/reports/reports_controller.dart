@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
@@ -17,6 +18,7 @@ import '../../../core/constants/enums.dart';
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../models/report/attendance/attendance_employee_response.dart';
 import '../../../models/report/deduction/deduction_response_model.dart';
 import '../../../models/report/files/employee_files_list_model.dart';
 import '../../../models/report/medical_list_admin_model.dart';
@@ -40,6 +42,8 @@ class ReportsController extends GetxController
       EmployeeFilesListModel(files: [], message: '').obs;
 
   final deductionResponseModel = DeductionResponseModel().obs;
+  final attendanceResponseModel = AttendanceEmployeeResponseModel().obs;
+  Map<String, double> pieChartData = {};
 
   final selectedDropdownYear = years.first.obs;
   final selectedDropdownMonth = monthsList.first.obs;
@@ -144,6 +148,39 @@ class ReportsController extends GetxController
     }
   }
 
+  getAttendance() async {
+    showLoading();
+    var requestModel = {
+      'employer_id': '1',
+      'date': '22-2-2023',
+    };
+
+    var responseString = await Get.find<BaseClient>()
+        .post(
+          ApiEndPoints.employeeAttendance,
+          jsonEncode(requestModel),
+          Get.find<LoginController>().getHeader(),
+        )
+        .catchError(handleError);
+
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      attendanceResponseModel.value =
+          attendanceEmployeeResponseModelFromJson(responseString);
+      //print(attendanceResponseModel.value.ontime);
+      attendanceResponseModel.refresh();
+
+      pieChartData = {
+        "OnTime": attendanceResponseModel.value.ontime + .0,
+        "Leaves": attendanceResponseModel.value.leaves + .0,
+        "Late": attendanceResponseModel.value.late + .0,
+        "EarlyOut": attendanceResponseModel.value.earlyout + .0,
+      };
+    }
+  }
+
   String formatNumber(String value) {
     final formatNum = NumberFormat('#.00');
     return formatNum.format(int.parse(value));
@@ -190,6 +227,11 @@ class ReportsController extends GetxController
   String getDate(String date) {
     final DateTime now = DateTime.parse(date);
     return DateFormat('dd-MM-yyyy').format(now);
+  }
+
+  String getTime(String date) {
+    final DateTime now = DateTime.parse(date);
+    return DateFormat('hh:mm a').format(now);
   }
 
   @override
