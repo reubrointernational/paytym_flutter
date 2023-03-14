@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/admin/reports/project_employee_list_page.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 
 import '../../../../core/colors/colors.dart';
@@ -15,6 +16,7 @@ class ProjectsTabAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<ReportsControllerAdmin>().fetchProjects());
+
     return Obx(() {
       final reportController = Get.find<ReportsControllerAdmin>();
       final projects =
@@ -23,6 +25,9 @@ class ProjectsTabAdmin extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           itemCount: projects?.length ?? 0,
           itemBuilder: (context, index) {
+            var startDate = projects![index].startDate ?? '';
+            var endDate = projects[index].endDate ?? '';
+            reportController.findProjectProgress(startDate, endDate);
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
@@ -41,14 +46,14 @@ class ProjectsTabAdmin extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                projects?[index].name ?? '',
+                                projects[index].name ?? '',
                                 style: kTextStyleS18W600.copyWith(
                                     color: CustomColors.blackTextColor),
                               ),
                               kSizedBoxH10,
                               Text(
                                 reportController
-                                    .getStatus(projects?[index].status ?? 0),
+                                    .getStatus(projects[index].status ?? 0),
                                 style: kTextStyleS15W600CGreen,
                               ),
                               kSizedBoxH10,
@@ -61,8 +66,11 @@ class ProjectsTabAdmin extends StatelessWidget {
                               GestureDetector(
                                 onTap: () {
                                   reportController.projectName =
-                                      projects?[index].name ?? '';
-                                  Get.toNamed(Routes.projectEmployeeList);
+                                      projects[index].name ?? '';
+                                  var project = projects[index];
+                                  Get.to(ProjectEmployeeListPage(
+                                    project: project,
+                                  ));
                                 },
                                 child: SizedBox(
                                   width: 100,
@@ -77,9 +85,10 @@ class ProjectsTabAdmin extends StatelessWidget {
                                         ),
                                       ),
                                       ...List.generate(
-                                        3,
+                                        //3,
+                                        projects[index].employeeproject!.length,
                                         (index) => Positioned(
-                                          left: 20 * (index + 1),
+                                          left: 20 * (index + 0),
                                           child: CircleAvatar(
                                             radius: 19,
                                             backgroundColor: index == 2
@@ -92,12 +101,19 @@ class ProjectsTabAdmin extends StatelessWidget {
                                                   backgroundColor: index == 2
                                                       ? Colors.white
                                                       : Colors.grey.shade300,
+                                                  backgroundImage: projects[
+                                                              index]
+                                                          .employeeproject!
+                                                          .isEmpty
+                                                      ? const NetworkImage('')
+                                                      : NetworkImage(
+                                                          'https://paytym.net/storage/${projects[index].employeeproject![index].user.image}'),
                                                   radius: 18,
                                                 ),
                                                 index == 2
-                                                    ? const Text(
-                                                        '+5',
-                                                        style: TextStyle(
+                                                    ? Text(
+                                                        '${projects[index].employeeproject!.length}',
+                                                        style: const TextStyle(
                                                             color: CustomColors
                                                                 .lightBlueColor,
                                                             fontWeight:
@@ -115,10 +131,13 @@ class ProjectsTabAdmin extends StatelessWidget {
                                 ),
                               ),
                               kSizedBoxH15,
-                              const SizedBox(
+                              SizedBox(
                                 child: ProgressBar(
-                                  current: 0.5,
-                                  max: 1,
+                                  current:
+                                      reportController.currentProjectStatus,
+                                  max: reportController.endProjectStatus == 0
+                                      ? 1
+                                      : reportController.endProjectStatus,
                                 ),
                               ),
                               kSizedBoxH4,
@@ -133,7 +152,9 @@ class ProjectsTabAdmin extends StatelessWidget {
                                           .copyWith(color: Colors.black),
                                     ),
                                     Text(
-                                      '30%',
+                                      reportController.projectPercentage.isNaN
+                                          ? '0%'
+                                          : '${reportController.projectPercentage}%',
                                       style: kTextStyleS14W600Cgrey300LS0p2
                                           .copyWith(color: Colors.black),
                                     ),
@@ -152,9 +173,11 @@ class ProjectsTabAdmin extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              const Text(
-                                "Branch",
-                                style: TextStyle(
+                              Text(
+                                projects[index].branch != null
+                                    ? projects[index].branch!.name
+                                    : "Branch",
+                                style: const TextStyle(
                                   color: CustomColors.blackTextColor,
                                 ),
                               ),
@@ -225,13 +248,13 @@ class ProjectsTabAdmin extends StatelessWidget {
                     ],
                   ),
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
-                            "Total Cost: \$ 365,500",
-                            style: TextStyle(
+                            "Total Cost: \$ ${projects[index].budget}",
+                            style: const TextStyle(
                               color: CustomColors.grey156x3TextColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -240,7 +263,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                         ),
                       ),
                       kSizedBoxH12,
-                      Expanded(
+                      const Expanded(
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           child: Text(

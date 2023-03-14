@@ -46,7 +46,6 @@ class ReportsController extends GetxController
   final selectedDropdownMonth = monthsList.first.obs;
   final selectedDropdownDay = daysDummyList.first.obs;
 
-
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
 
 

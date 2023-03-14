@@ -177,6 +177,9 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   String projectName = '';
   final projectDetailsResponseModel =
       ProjectDetailsModel(message: '', projectsListe: []).obs;
+  double endProjectStatus = 0;
+  double currentProjectStatus = 0;
+  double projectPercentage = 0;
 
   TextEditingController checkInTimeController = TextEditingController();
   TextEditingController checkOutTimeController = TextEditingController();
@@ -273,6 +276,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         .post(ApiEndPoints.projectsList, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print(responseString);
+    hideLoading();
     if (responseString == null) {
       return;
     } else {
@@ -280,8 +285,38 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       projectlistResponseModel.value = projectListModelFromJson(responseString);
       print(projectlistResponseModel.value);
       projectlistResponseModel.refresh();
+
       Get.find<BaseClient>().onError = null;
     }
+  }
+
+  findProjectProgress(String startDate, String endDate) {
+    DateTime startDateTime =
+        startDate.isEmpty ? DateTime.now() : DateTime.parse(startDate);
+    DateTime endDateTime =
+        endDate.isEmpty ? DateTime.now() : DateTime.parse(endDate);
+    DateTime currentDateTime = DateTime.now();
+    Duration differenceStartToEnd = endDateTime.difference(startDateTime);
+    Duration differenceStartToCurrent =
+        currentDateTime.difference(startDateTime);
+    print(differenceStartToEnd);
+    print(differenceStartToCurrent);
+    print(differenceStartToCurrent.inHours.isEqual(0));
+    endProjectStatus = differenceStartToEnd.inHours.isEqual(0)
+        ? differenceStartToEnd.inHours.toDouble()
+        : double.parse(differenceStartToEnd.toString().substring(0, 4));
+    currentProjectStatus = differenceStartToCurrent.inHours.isEqual(0)
+        ? differenceStartToCurrent.inHours.toDouble()
+        : double.parse(differenceStartToCurrent.toString().substring(0, 4));
+    findProjectPercentage();
+  }
+
+  findProjectPercentage() {
+    double minValue = 0;
+    double maxValue = endProjectStatus;
+    double midValue = currentProjectStatus;
+    double progress = ((midValue - minValue) * 100) / (maxValue - minValue);
+    projectPercentage = progress.floorToDouble();
   }
 
   getStatus(int status) {
