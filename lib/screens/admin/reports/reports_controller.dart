@@ -67,7 +67,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
           fileTypes: [FileTypes(id: 0, fileType: '')], message: '')
       .obs;
   final projectlistResponseModel =
-      ProjectListModel(message: '', projectsListe: []).obs;
+      ProjectListModel(message: '', projectsLists: []).obs;
 
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   final deductionResponseModel = DeductionListAdminModel().obs;
@@ -90,6 +90,9 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final chatGroupList = dummy_data.obs;
   int selectedItemIndex = 0;
   String projectName = '';
+  double endProjectStatus = 0;
+  double currentProjectStatus = 0;
+  double projectPercentage = 0;
 
   TextEditingController checkInTimeController = TextEditingController();
   TextEditingController checkOutTimeController = TextEditingController();
@@ -197,13 +200,15 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     showLoading();
     Get.find<BaseClient>().onError = fetchProjects;
     var requestModel = {
-      'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      'employer_id': '1'
+      //'${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.projectsList, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print(responseString);
+    hideLoading();
     if (responseString == null) {
       return;
     } else {
@@ -211,8 +216,38 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       projectlistResponseModel.value = projectListModelFromJson(responseString);
       print(projectlistResponseModel.value);
       projectlistResponseModel.refresh();
+
       Get.find<BaseClient>().onError = null;
     }
+  }
+
+  findProjectProgress(String startDate, String endDate) {
+    DateTime startDateTime =
+        startDate.isEmpty ? DateTime.now() : DateTime.parse(startDate);
+    DateTime endDateTime =
+        endDate.isEmpty ? DateTime.now() : DateTime.parse(endDate);
+    DateTime currentDateTime = DateTime.now();
+    Duration differenceStartToEnd = endDateTime.difference(startDateTime);
+    Duration differenceStartToCurrent =
+        currentDateTime.difference(startDateTime);
+    print(differenceStartToEnd);
+    print(differenceStartToCurrent);
+    print(differenceStartToCurrent.inHours.isEqual(0));
+    endProjectStatus = differenceStartToEnd.inHours.isEqual(0)
+        ? differenceStartToEnd.inHours.toDouble()
+        : double.parse(differenceStartToEnd.toString().substring(0, 4));
+    currentProjectStatus = differenceStartToCurrent.inHours.isEqual(0)
+        ? differenceStartToCurrent.inHours.toDouble()
+        : double.parse(differenceStartToCurrent.toString().substring(0, 4));
+    findProjectPercentage();
+  }
+
+  findProjectPercentage() {
+    double minValue = 0;
+    double maxValue = endProjectStatus;
+    double midValue = currentProjectStatus;
+    double progress = ((midValue - minValue) * 100) / (maxValue - minValue);
+    projectPercentage = progress.floorToDouble();
   }
 
   getStatus(int status) {

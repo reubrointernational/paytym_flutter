@@ -107,9 +107,9 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var requestModel = {
-      'status': '0',
+      'status': '1',
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
@@ -132,7 +132,6 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   }
 
   approveOrDeclineLeave(ReasonButton reasonButton) async {
-   
     showLoading();
     final model = LeaveAcceptDeclineRequestModel(
         reason: quitCompanyReason,
