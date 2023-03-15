@@ -15,20 +15,20 @@ class AttendanceTab extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<ReportsController>().getAttendance());
-    var attendance = Get.put(ReportsController());
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Obx(() => (Get.find<ReportsController>()
-                      .attendanceResponseModel
-                      .value
-                      .message
-                      ?.isNotEmpty ??
-                  false)
-              ? PieChart(
-                  dataMap: attendance.pieChartData,
+      child: Obx(() {
+        if (Get.find<ReportsController>()
+                .attendanceResponseModel
+                .value
+                .history !=
+            null) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PieChart(
+                  dataMap: Get.find<ReportsController>().pieChartData,
                   chartRadius: w / 3.2,
                   chartLegendSpacing: 60,
                   colorList: CustomColors.cardColorList,
@@ -36,103 +36,111 @@ class AttendanceTab extends StatelessWidget {
                     showChartValues: false,
                   ),
                   legendLabels: <String, String>{
-                      "OnTime":
-                          "On Time : ${attendance.pieChartData["OnTime"]}",
-                      "Leaves": "Leaves : ${attendance.pieChartData["Leaves"]}",
-                      "Late": "Late : ${attendance.pieChartData["Late"]}",
-                      "EarlyOut":
-                          "Early Out : ${attendance.pieChartData["EarlyOut"]}"
-                    })
-              : const SizedBox()),
-          kSizedBoxH10,
-          const Text(
-            kHistoryString,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          kSizedBoxH8,
-          Obx(
-            () => ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount:
-                  attendance.attendanceResponseModel.value.history?.length ?? 0,
-              itemBuilder: (context, index) {
-                final history =
-                    attendance.attendanceResponseModel.value.history![index];
-                return Card(
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              kDateString,
-                              style: kTextStyleS12W600Cblue,
-                            ),
-                            Text(
-                              attendance.getDate(history.date.toString()),
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        kSizedBoxH10,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              kPunchInString,
-                              style: kTextStyleS12W600Cblue,
-                            ),
-                            Text(
-                              history.checkIn != null
-                                  ? attendance
-                                      .getTime(history.checkIn.toString())
-                                  : '00:00',
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        kSizedBoxH10,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              kPunchOutString,
-                              style: kTextStyleS12W600Cblue,
-                            ),
-                            Text(
-                              history.checkOut != null
-                                  ? attendance
-                                      .getTime(history.checkOut.toString())
-                                  : "00:00",
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    "OnTime":
+                        "On Time : ${Get.find<ReportsController>().pieChartData["OnTime"]}",
+                    "Leaves":
+                        "Leaves : ${Get.find<ReportsController>().pieChartData["Leaves"]}",
+                    "Late":
+                        "Late : ${Get.find<ReportsController>().pieChartData["Late"]}",
+                    "EarlyOut":
+                        "Early Out : ${Get.find<ReportsController>().pieChartData["EarlyOut"]}"
+                  }),
+              kSizedBoxH10,
+              const Text(
+                kHistoryString,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              kSizedBoxH8,
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: Get.find<ReportsController>()
+                    .attendanceResponseModel
+                    .value
+                    .history!
+                    .length,
+                itemBuilder: (context, index) {
+                  final history = Get.find<ReportsController>()
+                      .attendanceResponseModel
+                      .value
+                      .history![index];
+                  return Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                kDateString,
+                                style: kTextStyleS12W600Cblue,
+                              ),
+                              Text(
+                                Get.find<ReportsController>()
+                                    .getDate(history.date.toString()),
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                          kSizedBoxH10,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                kPunchInString,
+                                style: kTextStyleS12W600Cblue,
+                              ),
+                              Text(
+                                history.checkIn != null
+                                    ? Get.find<ReportsController>()
+                                        .getTime(history.checkIn.toString())
+                                    : '00:00',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                          kSizedBoxH10,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                kPunchOutString,
+                                style: kTextStyleS12W600Cblue,
+                              ),
+                              Text(
+                                history.checkOut != null
+                                    ? Get.find<ReportsController>()
+                                        .getTime(history.checkOut.toString())
+                                    : "00:00",
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        }
+        return Container();
+      }),
     );
   }
 }

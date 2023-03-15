@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/employee/leaves/leaves_controller.dart';
@@ -19,7 +21,8 @@ class LeavesTab extends StatelessWidget {
               .value
               .leaveRequests
               ?.where((element) =>
-                  element.type?.toString().toLowerCase() == leave.toLowerCase())
+                  element.leaveType!.leaveType.toLowerCase().trim() ==
+                  leave.toLowerCase())
               .toList();
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
