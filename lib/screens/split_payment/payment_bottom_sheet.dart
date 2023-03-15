@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
 import 'payment_card_textfields.dart';
 import 'payment_controller.dart';
@@ -14,7 +15,6 @@ class PaymentBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final paymentController = Get.put(PaymentController());
     return SingleChildScrollView(
       child: Container(
@@ -57,12 +57,18 @@ class PaymentBottomSheet extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Image.asset(
-                      image!,
-                      height: h / 15,
-                      width: w / 5,
-                      fit: BoxFit.contain,
-                    ),
+                    index == 0
+                        ? const Icon(
+                            Icons.account_balance,
+                            size: 30,
+                            color: Colors.blue,
+                          )
+                        : Image.asset(
+                            image!,
+                            height: h / 15,
+                            width: w / 5,
+                            fit: BoxFit.contain,
+                          ),
                   ],
                 ),
                 kSizedBoxH15,
@@ -95,10 +101,13 @@ class PaymentBottomSheet extends StatelessWidget {
                     ),
                   ],
                 ),
-                const PaymentCardTextFields(
+                PaymentCardTextFields(
                     hint: 'Total',
                     label: '\$2000.00',
                     width: double.infinity,
+                    onChanged: (value) {
+                      Get.find<ReportsController>().splitAmount.value = value;
+                    },
                     keyboardType: TextInputType.number),
                 kSizedBoxH15,
                 SizedBox(
@@ -108,6 +117,7 @@ class PaymentBottomSheet extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(context);
                       paymentController.selectPaymentMethod(index);
+                      Get.find<ReportsController>().setSplitPayment(index);
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

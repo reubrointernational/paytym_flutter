@@ -51,7 +51,7 @@ class LeaveRequest {
   String? title;
   String? startDate;
   String? endDate;
-  String? type;
+  int? type;
   DateTime? createdAt;
   DateTime? updatedAt;
   String status;

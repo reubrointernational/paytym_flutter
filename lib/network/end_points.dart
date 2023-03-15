@@ -41,6 +41,7 @@ class ApiEndPoints {
   static const deductionsList = '$kBaseUrl/deductions_list';
   static const meetingsList = '$kBaseUrl/list_meetings';
   static const medicalList = '$kBaseUrl/extra_details';
+  static const splitPayment = '$kBaseUrl/split_payment';
 
   static const createMeetings = '$kBaseUrl/create_meetings';
   static const deleteMeetings = '$kBaseUrl/meetings_delete';
@@ -61,4 +62,5 @@ class ApiEndPoints {
    static const adminDashboard = '$kBaseUrl/admin_dashboard';
    static const dashboard = '$kBaseUrl/dashboard';
   static const uploadFiles = '$kBaseUrl/upload_files';
+
 }

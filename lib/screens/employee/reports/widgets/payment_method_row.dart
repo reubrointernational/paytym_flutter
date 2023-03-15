@@ -39,10 +39,12 @@ class _PaymentMethodRowState extends State<PaymentMethodRow> {
                   );
                 },
                 child: Container(
-                  width: w / 3.5,
+                  height: h / 4.5,
+                  width: w / 3,
                   //margin: const EdgeInsets.only(right: 15),
                   decoration: BoxDecoration(
-                    color: CustomColors.whiteTextColor,
+                    color: CustomColors.whiteCardColor,
+                    border: Border.all(width: 3, color: Colors.grey.shade400),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Stack(
@@ -57,7 +59,7 @@ class _PaymentMethodRowState extends State<PaymentMethodRow> {
                                 child: Container(
                                   height: 25,
                                   width: 90,
-                                  color: Colors.amber,
+                                  color: Colors.blue,
                                   alignment: Alignment.centerLeft,
                                   padding: const EdgeInsets.only(left: 10),
                                   transform: Matrix4.rotationZ(-0.5),

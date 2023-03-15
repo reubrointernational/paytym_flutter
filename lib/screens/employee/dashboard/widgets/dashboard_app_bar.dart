@@ -62,14 +62,17 @@ class DashboardAppBar extends StatelessWidget {
               ).toList(),
               onSelected: (DashboardDropDown value) =>
                   Get.find<DashboardController>().onClickMenuItem(value),
-              child: CachedNetworkImage(
-                imageUrl: Get.find<LoginController>()
+              child: 
+              CachedNetworkImage(
+                imageUrl: 'https://paytym.net/storage/${Get.find<LoginController>()
                         .loginResponseModel
                         ?.employee
-                        ?.image ??
-                    '',
+                        ?.image}',
+                    
                 imageBuilder: (context, imageProvider) => Animate(
-                  effects: const[ScaleEffect(duration: Duration(microseconds: 500))],
+                  effects: const [
+                    ScaleEffect(duration: Duration(microseconds: 500))
+                  ],
                   child: CircleAvatar(
                     backgroundColor: Colors.grey.shade300,
                     radius: 15,

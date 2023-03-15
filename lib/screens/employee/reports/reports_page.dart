@@ -43,11 +43,11 @@ class ReportsPage extends StatelessWidget {
                     Row(
                       children: [
                         CustomCachedNetworkImage(
-                          imageUrl: Get.find<LoginController>()
-                                  .loginResponseModel
-                                  ?.employee
-                                  ?.image ??
-                              '',
+                          imageUrl: 
+                              'https://paytym.net/storage/${Get.find<LoginController>()
+                        .loginResponseModel
+                        ?.employee
+                        ?.image}',
                           radius: 26,
                         ),
                         kSizedBoxW10,
