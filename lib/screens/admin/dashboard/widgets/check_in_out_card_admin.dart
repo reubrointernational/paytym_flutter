@@ -21,6 +21,7 @@ class CheckInOutCardAdmin extends StatelessWidget {
         elevation: 5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
+          
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,7 +43,7 @@ class CheckInOutCardAdmin extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 15),
+                    padding: const EdgeInsets.only(left: 8, right: 10),
                     child: Stack(
                       children: [
                         Positioned.fill(
@@ -55,6 +56,7 @@ class CheckInOutCardAdmin extends StatelessWidget {
                                 height: 18,
                                 decoration: BoxDecoration(
                                     color: CustomColors.lightBlueColor,
+                                    
                                     borderRadius: BorderRadius.circular(9)),
                               ),
                             ),
@@ -91,13 +93,14 @@ class CheckInOutCardAdmin extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 15),
                   child: RichText(
-                    text: const TextSpan(
-                      text: '00:00',
-                      style: TextStyle(
+                    text: TextSpan(
+                      text:
+                          "${(Get.find<DashboardController>().seconds.value / 60).floor().toString().padLeft(2, '0')}:${Get.find<DashboardController>().seconds.value.remainder(60).toString().padLeft(2, '0')}",
+                      style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
                           color: CustomColors.grey80x3TextColor),
-                      children: [
+                      children: const [
                         TextSpan(
                           text: khrsString,
                           style: TextStyle(

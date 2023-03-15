@@ -76,7 +76,7 @@ class DashboardAdmin extends StatelessWidget {
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 20),
+                            horizontal: 15, vertical: 20),
                         decoration: BoxDecoration(
                           color: CustomColors.whiteCardColor,
                           borderRadius: BorderRadius.circular(30),

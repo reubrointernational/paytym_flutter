@@ -171,35 +171,40 @@ class ReportsController extends GetxController
   }
 
   getAttendance() async {
-    showLoading();
-    var requestModel = {
-      'employer_id': '1',
-      'date': '22-2-2023',
-    };
-
-    var responseString = await Get.find<BaseClient>()
-        .post(
-          ApiEndPoints.employeeAttendance,
-          jsonEncode(requestModel),
-          Get.find<LoginController>().getHeader(),
-        )
-        .catchError(handleError);
-
-    if (responseString == null) {
-      return;
-    } else {
-      hideLoading();
-      attendanceResponseModel.value =
-          attendanceEmployeeResponseModelFromJson(responseString);
-      //print(attendanceResponseModel.value.ontime);
-      attendanceResponseModel.refresh();
-
-      pieChartData = {
-        "OnTime": attendanceResponseModel.value.ontime + .0,
-        "Leaves": attendanceResponseModel.value.leaves + .0,
-        "Late": attendanceResponseModel.value.late + .0,
-        "EarlyOut": attendanceResponseModel.value.earlyout + .0,
+    if (attendanceResponseModel.value.history == null) {
+      showLoading();
+      var requestModel = {
+        'employer_id': Get.find<LoginController>()
+            .loginResponseModel!
+            .employee!
+            .employer_id,
+        'date': DateTime.now.toString(),
       };
+
+      var responseString = await Get.find<BaseClient>()
+          .post(
+            ApiEndPoints.employeeAttendance,
+            jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader(),
+          )
+          .catchError(handleError);
+
+      if (responseString == null) {
+        return;
+      } else {
+        hideLoading();
+        attendanceResponseModel.value =
+            attendanceEmployeeResponseModelFromJson(responseString);
+        //print(attendanceResponseModel.value.ontime);
+        attendanceResponseModel.refresh();
+
+        pieChartData = {
+          "OnTime": attendanceResponseModel.value.ontime + .0,
+          "Leaves": attendanceResponseModel.value.leaves + .0,
+          "Late": attendanceResponseModel.value.late + .0,
+          "EarlyOut": attendanceResponseModel.value.earlyout + .0,
+        };
+      }
     }
   }
 
