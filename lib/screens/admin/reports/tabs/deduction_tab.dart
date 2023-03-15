@@ -89,8 +89,8 @@ class DeductionTabAdmin extends StatelessWidget {
         // ),
         kSizedBoxH10,
         Expanded(
-          child: Obx(
-            () => ListView.separated(
+          child: Obx(() {
+            return ListView.separated(
               physics: const BouncingScrollPhysics(),
               itemCount: Get.find<ReportsControllerAdmin>()
                       .deductionResponseModel
@@ -281,8 +281,8 @@ class DeductionTabAdmin extends StatelessWidget {
               },
               separatorBuilder: (BuildContext context, int index) =>
                   kSizedBoxH10,
-            ),
-          ),
+            );
+          }),
         ),
       ],
     );

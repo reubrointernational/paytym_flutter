@@ -80,31 +80,135 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
   }
 
-  // getFilteredDeductionList(list) {
-  //   var chatList;
-  //   if (selectedDropdownDepartments.value != null) {
-  //     chatList = deptwiseEmployeeMap[selectedDropdownDepartments.value];
-  //   } else if (chatList != null && selectedDropdownBranches.value != null) {
-  //     chatList
-  //         .where((element) =>
-  //             element.branch?.name == selectedDropdownBranches.value)
-  //         .toList();
-  //   } else if (chatList == null && selectedDropdownBranches.value != null) {
-  //     chatList = branchwiseEmployeeMap[selectedDropdownBranches.value];
-  //   } else {
-  //     chatList = employeeList.value.employeeList;
-  //   }
-  //   chatList = chatList
-  //       ?.where(
-  //         (element) =>
-  //             element.firstName
-  //                 ?.toLowerCase()
-  //                 .contains(searchKeyword.value.toLowerCase()) ??
-  //             false,
-  //       )
-  //       .toList();
-  //   return chatList;
-  // }
+  List<ExtraDetail>? getFilteredMedicalList() {
+    List<ExtraDetail>? medicalList;
+    if (Get.find<DashboardControllerAdmin>()
+            .selectedDropdownDepartments
+            .value !=
+        null) {
+      medicalList = medicalResponseModel.value.extraDetails
+          ?.where((element) =>
+              (element.users?.departmentId ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                          .selectedDropdownDepartments
+                          .value]
+                      ?.first
+                      .department
+                      ?.id ??
+                  0))
+          .toList();
+    }
+    if (medicalList != null &&
+        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
+            null) {
+      medicalList = medicalList.where((element) {
+        return (element.users?.branchId ?? 0) ==
+            (Get.find<DashboardControllerAdmin>()
+                    .branchwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                        .selectedDropdownBranches
+                        .value]
+                    ?.first
+                    .branch
+                    ?.id ??
+                1);
+      }).toList();
+    } else if (medicalList == null &&
+        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
+            null) {
+      medicalList = medicalResponseModel.value.extraDetails
+          ?.where((element) =>
+              (element.users?.branchId ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .branchwiseEmployeeMap[
+                          Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownBranches
+                              .value]
+                      ?.first
+                      .branch
+                      ?.id ??
+                  0))
+          .toList();
+    }
+    medicalList ??= medicalResponseModel.value.extraDetails;
+    medicalList = medicalList
+        ?.where(
+          (element) =>
+              element.users?.firstName?.toLowerCase().contains(
+                  Get.find<DashboardControllerAdmin>()
+                      .searchKeyword
+                      .value
+                      .toLowerCase()) ??
+              false,
+        )
+        .toList();
+    return medicalList;
+  }
+
+  List<History>? getFilteredAttendanceList() {
+    List<History>? attendanceList;
+    if (Get.find<DashboardControllerAdmin>()
+            .selectedDropdownDepartments
+            .value !=
+        null) {
+      attendanceList = attendanceResponseModel.value.history
+          .where((element) =>
+              (element.user?.departmentId ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                          .selectedDropdownDepartments
+                          .value]
+                      ?.first
+                      .department
+                      ?.id ??
+                  0))
+          .toList();
+    }
+    if (attendanceList != null &&
+        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
+            null) {
+      attendanceList = attendanceList.where((element) {
+        return (element.user?.branchId ?? 0) ==
+            (Get.find<DashboardControllerAdmin>()
+                    .branchwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                        .selectedDropdownBranches
+                        .value]
+                    ?.first
+                    .branch
+                    ?.id ??
+                1);
+      }).toList();
+    } else if (attendanceList == null &&
+        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
+            null) {
+      attendanceList = attendanceResponseModel.value.history
+          .where((element) =>
+              (element.user?.branchId ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .branchwiseEmployeeMap[
+                          Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownBranches
+                              .value]
+                      ?.first
+                      .branch
+                      ?.id ??
+                  0))
+          .toList();
+    }
+    attendanceList ??= attendanceResponseModel.value.history;
+    attendanceList = attendanceList
+        .where(
+          (element) =>
+              element.user?.firstName.toLowerCase().contains(
+                  Get.find<DashboardControllerAdmin>()
+                      .searchKeyword
+                      .value
+                      .toLowerCase()) ??
+              false,
+        )
+        .toList();
+    return attendanceList;
+  }
 
   changeSliderPosition(double value) {
     sliderValue.value = value;

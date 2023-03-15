@@ -211,7 +211,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                       ),
                                       kSizedBoxW4,
                                       Text(
-                                        projects?[index].startDate ??
+                                        projects[index].startDate ??
                                             'Not provided',
                                         style: const TextStyle(
                                           color: CustomColors.blackTextColor,
@@ -230,7 +230,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                       ),
                                       kSizedBoxW4,
                                       Text(
-                                        projects?[index].endDate ??
+                                        projects[index].endDate ??
                                             'Not provided',
                                         style: const TextStyle(
                                           color: CustomColors.blackTextColor,

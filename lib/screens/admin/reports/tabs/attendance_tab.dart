@@ -7,6 +7,7 @@ import 'package:paytym/screens/admin/reports/widgets/rounded_icons.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../models/report/attendance/attendance_admin_response_model.dart';
 import '../../../employee/reports/widgets/year_dropdown.dart';
 import '../reports_controller.dart';
 
@@ -104,13 +105,11 @@ class AttendanceTabAdmin extends StatelessWidget {
         Expanded(
           child: Obx(
             () {
+              List<History>? attendanceList = Get.find<ReportsControllerAdmin>()
+                  .getFilteredAttendanceList();
               return ListView.separated(
                 physics: const BouncingScrollPhysics(),
-                itemCount: Get.find<ReportsControllerAdmin>()
-                    .attendanceResponseModel
-                    .value
-                    .history
-                    .length,
+                itemCount: attendanceList?.length ?? 0,
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
@@ -125,7 +124,7 @@ class AttendanceTabAdmin extends StatelessWidget {
                         ),*/
                         Expanded(
                           child: AttendanceCardColumn(
-                            index: index,
+                            attendanceElement: attendanceList![index],
                           ),
                         ),
                         Column(
@@ -191,10 +190,10 @@ class AttendanceTabAdmin extends StatelessWidget {
 }
 
 class AttendanceCardColumn extends StatelessWidget {
-  final int index;
+  final History attendanceElement;
   const AttendanceCardColumn({
     Key? key,
-    required this.index,
+    required this.attendanceElement,
   }) : super(key: key);
 
   @override
@@ -217,13 +216,7 @@ class AttendanceCardColumn extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Text(
-                  Get.find<ReportsControllerAdmin>()
-                      .attendanceResponseModel
-                      .value
-                      .history[index]
-                      .user!
-                      .company
-                      .toString(),
+                  attendanceElement.user!.branchId.toString(),
                   style: kTextStyleS15W600CBlack,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -244,7 +237,7 @@ class AttendanceCardColumn extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Text(
-                  '${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user!.firstName} ${Get.find<ReportsControllerAdmin>().attendanceResponseModel.value.history[index].user!.lastName}',
+                  '${attendanceElement.user!.firstName} ${attendanceElement.user!.lastName}',
                   style: kTextStyleS15W600CBlack,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -265,10 +258,7 @@ class AttendanceCardColumn extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Text(
-                  Get.find<ReportsControllerAdmin>()
-                      .attendanceResponseModel
-                      .value
-                      .history[index]
+                  attendanceElement
                       .user!
                       .employerId
                       .toString(),
@@ -292,10 +282,7 @@ class AttendanceCardColumn extends StatelessWidget {
                     ),
                     Text(
                       Get.find<ReportsControllerAdmin>().getTime(
-                          Get.find<ReportsControllerAdmin>()
-                              .attendanceResponseModel
-                              .value
-                              .history[index]
+                          attendanceElement
                               .checkIn),
                       style:
                           kTextStyleS15W600CBlack.copyWith(color: Colors.red),
@@ -314,10 +301,7 @@ class AttendanceCardColumn extends StatelessWidget {
                     ),
                     Text(
                       Get.find<ReportsControllerAdmin>().getTime(
-                          Get.find<ReportsControllerAdmin>()
-                              .attendanceResponseModel
-                              .value
-                              .history[index]
+                          attendanceElement
                               .checkOut),
                       style:
                           kTextStyleS15W600CBlack.copyWith(color: Colors.green),

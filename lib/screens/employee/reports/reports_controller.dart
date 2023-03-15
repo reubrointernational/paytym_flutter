@@ -44,7 +44,7 @@ class ReportsController extends GetxController
 
   final deductionResponseModel = DeductionResponseModel().obs;
   final attendanceResponseModel = AttendanceEmployeeResponseModel().obs;
-  Map<String, double> pieChartData = {};
+  Map<String, double> pieChartData = {'':2};
 
   final selectedDropdownYear = years.first.obs;
   final selectedDropdownMonth = monthsList.first.obs;

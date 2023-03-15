@@ -222,16 +222,18 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     List<EmployeeList>? chatList;
     if (selectedDropdownDepartments.value != null) {
       chatList = deptwiseEmployeeMap[selectedDropdownDepartments.value];
-    } else if (chatList != null && selectedDropdownBranches.value != null) {
-      chatList
+    }
+    if (chatList != null && selectedDropdownBranches.value != null) {
+      chatList = chatList
           .where((element) =>
               element.branch?.name == selectedDropdownBranches.value)
           .toList();
     } else if (chatList == null && selectedDropdownBranches.value != null) {
       chatList = branchwiseEmployeeMap[selectedDropdownBranches.value];
-    } else {
-      chatList = employeeList.value.employeeList;
     }
+
+    chatList ??= employeeList.value.employeeList;
+
     chatList = chatList
         ?.where(
           (element) =>
@@ -244,11 +246,8 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     return chatList;
   }
 
-  
-
   clearFilter() {
-    selectedDropdownDepartments.value =
-        null;
+    selectedDropdownDepartments.value = null;
     selectedDropdownBranches.value = null;
     searchKeyword.value = '';
   }

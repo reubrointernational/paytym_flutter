@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
+import '../../../../models/report/medical_list_admin_model.dart';
 import '../reports_controller.dart';
 import '../widgets/medical_title_tag.dart';
 
@@ -14,15 +16,12 @@ class MedicalTabAdmin extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<ReportsControllerAdmin>().getMedical());
     return Obx(() {
-      var medicalDetails = Get.find<ReportsControllerAdmin>()
-          .medicalResponseModel
-          .value
-          .extraDetails;
+      List<ExtraDetail>? medicalDetails =
+          Get.find<ReportsControllerAdmin>().getFilteredMedicalList();
       return ListView.separated(
         physics: const BouncingScrollPhysics(),
         itemCount: medicalDetails?.length ?? 0,
         itemBuilder: (context, index) {
-          
           return Container(
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade200),
@@ -49,7 +48,6 @@ class MedicalTabAdmin extends StatelessWidget {
                     ...List.generate(
                       4,
                       ((subIndex) {
-                        
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: Row(
@@ -64,7 +62,8 @@ class MedicalTabAdmin extends StatelessWidget {
                               kSizedBoxW12,
                               Expanded(
                                 child: Text(
-                                 Get.find<ReportsControllerAdmin>().getMedicalDetails(subIndex),
+                                  Get.find<ReportsControllerAdmin>()
+                                      .getMedicalDetails(subIndex),
                                   style: kTextStyleS14C255140x3.copyWith(
                                       color: Colors.lightBlue),
                                 ),
