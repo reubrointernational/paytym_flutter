@@ -57,7 +57,7 @@ class LeavesController extends GetxController with BaseController {
         .post(ApiEndPoints.leave, leaveRequestModelToJson(leaveRequestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    
+
     if (responseString == null) {
       return null;
     } else {
@@ -179,5 +179,16 @@ class LeavesController extends GetxController with BaseController {
         return LeaveStatusModel('Awaiting', CustomColors.orangeLabelColor,
             CustomColors.lightOrangeColor);
     }
+  }
+
+  String leaveTypesToString(leaveType) {
+    var type = leaveType is LeaveRequest ? leaveType.type : leaveType;
+    if (type == 7) {
+      return 'Casual';
+    }
+    if (type == 9) {
+      return 'Halfday';
+    }
+    return '';
   }
 }
