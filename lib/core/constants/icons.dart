@@ -14,7 +14,6 @@ abstract class IconPath {
   static const String tick1Svg = 'assets/svg/tick1.svg';
   static const String tick2Svg = 'assets/svg/tick2.svg';
 
-
   //calendar app bar
 
   static const String menuSvg = 'assets/svg/menu.svg';
@@ -38,7 +37,7 @@ abstract class IconPath {
   static const String downloadingJson = 'assets/json/downloading.json';
 
   //splitPayment
-  static const String mPesaPng = 'assets/png/mpesa.png';
+  static const String mPesaPng = 'assets/png/mpaisa_pay.png';
   static const String myCashPng = 'assets/png/mycash.png';
   static const String windcavePng = 'assets/png/windcave.png';
 

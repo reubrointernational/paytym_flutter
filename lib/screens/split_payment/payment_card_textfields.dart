@@ -5,8 +5,9 @@ class PaymentCardTextFields extends StatelessWidget {
   final String? label;
   final double? width;
   final TextInputType? keyboardType;
+  final void Function(String)? onChanged;
   const PaymentCardTextFields(
-      {super.key, this.hint, this.label, this.width, this.keyboardType});
+      {super.key, this.hint, this.label, this.width, this.keyboardType, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class PaymentCardTextFields extends StatelessWidget {
         TextFormField(
             keyboardType: keyboardType,
             maxLines: null,
+            onChanged: onChanged,
             decoration: InputDecoration(
               isDense: true,
               contentPadding: const EdgeInsets.symmetric(vertical: 8),

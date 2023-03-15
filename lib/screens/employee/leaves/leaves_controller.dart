@@ -134,7 +134,7 @@ class LeavesController extends GetxController with BaseController {
 
             //startDate: getDateReverseString(leaveRequestModel.startDate),
             //endDate: getDateReverseString(leaveRequestModel.endDate),
-            type: leaveRequestModel.type);
+            type: int.parse(leaveRequestModel.type));
         leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
         leaveRequestModel = LeaveRequestModel();
         startDate = DateTime.now();

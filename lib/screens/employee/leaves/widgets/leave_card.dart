@@ -49,7 +49,7 @@ class LeavesCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        leave?.type?.toCamelCase() ?? '',
+                        leave?.type?.toString().toCamelCase() ?? '',
                         style: TextStyle(
                           fontSize: 15,
                           color: (leave?.type == kcasualString)

@@ -57,11 +57,10 @@ class HrAppBar extends StatelessWidget {
           onSelected: (DashboardDropDown value) =>
               Get.find<DashboardController>().onClickMenuItem(value),
           child: CachedNetworkImage(
-            imageUrl: Get.find<LoginController>()
-                    .loginResponseModel
-                    ?.employee
-                    ?.image ??
-                '',
+            imageUrl: 'https://paytym.net/storage/${Get.find<LoginController>()
+                        .loginResponseModel
+                        ?.employee
+                        ?.image}',
             imageBuilder: (context, imageProvider) => CircleAvatar(
               backgroundColor: CustomColors.whiteCardColor,
               radius: 17,

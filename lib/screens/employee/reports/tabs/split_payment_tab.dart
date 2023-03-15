@@ -21,12 +21,13 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       width: double.infinity,
@@ -34,7 +35,7 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
                       decoration: BoxDecoration(
                         color: CustomColors.whiteTextColor,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.grey.shade300),
+                        border: Border.all(width: 1, color: Colors.black),
                       ),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,7 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
-                                color: CustomColors.blueTextColor,
+                                color: CustomColors.blackTextColor,
                               ),
                             ),
                             kSizedBoxH10,
@@ -61,16 +62,16 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
                     kSizedBoxH20,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'Payment Method',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.orange.shade800,
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
                           ),
                         ),
-                        kSizedBoxH10,
+                        kSizedBoxH15,
                       ],
                     ),
                     const PaymentMethods(),
@@ -80,7 +81,7 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
               alignment: Alignment.center,
               child: SizedBox(
                 height: h / 15,
-                width: w / 1.8,
+                width: w / 1.6,
                 child: ElevatedButton(
                   onPressed: () {
                     // PaymentController().goToMPaisaPayment();
@@ -89,6 +90,8 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
                     backgroundColor: Colors.white,
                     padding: const EdgeInsets.all(10),
                     shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                            width: 1, color: CustomColors.blueCardColor),
                         borderRadius: BorderRadius.circular(10)),
                   ),
                   child: const Text(

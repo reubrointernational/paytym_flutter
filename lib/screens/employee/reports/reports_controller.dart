@@ -22,6 +22,7 @@ import '../../../models/report/attendance/attendance_employee_response.dart';
 import '../../../models/report/deduction/deduction_response_model.dart';
 import '../../../models/report/files/employee_files_list_model.dart';
 import '../../../models/report/medical_list_admin_model.dart';
+import '../../../models/split_payment/split_payment_response.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 
@@ -41,6 +42,8 @@ class ReportsController extends GetxController
   final fileListResponseModel =
       EmployeeFilesListModel(files: [], message: '').obs;
 
+  final splitAmount = ''.obs;
+  final splitPaymentResponseModel = SplitPaymentResponseModel().obs;
   final deductionResponseModel = DeductionResponseModel().obs;
   final attendanceResponseModel = AttendanceEmployeeResponseModel().obs;
   Map<String, double> pieChartData = {};
@@ -71,8 +74,8 @@ class ReportsController extends GetxController
   getMedical() async {
     showLoading();
     var model = {
-      'employer_id': '4'
-      // '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employer_id}'
     };
     Get.find<BaseClient>().onError = getMedical;
     var responseString = await Get.find<BaseClient>()
@@ -117,16 +120,43 @@ class ReportsController extends GetxController
   }
 
   String getImagePath(int index) {
-    if (index == 0) {
-      return IconPath.windcavePng;
-    } else if (index == 1) {
+    if (index == 1) {
       return IconPath.mPesaPng;
     } else {
       return IconPath.myCashPng;
     }
   }
 
-//todo add onError in getattendance as well. Don't forget '()' will not be present on function
+  setSplitPayment(index) async {
+    showLoading();
+    //Get.find<BaseClient>().onError = setSplitPayment(index);
+    var requestModel = {
+      'employer_id':
+          Get.find<LoginController>().loginResponseModel!.employee!.employer_id.toString(),
+      'employee_id': '2',
+      'amount': splitAmount.value,
+      'payment_wallet': index.toString(),
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(
+          ApiEndPoints.splitPayment,
+          jsonEncode(requestModel),
+          Get.find<LoginController>().getHeader(),
+        )
+        .catchError(handleError);
+
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      splitPaymentResponseModel.value =
+          splitPaymentResponseModelFromJson(responseString);
+      splitPaymentResponseModel.refresh();
+      //Get.find<BaseClient>().onError = null;
+    }
+  }
+
+//todo add onError in get attendance as well. Don't forget '()' will not be present on function
 
   getDeduction() async {
     if (deductionResponseModel.value.deductions == null) {

@@ -45,7 +45,7 @@ class _PaymentMethodsState extends State<PaymentMethods> {
         scrollDirection: Axis.horizontal,
         itemCount: paymentMethods.length,
         separatorBuilder: (context, index) => const SizedBox(
-          width: 14,
+          width: 8,
         ),
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -59,9 +59,9 @@ class _PaymentMethodsState extends State<PaymentMethods> {
               width: w / 3.5,
               //margin: const EdgeInsets.only(right: 15),
               decoration: BoxDecoration(
-                color: CustomColors.whiteTextColor,
-                borderRadius: BorderRadius.circular(20),
-              ),
+                  color: CustomColors.whiteTextColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 2, color: Colors.orange)),
               child: Stack(
                 children: [
                   Obx(() {
@@ -101,8 +101,8 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                       : Center(
                           child: Image.asset(
                             paymentMethods[index]['icon'],
-                            height: h / 10,
-                            width: w / 5,
+                            height: h * 0.08,
+                            width: w * 0.25,
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -110,15 +110,36 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                     bottom: 20,
                     left: 0,
                     right: 0,
-                    child: Text(
-                      '\$${paymentMethods[index]['amount']}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: CustomColors.greyShade600TextColor,
-                      ),
-                    ),
+                    child: Get.find<ReportsController>()
+                                .splitPaymentResponseModel
+                                .value
+                                .splitpayment !=
+                            null
+                        ? Text(
+                            Get.find<ReportsController>()
+                                        .splitPaymentResponseModel
+                                        .value
+                                        .splitpayment!
+                                        .id ==
+                                    index
+                                ? '\$${Get.find<ReportsController>().splitAmount}'
+                                : '\$0',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: CustomColors.greyShade600TextColor,
+                            ),
+                          )
+                        : Text(
+                            '\$0',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: CustomColors.greyShade600TextColor,
+                            ),
+                          ),
                   ),
                 ],
               ),
