@@ -331,7 +331,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       PlatformFile file = result.files.first;
-     
       filePath.value = file.path!;
     }
   }

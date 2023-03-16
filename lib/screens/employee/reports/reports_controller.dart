@@ -154,7 +154,7 @@ class ReportsController extends GetxController
     //Get.find<BaseClient>().onError = setSplitPayment(index);
     var requestModel = {
       'employer_id':
-          Get.find<LoginController>().loginResponseModel!.employee!.employer_id.toString(),
+          Get.find<LoginController>().loginResponseModel!.employee!.employerId.toString(),
       'employee_id': '2',
       'amount': splitAmount.value,
       'payment_wallet': index.toString(),
@@ -207,7 +207,7 @@ class ReportsController extends GetxController
         'employer_id': Get.find<LoginController>()
             .loginResponseModel!
             .employee!
-            .employer_id,
+            .employerId,
         'date': DateTime.now.toString(),
       };
 

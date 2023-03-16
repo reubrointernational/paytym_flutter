@@ -368,13 +368,13 @@ List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending'];
 List<String> reportsTabListAdmin = [
   'Uploads',
-  'Payroll',
+  // 'Payroll',
   'Overtime',
-  'Projects',
-  'Attendance',
-  'Deduction',
-  'Medical',
-  'Contract period'
+  // 'Projects',
+  // 'Attendance',
+  // 'Deduction',
+  // 'Medical',
+  // 'Contract period'
 ];
 List<String> reportsTabList = [
   'My Files',

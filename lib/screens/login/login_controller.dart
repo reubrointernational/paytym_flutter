@@ -164,7 +164,6 @@ class LoginController extends GetxController with BaseController {
     }
   }
 
-
   goToMainOrOtpPage() async {
     bool isSuccess = await fetchLoginData();
     if (isSuccess) {
@@ -195,6 +194,7 @@ class LoginController extends GetxController with BaseController {
       if (userModel.password.isNotEmpty &&
           userModel.password == userModel.confirmPassword) {
         MessageOnlyResponseModel? confirmModel = await updatePassword();
+        
         if (confirmModel != null) {
           Get.offAllNamed(Routes.bottomNav);
         }

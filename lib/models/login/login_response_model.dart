@@ -19,6 +19,7 @@ class LoginResponseModel {
     this.absence,
     this.annual,
     this.halfday,
+    this.capabilities,
   });
 
   String? message;
@@ -28,6 +29,7 @@ class LoginResponseModel {
   int? absence;
   int? annual;
   int? halfday;
+  List<Capability>? capabilities;
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
       LoginResponseModel(
@@ -40,6 +42,10 @@ class LoginResponseModel {
         absence: json["absence"],
         annual: json["annual"],
         halfday: json["halfday"],
+        capabilities: json["capabilities"] == null
+            ? []
+            : List<Capability>.from(
+                json["capabilities"]!.map((x) => Capability.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,6 +56,125 @@ class LoginResponseModel {
         "absence": absence,
         "annual": annual,
         "halfday": halfday,
+        "capabilities": capabilities == null
+            ? []
+            : List<dynamic>.from(capabilities!.map((x) => x.toJson())),
+      };
+}
+
+class Capability {
+  Capability({
+    this.id,
+    this.roleId,
+    this.employerId,
+    this.wages,
+    this.projects,
+    this.attendance,
+    this.approveAttendance,
+    this.medical,
+    this.contractPeriod,
+    this.deductions,
+    this.createChatGroups,
+    this.createMeetings,
+    this.approveLeaves,
+    this.viewPayroll,
+    this.approvePayroll,
+    this.calculatePayroll,
+    this.editDeduction,
+    this.createdAt,
+    this.updatedAt,
+    this.role,
+  });
+
+  int? id;
+  int? roleId;
+  int? employerId;
+  int? wages;
+  int? projects;
+  int? attendance;
+  int? approveAttendance;
+  int? medical;
+  int? contractPeriod;
+  int? deductions;
+  int? createChatGroups;
+  int? createMeetings;
+  int? approveLeaves;
+  int? viewPayroll;
+  int? approvePayroll;
+  int? calculatePayroll;
+  int? editDeduction;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  Role? role;
+
+  factory Capability.fromJson(Map<String, dynamic> json) => Capability(
+        id: json["id"],
+        roleId: json["role_id"],
+        employerId: json["employer_id"],
+        wages: json["wages"],
+        projects: json["projects"],
+        attendance: json["attendance"],
+        approveAttendance: json["approve_attendance"],
+        medical: json["medical"],
+        contractPeriod: json["contract_period"],
+        deductions: json["deductions"],
+        createChatGroups: json["create_chat_groups"],
+        createMeetings: json["create_meetings"],
+        approveLeaves: json["approve_leaves"],
+        viewPayroll: json["view_payroll"],
+        approvePayroll: json["approve_payroll"],
+        calculatePayroll: json["calculate_payroll"],
+        editDeduction: json["edit_deduction"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        role: json["role"] == null ? null : Role.fromJson(json["role"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "role_id": roleId,
+        "employer_id": employerId,
+        "wages": wages,
+        "projects": projects,
+        "attendance": attendance,
+        "approve_attendance": approveAttendance,
+        "medical": medical,
+        "contract_period": contractPeriod,
+        "deductions": deductions,
+        "create_chat_groups": createChatGroups,
+        "create_meetings": createMeetings,
+        "approve_leaves": approveLeaves,
+        "view_payroll": viewPayroll,
+        "approve_payroll": approvePayroll,
+        "calculate_payroll": calculatePayroll,
+        "edit_deduction": editDeduction,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "role": role?.toJson(),
+      };
+}
+
+class Role {
+  Role({
+    this.id,
+    this.roleName,
+  });
+
+  int? id;
+  String? roleName;
+
+  factory Role.fromJson(Map<String, dynamic> json) => Role(
+        id: json["id"],
+        roleName: json["role_name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "role_name": roleName,
       };
 }
 
@@ -60,6 +185,7 @@ class Employee {
     this.employmentStartDate,
     this.employmentEndDate,
     this.payedDate,
+    this.payDate,
     this.bankBranchName,
     this.businessId,
     this.departmentId,
@@ -82,7 +208,7 @@ class Employee {
     this.city,
     this.town,
     this.postcode,
-    this.country,
+    this.countryId,
     this.tin,
     this.fnpf,
     this.bank,
@@ -99,32 +225,33 @@ class Employee {
 
   int? id;
   int? employerId;
-  dynamic employmentStartDate;
-  dynamic employmentEndDate;
-  dynamic payedDate;
-  dynamic bankBranchName;
-  dynamic businessId;
+  String? employmentStartDate;
+  String? employmentEndDate;
+  String? payedDate;
+  String? payDate;
+  String? bankBranchName;
+  int? businessId;
   int? departmentId;
   String? salaryType;
-  dynamic rate;
-  dynamic payPeriod;
-  dynamic workdaysPerWeek;
-  dynamic totalHoursPerWeek;
-  dynamic extraHoursAtBaseRate;
-  dynamic employeeType;
+  String? rate;
+  String? payPeriod;
+  String? workdaysPerWeek;
+  String? totalHoursPerWeek;
+  String? extraHoursAtBaseRate;
+  String? employeeType;
   String? firstName;
   String? lastName;
   String? company;
   int? branchId;
-  dynamic position;
+  int? position;
   String? email;
   String? phone;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String? street;
   String? city;
   String? town;
   String? postcode;
-  String? country;
+  String? countryId;
   String? tin;
   String? fnpf;
   String? bank;
@@ -144,6 +271,8 @@ class Employee {
         employmentStartDate: json["employment_start_date"],
         employmentEndDate: json["employment_end_date"],
         payedDate: json["payed_date"],
+        payDate:
+            json["pay_date"],
         bankBranchName: json["bank_branch_name"],
         businessId: json["business_id"],
         departmentId: json["department_id"],
@@ -161,14 +290,12 @@ class Employee {
         position: json["position"],
         email: json["email"],
         phone: json["phone"],
-        dateOfBirth: json["date_of_birth"] == null
-            ? null
-            : DateTime.parse(json["date_of_birth"]),
+        dateOfBirth: json["date_of_birth"],
         street: json["street"],
         city: json["city"],
         town: json["town"],
         postcode: json["postcode"],
-        country: json["country"],
+        countryId: json["country_id"],
         tin: json["tin"],
         fnpf: json["fnpf"],
         bank: json["bank"],
@@ -190,9 +317,14 @@ class Employee {
   Map<String, dynamic> toJson() => {
         "id": id,
         "employer_id": employerId,
-        "employment_start_date": employmentStartDate,
-        "employment_end_date": employmentEndDate,
-        "payed_date": payedDate,
+        "employment_start_date":
+           employmentStartDate,
+        "employment_end_date":
+            employmentEndDate,
+        "payed_date":
+            payedDate,
+        "pay_date":
+            payDate,
         "bank_branch_name": bankBranchName,
         "business_id": businessId,
         "department_id": departmentId,
@@ -211,12 +343,12 @@ class Employee {
         "email": email,
         "phone": phone,
         "date_of_birth":
-            "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
+            dateOfBirth,
         "street": street,
         "city": city,
         "town": town,
         "postcode": postcode,
-        "country": country,
+        "country_id": countryId,
         "tin": tin,
         "fnpf": fnpf,
         "bank": bank,
