@@ -56,8 +56,10 @@ class LeavesCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        leave!.leaveType!.leaveType.toLowerCase().trim() ==
-                                'Halfday'.trim()
+                        leave!.leaveType!.leaveType
+                                    .replaceAll(' ', '')
+                                    .toLowerCase() ==
+                                'Halfday'.toLowerCase()
                             ? Get.find<LeavesController>()
                                 .formatDate(leave?.startDate)
                             : '${Get.find<LeavesController>().formatDate(leave?.startDate)}-${Get.find<LeavesController>().formatDate(leave?.endDate)}',

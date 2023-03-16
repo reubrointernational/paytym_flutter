@@ -12,6 +12,7 @@ class LeavesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(leave);
     return Obx(() {
       List<LeaveRequest>? allLeaves;
       allLeaves = (leave == 'All')
@@ -20,10 +21,12 @@ class LeavesTab extends StatelessWidget {
               .leaveResponseModel
               .value
               .leaveRequests
-              ?.where((element) =>
-                  element.leaveType!.leaveType.toLowerCase().trim() ==
-                  leave.toLowerCase())
-              .toList();
+              ?.where((element) {
+              return element.leaveType!.leaveType
+                      .replaceAll(' ', '')
+                      .toLowerCase() ==
+                  leave.toLowerCase();
+            }).toList();
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: allLeaves?.length ?? 0,
