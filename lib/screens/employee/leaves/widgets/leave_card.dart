@@ -49,14 +49,14 @@ class LeavesCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        leave!.leaveType!.leaveType,
+                        leave?.leaveType?.leaveType??'',
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.grey.shade800,
                         ),
                       ),
                       Text(
-                        leave!.leaveType!.leaveType.toLowerCase().trim() ==
+                        (leave?.leaveType?.leaveType.toLowerCase().trim()??'') ==
                                 'Halfday'.trim()
                             ? Get.find<LeavesController>()
                                 .formatDate(leave?.startDate)
