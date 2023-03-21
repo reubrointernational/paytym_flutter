@@ -10,7 +10,7 @@ class UploadsTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.find<DashboardControllerAdmin>().clearFilter();
+    WidgetsBinding.instance.addPostFrameCallback((_)=> Get.find<DashboardControllerAdmin>().clearFilter());
     return Obx(() {
       List<EmployeeList>? chatList =
           Get.find<DashboardControllerAdmin>().getFilteredEmployeeList();

@@ -1,5 +1,5 @@
-// const kBaseUrl = 'http://52.40.210.26:2000/api';
-const kBaseUrl = 'https://paytym.net/api';
+const kBaseUrl = 'http://52.40.210.26:2000/api';
+// const kBaseUrl = 'https://paytym.net/api';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
 const kDomainUrl = 'paytym.net';
 
@@ -27,7 +27,6 @@ class ApiEndPoints {
   static const sendOtpToEmail = '$kBaseUrl/forgot-password';
   static const confirmOtpWithEmail = '$kBaseUrl/forgotpwd-confirm-otp';
   static const resetPasswordWithEmail = '$kBaseUrl/forgotpwd-password-update';
-
   static const attendance = '$kBaseUrl/checkin_checkout_list';
   static const holidayRequestAdmin = '$kBaseUrl/list_leaves';
   static const leaveAcceptReject = '$kBaseUrl/leave_requests_accept_reject';
@@ -56,11 +55,10 @@ class ApiEndPoints {
   static const createChatGroup = '$kBaseUrl/create_chat_groups';
   static const projectsList = '$kBaseUrl/list_projects';
   static const branchDeptList = '$kBaseUrl/list_branch_departments';
-   static const employeeFileList = '$kBaseUrl/list_files';
-   static const fileTypeList = '$kBaseUrl/list_file_types';
-   static const processPayroll = '$kBaseUrl/payroll-calculation';
-   static const adminDashboard = '$kBaseUrl/admin_dashboard';
-   static const dashboard = '$kBaseUrl/dashboard';
+  static const employeeFileList = '$kBaseUrl/list_files';
+  static const fileTypeList = '$kBaseUrl/list_file_types';
+  static const processPayroll = '$kBaseUrl/payroll-calculation';
+  static const adminDashboard = '$kBaseUrl/admin_dashboard';
+  static const dashboard = '$kBaseUrl/dashboard';
   static const uploadFiles = '$kBaseUrl/upload_files';
-
 }

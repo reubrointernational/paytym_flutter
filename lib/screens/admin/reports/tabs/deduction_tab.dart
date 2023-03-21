@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/core/dialog_helper.dart';
-import 'package:paytym/screens/admin/widgets/add_deduction_bottom_sheet.dart';
 
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
+import '../../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../dashboard/dashboard_controller.dart';
 import '../reports_controller.dart';
 import '../widgets/medical_title_tag.dart';
@@ -95,7 +93,7 @@ class DeductionTabAdmin extends StatelessWidget {
               itemCount: Get.find<ReportsControllerAdmin>()
                       .deductionResponseModel
                       .value
-                      .details
+                      .deductions
                       ?.length ??
                   0,
               itemBuilder: (context, index) {
@@ -103,7 +101,6 @@ class DeductionTabAdmin extends StatelessWidget {
                   children: [
                     Container(
                       // height: 260,
-
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey.shade200),
                           borderRadius: BorderRadius.circular(10)),
@@ -118,105 +115,56 @@ class DeductionTabAdmin extends StatelessWidget {
                               Expanded(
                                 child: MedicalTitleTag(
                                   branch: '',
-                                  name: Get.find<ReportsControllerAdmin>()
-                                          .deductionResponseModel
-                                          .value
-                                          .details?[index]
-                                          .name ??
-                                      '',
+                                  name:
+                                      '${Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?[index].firstName} ${Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?[index].lastName}',
                                   employmentId: '',
                                 ),
                               ),
                             ],
                           ),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  Get.find<ReportsControllerAdmin>()
-                                          .deductionResponseModel
-                                          .value
-                                          .details?[index]
-                                          .description ??
-                                      '',
-                                  style: kTextStyleS12W600CcustomGrey,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Expanded(
+                          //       child: Text(
+                          //         Get.find<ReportsControllerAdmin>()
+                          //                 .deductionResponseModel
+                          //                 .value
+                          //                 .deductions?[index]
+                          //                 .firstName ??
+                          //             '',
+                          //         style: kTextStyleS12W600CcustomGrey,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           kSizedBoxH6,
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 6),
-                            child: Visibility(
-                              visible: Get.find<ReportsControllerAdmin>()
+                          for (AssignDeduction deduction
+                              in Get.find<ReportsControllerAdmin>()
                                       .deductionResponseModel
                                       .value
-                                      .details?[index]
-                                      .amount
-                                      ?.isNotEmpty ??
-                                  false,
+                                      .deductions?[index]
+                                      .assignDeduction ??
+                                  [])
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 6),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    'Amount',
+                                  Text(
+                                    deduction.deduction?.name ?? '',
                                     style: kTextStyleS12W600CcustomGrey,
                                   ),
                                   Text(
-                                    "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
+                                    deduction.rate.toString(),
                                     style: kTextStyleS12W600CcustomGrey,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          Visibility(
-                            visible: Get.find<ReportsControllerAdmin>()
-                                    .deductionResponseModel
-                                    .value
-                                    .details?[index]
-                                    .percentage
-                                    ?.isNotEmpty ??
-                                false,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Percentage',
-                                  style: kTextStyleS12W600CcustomGrey,
-                                ),
-                                Text(
-                                  '${Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].percentage}%',
-                                  style: kTextStyleS12W600CcustomGrey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 6),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Created at',
-                                  style: kTextStyleS12W600CcustomGrey,
-                                ),
-                                Text(
-                                  DateFormat('dd-MM-yyyy').format(
-                                      Get.find<ReportsControllerAdmin>()
-                                              .deductionResponseModel
-                                              .value
-                                              .details?[index]
-                                              .createdAt ??
-                                          DateTime(0000, 00, 00)),
-                                  style: kTextStyleS12W600CcustomGrey,
-                                ),
-                              ],
-                            ),
-                          ),
+
                           // Row(
                           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           //   children: [
@@ -243,23 +191,35 @@ class DeductionTabAdmin extends StatelessWidget {
                           //     ),
                           //   ],
                           // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: 15),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       const Text(
-                          //         kTotalString,
-                          //         style: kTextStyleS13W600Cblue,
-                          //       ),
-                          //       Text(
-                          //         "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
-                          //         style: kTextStyleS13W600Cblue.copyWith(
-                          //             color: Colors.lightBlue),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  kTotalString,
+                                  style: kTextStyleS13W600Cblue,
+                                ),
+                                Text(
+                                  () {
+                                    int amount = 0;
+                                    for (AssignDeduction deduction
+                                        in Get.find<ReportsControllerAdmin>()
+                                                .deductionResponseModel
+                                                .value
+                                                .deductions?[index]
+                                                .assignDeduction ??
+                                            []) {
+                                      amount += deduction.rate ?? 0;
+                                    }
+                                    return amount.toString();
+                                  }(),
+                                  style: kTextStyleS13W600Cblue.copyWith(
+                                      color: Colors.lightBlue),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

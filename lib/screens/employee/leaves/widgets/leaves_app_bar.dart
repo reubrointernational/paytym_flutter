@@ -19,17 +19,6 @@ class LeavesAppBar extends StatelessWidget {
         ),
         Row(
           children: [
-            Stack(children: const [
-              Icon(Icons.notifications_outlined),
-              Positioned(
-                right: 0,
-                top: 2,
-                child: CircleAvatar(
-                  backgroundColor: CustomColors.redColor,
-                  radius: 5,
-                ),
-              ),
-            ]),
             GestureDetector(
               onTap: () {
                 showDialog(

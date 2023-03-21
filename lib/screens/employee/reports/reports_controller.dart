@@ -47,15 +47,14 @@ class ReportsController extends GetxController
   final splitPaymentResponseModel = SplitPaymentResponseModel().obs;
   final deductionResponseModel = DeductionResponseModel().obs;
   final attendanceResponseModel = AttendanceEmployeeResponseModel().obs;
-  Map<String, double> pieChartData = {'':2};
+  Map<String, double> pieChartData = {'': 2};
 
   final selectedDropdownYear = years.first.obs;
   final selectedDropdownMonth = monthsList.first.obs;
   final selectedDropdownDay = daysDummyList.first.obs;
 
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
-
-
+  
 
   String getMedicalDetails(int index) {
     switch (index) {
@@ -153,8 +152,11 @@ class ReportsController extends GetxController
     showLoading();
     //Get.find<BaseClient>().onError = setSplitPayment(index);
     var requestModel = {
-      'employer_id':
-          Get.find<LoginController>().loginResponseModel!.employee!.employerId.toString(),
+      'employer_id': Get.find<LoginController>()
+          .loginResponseModel!
+          .employee!
+          .employerId
+          .toString(),
       'employee_id': '2',
       'amount': splitAmount.value,
       'payment_wallet': index.toString(),
@@ -290,7 +292,6 @@ class ReportsController extends GetxController
     final DateTime now = DateTime.parse(date);
     return DateFormat('hh:mm a').format(now);
   }
-
 
   //for downloading
 

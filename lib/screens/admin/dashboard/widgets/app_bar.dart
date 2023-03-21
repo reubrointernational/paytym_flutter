@@ -1,22 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
-import 'package:paytym/screens/employee/bottom_nav/bottom_nav_page.dart';
 
 import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/list_maps.dart';
 import '../../../../core/constants/widgets.dart';
-import '../../../../routes/app_routes.dart';
 import '../../../employee/calendar/widgets/custom_svg.dart';
 import '../../../employee/dashboard/dashboard_controller.dart';
 import '../../../login/login_controller.dart';
 import '../../../widgets/paytym_logo.dart';
-import '../../bottom_nav/bottom_nav_page.dart';
 
 class HrAppBar extends StatelessWidget {
   const HrAppBar({super.key});

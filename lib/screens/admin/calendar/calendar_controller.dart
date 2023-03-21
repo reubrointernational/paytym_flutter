@@ -10,6 +10,8 @@ import 'package:paytym/models/calendar/meeting_list_admin_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
+import 'package:paytym/screens/employee/calendar/Tabs/meeting/calendar_meeting_tab.dart';
+import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../models/calendar/holiday_admin_response_model.dart';
@@ -68,6 +70,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       meetingResponseModel.value =
           meetingListAdminModelFromJson(responseString);
       meetingResponseModel.refresh();
+      
       Get.find<BaseClient>().onError = null;
     }
   }
@@ -113,6 +116,9 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       return;
     } else {
       await getMeeting();
+      if (Get.find<CalendarController>().initialized) {
+        Get.find<CalendarController>().meetingResponseModel.refresh();
+      }
       Get.back();
       startDateController.clear();
       endDateController.clear();
@@ -172,9 +178,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
 
   deleteEvent(int index) async {
     showLoading();
-    var requestModel = {
-      'id': '${eventsResponseModel.value.events![index].id}'
-    };
+    var requestModel = {'id': '${eventsResponseModel.value.events![index].id}'};
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.deleteEvent, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
@@ -267,6 +271,9 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       return;
     } else {
       await getEvents();
+      if (Get.find<CalendarController>().initialized) {
+        Get.find<CalendarController>().eventsResponseModel.refresh();
+      }
       Get.back();
       startDateController.clear();
       endDateController.clear();
@@ -306,6 +313,9 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       return;
     } else {
       await getHolidays();
+      if (Get.find<CalendarController>().initialized) {
+        Get.find<CalendarController>().leaveAdminResponseModel.refresh();
+      }
       Get.back();
       startDateController.clear();
       endDateController.clear();

@@ -366,16 +366,7 @@ List<Map<String, dynamic>> chatList = [
 List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
 List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending'];
-List<String> reportsTabListAdmin = [
-  'Uploads',
-  // 'Payroll',
-  'Overtime',
-  // 'Projects',
-  // 'Attendance',
-  // 'Deduction',
-  // 'Medical',
-  // 'Contract period'
-];
+
 List<String> reportsTabList = [
   'My Files',
   'Split Payment',
@@ -383,11 +374,6 @@ List<String> reportsTabList = [
   'Deduction',
   'Attendance',
   'Health'
-];
-List<String> financeReportsTabList = [
-  'Projects',
-  'Deduction',
-  'Contract period'
 ];
 
 const kAppNameString = 'Paytym';

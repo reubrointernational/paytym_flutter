@@ -48,7 +48,8 @@ import 'package:http/http.dart' as http;
 class ReportsControllerAdmin extends GetxController with BaseController {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
-  final selectedDropdownDay = daysDummyList[0].obs;
+  final selectedDate =
+      DateFormat('dd-MM-yyyy').format(DateTime.now()).toString().obs;
   final formKey = GlobalKey<FormState>();
   DeductionAddRequestModel deductionAddRequestModel = DeductionAddRequestModel(
     employerId: '',
@@ -62,6 +63,103 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
   final projectDetails = ProjectDetailsModel().obs;
+
+  List<String> reportsTabListAdmin = [
+    'Projects',
+    'Attendance',
+    'Uploads',
+    'Overtime',
+    // 'Deduction',
+    // 'Medical',
+    // 'Contract period'
+  ];
+
+  List<Map<String, dynamic>> totalAttendance = [
+    {
+      'title': 'Present',
+      'color': Colors.purple,
+    },
+    {
+      'title': 'Late',
+      'color': Colors.orange,
+    },
+    {
+      'title': 'Absent',
+      'color': Colors.pink,
+    },
+    {
+      'title': 'Total',
+      'color': Colors.indigo,
+    },
+  ];
+
+  Future<void> selectDateTime(BuildContext context) async {
+    DateTime startDate = DateTime.now();
+
+    final DateTime? dateTime = await showDatePicker(
+      context: context,
+      initialDate: startDate,
+      firstDate: DateTime(2022),
+      lastDate: startDate,
+    );
+
+    selectedDate.value =
+        DateFormat('dd-MM-yyyy').format(dateTime ?? DateTime(00, 0, 0));
+
+    getAttendance();
+  }
+
+  String getAttendanceCount(int index) {
+    switch (index) {
+      case 0:
+        return Get.find<ReportsControllerAdmin>()
+            .attendanceResponseModel
+            .value
+            .present
+            .toString();
+      case 1:
+        return Get.find<ReportsControllerAdmin>()
+            .attendanceResponseModel
+            .value
+            .late.toString();
+      case 2:
+        return Get.find<ReportsControllerAdmin>()
+            .attendanceResponseModel
+            .value
+            .absent
+            .toString();
+      case 3:
+        return Get.find<ReportsControllerAdmin>()
+            .attendanceResponseModel
+            .value
+            .totalCount
+            .toString();
+      default:
+        return '0';
+    }
+  }
+
+  fillReportTab() {
+    final capabilityList =
+        Get.find<LoginController>().loginResponseModel?.capabilities;
+    if (capabilityList?.first.viewPayroll == 1 &&
+        !reportsTabListAdmin.contains('Payroll')) {
+      reportsTabListAdmin.add('Payroll');
+    }
+    if (capabilityList?.first.deductions == 1 &&
+        !reportsTabListAdmin.contains('Deduction')) {
+      reportsTabListAdmin.add('Deduction');
+    }
+    if (capabilityList?.first.medical == 1 &&
+        !reportsTabListAdmin.contains('Medical')) {
+      reportsTabListAdmin.add('Medical');
+    }
+    if (capabilityList?.first.contractPeriod == 1 &&
+        !reportsTabListAdmin.contains('Contract period')) {
+      reportsTabListAdmin.add('Contract period');
+    }
+    return reportsTabListAdmin;
+  }
 
   String getMedicalDetails(int index) {
     switch (index) {
@@ -152,7 +250,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
             .value !=
         null) {
       attendanceList = attendanceResponseModel.value.history
-          .where((element) =>
+          ?.where((element) =>
               (element.user?.departmentId ?? 0) ==
               (Get.find<DashboardControllerAdmin>()
                       .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
@@ -182,7 +280,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
             null) {
       attendanceList = attendanceResponseModel.value.history
-          .where((element) =>
+          ?.where((element) =>
               (element.user?.branchId ?? 0) ==
               (Get.find<DashboardControllerAdmin>()
                       .branchwiseEmployeeMap[
@@ -197,9 +295,9 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     }
     attendanceList ??= attendanceResponseModel.value.history;
     attendanceList = attendanceList
-        .where(
+        ?.where(
           (element) =>
-              element.user?.firstName.toLowerCase().contains(
+              element.user?.firstName?.toLowerCase().contains(
                   Get.find<DashboardControllerAdmin>()
                       .searchKeyword
                       .value
@@ -363,7 +461,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     request.files.add(multipartFile);
     var streamResponse = await request.send();
     var response = await http.Response.fromStream(streamResponse);
-    print(response.body);
     hideLoading();
     DialogHelper.showToast(desc: 'File uploaded');
   }
@@ -379,14 +476,12 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         .post(ApiEndPoints.projectsList, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    print(responseString);
     hideLoading();
     if (responseString == null) {
       return;
     } else {
       hideLoading();
       projectlistResponseModel.value = projectListModelFromJson(responseString);
-      print(projectlistResponseModel.value);
       projectlistResponseModel.refresh();
 
       Get.find<BaseClient>().onError = null;
@@ -402,9 +497,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     Duration differenceStartToEnd = endDateTime.difference(startDateTime);
     Duration differenceStartToCurrent =
         currentDateTime.difference(startDateTime);
-    print(differenceStartToEnd);
-    print(differenceStartToCurrent);
-    print(differenceStartToCurrent.inHours.isEqual(0));
     endProjectStatus = differenceStartToEnd.inHours.isEqual(0)
         ? differenceStartToEnd.inHours.toDouble()
         : double.parse(differenceStartToEnd.toString().substring(0, 4));
@@ -599,7 +691,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   deleteDeduction(int index) async {
     showLoading();
     var requestModel = {
-      'id': '${deductionResponseModel.value.details![index].id}'
+      'id': '${deductionResponseModel.value.deductions?[index].id}'
     };
 
     var responseString = await Get.find<BaseClient>()
@@ -611,7 +703,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       return;
     } else {
       hideLoading();
-      deductionResponseModel.value.details?.removeAt(index);
+      deductionResponseModel.value.deductions?.removeAt(index);
       deductionResponseModel.refresh();
     }
   }
@@ -643,13 +735,15 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     showLoading();
     final model = AttendanceAcceptDeclineRequestModel(
         employeeId: attendanceResponseModel
-            .value.history[selectedItemIndex].userId
-            .toString(),
+                .value.history?[selectedItemIndex].userId
+                .toString() ??
+            '',
         reason: 'ddd',
         approvalStatus:
             reasonButton == ReasonButton.attendanceApprove ? '0' : '1',
-        startDate:
-            attendanceResponseModel.value.history[selectedItemIndex].date);
+        startDate: DateFormat('yyyy-MM-dd').format(
+            attendanceResponseModel.value.history?[selectedItemIndex].date ??
+                DateTime(0, 0, 0)));
     var responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.attendanceAcceptReject,
@@ -666,27 +760,28 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   }
 
   getAttendance() async {
-    if (attendanceResponseModel.value.message.isEmpty) {
-      showLoading();
-      Get.find<BaseClient>().onError = getAttendance;
-      var attendanceRequestModel = {
-        'date': '2023-03-14',
-        'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-      };
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.attendance, jsonEncode(attendanceRequestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        hideLoading();
-        attendanceResponseModel.value =
-            attendanceAdminModelFromJson(responseString);
-        attendanceResponseModel.refresh();
-        Get.find<BaseClient>().onError = null;
-      }
+    showLoading();
+    Get.find<BaseClient>().onError = getAttendance;
+    final date = selectedDate.value;
+    final rev = date.split('-');
+    Map<String, dynamic> attendanceRequestModel = {
+      'date': '${rev[2]}-${rev[1]}-${rev[0]}',
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.attendance, jsonEncode(attendanceRequestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      attendanceResponseModel.value =
+          attendanceAdminModelFromJson(responseString);
+      attendanceResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
     }
   }
 
@@ -695,7 +790,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     AttendanceEditRequestModel attendanceEditRequestModel =
         AttendanceEditRequestModel(
             employeeId: "5",
-            date: selectedDropdownDay.value,
+            date: selectedDate.value,
             checkIn: editAttendanceCheckInTime.value,
             checkOut: editAttendanceCheckOutTime.value,
             reason: editAttendanceReason.value);
@@ -707,7 +802,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
           Get.find<LoginController>().getHeader(),
         )
         .catchError(handleError);
-    print(responseString);
     hideLoading();
   }
 

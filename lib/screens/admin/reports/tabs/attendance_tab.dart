@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
 import 'package:paytym/screens/admin/reports/widgets/rounded_icons.dart';
@@ -13,29 +14,6 @@ import '../reports_controller.dart';
 
 class AttendanceTabAdmin extends StatelessWidget {
   const AttendanceTabAdmin({Key? key}) : super(key: key);
-
-  static List<Map<String, dynamic>> totalAttendance = [
-    {
-      'count': 150,
-      'title': 'Present',
-      'color': Colors.purple,
-    },
-    {
-      'count': 50,
-      'title': 'Late',
-      'color': Colors.orange,
-    },
-    {
-      'count': 80,
-      'title': 'Absent',
-      'color': Colors.pink,
-    },
-    {
-      'count': 280,
-      'title': 'Total',
-      'color': Colors.indigo,
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,53 +30,84 @@ class AttendanceTabAdmin extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Today',
-                    style: TextStyle(
-                        color: Colors.blue.shade800,
-                        fontWeight: FontWeight.w500),
+                  Obx(() => Text(
+                        Get.find<ReportsControllerAdmin>().selectedDate.value ==
+                                DateFormat('dd-MM-yyyy').format(DateTime.now())
+                            ? 'Today'
+                            : '',
+                        style: TextStyle(
+                            color: Colors.blue.shade800,
+                            fontWeight: FontWeight.w500),
+                      )),
+                  Row(
+                    children: [
+                      Obx(() => Text(
+                            Get.find<ReportsControllerAdmin>()
+                                .selectedDate
+                                .value,
+                            style: TextStyle(
+                                color: Colors.blue.shade800,
+                                fontWeight: FontWeight.w500),
+                          )),
+                      kSizedBoxW10,
+                      IconButton(
+                          onPressed: () {
+                            Get.find<ReportsControllerAdmin>()
+                                .selectDateTime(context);
+                          },
+                          icon: const Icon(
+                            Icons.date_range,
+                            color: Colors.lightBlue,
+                          )),
+                    ],
                   ),
-                  Obx(() {
-                    return CustomDropdownYearButton(
-                      lists: daysDummyList,
-                      value: Get.find<ReportsControllerAdmin>()
-                          .selectedDropdownDay
-                          .value,
-                      onChanged: (value) {
-                        Get.find<ReportsControllerAdmin>()
-                            .selectedDropdownDay
-                            .value = value!;
-                      },
-                      hint: '08-02-2023',
-                    );
-                  }),
+
+                  // Obx(() {
+                  //   return CustomDropdownYearButton(
+                  //     lists: daysDummyList,
+                  //     value: Get.find<ReportsControllerAdmin>()
+                  //         .selectedDropdownDay
+                  //         .value,
+                  //     onChanged: (value) {
+                  //       Get.find<ReportsControllerAdmin>()
+                  //           .selectedDropdownDay
+                  //           .value = value!;
+                  //     },
+                  //     hint: '08-02-2023',
+                  //   );
+                  // }),
                 ],
               ),
               kSizedBoxH2,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(
-                  4,
-                  (index) => Column(
-                    children: [
-                      Text(
-                        totalAttendance[index]['count'].toString(),
-                        style: TextStyle(
-                            color: totalAttendance[index]['color'],
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        totalAttendance[index]['title'],
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
+              Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(
+                    4,
+                    (index) => Column(
+                      children: [
+                        Text(
+                          Get.find<ReportsControllerAdmin>()
+                              .getAttendanceCount(index),
+                          style: TextStyle(
+                              color: Get.find<ReportsControllerAdmin>()
+                                  .totalAttendance[index]['color'],
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600),
                         ),
-                      ),
-                    ],
+                        Text(
+                          Get.find<ReportsControllerAdmin>()
+                              .totalAttendance[index]['title'],
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -216,7 +225,7 @@ class AttendanceCardColumn extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Text(
-                  attendanceElement.user!.branchId.toString(),
+                  attendanceElement.user!.branch?.name.toString() ?? '',
                   style: kTextStyleS15W600CBlack,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -258,10 +267,7 @@ class AttendanceCardColumn extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Text(
-                  attendanceElement
-                      .user!
-                      .employerId
-                      .toString(),
+                  attendanceElement.user!.employerId.toString(),
                   style: kTextStyleS15W600CBlack,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -281,9 +287,8 @@ class AttendanceCardColumn extends StatelessWidget {
                       style: kTextStyleS15W600CBlack,
                     ),
                     Text(
-                      Get.find<ReportsControllerAdmin>().getTime(
-                          attendanceElement
-                              .checkIn),
+                      DateFormat('dd-MM-yyyy')
+                          .format(attendanceElement.checkIn ?? DateTime(0)),
                       style:
                           kTextStyleS15W600CBlack.copyWith(color: Colors.red),
                     ),
@@ -300,9 +305,8 @@ class AttendanceCardColumn extends StatelessWidget {
                       style: kTextStyleS15W600CBlack,
                     ),
                     Text(
-                      Get.find<ReportsControllerAdmin>().getTime(
-                          attendanceElement
-                              .checkOut),
+                      DateFormat('dd-MM-yyyy')
+                          .format(attendanceElement.checkOut ?? DateTime(0)),
                       style:
                           kTextStyleS15W600CBlack.copyWith(color: Colors.green),
                     ),

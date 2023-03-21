@@ -34,17 +34,6 @@ class DashboardAppBar extends StatelessWidget {
         ),
         Row(
           children: [
-            Stack(children: const [
-              Icon(Icons.notifications_outlined),
-              Positioned(
-                right: 0,
-                top: 2,
-                child: CircleAvatar(
-                  backgroundColor: CustomColors.redColor,
-                  radius: 5,
-                ),
-              ),
-            ]),
             kSizedBoxW15,
             PopupMenuButton<DashboardDropDown>(
               color: CustomColors.blueTextColor,
@@ -62,13 +51,9 @@ class DashboardAppBar extends StatelessWidget {
               ).toList(),
               onSelected: (DashboardDropDown value) =>
                   Get.find<DashboardController>().onClickMenuItem(value),
-              child: 
-              CachedNetworkImage(
-                imageUrl: 'https://paytym.net/storage/${Get.find<LoginController>()
-                        .loginResponseModel
-                        ?.employee
-                        ?.image}',
-                    
+              child: CachedNetworkImage(
+                imageUrl:
+                    'https://paytym.net/storage/${Get.find<LoginController>().loginResponseModel?.employee?.image}',
                 imageBuilder: (context, imageProvider) => Animate(
                   effects: const [
                     ScaleEffect(duration: Duration(microseconds: 500))

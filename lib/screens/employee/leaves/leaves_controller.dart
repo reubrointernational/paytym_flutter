@@ -53,6 +53,7 @@ class LeavesController extends GetxController with BaseController {
     showLoading();
     leaveRequestModel.employerId =
         '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.leave, leaveRequestModelToJson(leaveRequestModel),
             Get.find<LoginController>().getHeader())
@@ -124,17 +125,20 @@ class LeavesController extends GetxController with BaseController {
       if (model != null) {
         DialogHelper.showToast(desc: model.message!);
         LeaveRequest leaveRequest = LeaveRequest(
-            title: leaveRequestModel.title,
-            startDate: (selectedItem.value == 'halfday')
-                ? '${getDateReverseString(leaveRequestModel.startDate)} ${startTimeController.text}'
-                : getDateReverseString(leaveRequestModel.startDate),
-            endDate: (selectedItem.value == 'halfday')
-                ? '${getDateReverseString(leaveRequestModel.endDate)} ${endTimeController.text}'
-                : getDateReverseString(leaveRequestModel.startDate),
+          title: leaveRequestModel.title,
+          // startDate: (selectedItem.value == 'halfday')
+          //     ? '${getDateReverseString(leaveRequestModel.startDate)} ${DateFormat().format(DateTime.tryParse(startTimeController.text) ?? DateTime(00, 00, 00))}'
+          //     : '${getDateReverseString(leaveRequestModel.startDate)} 00:00:00',
+          // endDate: (selectedItem.value == 'halfday')
+          //     ? '${getDateReverseString(leaveRequestModel.endDate)} ${DateFormat().format(DateTime.tryParse(startTimeController.text) ?? DateTime(00, 00, 00))}'
+          //     : '${getDateReverseString(leaveRequestModel.endDate)} 00:00:00',
 
-            //startDate: getDateReverseString(leaveRequestModel.startDate),
-            //endDate: getDateReverseString(leaveRequestModel.endDate),
-            type: int.parse(leaveRequestModel.type));
+          //startDate: getDateReverseString(leaveRequestModel.startDate),
+          //endDate: getDateReverseString(leaveRequestModel.endDate),
+          type: int.parse(leaveRequestModel.type),
+          startDate: "02-11-2022 00:00:00",
+          endDate: "02-11-2022 00:00:00",
+        );
         leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
         leaveRequestModel = LeaveRequestModel();
         startDate = DateTime.now();

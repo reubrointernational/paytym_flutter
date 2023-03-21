@@ -11,10 +11,7 @@ import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import 'package:paytym/screens/employee/reports/widgets/cached_image.dart';
 import 'package:paytym/screens/employee/reports/widgets/pdf_viewer.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
-
 import '../../../../core/constants/strings.dart';
-import '../../../widgets/custom_tab_bar.dart';
-
 import '../widgets/year_dropdown.dart';
 
 class PayslipTab extends StatelessWidget {

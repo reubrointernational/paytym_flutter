@@ -136,7 +136,7 @@ class LeaveDialogue extends StatelessWidget {
                                       await showTimePicker(
                                           context: context,
                                           initialTime: TimeOfDay.now());
-                                  print(selectedTime.toString());
+                        
 
                                   Get.find<LeavesController>()
                                           .startTimeController
@@ -175,7 +175,7 @@ class LeaveDialogue extends StatelessWidget {
                                       await showTimePicker(
                                           context: context,
                                           initialTime: TimeOfDay.now());
-                                  print(selectedTime.toString());
+                                  
 
                                   Get.find<LeavesController>()
                                           .endTimeController
