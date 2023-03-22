@@ -4,6 +4,7 @@ import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 
 import '../../../models/report/projects/projects_list_model.dart';
+import '../../../network/end_points.dart';
 import '../widgets/custom_admin_scaffold.dart';
 
 class ProjectEmployeeListPage extends StatelessWidget {
@@ -40,7 +41,7 @@ class ProjectEmployeeListPage extends StatelessWidget {
                       radius: 25,
                       backgroundColor: Colors.grey,
                       backgroundImage: NetworkImage(
-                          'https://paytym.net/storage/${members.user.image}'),
+                          '$kImageUrl${members.user.image}'),
                     ),
                     trailing: Text(
                       project!.branch!.name,

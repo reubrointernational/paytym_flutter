@@ -14,14 +14,14 @@ class LeaveRequestModel {
   LeaveRequestModel({
     this.startDate,
     this.endDate,
-    this.type = 'annual',
+    this.type,
     this.title,
     this.employerId,
   });
 
   String? startDate;
   String? endDate;
-  String type;
+  String? type;
   String? title;
   String? employerId;
 

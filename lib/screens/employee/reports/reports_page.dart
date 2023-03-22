@@ -10,6 +10,7 @@ import 'package:paytym/screens/widgets/custom_tab_bar.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
+import '../../../network/end_points.dart';
 import '../../widgets/custom_cached_network_image.dart';
 import 'tabs/attendance_tab.dart';
 import 'tabs/deduction_tab.dart';
@@ -44,7 +45,7 @@ class ReportsPage extends StatelessWidget {
                       children: [
                         CustomCachedNetworkImage(
                           imageUrl: 
-                              'https://paytym.net/storage/${Get.find<LoginController>()
+                              '$kImageUrl${Get.find<LoginController>()
                         .loginResponseModel
                         ?.employee
                         ?.image}',

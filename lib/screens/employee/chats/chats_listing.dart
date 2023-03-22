@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:paytym/routes/app_routes.dart';
 
 import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
+import '../../../network/end_points.dart';
 import '../../admin/dashboard/widgets/custom_text_form_field.dart';
 import '../calendar/widgets/custom_svg.dart';
 import 'chat_controller.dart';
@@ -88,15 +90,8 @@ class ChatListingPage extends StatelessWidget {
                                     CircleAvatar(
                                       radius: 25,
                                       backgroundColor: Colors.pink.shade200,
-                                      child: Center(
-                                          child: Text(
-                                        chat[index].groupName[0],
-                                        style: const TextStyle(
-                                          color: Colors.purple,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )),
+                                      backgroundImage: NetworkImage(
+                                          '$kImageUrl${chat[index].profilePic}'),
                                     ),
                                     const Positioned(
                                       right: 2,

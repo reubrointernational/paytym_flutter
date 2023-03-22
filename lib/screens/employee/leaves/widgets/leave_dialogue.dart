@@ -9,6 +9,7 @@ import 'package:paytym/screens/employee/leaves/leaves_controller.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../models/leaves/leave_type_model.dart';
 import '../../../widgets/bordered_text_form_field.dart';
 
 class LeaveDialogue extends StatelessWidget {
@@ -18,6 +19,9 @@ class LeaveDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<LeavesController>().getLeaveTypes();
+    });
     Get.put(CalendarControllerAdmin());
     return Animate(
       effects: const [
@@ -48,31 +52,26 @@ class LeaveDialogue extends StatelessWidget {
                       ),
                       child: Obx(
                         () => DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
+                          child: DropdownButton<LeaveType>(
                             isExpanded: true,
                             value:
                                 Get.find<LeavesController>().selectedItem.value,
-                            onChanged: (String? value) {
+                            onChanged: (LeaveType? value) {
                               Get.find<LeavesController>().selectedItem.value =
                                   value!;
-
                               Get.find<LeavesController>()
                                   .leaveRequestModel
-                                  .type = value;
-
-                              Get.find<LeavesController>()
-                                  .isTimeFieldVisible
-                                  .value = Get.find<LeavesController>()
-                                      .selectedItem
-                                      .value ==
-                                  'halfday';
+                                  .type = value.id.toString();
                             },
-                            items: leaveTypes
-                                .map<DropdownMenuItem<String>>((String? value) {
-                              return DropdownMenuItem<String>(
+                            items: Get.find<LeavesController>()
+                                .leaveTypesModel
+                                .value
+                                .leaveTypes
+                                ?.map<DropdownMenuItem<LeaveType>>((value) {
+                              return DropdownMenuItem<LeaveType>(
                                 value: value,
                                 child: Text(
-                                  value!.toCamelCase(),
+                                  value.leaveType?.toCamelCase() ?? '',
                                   style: const TextStyle(
                                     color: Colors.black,
                                   ),
@@ -124,91 +123,72 @@ class LeaveDialogue extends StatelessWidget {
                           Get.find<LeavesController>().dateValidator(value!),
                     ),
                     kSizedBoxH6,
-                    Obx(() => Visibility(
-                          visible: Get.find<LeavesController>()
-                              .isTimeFieldVisible
-                              .value,
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: (() async {
-                                  TimeOfDay? selectedTime =
-                                      await showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.now());
-                        
+                    GestureDetector(
+                      onTap: (() async {
+                        TimeOfDay? selectedTime = await showTimePicker(
+                            context: context, initialTime: TimeOfDay.now());
 
-                                  Get.find<LeavesController>()
-                                          .startTimeController
-                                          .text =
-                                      Get.find<CalendarControllerAdmin>()
-                                          .formatTimeOfDay(selectedTime);
-                                }),
-                                child: BorderedTextFormField(
-                                  enabled: false,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9-]'),
-                                    ),
-                                  ],
-                                  // onSaved: (value) => Get.find<LeavesController>()
-                                  //     .leaveRequestModel
-                                  //     .startDate = value,
-                                  controller: Get.find<LeavesController>()
-                                      .startTimeController,
-                                  hintText: kStartTimeString,
-                                  keyboardType: TextInputType.datetime,
-                                  suffixIcon: const Icon(
-                                    Icons.access_time,
-                                    size: 18,
-                                  ),
-
-                                  // validator: (value) =>
-                                  //     Get.find<LeavesController>()
-                                  //         .dateValidator(value!),
-                                ),
-                              ),
-                              kSizedBoxH6,
-                              GestureDetector(
-                                onTap: (() async {
-                                  TimeOfDay? selectedTime =
-                                      await showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.now());
-                                  
-
-                                  Get.find<LeavesController>()
-                                          .endTimeController
-                                          .text =
-                                      Get.find<CalendarControllerAdmin>()
-                                          .formatTimeOfDay(selectedTime);
-                                }),
-                                child: BorderedTextFormField(
-                                  enabled: false,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9-]'),
-                                    ),
-                                  ],
-                                  // onSaved: (value) => Get.find<LeavesController>()
-                                  //     .leaveRequestModel
-                                  //     .startDate = value,
-                                  controller: Get.find<LeavesController>()
-                                      .endTimeController,
-                                  hintText: kEndTimeString,
-                                  keyboardType: TextInputType.datetime,
-                                  suffixIcon: const Icon(
-                                    Icons.access_time,
-                                    size: 18,
-                                  ),
-                                  // validator: (value) =>
-                                  //     Get.find<LeavesController>()
-                                  //         .dateValidator(value!),
-                                ),
-                              ),
-                            ],
+                        Get.find<LeavesController>().startTimeController.text =
+                            Get.find<CalendarControllerAdmin>()
+                                .formatTimeOfDay(selectedTime);
+                      }),
+                      child: BorderedTextFormField(
+                        enabled: false,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'[0-9-]'),
                           ),
-                        )),
+                        ],
+                        // onSaved: (value) => Get.find<LeavesController>()
+                        //     .leaveRequestModel
+                        //     .startDate = value,
+                        controller:
+                            Get.find<LeavesController>().startTimeController,
+                        hintText: kStartTimeString,
+                        keyboardType: TextInputType.datetime,
+                        suffixIcon: const Icon(
+                          Icons.access_time,
+                          size: 18,
+                        ),
+
+                        // validator: (value) =>
+                        //     Get.find<LeavesController>()
+                        //         .dateValidator(value!),
+                      ),
+                    ),
+                    kSizedBoxH6,
+                    GestureDetector(
+                      onTap: (() async {
+                        TimeOfDay? selectedTime = await showTimePicker(
+                            context: context, initialTime: TimeOfDay.now());
+
+                        Get.find<LeavesController>().endTimeController.text =
+                            Get.find<CalendarControllerAdmin>()
+                                .formatTimeOfDay(selectedTime);
+                      }),
+                      child: BorderedTextFormField(
+                        enabled: false,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'[0-9-]'),
+                          ),
+                        ],
+                        // onSaved: (value) => Get.find<LeavesController>()
+                        //     .leaveRequestModel
+                        //     .startDate = value,
+                        controller:
+                            Get.find<LeavesController>().endTimeController,
+                        hintText: kEndTimeString,
+                        keyboardType: TextInputType.datetime,
+                        suffixIcon: const Icon(
+                          Icons.access_time,
+                          size: 18,
+                        ),
+                        // validator: (value) =>
+                        //     Get.find<LeavesController>()
+                        //         .dateValidator(value!),
+                      ),
+                    ),
                     kSizedBoxH6,
                     BorderedTextFormField(
                       maxLines: 5,

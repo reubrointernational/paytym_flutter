@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +11,7 @@ import 'package:paytym/models/leaves/leaves_status_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../models/leaves/leave_type_model.dart' as leave_type;
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -17,10 +20,11 @@ class LeavesController extends GetxController with BaseController {
   final leaveResponseModel = LeaveResponseModel().obs;
   final formKey = GlobalKey<FormState>();
   LeaveRequestModel leaveRequestModel = LeaveRequestModel();
-  final selectedItem = leaveTypes[0].obs;
+  final leaveTypesModel = leave_type.LeaveTypesModel().obs;
+  final selectedItem = leave_type.LeaveType().obs;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
-  final isTimeFieldVisible = false.obs;
+  // final isTimeFieldVisible = false.obs;
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
@@ -39,7 +43,6 @@ class LeavesController extends GetxController with BaseController {
     var responseString = await Get.find<BaseClient>()
         .get(ApiEndPoints.leave, Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    print(responseString);
     if (responseString == null) {
       return;
     } else {
@@ -51,9 +54,12 @@ class LeavesController extends GetxController with BaseController {
 
   Future<MessageOnlyResponseModel?> applyForLeave() async {
     showLoading();
-    leaveRequestModel.employerId =
-        '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
-
+    leaveRequestModel.employerId = 
+    '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+    leaveRequestModel.startDate = '${leaveRequestModel.startDate} 00:00:00';
+    leaveRequestModel.endDate = '${leaveRequestModel.endDate} 00:00:00';
+    leaveRequestModel.type ??=
+        leaveTypesModel.value.leaveTypes![0].id.toString();
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.leave, leaveRequestModelToJson(leaveRequestModel),
             Get.find<LoginController>().getHeader())
@@ -64,6 +70,30 @@ class LeavesController extends GetxController with BaseController {
     } else {
       hideLoading();
       return messageOnlyResponseModelFromJson(responseString);
+    }
+  }
+
+  getLeaveTypes() async {
+    if (leaveTypesModel.value.leaveTypes?.isEmpty ?? true) {
+      Get.find<BaseClient>().onError = getLeaveTypes;
+      Map<String, dynamic> requestModel = {
+        'employer_id':
+        '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.leaveTypes, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+
+      if (responseString == null) {
+        return;
+      } else {
+        leaveTypesModel.value =
+            leave_type.leaveTypesModelFromJson(responseString);
+        selectedItem.value = leaveTypesModel.value.leaveTypes![0];
+        leaveTypesModel.refresh();
+        Get.find<BaseClient>().onError = null;
+      }
     }
   }
 
@@ -124,20 +154,31 @@ class LeavesController extends GetxController with BaseController {
 
       if (model != null) {
         DialogHelper.showToast(desc: model.message!);
+        DateTime startDateLocal;
+        DateTime endDateLocal;
+        try {
+          startDateLocal = DateFormat.jm().parse(startTimeController.text);
+        } on Exception catch (e) {
+          startDateLocal = DateTime(0);
+        }
+        String hour24timeStart = DateFormat("HH:mm").format(startDateLocal);
+
+        try {
+          endDateLocal =
+              DateFormat.jm().parse(startTimeController.text);
+        } on Exception catch (e) {
+          endDateLocal = DateTime(0);
+        }
+        String hour24timeEnd = DateFormat("HH:mm").format(endDateLocal);
+
         LeaveRequest leaveRequest = LeaveRequest(
           title: leaveRequestModel.title,
-          // startDate: (selectedItem.value == 'halfday')
-          //     ? '${getDateReverseString(leaveRequestModel.startDate)} ${DateFormat().format(DateTime.tryParse(startTimeController.text) ?? DateTime(00, 00, 00))}'
-          //     : '${getDateReverseString(leaveRequestModel.startDate)} 00:00:00',
-          // endDate: (selectedItem.value == 'halfday')
-          //     ? '${getDateReverseString(leaveRequestModel.endDate)} ${DateFormat().format(DateTime.tryParse(startTimeController.text) ?? DateTime(00, 00, 00))}'
-          //     : '${getDateReverseString(leaveRequestModel.endDate)} 00:00:00',
-
-          //startDate: getDateReverseString(leaveRequestModel.startDate),
-          //endDate: getDateReverseString(leaveRequestModel.endDate),
-          type: int.parse(leaveRequestModel.type),
-          startDate: "02-11-2022 00:00:00",
-          endDate: "02-11-2022 00:00:00",
+          type: int.parse(leaveRequestModel.type!),
+          startDate:
+              '${getDateReverseString(leaveRequestModel.startDate)} $hour24timeStart',
+          endDate:
+              '${getDateReverseString(leaveRequestModel.endDate)} $hour24timeEnd',
+          leaveType: LeaveType(id: -1, leaveType: leaveTypesModel.value.leaveTypes!.firstWhere((element) => element.id.toString()== leaveRequestModel.type).leaveType!, noOfDaysAllowed: -1, employerId: Get.find<LoginController>().loginResponseModel!.employee!.employerId!),
         );
         leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
         leaveRequestModel = LeaveRequestModel();
@@ -147,7 +188,7 @@ class LeavesController extends GetxController with BaseController {
         startDateController.text = kStartDateString;
         endDateController.text = kEndDateString;
         Get.back();
-        selectedItem.value = leaveTypes[0];
+
         leaveResponseModel.refresh();
       }
     }

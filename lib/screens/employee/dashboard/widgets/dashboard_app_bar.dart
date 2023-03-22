@@ -10,6 +10,7 @@ import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/list_maps.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../network/end_points.dart';
 import '../../../../routes/app_routes.dart';
 import '../../calendar/widgets/custom_svg.dart';
 import '../../../login/login_controller.dart';
@@ -53,7 +54,7 @@ class DashboardAppBar extends StatelessWidget {
                   Get.find<DashboardController>().onClickMenuItem(value),
               child: CachedNetworkImage(
                 imageUrl:
-                    'https://paytym.net/storage/${Get.find<LoginController>().loginResponseModel?.employee?.image}',
+                    '$kImageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image}',
                 imageBuilder: (context, imageProvider) => Animate(
                   effects: const [
                     ScaleEffect(duration: Duration(microseconds: 500))

@@ -9,6 +9,7 @@ import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/list_maps.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../network/end_points.dart';
 import '../../../employee/calendar/widgets/custom_svg.dart';
 import '../../../employee/dashboard/dashboard_controller.dart';
 import '../../../login/login_controller.dart';
@@ -53,7 +54,7 @@ class HrAppBar extends StatelessWidget {
           onSelected: (DashboardDropDown value) =>
               Get.find<DashboardController>().onClickMenuItem(value),
           child: CachedNetworkImage(
-            imageUrl: 'https://paytym.net/storage/${Get.find<LoginController>()
+            imageUrl: '$kImageUrl${Get.find<LoginController>()
                         .loginResponseModel
                         ?.employee
                         ?.image ?? ''}',

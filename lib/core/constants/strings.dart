@@ -101,15 +101,15 @@ List<Map<String, dynamic>> employeeLeaves = [
   },
 ];
 
-List<String> leaveTypes = [
-  'annual',
-  'special',
-  'bereavement',
-  'maternity',
-  'casual',
-  'sick',
-  'halfday'
-];
+// List<String> leaveTypes = [
+//   'annual',
+//   'special',
+//   'bereavement',
+//   'maternity',
+//   'casual',
+//   'sick',
+//   'halfday'
+// ];
 
 final medicalList = [
   'Medical condition',

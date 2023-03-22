@@ -6,6 +6,7 @@ import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../network/end_points.dart';
 import '../../../../routes/app_routes.dart';
 import '../widgets/custom_progress_indicator.dart';
 
@@ -107,7 +108,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                                           .isEmpty
                                                       ? const NetworkImage('')
                                                       : NetworkImage(
-                                                          'https://paytym.net/storage/${projects[index].employeeproject![index].user.image}'),
+                                                          '$kImageUrl${projects[index].employeeproject![index].user.image}'),
                                                   radius: 18,
                                                 ),
                                                 index == 2

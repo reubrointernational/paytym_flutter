@@ -1,4 +1,5 @@
 const kBaseUrl = 'http://52.40.210.26:2000/api';
+const kImageUrl = 'https://paytym.net/storage/';
 // const kBaseUrl = 'https://paytym.net/api';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
 const kDomainUrl = 'paytym.net';
@@ -61,4 +62,6 @@ class ApiEndPoints {
   static const adminDashboard = '$kBaseUrl/admin_dashboard';
   static const dashboard = '$kBaseUrl/dashboard';
   static const uploadFiles = '$kBaseUrl/upload_files';
+  static const leaveTypes = '$kBaseUrl/get-leave-types';
+
 }
