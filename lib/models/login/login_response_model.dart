@@ -20,6 +20,7 @@ class LoginResponseModel {
     this.annual,
     this.halfday,
     this.capabilities,
+    this.lastCheckedIn,
   });
 
   String? message;
@@ -30,6 +31,7 @@ class LoginResponseModel {
   int? annual;
   int? halfday;
   List<Capability>? capabilities;
+  String? lastCheckedIn;
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
       LoginResponseModel(
@@ -42,6 +44,7 @@ class LoginResponseModel {
         absence: json["absence"],
         annual: json["annual"],
         halfday: json["halfday"],
+        lastCheckedIn: json["last_checked_in"],
         capabilities: json["capabilities"] == null
             ? []
             : List<Capability>.from(
@@ -271,8 +274,7 @@ class Employee {
         employmentStartDate: json["employment_start_date"],
         employmentEndDate: json["employment_end_date"],
         payedDate: json["payed_date"],
-        payDate:
-            json["pay_date"],
+        payDate: json["pay_date"],
         bankBranchName: json["bank_branch_name"],
         businessId: json["business_id"],
         departmentId: json["department_id"],
@@ -317,14 +319,10 @@ class Employee {
   Map<String, dynamic> toJson() => {
         "id": id,
         "employer_id": employerId,
-        "employment_start_date":
-           employmentStartDate,
-        "employment_end_date":
-            employmentEndDate,
-        "payed_date":
-            payedDate,
-        "pay_date":
-            payDate,
+        "employment_start_date": employmentStartDate,
+        "employment_end_date": employmentEndDate,
+        "payed_date": payedDate,
+        "pay_date": payDate,
         "bank_branch_name": bankBranchName,
         "business_id": businessId,
         "department_id": departmentId,
@@ -342,8 +340,7 @@ class Employee {
         "position": position,
         "email": email,
         "phone": phone,
-        "date_of_birth":
-            dateOfBirth,
+        "date_of_birth": dateOfBirth,
         "street": street,
         "city": city,
         "town": town,

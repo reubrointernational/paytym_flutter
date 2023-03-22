@@ -121,7 +121,8 @@ class ReportsControllerAdmin extends GetxController with BaseController {
         return Get.find<ReportsControllerAdmin>()
             .attendanceResponseModel
             .value
-            .late.toString();
+            .late
+            .toString();
       case 2:
         return Get.find<ReportsControllerAdmin>()
             .attendanceResponseModel
@@ -379,8 +380,7 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   String projectName = '';
   final projectDetailsResponseModel =
       ProjectDetailsModel(message: '', projectsListe: []).obs;
-  double endProjectStatus = 0;
-  double currentProjectStatus = 0;
+
   double projectPercentage = 0;
 
   TextEditingController checkInTimeController = TextEditingController();
@@ -494,25 +494,16 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     DateTime endDateTime =
         endDate.isEmpty ? DateTime.now() : DateTime.parse(endDate);
     DateTime currentDateTime = DateTime.now();
-    Duration differenceStartToEnd = endDateTime.difference(startDateTime);
-    Duration differenceStartToCurrent =
-        currentDateTime.difference(startDateTime);
-    endProjectStatus = differenceStartToEnd.inHours.isEqual(0)
-        ? differenceStartToEnd.inHours.toDouble()
-        : double.parse(differenceStartToEnd.toString().substring(0, 4));
-    currentProjectStatus = differenceStartToCurrent.inHours.isEqual(0)
-        ? differenceStartToCurrent.inHours.toDouble()
-        : double.parse(differenceStartToCurrent.toString().substring(0, 4));
-    findProjectPercentage();
+    final differenceStartToEnd =
+        endDateTime.difference(startDateTime).inSeconds;
+    final differenceStartToCurrent =
+        currentDateTime.difference(startDateTime).inSeconds;
+
+    projectPercentage =
+        (differenceStartToCurrent / differenceStartToEnd).floorToDouble();
   }
 
-  findProjectPercentage() {
-    double minValue = 0;
-    double maxValue = endProjectStatus;
-    double midValue = currentProjectStatus;
-    double progress = ((midValue - minValue) * 100) / (maxValue - minValue);
-    projectPercentage = progress.floorToDouble();
-  }
+
 
   getStatus(int status) {
     if (status == 0) {
@@ -691,9 +682,9 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   deleteDeduction(int index) async {
     showLoading();
     var requestModel = {
-      'id': '${deductionResponseModel.value.deductions?[index].id}'
+      'id':
+          '${deductionResponseModel.value.deductions?[index].assignDeduction?.first.userId}'
     };
-
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.deductionDelete, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
@@ -702,7 +693,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
       deductionResponseModel.value.deductions?.removeAt(index);
       deductionResponseModel.refresh();
     }

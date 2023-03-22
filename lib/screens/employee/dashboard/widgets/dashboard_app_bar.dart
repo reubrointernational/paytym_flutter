@@ -38,18 +38,38 @@ class DashboardAppBar extends StatelessWidget {
             kSizedBoxW15,
             PopupMenuButton<DashboardDropDown>(
               color: CustomColors.blueTextColor,
-              itemBuilder: (BuildContext context) => List.generate(
-                4,
-                (index) => PopupMenuItem(
-                  value: kDashboardDropDownItemList[index].dropDownItem,
-                  child: Text(
-                    kDashboardDropDownItemList[index].label,
-                    style: const TextStyle(
-                      color: CustomColors.whiteTextColor,
+              itemBuilder: (BuildContext context) {
+                return [
+                  if (Get.find<LoginController>()
+                          .loginResponseModel
+                          ?.capabilities
+                          ?.first
+                          .role
+                          ?.id !=
+                      5)
+                    PopupMenuItem(
+                      value: kDashboardDropDownItemList[3].dropDownItem,
+                      child: Text(
+                        kDashboardDropDownItemList[3].label,
+                        style: const TextStyle(
+                          color: CustomColors.whiteTextColor,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ).toList(),
+                  ...List.generate(
+                    3,
+                    (index) => PopupMenuItem(
+                      value: kDashboardDropDownItemList[index].dropDownItem,
+                      child: Text(
+                        kDashboardDropDownItemList[index].label,
+                        style: const TextStyle(
+                          color: CustomColors.whiteTextColor,
+                        ),
+                      ),
+                    ),
+                  ).toList()
+                ];
+              },
               onSelected: (DashboardDropDown value) =>
                   Get.find<DashboardController>().onClickMenuItem(value),
               child: CachedNetworkImage(

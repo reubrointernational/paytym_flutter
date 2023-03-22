@@ -58,87 +58,102 @@ class ProjectsTabAdmin extends StatelessWidget {
                                 style: kTextStyleS15W600CGreen,
                               ),
                               kSizedBoxH10,
-                              Text(
-                                'Team',
-                                style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
-                                    color: Colors.black),
-                              ),
-                              kSizedBoxH8,
-                              GestureDetector(
-                                onTap: () {
-                                  reportController.projectName =
-                                      projects[index].name ?? '';
-                                  var project = projects[index];
-                                  Get.to(ProjectEmployeeListPage(
-                                    project: project,
-                                  ));
-                                },
-                                child: SizedBox(
-                                  width: 100,
-                                  child: Stack(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 19,
-                                        backgroundColor: Colors.white,
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.grey.shade300,
-                                          radius: 18,
+                              Visibility(
+                                visible:
+                                    (projects[index].employeeproject?.length ??
+                                            0) >
+                                        0,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Team',
+                                      style: kTextStyleS14W600Cgrey300LS0p2
+                                          .copyWith(color: Colors.black),
+                                    ),
+                                    kSizedBoxH8,
+                                    GestureDetector(
+                                      onTap: () {
+                                        reportController.projectName =
+                                            projects[index].name ?? '';
+                                        var project = projects[index];
+                                        Get.to(ProjectEmployeeListPage(
+                                          project: project,
+                                        ));
+                                      },
+                                      child: SizedBox(
+                                        width: 100,
+                                        child: Stack(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 19,
+                                              backgroundColor: Colors.white,
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.grey.shade300,
+                                                radius: 18,
+                                              ),
+                                            ),
+                                            ...List.generate(
+                                              //3,
+                                              projects[index]
+                                                      .employeeproject
+                                                      ?.length ??
+                                                  0,
+                                              (index) => Positioned(
+                                                left: 20 * (index + 0),
+                                                child: CircleAvatar(
+                                                  radius: 19,
+                                                  backgroundColor: index == 2
+                                                      ? Colors.grey.shade300
+                                                      : Colors.white,
+                                                  child: Stack(
+                                                    alignment: Alignment.center,
+                                                    children: [
+                                                      CircleAvatar(
+                                                        backgroundColor:
+                                                            index == 2
+                                                                ? Colors.white
+                                                                : Colors.grey
+                                                                    .shade300,
+                                                        backgroundImage: projects[
+                                                                    index]
+                                                                .employeeproject!
+                                                                .isEmpty
+                                                            ? const NetworkImage(
+                                                                '')
+                                                            : NetworkImage(
+                                                                '$kImageUrl${projects[index].employeeproject![index].user.image}'),
+                                                        radius: 18,
+                                                      ),
+                                                      index == 2
+                                                          ? Text(
+                                                              '${projects[index].employeeproject!.length}',
+                                                              style: const TextStyle(
+                                                                  color: CustomColors
+                                                                      .lightBlueColor,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          : const SizedBox(),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ).toList(),
+                                          ],
                                         ),
                                       ),
-                                      ...List.generate(
-                                        //3,
-                                        projects[index].employeeproject!.length,
-                                        (index) => Positioned(
-                                          left: 20 * (index + 0),
-                                          child: CircleAvatar(
-                                            radius: 19,
-                                            backgroundColor: index == 2
-                                                ? Colors.grey.shade300
-                                                : Colors.white,
-                                            child: Stack(
-                                              alignment: Alignment.center,
-                                              children: [
-                                                CircleAvatar(
-                                                  backgroundColor: index == 2
-                                                      ? Colors.white
-                                                      : Colors.grey.shade300,
-                                                  backgroundImage: projects[
-                                                              index]
-                                                          .employeeproject!
-                                                          .isEmpty
-                                                      ? const NetworkImage('')
-                                                      : NetworkImage(
-                                                          '$kImageUrl${projects[index].employeeproject![index].user.image}'),
-                                                  radius: 18,
-                                                ),
-                                                index == 2
-                                                    ? Text(
-                                                        '${projects[index].employeeproject!.length}',
-                                                        style: const TextStyle(
-                                                            color: CustomColors
-                                                                .lightBlueColor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      )
-                                                    : const SizedBox(),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ).toList(),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               kSizedBoxH15,
                               SizedBox(
                                 child: ProgressBar(
-                                  current:
-                                      reportController.currentProjectStatus,
-                                  max: reportController.endProjectStatus == 0
-                                      ? 1
-                                      : reportController.endProjectStatus,
+                                  current: reportController.projectPercentage,
+                                  max: 100,
                                 ),
                               ),
                               kSizedBoxH4,

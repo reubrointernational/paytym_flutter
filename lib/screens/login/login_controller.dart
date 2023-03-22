@@ -139,9 +139,12 @@ class LoginController extends GetxController with BaseController {
 
       /// store loginResponseModel to sharedPreferences
       //isFirst = 1 => first time login
-      loginResponseModel?.employee?.isFirst = '0';
-      await Get.find<SharedPreferenceHelper>()
-          .addUserDetails(loginResponseModel);
+
+      if (loginResponseModel?.employee?.id != null) {
+        loginResponseModel?.employee?.isFirst = '0';
+        await Get.find<SharedPreferenceHelper>()
+            .addUserDetails(loginResponseModel);
+      }
       return messageOnlyResponseModelFromJson(responseString);
     }
   }
@@ -194,9 +197,11 @@ class LoginController extends GetxController with BaseController {
       if (userModel.password.isNotEmpty &&
           userModel.password == userModel.confirmPassword) {
         MessageOnlyResponseModel? confirmModel = await updatePassword();
-        
+
         if (confirmModel != null) {
-          Get.offAllNamed(Routes.bottomNav);
+          loginResponseModel?.employee?.id != null
+              ? Get.offAllNamed(Routes.bottomNav)
+              : Get.offAllNamed(Routes.login);
         }
       }
     }

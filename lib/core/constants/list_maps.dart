@@ -3,10 +3,11 @@ import 'enums.dart';
 import 'strings.dart';
 
 List<DashboardDropDownModel> kDashboardDropDownItemList = [
-  DashboardDropDownModel(kWorkProfileString, DashboardDropDown.workProfile),
+  
   DashboardDropDownModel(kRequestAdvanceString, DashboardDropDown.advance),
   DashboardDropDownModel(kRequestOvertimeString, DashboardDropDown.overTime),
   DashboardDropDownModel(kLogoutString, DashboardDropDown.logout),
+  DashboardDropDownModel(kWorkProfileString, DashboardDropDown.workProfile),
 ];
 
 List<DashboardDropDownModel> kReportDropDownItemListWorkProfile = [

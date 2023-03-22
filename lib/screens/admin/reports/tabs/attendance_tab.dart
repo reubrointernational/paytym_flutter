@@ -267,7 +267,7 @@ class AttendanceCardColumn extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Text(
-                  attendanceElement.user!.employerId.toString(),
+                  '#${attendanceElement.userId.toString().padLeft(5, '0')}',
                   style: kTextStyleS15W600CBlack,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -287,8 +287,10 @@ class AttendanceCardColumn extends StatelessWidget {
                       style: kTextStyleS15W600CBlack,
                     ),
                     Text(
-                      DateFormat('dd-MM-yyyy')
-                          .format(attendanceElement.checkIn ?? DateTime(0)),
+                      attendanceElement.checkIn != null
+                          ? DateFormat('dd-MM-yyyy\nhh:mm aa')
+                              .format(attendanceElement.checkIn!)
+                          : '',
                       style:
                           kTextStyleS15W600CBlack.copyWith(color: Colors.red),
                     ),
@@ -305,8 +307,10 @@ class AttendanceCardColumn extends StatelessWidget {
                       style: kTextStyleS15W600CBlack,
                     ),
                     Text(
-                      DateFormat('dd-MM-yyyy')
-                          .format(attendanceElement.checkOut ?? DateTime(0)),
+                      attendanceElement.checkOut != null
+                          ? DateFormat('dd-MM-yyyy\nhh:mm aa')
+                              .format(attendanceElement.checkOut!)
+                          : '',
                       style:
                           kTextStyleS15W600CBlack.copyWith(color: Colors.green),
                     ),
