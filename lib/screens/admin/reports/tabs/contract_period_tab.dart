@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 
+import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../models/employee_list_model.dart';
 import '../../dashboard/dashboard_controller.dart';

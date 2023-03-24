@@ -4,7 +4,6 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
@@ -38,14 +37,14 @@ import '../../../network/end_points.dart';
 import '../../employee/dashboard/dashboard_controller.dart';
 import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
-import 'widgets/pay_payment.dart';
-import 'widgets/pending_payroll_listview.dart';
 import 'package:http/http.dart' as http;
+
+import 'filter_controller.dart';
 
 //Contract period uses same api of list employee which is present in dashboard
 //controller of admin session
 
-class ReportsControllerAdmin extends GetxController with BaseController {
+class ReportsControllerAdmin extends GetxController with BaseController, FilterController {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
   final selectedDate =
@@ -62,7 +61,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
-  final projectDetails = ProjectDetailsModel().obs;
 
   List<String> reportsTabListAdmin = [
     'Projects',
@@ -177,136 +175,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
       default:
         return '';
     }
-  }
-
-  List<ExtraDetail>? getFilteredMedicalList() {
-    List<ExtraDetail>? medicalList;
-    if (Get.find<DashboardControllerAdmin>()
-            .selectedDropdownDepartments
-            .value !=
-        null) {
-      medicalList = medicalResponseModel.value.extraDetails
-          ?.where((element) =>
-              (element.users?.departmentId ?? 0) ==
-              (Get.find<DashboardControllerAdmin>()
-                      .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
-                          .selectedDropdownDepartments
-                          .value]
-                      ?.first
-                      .department
-                      ?.id ??
-                  0))
-          .toList();
-    }
-    if (medicalList != null &&
-        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
-            null) {
-      medicalList = medicalList.where((element) {
-        return (element.users?.branchId ?? 0) ==
-            (Get.find<DashboardControllerAdmin>()
-                    .branchwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
-                        .selectedDropdownBranches
-                        .value]
-                    ?.first
-                    .branch
-                    ?.id ??
-                1);
-      }).toList();
-    } else if (medicalList == null &&
-        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
-            null) {
-      medicalList = medicalResponseModel.value.extraDetails
-          ?.where((element) =>
-              (element.users?.branchId ?? 0) ==
-              (Get.find<DashboardControllerAdmin>()
-                      .branchwiseEmployeeMap[
-                          Get.find<DashboardControllerAdmin>()
-                              .selectedDropdownBranches
-                              .value]
-                      ?.first
-                      .branch
-                      ?.id ??
-                  0))
-          .toList();
-    }
-    medicalList ??= medicalResponseModel.value.extraDetails;
-    medicalList = medicalList
-        ?.where(
-          (element) =>
-              element.users?.firstName?.toLowerCase().contains(
-                  Get.find<DashboardControllerAdmin>()
-                      .searchKeyword
-                      .value
-                      .toLowerCase()) ??
-              false,
-        )
-        .toList();
-    return medicalList;
-  }
-
-  List<History>? getFilteredAttendanceList() {
-    List<History>? attendanceList;
-    if (Get.find<DashboardControllerAdmin>()
-            .selectedDropdownDepartments
-            .value !=
-        null) {
-      attendanceList = attendanceResponseModel.value.history
-          ?.where((element) =>
-              (element.user?.departmentId ?? 0) ==
-              (Get.find<DashboardControllerAdmin>()
-                      .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
-                          .selectedDropdownDepartments
-                          .value]
-                      ?.first
-                      .department
-                      ?.id ??
-                  0))
-          .toList();
-    }
-    if (attendanceList != null &&
-        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
-            null) {
-      attendanceList = attendanceList.where((element) {
-        return (element.user?.branchId ?? 0) ==
-            (Get.find<DashboardControllerAdmin>()
-                    .branchwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
-                        .selectedDropdownBranches
-                        .value]
-                    ?.first
-                    .branch
-                    ?.id ??
-                1);
-      }).toList();
-    } else if (attendanceList == null &&
-        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
-            null) {
-      attendanceList = attendanceResponseModel.value.history
-          ?.where((element) =>
-              (element.user?.branchId ?? 0) ==
-              (Get.find<DashboardControllerAdmin>()
-                      .branchwiseEmployeeMap[
-                          Get.find<DashboardControllerAdmin>()
-                              .selectedDropdownBranches
-                              .value]
-                      ?.first
-                      .branch
-                      ?.id ??
-                  0))
-          .toList();
-    }
-    attendanceList ??= attendanceResponseModel.value.history;
-    attendanceList = attendanceList
-        ?.where(
-          (element) =>
-              element.user?.firstName?.toLowerCase().contains(
-                  Get.find<DashboardControllerAdmin>()
-                      .searchKeyword
-                      .value
-                      .toLowerCase()) ??
-              false,
-        )
-        .toList();
-    return attendanceList;
   }
 
   changeSliderPosition(double value) {
@@ -502,8 +370,6 @@ class ReportsControllerAdmin extends GetxController with BaseController {
     projectPercentage =
         (differenceStartToCurrent / differenceStartToEnd).floorToDouble();
   }
-
-
 
   getStatus(int status) {
     if (status == 0) {

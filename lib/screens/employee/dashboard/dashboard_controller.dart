@@ -59,6 +59,18 @@ class DashboardController extends GetxController with BaseController {
     return '';
   }
 
+  
+  updateFCMToken() async {
+    Map<String, String> map = {
+      'user_id': Get.find<LoginController>().loginResponseModel?.employee?.id.toString() ?? '',
+      'device_id': LoginController.FCMToken
+    };
+
+    await Get.find<BaseClient>().post(ApiEndPoints.updateFCMToken,
+        jsonEncode(map), Get.find<LoginController>().getHeader());
+
+  }
+
   String? amountValidator(String value) {
     if (value.isEmpty) {
       return 'Value cannot be empty';
@@ -271,6 +283,7 @@ class DashboardController extends GetxController with BaseController {
     });
     //update check-in data when app starts
     updateCheckInData();
+    updateFCMToken();
   }
 
   fetchDashboardDetails() async {

@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/dialog_helper.dart';
 import '../../../employee/dashboard/widgets/request_overtime_bottomsheet.dart';
+import '../../dashboard/dashboard_controller.dart';
 import '../widgets/payment_history.dart';
 
 class OvertimeTabAdmin extends StatelessWidget {
@@ -15,21 +17,19 @@ class OvertimeTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsControllerAdmin>().getOvertime());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => Get.find<DashboardControllerAdmin>().clearFilter());
+      Get.find<ReportsControllerAdmin>().getOvertime();
+    });
     return Obx(() {
+      List<EmployeeList>? overtimeDetails =
+          Get.find<ReportsControllerAdmin>().getFilteredOvertimeList();
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: Get.find<ReportsControllerAdmin>()
-            .overtimeResponseModel
-            .value
-            .employeeList
-            .length,
+        itemCount: overtimeDetails?.length ?? 0,
         itemBuilder: (context, index) {
-          final overtimeDetail = Get.find<ReportsControllerAdmin>()
-              .overtimeResponseModel
-              .value
-              .employeeList[index];
+          final overtimeDetail = overtimeDetails?[index];
           return Padding(
             padding: const EdgeInsets.only(bottom: 2),
             child: GestureDetector(
@@ -56,7 +56,7 @@ class OvertimeTabAdmin extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'ID: #${overtimeDetail.employeeId.toString().padLeft(5, '0')}',
+                                  'ID: #${overtimeDetail?.employeeId.toString().padLeft(5, '0')}',
                                   style: TextStyle(
                                     color: Colors.grey.shade600,
                                     fontSize: 13,
@@ -64,13 +64,13 @@ class OvertimeTabAdmin extends StatelessWidget {
                                 ),
                                 kSizedBoxH2,
                                 Text(
-                                  overtimeDetail.branch ?? '',
+                                  overtimeDetail?.branch ?? '',
                                   style: TextStyle(
                                       color: Colors.grey.shade600,
                                       fontSize: 12.5),
                                 ),
                                 Text(
-                                  '${overtimeDetail.user?.firstName ?? ''} ${overtimeDetail.user?.lastName ?? ''}',
+                                  '${overtimeDetail?.user?.firstName ?? ''} ${overtimeDetail?.user?.lastName ?? ''}',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -88,13 +88,13 @@ class OvertimeTabAdmin extends StatelessWidget {
                                 DetailsRow(
                                   title: "Date: ",
                                   value: DateFormat('dd-MM-yyyy').format(
-                                      overtimeDetail.date ??
+                                      overtimeDetail?.date ??
                                           DateTime(0000, 00, 00)),
                                 ),
                                 kSizedBoxH4,
                                 DetailsRow(
                                   title: "Total Hours: ",
-                                  value: overtimeDetail.totalHours ?? '',
+                                  value: overtimeDetail?.totalHours ?? '',
                                 ),
                               ],
                             ),
@@ -119,7 +119,7 @@ class OvertimeTabAdmin extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              overtimeDetail.reason ?? '',
+                              overtimeDetail?.reason ?? '',
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,

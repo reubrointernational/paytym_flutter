@@ -62,37 +62,34 @@ class ChatController extends GetxController with BaseController {
     }
   }
 
-  sendChat(String? message, int? employerId) async {
-    if (message != null &&
-        message.isNotEmpty &&
-        employerId != null &&
-        Get.find<LoginController>().loginResponseModel?.employee?.id != null) {
-      chatResponseModel.value.chats!.add(
-        Chat(
-            userId:
-                Get.find<LoginController>().loginResponseModel!.employee!.id,
-            employerId: employerId,
-            message: message),
-      );
-      chatResponseModel.refresh();
+  sendChat() async {
+    // if (chatTextController.text.isNotEmpty) {
+    //   chatResponseModel.value.chats!.add(
+    //     Chat(
+    //         userId:
+    //             Get.find<LoginController>().loginResponseModel!.employee!.id,
+    //         employerId: employerId,
+    //         message: message),
+    //   );
+    //   chatResponseModel.refresh();
 
-      String text = chatTextController.text;
-      chatTextController.clear();
-      //_scrollDown();
-      var responseString = await Get.find<BaseClient>()
-          .post(
-              ApiEndPoints.sendChat,
-              chatRequestModelToJson(
-                  ChatRequestModel(message: message, employerId: employerId)),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
+    //   String text = chatTextController.text;
+    //   chatTextController.clear();
+    //   //_scrollDown();
+    //   var responseString = await Get.find<BaseClient>()
+    //       .post(
+    //           ApiEndPoints.sendChat,
+    //           chatRequestModelToJson(
+    //               ChatRequestModel(message: message, employerId: employerId)),
+    //           Get.find<LoginController>().getHeader())
+    //       .catchError(handleError);
 
-      if (responseString == null) {
-        chatResponseModel.value.chats!.removeLast();
-        chatResponseModel.refresh();
-        chatTextController.text = text;
-      }
-    }
+    //   if (responseString == null) {
+    //     chatResponseModel.value.chats!.removeLast();
+    //     chatResponseModel.refresh();
+    //     chatTextController.text = text;
+    //   }
+    // }
   }
 
   /* void _scrollDown() async {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 
+import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../models/report/deduction/deduction_list_admin_model.dart';
@@ -18,6 +19,8 @@ class DeductionTabAdmin extends StatelessWidget {
       Get.find<ReportsControllerAdmin>().getDeduction();
       Get.find<DashboardControllerAdmin>().clearFilter();
     });
+    List<PurpleDeduction>? deductionDetails =
+        Get.find<ReportsControllerAdmin>().getFilteredDeductionList();
     return Column(
       children: [
         // SizedBox(
@@ -90,10 +93,7 @@ class DeductionTabAdmin extends StatelessWidget {
           child: Obx(() {
             return ListView.separated(
               physics: const BouncingScrollPhysics(),
-              itemCount: Get.find<ReportsControllerAdmin>()
-                      .deductionResponseModel
-                      .value
-                      .deductions
+              itemCount: deductionDetails
                       ?.length ??
                   0,
               itemBuilder: (context, index) {
@@ -141,10 +141,7 @@ class DeductionTabAdmin extends StatelessWidget {
                           // ),
                           kSizedBoxH6,
                           for (AssignDeduction deduction
-                              in Get.find<ReportsControllerAdmin>()
-                                      .deductionResponseModel
-                                      .value
-                                      .deductions?[index]
+                              in deductionDetails?[index]
                                       .assignDeduction ??
                                   [])
                             Padding(
@@ -204,10 +201,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                   () {
                                     int amount = 0;
                                     for (AssignDeduction deduction
-                                        in Get.find<ReportsControllerAdmin>()
-                                                .deductionResponseModel
-                                                .value
-                                                .deductions?[index]
+                                        in deductionDetails?[index]
                                                 .assignDeduction ??
                                             []) {
                                       amount += deduction.rate ?? 0;

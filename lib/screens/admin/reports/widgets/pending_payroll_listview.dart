@@ -6,6 +6,7 @@ import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../core/custom_slider_thumb.dart';
+import '../../../../models/employee_list_model.dart';
 
 class PendingPayrollListview extends StatefulWidget {
   const PendingPayrollListview({super.key});
@@ -17,6 +18,8 @@ class PendingPayrollListview extends StatefulWidget {
 class _PendingPayrollListviewState extends State<PendingPayrollListview> {
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Get.find<DashboardControllerAdmin>().clearFilter());
     return Expanded(
       child: SizedBox(
         child: SingleChildScrollView(
@@ -115,18 +118,18 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                 ),
               ),
               Obx(() {
-                final employeeList = Get.find<DashboardControllerAdmin>()
-                    .employeeList
-                    .value
-                    .employeeList
+                List<EmployeeList>? employeesList =
+                    Get.find<DashboardControllerAdmin>()
+                        .getFilteredEmployeeList();
+                employeesList = employeesList
                     ?.where((element) => element.status == 1)
                     .toList();
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: employeeList?.length ?? 0,
+                  itemCount: employeesList?.length ?? 0,
                   itemBuilder: (context, index) {
-                    final employees = employeeList?[index];
+                    final employees = employeesList?[index];
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 2),
                       child: GestureDetector(

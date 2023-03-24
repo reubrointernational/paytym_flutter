@@ -10,7 +10,6 @@ import 'package:paytym/models/leaves/leaves_request_model.dart';
 import 'package:paytym/models/leaves/leaves_status_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
-
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/leaves/leaves_admin_response_model.dart';
@@ -18,6 +17,7 @@ import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../widgets/reason_bottomsheet.dart';
+import '../../../models/leaves/leave_type_model.dart' as leave_type;
 
 class LeavesControllerAdmin extends GetxController with BaseController {
   final leaveAdminResponseModel =
@@ -36,6 +36,7 @@ class LeavesControllerAdmin extends GetxController with BaseController {
   final selectedDepartment = departments.first.obs;
   final selectedBranch = branches.first.obs;
   LeaveRequest selectedLeaveRequest = LeaveRequest();
+  final leaveTypesModel = leave_type.LeaveTypesModel().obs;
 
   //for bottomsheet
   final requestAdvanceFormKey = GlobalKey<FormState>();
@@ -67,6 +68,13 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     ));
   }
 
+  getLeaveType(int? typeId) {
+    return leaveTypesModel.value.leaveTypes
+            ?.firstWhere((element) => element.id == typeId)
+            .leaveType ??
+        '';
+  }
+
   //for bottomsheet validation
   String? notEmptyValidator(String value) {
     return (value.isEmpty) ? 'Value cannot be empty' : null;
@@ -92,6 +100,30 @@ class LeavesControllerAdmin extends GetxController with BaseController {
     //     }
     //   }
     // }
+  }
+
+  getLeaveTypes() async {
+    if (leaveTypesModel.value.leaveTypes?.isEmpty ?? true) {
+      Get.find<BaseClient>().onError = getLeaveTypes;
+      Map<String, dynamic> requestModel = {
+        'employer_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.leaveTypes, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+
+      if (responseString == null) {
+        return;
+      } else {
+        leaveTypesModel.value =
+            leave_type.leaveTypesModelFromJson(responseString);
+
+        leaveTypesModel.refresh();
+        Get.find<BaseClient>().onError = null;
+      }
+    }
   }
 
   fetchLeaveData([int status = 1]) async {

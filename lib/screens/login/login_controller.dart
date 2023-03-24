@@ -18,6 +18,7 @@ import '../../network/shared_preference_helper.dart';
 import '../../routes/app_routes.dart';
 
 class LoginController extends GetxController with BaseController {
+  static String FCMToken = '';
   LoginResponseModel? loginResponseModel;
   UserModel userModel = UserModel();
   final formKey = GlobalKey<FormState>();
@@ -33,6 +34,8 @@ class LoginController extends GetxController with BaseController {
       'Authorization': 'Bearer ${loginResponseModel?.token}'
     };
   }
+
+  
 
   Future<bool> fetchLoginData() async {
     /// if login data is already present in storage it will not connect to server.
@@ -215,4 +218,6 @@ class LoginController extends GetxController with BaseController {
       Get.toNamed(Routes.otp);
     }
   }
+
+  
 }

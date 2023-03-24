@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
 
 import '../../../../core/constants/icons.dart';
 import '../../../../core/dialog_helper.dart';
+import '../../dashboard/dashboard_controller.dart';
 import 'payment_history.dart';
 
 class PayPayment extends StatelessWidget {
@@ -11,6 +13,8 @@ class PayPayment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Get.find<DashboardControllerAdmin>().clearFilter());
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),

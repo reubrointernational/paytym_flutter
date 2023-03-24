@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/routes/app_routes.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
+import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../models/employee_list_model.dart';
+import '../reports_controller.dart';
 
 class UploadsTabAdmin extends StatelessWidget {
   const UploadsTabAdmin({super.key});

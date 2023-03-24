@@ -56,7 +56,7 @@ class LeaveRequest {
   String? startDate;
   String? endDate;
   dynamic reason;
-  String? type;
+  int? type;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;

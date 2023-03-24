@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/screens/admin/reports/project_employee_list_page.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 
@@ -8,6 +9,7 @@ import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../network/end_points.dart';
 import '../../../../routes/app_routes.dart';
+import '../../dashboard/dashboard_controller.dart';
 import '../widgets/custom_progress_indicator.dart';
 
 class ProjectsTabAdmin extends StatelessWidget {
@@ -15,13 +17,15 @@ class ProjectsTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsControllerAdmin>().fetchProjects());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<DashboardControllerAdmin>().clearFilter();
+      Get.find<ReportsControllerAdmin>().fetchProjects();
+    });
 
     return Obx(() {
       final reportController = Get.find<ReportsControllerAdmin>();
       final projects =
-          reportController.projectlistResponseModel.value.projectsLists;
+          Get.find<ReportsControllerAdmin>().getFilteredProjectsList();
       return ListView.builder(
           physics: const BouncingScrollPhysics(),
           itemCount: projects?.length ?? 0,

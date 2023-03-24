@@ -63,5 +63,7 @@ class ApiEndPoints {
   static const dashboard = '$kBaseUrl/dashboard';
   static const uploadFiles = '$kBaseUrl/upload_files';
   static const leaveTypes = '$kBaseUrl/get-leave-types';
+  static const updateFCMToken = '$kBaseUrl/apply_device_id';
+
 
 }

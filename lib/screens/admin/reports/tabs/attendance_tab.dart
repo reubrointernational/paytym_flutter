@@ -9,7 +9,7 @@ import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../models/report/attendance/attendance_admin_response_model.dart';
-import '../../../employee/reports/widgets/year_dropdown.dart';
+import '../../dashboard/dashboard_controller.dart';
 import '../reports_controller.dart';
 
 class AttendanceTabAdmin extends StatelessWidget {
@@ -17,8 +17,10 @@ class AttendanceTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsControllerAdmin>().getAttendance());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ReportsControllerAdmin>().getAttendance();
+      Get.find<DashboardControllerAdmin>().clearFilter();
+    });
     Get.put(LeavesControllerAdmin());
     return Column(
       children: [

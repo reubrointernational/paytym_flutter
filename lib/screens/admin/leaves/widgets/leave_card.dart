@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/core/constants/widgets.dart';
@@ -19,17 +20,19 @@ class LeavesCardAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<LeavesControllerAdmin>().getLeaveTypes();
+    });
     Get.put(ReportsControllerAdmin());
-    LeaveStatusModel leaveStatusModel =
-        Get.find<LeavesControllerAdmin>().getLeaveStatusModel(leave?.status);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          
           Text(
-            '${leave?.startDate} - ${leave?.endDate}',
+            '${DateFormat('dd/MM/yyyy').format(DateTime.parse(leave?.startDate??''))} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(leave?.endDate??''))}',
             style: kTextStyleS15W600CGrey,
           ),
           kSizedBoxH10,
@@ -63,15 +66,11 @@ class LeavesCardAdmin extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        leave?.type?.toCamelCase() ?? '',
-                        style: TextStyle(
+Get.find<LeavesControllerAdmin>().getLeaveType(leave?.type),
+                        
+                        style: const TextStyle(
                           fontSize: 15,
-                          color: leave?.type!
-                                      .toLowerCase()
-                                      .contains(kcasualString) ??
-                                  false
-                              ? CustomColors.orangeLabelColor
-                              : CustomColors.blueLabelColor,
+                          color: CustomColors.blueLabelColor,
                         ),
                       ),
                       Text(

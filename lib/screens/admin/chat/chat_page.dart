@@ -219,13 +219,14 @@ class ChatPageAdmin extends StatelessWidget {
                     ),
                     IconButton(
                         onPressed: () => Get.find<ChatController>().sendChat(
-                            Get.find<ChatController>().chatTextController.text,
-                            Get.find<ChatController>()
-                                .chatResponseModel
-                                .value
-                                .chatHistory!
-                                .first
-                                .employerId),
+                            // Get.find<ChatController>().chatTextController.text,
+                            // Get.find<ChatController>()
+                            //     .chatResponseModel
+                            //     .value
+                            //     .chatHistory!
+                            //     .first
+                            //     .employerId
+                            ),
                         icon: SvgPicture.asset(
                           IconPath.sendSvg,
                           color: CustomColors.lightBlueColor,
