@@ -11,16 +11,17 @@ import '../dashboard/dashboard_controller.dart';
 
 import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 
-
-
-class FilterController {
+class ReportsFilterController {
   List<ExtraDetail>? getFilteredMedicalList() {
     List<ExtraDetail>? medicalList;
     if (Get.find<DashboardControllerAdmin>()
             .selectedDropdownDepartments
             .value !=
         null) {
-      medicalList = Get.find<ReportsControllerAdmin>().medicalResponseModel.value.extraDetails
+      medicalList = Get.find<ReportsControllerAdmin>()
+          .medicalResponseModel
+          .value
+          .extraDetails
           ?.where((element) =>
               (element.users?.departmentId ?? 0) ==
               (Get.find<DashboardControllerAdmin>()
@@ -51,7 +52,9 @@ class FilterController {
         Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
             null) {
       medicalList = Get.find<ReportsControllerAdmin>()
-          .medicalResponseModel.value.extraDetails
+          .medicalResponseModel
+          .value
+          .extraDetails
           ?.where((element) =>
               (element.users?.branchId ?? 0) ==
               (Get.find<DashboardControllerAdmin>()
@@ -66,7 +69,9 @@ class FilterController {
           .toList();
     }
     medicalList ??= Get.find<ReportsControllerAdmin>()
-        .medicalResponseModel.value.extraDetails;
+        .medicalResponseModel
+        .value
+        .extraDetails;
     medicalList = medicalList
         ?.where(
           (element) =>
@@ -80,7 +85,8 @@ class FilterController {
         .toList();
     return medicalList;
   }
-List<History>? getFilteredAttendanceList() {
+
+  List<History>? getFilteredAttendanceList() {
     List<History>? attendanceList;
     if (Get.find<DashboardControllerAdmin>()
             .selectedDropdownDepartments
@@ -165,17 +171,15 @@ List<History>? getFilteredAttendanceList() {
           .value
           .deductions
           ?.where((element) =>
-              // (element.user?.departmentId ?? 0) ==
-              // (Get.find<DashboardControllerAdmin>()
-              //         .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
-              //             .selectedDropdownDepartments
-              //             .value]
-              //         ?.first
-              //         .department
-              //         ?.id ??
-              //     0)
-              true
-                  )
+              (element.departmentId ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                          .selectedDropdownDepartments
+                          .value]
+                      ?.first
+                      .department
+                      ?.id ??
+                  0))
           .toList();
     }
     if (deductionList != null &&
@@ -230,7 +234,7 @@ List<History>? getFilteredAttendanceList() {
     return deductionList;
   }
 
-List<EmployeeList>? getFilteredOvertimeList() {
+  List<EmployeeList>? getFilteredOvertimeList() {
     List<EmployeeList>? overtimeList;
     if (Get.find<DashboardControllerAdmin>()
             .selectedDropdownDepartments
@@ -249,8 +253,7 @@ List<EmployeeList>? getFilteredOvertimeList() {
                       ?.first
                       .department
                       ?.id ??
-                  0)
-              )
+                  0))
           .toList();
     }
     if (overtimeList != null &&
@@ -304,7 +307,8 @@ List<EmployeeList>? getFilteredOvertimeList() {
         .toList();
     return overtimeList;
   }
-List<ProjectsList>? getFilteredProjectsList() {
+
+  List<ProjectsList>? getFilteredProjectsList() {
     List<ProjectsList>? projectList;
     if (Get.find<DashboardControllerAdmin>()
             .selectedDropdownDepartments
@@ -378,82 +382,4 @@ List<ProjectsList>? getFilteredProjectsList() {
         .toList();
     return projectList;
   }
-
-  // List<LeaveRequest>? getFilteredLeavesList() {
-  //   List<LeaveRequest>? leavesList;
-  //   if (Get.find<DashboardControllerAdmin>()
-  //           .selectedDropdownDepartments
-  //           .value !=
-  //       null) {
-  //     leavesList = Get.find<LeavesControllerAdmin>()
-  //         .leaveAdminResponseModel
-  //         .value
-  //         .leaveRequest
-  //         ?.where((element) =>
-  //             // (element.user?.departmentId ?? 0) ==
-  //             // (Get.find<DashboardControllerAdmin>()
-  //             //         .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
-  //             //             .selectedDropdownDepartments
-  //             //             .value]
-  //             //         ?.first
-  //             //         .department
-  //             //         ?.id ??
-  //             //     0)
-  //             true)
-  //         .toList();
-  //   }
-  //   if (leavesList != null &&
-  //       Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
-  //           null) {
-  //     leavesList = leavesList.where((element) {
-  //       return (element.branch?.id ?? 0) ==
-  //           (Get.find<DashboardControllerAdmin>()
-  //                   .branchwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
-  //                       .selectedDropdownBranches
-  //                       .value]
-  //                   ?.first
-  //                   .branch
-  //                   ?.id ??
-  //               1);
-  //     }).toList();
-  //   } else if (leavesList == null &&
-  //       Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
-  //           null) {
-  //     leavesList = Get.find<ReportsControllerAdmin>()
-  //         .leavesListResponseModel
-  //         .value
-  //         .projectsLists
-  //         ?.where((element) =>
-  //             (element.branch?.id ?? 0) ==
-  //             (Get.find<DashboardControllerAdmin>()
-  //                     .branchwiseEmployeeMap[
-  //                         Get.find<DashboardControllerAdmin>()
-  //                             .selectedDropdownBranches
-  //                             .value]
-  //                     ?.first
-  //                     .branch
-  //                     ?.id ??
-  //                 0))
-  //         .toList();
-  //   }
-  //   leavesList ??= Get.find<ReportsControllerAdmin>()
-  //       .leavesListResponseModel
-  //       .value
-  //       .projectsLists;
-  //   leavesList = leavesList
-  //       ?.where(
-  //         (element) =>
-  //             element.name?.toLowerCase().contains(
-  //                 Get.find<DashboardControllerAdmin>()
-  //                     .searchKeyword
-  //                     .value
-  //                     .toLowerCase()) ??
-  //             false,
-  //       )
-  //       .toList();
-  //   return leavesList;
-  // }
-
 }
-
-

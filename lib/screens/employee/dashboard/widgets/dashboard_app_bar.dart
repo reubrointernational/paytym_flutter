@@ -74,7 +74,7 @@ class DashboardAppBar extends StatelessWidget {
                   Get.find<DashboardController>().onClickMenuItem(value),
               child: CachedNetworkImage(
                 imageUrl:
-                    '$kImageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image}',
+                    '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image}',
                 imageBuilder: (context, imageProvider) => Animate(
                   effects: const [
                     ScaleEffect(duration: Duration(microseconds: 500))

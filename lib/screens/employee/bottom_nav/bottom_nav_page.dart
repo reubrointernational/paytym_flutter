@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../../../core/colors/colors.dart';
 import '../../../logout_controller.dart';
 import '../calendar/calendar_page.dart';
-import '../chats/chats_listing.dart';
+import '../chats/chat_group_listing.dart';
 import '../dashboard/dashboard.dart';
 import 'bottom_nav_controller.dart';
 

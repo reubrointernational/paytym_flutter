@@ -1,5 +1,6 @@
 const kBaseUrl = 'http://52.40.210.26:2000/api';
-const kImageUrl = 'https://paytym.net/storage/';
+// const kStorageUrl = 'https://paytym.net/storage/';
+const kStorageUrl = 'http://52.40.210.26:2000/storage/';
 // const kBaseUrl = 'https://paytym.net/api';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
 const kDomainUrl = 'paytym.net';
@@ -52,7 +53,6 @@ class ApiEndPoints {
   static const deductionAdd = '$kBaseUrl/deductions_add';
   static const employeeList = '$kBaseUrl/list_employees';
   static const chatGroupList = '$kBaseUrl/chat_group';
-  static const chatWindow = '$kBaseUrl/chat_group_detais';
   static const createChatGroup = '$kBaseUrl/create_chat_groups';
   static const projectsList = '$kBaseUrl/list_projects';
   static const branchDeptList = '$kBaseUrl/list_branch_departments';
@@ -64,6 +64,4 @@ class ApiEndPoints {
   static const uploadFiles = '$kBaseUrl/upload_files';
   static const leaveTypes = '$kBaseUrl/get-leave-types';
   static const updateFCMToken = '$kBaseUrl/apply_device_id';
-
-
 }

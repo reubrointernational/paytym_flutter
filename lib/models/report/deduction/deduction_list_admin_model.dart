@@ -51,6 +51,7 @@ class PurpleDeduction {
     this.firstName,
     this.lastName,
     this.branchId,
+    this.departmentId,
     this.assignDeduction,
   });
 
@@ -58,6 +59,7 @@ class PurpleDeduction {
   String? firstName;
   String? lastName;
   int? branchId;
+  int? departmentId;
   List<AssignDeduction>? assignDeduction;
 
   factory PurpleDeduction.fromJson(Map<String, dynamic> json) =>
@@ -66,6 +68,7 @@ class PurpleDeduction {
         firstName: json["first_name"],
         lastName: json["last_name"],
         branchId: json["branch_id"],
+        departmentId: json["department_id"],
         assignDeduction: json["assign_deduction"] == null
             ? []
             : List<AssignDeduction>.from(json["assign_deduction"]!

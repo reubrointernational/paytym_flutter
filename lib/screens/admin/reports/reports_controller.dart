@@ -39,12 +39,13 @@ import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
 
-import 'filter_controller.dart';
+import 'reports_filter_controller.dart';
 
 //Contract period uses same api of list employee which is present in dashboard
 //controller of admin session
 
-class ReportsControllerAdmin extends GetxController with BaseController, FilterController {
+class ReportsControllerAdmin extends GetxController
+    with BaseController, ReportsFilterController {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
   final selectedDate =
@@ -321,6 +322,7 @@ class ReportsControllerAdmin extends GetxController with BaseController, FilterC
           '',
       status: '0',
       id: '4',
+      //todo change id
     );
     request.fields.addAll(fileUploadRequestModel.toJson());
     request.headers.addAll(Get.find<LoginController>().getHeader()!);

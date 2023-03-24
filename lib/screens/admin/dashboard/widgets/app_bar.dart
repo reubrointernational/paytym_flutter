@@ -54,10 +54,8 @@ class HrAppBar extends StatelessWidget {
           onSelected: (DashboardDropDown value) =>
               Get.find<DashboardController>().onClickMenuItem(value),
           child: CachedNetworkImage(
-            imageUrl: '$kImageUrl${Get.find<LoginController>()
-                        .loginResponseModel
-                        ?.employee
-                        ?.image ?? ''}',
+            imageUrl:
+                '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image ?? ''}',
             imageBuilder: (context, imageProvider) => CircleAvatar(
               backgroundColor: CustomColors.whiteCardColor,
               radius: 17,

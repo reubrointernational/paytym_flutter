@@ -19,17 +19,13 @@ class ChatController extends GetxController with BaseController {
       chat_model.ChatListGroupModel(message: '', chats: []).obs;
   int selectedItemIndex = 0;
 
-  //final ScrollController scrollController = ScrollController();
-  @override
-  void onReady() {
-    super.onReady();
-    fetchChatGroupList();
-  
-  }
 
-  fetchChatGroupList() async {
-    Get.find<BaseClient>().onError = fetchChatGroupList;
-    var requestModel = {'status': '1'};
+  fetchChatGroupList(int isEmployee) async {
+    Get.find<BaseClient>().onError = () {
+      fetchChatGroupList(isEmployee);
+    };
+    //0 for employee, 1 for admin
+    var requestModel = {'status': isEmployee};
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.chatGroupList, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
@@ -46,7 +42,7 @@ class ChatController extends GetxController with BaseController {
 
   fetchChat() async {
     showLoading();
-  
+
     Get.find<BaseClient>().onError = fetchChat;
     var responseString = await Get.find<BaseClient>()
         .get(ApiEndPoints.getChat, Get.find<LoginController>().getHeader())

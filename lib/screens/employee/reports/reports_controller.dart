@@ -13,7 +13,6 @@ import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
@@ -22,6 +21,7 @@ import '../../../core/download_path.dart';
 import '../../../models/report/attendance/attendance_employee_response.dart';
 import '../../../models/report/deduction/deduction_response_model.dart';
 import '../../../models/report/files/employee_files_list_model.dart';
+import '../../../models/report/files/files_type_list.dart';
 import '../../../models/report/medical_list_admin_model.dart';
 import '../../../models/split_payment/split_payment_response.dart';
 import '../../../network/base_client.dart';
@@ -31,11 +31,13 @@ class ReportsController extends GetxController
     with BaseController, GetTickerProviderStateMixin {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
+  final filesTypeListModel = FilesTypeListModel(fileTypes: [], message: '').obs;
 
   late TabController controller;
   late TabController subTabController;
   final medicalResponseModel =
       MedicalListAdminModel(message: '', extraDetails: []).obs;
+  int clickedIndex = -1;
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
@@ -54,7 +56,6 @@ class ReportsController extends GetxController
   final selectedDropdownDay = daysDummyList.first.obs;
 
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
-  
 
   String getMedicalDetails(int index) {
     switch (index) {
@@ -114,24 +115,43 @@ class ReportsController extends GetxController
     }
   }
 
-  fetchFiles() async {
-    if (fileListResponseModel.value.message.isEmpty) {
-      showLoading();
-      Get.find<BaseClient>().onError = fetchFiles;
-      var requestModel = {
-        'status': '0',
-        //todo change employer id
-        'employee_id': '3'
-        // '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
-      };
+  fetchFileTypeListAndFetchFiles() async {
+    showLoading();
+    if (filesTypeListModel.value.message.isEmpty) {
+      Get.find<BaseClient>().onError = fetchFileTypeListAndFetchFiles;
       var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
+          .post(ApiEndPoints.fileTypeList, null,
               Get.find<LoginController>().getHeader())
           .catchError(handleError);
       if (responseString == null) {
         return;
       } else {
-        hideLoading();
+        filesTypeListModel.value = filesTypeListModelFromJson(responseString);
+        fetchFiles(filesTypeListModel.value);
+      }
+    } else {
+      fetchFiles(filesTypeListModel.value);
+    }
+  }
+
+  fetchFiles(FilesTypeListModel fileTypes) async {
+    if (fileListResponseModel.value.message.isEmpty) {
+      Get.find<BaseClient>().onError = () {
+        fetchFiles(fileTypes);
+      };
+      var requestModel = {
+        'status': '0',
+        'employee_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      hideLoading();
+      if (responseString == null) {
+        return;
+      } else {
         fileListResponseModel.value =
             employeeFilesListModelFromJson(responseString);
         fileListResponseModel.refresh();
@@ -306,7 +326,8 @@ class ReportsController extends GetxController
         _port.sendPort, 'downloader_send_port');
     _port.listen((dynamic data) {
       // String id = data[0];
-      DownloadTaskStatus status = data[1];
+
+      DownloadTaskStatus status = DownloadTaskStatus(data[1] as int);
       // int progress = data[2];
 
       //download completed
@@ -333,9 +354,8 @@ class ReportsController extends GetxController
   @pragma('vm:entry-point')
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-    send!.send([id, status, progress]);
+    IsolateNameServer.lookupPortByName('downloader_send_port')
+        ?.send([id, status.value, progress]);
   }
 
   @override

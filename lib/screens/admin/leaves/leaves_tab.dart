@@ -22,25 +22,18 @@ class LeavesTabAdmin extends StatelessWidget {
               List<LeaveRequest>? allLeaves;
               if (leave == leaveTabListAdmin[0]) {
                 allLeaves = Get.find<LeavesControllerAdmin>()
-                    .leaveAdminResponseModel
-                    .value
-                    .leaveRequest!
+                    .getFilteredLeavesList()!
                     .where((element) => Get.find<LeavesControllerAdmin>()
                         .isToday(element.createdAt ?? DateTime.now()))
                     .toList();
               } else if (leave == leaveTabListAdmin[1]) {
                 allLeaves = Get.find<LeavesControllerAdmin>()
-                    .leaveAdminResponseModel
-                    .value
-                    .leaveRequest!
+                    .getFilteredLeavesList()!
                     .where((element) => Get.find<LeavesControllerAdmin>()
                         .isYesterday(element.createdAt ?? DateTime.now()))
                     .toList();
               } else {
-                allLeaves = Get.find<LeavesControllerAdmin>()
-                    .leaveAdminResponseModelPending
-                    .value
-                    .leaveRequest;
+                allLeaves = Get.find<LeavesControllerAdmin>().getFilteredLeavesList();
               }
 
               return ListView.builder(
@@ -59,10 +52,7 @@ class LeavesTabAdmin extends StatelessWidget {
           )
         : Obx(
             () {
-              List<LeaveRequest>? allLeaves = Get.find<LeavesControllerAdmin>()
-                  .leaveAdminResponseModelPending
-                  .value
-                  .leaveRequest;
+              List<LeaveRequest>? allLeaves = Get.find<LeavesControllerAdmin>().getFilteredLeavesList();
 
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),

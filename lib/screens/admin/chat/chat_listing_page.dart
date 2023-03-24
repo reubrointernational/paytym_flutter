@@ -20,7 +20,10 @@ class ChatListingPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ChatController());
-
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find().fetchChatGroupList(1);
+      //1 for admin
+    });
     return Scaffold(
       backgroundColor: CustomColors.lightBlueColor,
       body: SafeArea(
@@ -118,7 +121,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                                       radius: 25,
                                       backgroundColor: Colors.pink.shade200,
                                       backgroundImage: NetworkImage(
-                                          '$kImageUrl${chat[index].profilePic}'),
+                                          '$kStorageUrl${chat[index].profilePic}'),
                                     ),
                                     const Positioned(
                                       right: 2,

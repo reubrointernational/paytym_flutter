@@ -44,11 +44,8 @@ class ReportsPage extends StatelessWidget {
                     Row(
                       children: [
                         CustomCachedNetworkImage(
-                          imageUrl: 
-                              '$kImageUrl${Get.find<LoginController>()
-                        .loginResponseModel
-                        ?.employee
-                        ?.image}',
+                          imageUrl:
+                              '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image}',
                           radius: 26,
                         ),
                         kSizedBoxW10,

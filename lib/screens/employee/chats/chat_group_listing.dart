@@ -7,13 +7,11 @@ import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/routes/app_routes.dart';
 
-import '../../../core/constants/styles.dart';
 import '../../../core/constants/widgets.dart';
 import '../../../network/end_points.dart';
 import '../../admin/dashboard/widgets/custom_text_form_field.dart';
 import '../calendar/widgets/custom_svg.dart';
 import 'chat_controller.dart';
-import 'chats_page.dart';
 
 class ChatListingPage extends StatelessWidget {
   const ChatListingPage({super.key});
@@ -21,6 +19,10 @@ class ChatListingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ChatController());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<ChatController>().fetchChatGroupList(0);
+      //0 for employee
+    });
     return Scaffold(
       appBar: AppBar(
         leading: const Padding(
@@ -91,7 +93,7 @@ class ChatListingPage extends StatelessWidget {
                                       radius: 25,
                                       backgroundColor: Colors.pink.shade200,
                                       backgroundImage: NetworkImage(
-                                          '$kImageUrl${chat[index].profilePic}'),
+                                          '$kStorageUrl${chat[index].profilePic}'),
                                     ),
                                     const Positioned(
                                       right: 2,

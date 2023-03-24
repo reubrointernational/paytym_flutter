@@ -40,8 +40,8 @@ class ProjectEmployeeListPage extends StatelessWidget {
                     leading: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.grey,
-                      backgroundImage: NetworkImage(
-                          '$kImageUrl${members.user.image}'),
+                      backgroundImage:
+                          NetworkImage('$kStorageUrl${members.user.image}'),
                     ),
                     trailing: Text(
                       project!.branch!.name,

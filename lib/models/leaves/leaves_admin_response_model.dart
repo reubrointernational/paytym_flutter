@@ -98,16 +98,22 @@ class User {
     required this.id,
     required this.firstName,
     required this.lastName,
+    required this.branchId,
+    required this.departmentId,
   });
 
   int id;
   String firstName;
   String lastName;
+  int branchId;
+  int departmentId;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         firstName: json["first_name"],
         lastName: json["last_name"],
+        branchId: json["branch_id"],
+        departmentId: json["department_id"],
       );
 
   Map<String, dynamic> toJson() => {

@@ -18,8 +18,9 @@ import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../widgets/reason_bottomsheet.dart';
 import '../../../models/leaves/leave_type_model.dart' as leave_type;
+import 'leaves_filter_controller.dart';
 
-class LeavesControllerAdmin extends GetxController with BaseController {
+class LeavesControllerAdmin extends GetxController with BaseController, LeavesFilterController {
   final leaveAdminResponseModel =
       LeavesListAdminModel(message: '', leaveRequest: []).obs;
   final leaveAdminResponseModelPending =

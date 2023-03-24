@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import '../firebase_options.dart';
 import 'init_fcm.dart';
 
@@ -24,10 +23,9 @@ Future<void> initApp() async {
       debug:
           true, // optional: set to false to disable printing logs to console (default: true) //todo set to false
       ignoreSsl: true //todo delete if server is https
+      //todo delete usescleartext from manifest file
       
       );
-
-  
 
   initFcm();
 }
