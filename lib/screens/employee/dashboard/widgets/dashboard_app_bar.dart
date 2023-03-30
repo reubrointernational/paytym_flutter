@@ -45,8 +45,8 @@ class DashboardAppBar extends StatelessWidget {
                           ?.capabilities
                           ?.first
                           .role
-                          ?.id !=
-                      5)
+                          ?.roleName !=
+                     'Employee')
                     PopupMenuItem(
                       value: kDashboardDropDownItemList[3].dropDownItem,
                       child: Text(
@@ -86,10 +86,11 @@ class DashboardAppBar extends StatelessWidget {
                   ),
                 ),
                 placeholder: (context, url) => const SpinKitDoubleBounce(
-                  color: Colors.white,
-                  size: 7.5,
+                  color: Colors.blue,
+                  size: 30,
                 ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                errorWidget: (context, url, error) =>
+                    const Icon(Icons.person, color: Colors.blue),
               ),
             ),
           ],

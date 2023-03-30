@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
+import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../../../core/constants/styles.dart';
 
@@ -109,13 +111,33 @@ class CalendarMeetingAdmin extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               IconButton(
-                                  onPressed: () {
-                                    Get.find<CalendarControllerAdmin>()
-                                        .deleteMeeting(index);
-                                  },
-                                  icon: const Icon(
+                                  onPressed: meeting?.userId ==
+                                          Get.find<LoginController>()
+                                              .loginResponseModel!
+                                              .employee!
+                                              .id
+                                      ? () {
+                                          DialogHelper.showConfirmDialog(
+                                              title: 'Delete Meeting',
+                                              desc:
+                                                  'Do you want to delete this meeting?',
+                                              onConfirm: () {
+                                                Get.find<
+                                                        CalendarControllerAdmin>()
+                                                    .deleteMeeting(index);
+                                                Get.back();
+                                              });
+                                        }
+                                      : null,
+                                  icon: Icon(
                                     Icons.delete_outline_outlined,
-                                    color: CustomColors.redColor,
+                                    color: meeting?.userId ==
+                                            Get.find<LoginController>()
+                                                .loginResponseModel!
+                                                .employee!
+                                                .id
+                                        ? CustomColors.redColor
+                                        : CustomColors.greyTextColor,
                                   )),
                             ],
                           ),

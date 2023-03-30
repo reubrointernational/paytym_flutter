@@ -18,7 +18,7 @@ class ChatController extends GetxController with BaseController {
   final searchKeyword = ''.obs;
   final chatGrouplist =
       chat_model.ChatListGroupModel(message: '', chats: []).obs;
-  int selectedItemIndex = 0;
+  int selectedItemIndex = -1;
   final scrollController = ScrollController();
 
   fetchChatGroupList() async {
@@ -39,8 +39,8 @@ class ChatController extends GetxController with BaseController {
     }
   }
 
-  fetchChat() async {
-    showLoading();
+  fetchChat({bool isFromNotification = false}) async {
+    if (!isFromNotification) showLoading();
     Get.find<BaseClient>().onError = fetchChat;
     var responseString = await Get.find<BaseClient>()
         .post(
@@ -116,5 +116,4 @@ class ChatController extends GetxController with BaseController {
       }
     }
   }
-
 }

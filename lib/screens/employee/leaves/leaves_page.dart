@@ -10,9 +10,12 @@ import 'widgets/leaves_app_bar.dart';
 
 class LeavesPage extends StatelessWidget {
   const LeavesPage({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<LeavesController>().fetchLeaveData();
+    });
     Get.put(LeavesController());
     return DefaultTabController(
       length: leaveTabList.length,

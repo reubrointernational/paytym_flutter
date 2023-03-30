@@ -70,7 +70,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       meetingResponseModel.value =
           meetingListAdminModelFromJson(responseString);
       meetingResponseModel.refresh();
-      
+
       Get.find<BaseClient>().onError = null;
     }
   }
@@ -115,11 +115,12 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     if (responseString == null) {
       return;
     } else {
+      Get.back();
       await getMeeting();
       if (Get.find<CalendarController>().initialized) {
         Get.find<CalendarController>().meetingResponseModel.refresh();
       }
-      Get.back();
+
       startDateController.clear();
       endDateController.clear();
       endTimeController.clear();
@@ -270,11 +271,11 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     if (responseString == null) {
       return;
     } else {
+      Get.back();
       await getEvents();
       if (Get.find<CalendarController>().initialized) {
         Get.find<CalendarController>().eventsResponseModel.refresh();
       }
-      Get.back();
       startDateController.clear();
       endDateController.clear();
       endTimeController.clear();
@@ -312,11 +313,12 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     if (responseString == null) {
       return;
     } else {
+      Get.back();
       await getHolidays();
       if (Get.find<CalendarController>().initialized) {
         Get.find<CalendarController>().leaveAdminResponseModel.refresh();
       }
-      Get.back();
+
       startDateController.clear();
       endDateController.clear();
       endTimeController.clear();

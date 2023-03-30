@@ -6,6 +6,7 @@ import '../../../../../core/colors/colors.dart';
 import '../../../../../core/constants/strings.dart';
 import '../../../../../core/constants/styles.dart';
 import '../../../../../core/constants/widgets.dart';
+import '../../../../../core/dialog_helper.dart';
 import 'event_row.dart';
 
 class CalendarEventCardAdmin extends StatelessWidget {
@@ -33,8 +34,15 @@ class CalendarEventCardAdmin extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(25, 5, 25, 0),
               child: GestureDetector(
-                onTap: () =>
-                    Get.find<CalendarControllerAdmin>().deleteEvent(index),
+                onTap: () {
+                  DialogHelper.showConfirmDialog(
+                      title: 'Delete Event',
+                      desc: 'Do you want to delete this event?',
+                      onConfirm: () {
+                        Get.find<CalendarControllerAdmin>().deleteEvent(index);
+                        Get.back();
+                      });
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: const [

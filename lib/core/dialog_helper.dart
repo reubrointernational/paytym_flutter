@@ -19,41 +19,49 @@ class DialogHelper {
     Get.dialog(
       Scaffold(
         backgroundColor: Colors.white54,
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset('assets/json/404_error.json'),
-            Text(
-              title,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red),
-            ),
-            kSizedBoxH10,
-            Text(
-              desc,
-              style: const TextStyle(fontSize: 18),
-            ),
-            kSizedBoxH10,
-            SizedBox(
-              width: w * 0.8,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (Get.find<BaseClient>().onError != null) {
-                    Get.find<BaseClient>().onError!();
-                  }
-                  if (Get.isDialogOpen ?? false) Get.back();
-                },
-                child: Text(
-                  Get.find<BaseClient>().onError != null ? 'Retry' : 'OK',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+          
+            children: [
+              // Lottie.asset('assets/json/404_error.json'),
+              const CircleAvatar(
+                backgroundColor: Colors.red,
+                child: Icon(Icons.close),
+              ),
+              kSizedBoxH10,
+              Text(
+                title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red),
+              ),
+              kSizedBoxH10,
+              Text(
+                desc,
+                style: const TextStyle(fontSize: 18),
+              ),
+              kSizedBoxH10,
+              SizedBox(
+                width: w * 0.8,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (Get.find<BaseClient>().onError != null) {
+                      Get.find<BaseClient>().onError!();
+                    }
+                    if (Get.isDialogOpen ?? false) Get.back();
+                  },
+                  child: Text(
+                    Get.find<BaseClient>().onError != null ? 'Retry' : 'OK',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -86,7 +94,6 @@ class DialogHelper {
         fontWeight: FontWeight.w600,
         color: Colors.grey.shade500,
       ),
-      
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       titlePadding: const EdgeInsets.only(top: 20),
       content: content,
@@ -95,7 +102,9 @@ class DialogHelper {
 
   //show toast
 
-  static void showToast({String desc = 'Something went wrong', Color backgroundColor = Colors.blue}) {
+  static void showToast(
+      {String desc = 'Something went wrong',
+      Color backgroundColor = Colors.blue}) {
     Fluttertoast.showToast(
         msg: desc,
         toastLength: Toast.LENGTH_SHORT,
@@ -105,12 +114,14 @@ class DialogHelper {
         textColor: Colors.white,
         fontSize: 16.0);
   }
-  //show snack bar
 
-  // Get.snackbar("Error", desc,
-  //     icon: const Icon(Icons.error, color: Colors.red),
-  //     snackPosition: SnackPosition.BOTTOM,
-  //     backgroundColor: Colors.blue);
+  //show snack bar
+  static void showSnackBar(String title, String desc) {
+    Get.snackbar(title, desc,
+        icon: const Icon(Icons.notifications, color: Colors.blue),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.blue.shade100);
+  }
 
   //show loading
 

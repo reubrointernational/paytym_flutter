@@ -58,17 +58,16 @@ class ChatListingPage extends StatelessWidget {
                         .chatGrouplist
                         .value
                         .chats
-                        ?.reversed
-                        .toList()
-                        .where((element) => element.group?.groupName
-                            ?.toLowerCase()
-                            .contains(Get.find<ChatController>()
-                                .searchKeyword
-                                .value
-                                .toLowerCase())??false)
+                        ?.where((element) =>
+                            element.group?.groupName?.toLowerCase().contains(
+                                Get.find<ChatController>()
+                                    .searchKeyword
+                                    .value
+                                    .toLowerCase()) ??
+                            false)
                         .toList();
                     return ListView.builder(
-                      itemCount: chat?.length??0,
+                      itemCount: chat?.length ?? 0,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
@@ -92,7 +91,7 @@ class ChatListingPage extends StatelessWidget {
                                       radius: 25,
                                       backgroundColor: Colors.pink.shade200,
                                       backgroundImage: NetworkImage(
-                                          '$kStorageUrl${chat?[index].group?.profilePic??''}'),
+                                          '$kStorageUrl${chat?[index].group?.profilePic ?? ''}'),
                                     ),
                                     const Positioned(
                                       right: 2,
@@ -117,7 +116,7 @@ class ChatListingPage extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            chat?[index].group?.groupName??'',
+                                            chat?[index].group?.groupName ?? '',
                                             style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,
@@ -128,11 +127,12 @@ class ChatListingPage extends StatelessWidget {
                                             DateFormat('dd/MM/yyyy').format(
                                                 DateTime.parse(
                                                     Get.find<ChatController>()
-                                                        .chatGrouplist
-                                                        .value
-                                                        .chats?[index]
-                                                        .createdAt
-                                                        .toString()??'')),
+                                                            .chatGrouplist
+                                                            .value
+                                                            .chats?[index]
+                                                            .createdAt
+                                                            .toString() ??
+                                                        '')),
                                             style: const TextStyle(
                                               fontSize: 13,
                                               color: CustomColors.greyIconColor,

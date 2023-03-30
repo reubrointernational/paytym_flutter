@@ -5,6 +5,7 @@ import 'package:paytym/core/constants/widgets.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
+import '../../../../core/dialog_helper.dart';
 import '../../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../dashboard/dashboard_controller.dart';
 import '../reports_controller.dart';
@@ -219,8 +220,15 @@ class DeductionTabAdmin extends StatelessWidget {
                       right: 0,
                       child: IconButton(
                         onPressed: () {
-                          Get.find<ReportsControllerAdmin>()
-                              .deleteDeduction(index);
+                          DialogHelper.showConfirmDialog(
+                              title: 'Delete Deduction',
+                              desc: 'Do you want to delete this deduction?',
+                              onConfirm: () {
+                                Get.find<ReportsControllerAdmin>()
+                                    .deleteDeduction(index);
+                                Get.back();
+                              });
+                          
                         },
                         icon: const Icon(
                           Icons.delete_outline_outlined,

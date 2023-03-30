@@ -6,6 +6,7 @@ import '../../../../../core/colors/colors.dart';
 import '../../../../../core/constants/strings.dart';
 import '../../../../../core/constants/styles.dart';
 import '../../../../../core/constants/widgets.dart';
+import '../../../../../core/dialog_helper.dart';
 
 class CalendarHolidayCardAdmin extends StatelessWidget {
   final int index;
@@ -58,9 +59,19 @@ class CalendarHolidayCardAdmin extends StatelessWidget {
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () => Get.find<CalendarControllerAdmin>()
-                          .deleteHoliday(index),
+                    GestureDetector( 
+                      onTap:() { 
+                        DialogHelper.showConfirmDialog(
+                                              title: 'Delete Holiday',
+                                              desc:
+                                                  'Do you want to delete this holiday?',
+                                              onConfirm: () {
+                                                Get.find<CalendarControllerAdmin>()
+                                  .deleteHoliday(index);
+                                                Get.back();
+                                              });
+                        
+                        },
                       child: const Icon(
                         Icons.delete_outline,
                         color: CustomColors.redColor,

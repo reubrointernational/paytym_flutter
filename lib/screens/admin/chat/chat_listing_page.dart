@@ -84,9 +84,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                         .chatGrouplist
                         .value
                         .chats
-                        ?.reversed
-                        .toList()
-                        .where((element) =>
+                        ?.where((element) =>
                             element.group?.groupName?.toLowerCase().contains(
                                 Get.find<ChatController>()
                                     .searchKeyword

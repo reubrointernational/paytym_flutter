@@ -67,9 +67,9 @@ class HrAppBar extends StatelessWidget {
             ),
             placeholder: (context, url) => const SpinKitDoubleBounce(
               color: Colors.white,
-              size: 7.5,
+              size: 30,
             ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.person, color: Colors.white,),
           ),
         ),
       ],

@@ -156,7 +156,7 @@ class LeavesControllerAdmin extends GetxController
     final model = LeaveAcceptDeclineRequestModel(
         reason: acceptRejectReason,
         employeeId: selectedLeaveRequest.userId.toString(),
-        approvalStatus: reasonButton == ReasonButton.leaveApprove ? '0' : '1',
+        approvalStatus: reasonButton == ReasonButton.leaveApprove ? '1' : '0',
         leaveRequestId: selectedLeaveRequest.id.toString());
 
     var responseString = await Get.find<BaseClient>()
@@ -165,10 +165,10 @@ class LeavesControllerAdmin extends GetxController
             leaveAcceptDeclineRequestModelToJson(model),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    hideLoading();
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
       Get.back();

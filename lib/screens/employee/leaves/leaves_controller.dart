@@ -32,11 +32,6 @@ class LeavesController extends GetxController with BaseController {
   final TextEditingController startTimeController = TextEditingController();
   final TextEditingController endTimeController = TextEditingController();
 
-  @override
-  void onReady() {
-    super.onReady();
-    fetchLeaveData();
-  }
 
   fetchLeaveData() async {
     showLoading();
