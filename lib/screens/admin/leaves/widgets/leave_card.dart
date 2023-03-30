@@ -59,7 +59,7 @@ class LeavesCardAdmin extends StatelessWidget {
                         style: kTextStyleS18W600,
                       ),
                       Text(
-                        '#${leave?.id.toString().padLeft(5, '0') ?? ''}',
+                        '#${leave?.userId.toString().padLeft(5, '0') ?? ''}',
                         // '${Get.find<LeavesControllerAdmin>().formatDate(leave?.startDate)}-${Get.find<LeavesControllerAdmin>().formatDate(leave?.endDate)}',
                         style: const TextStyle(
                           color: CustomColors.greyHeadingTextColor,

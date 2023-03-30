@@ -22,16 +22,10 @@ class PdfViewer extends StatelessWidget {
           size: 50.0,
         ),
       ),
-      errorWidget: (error) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.error_outline_sharp,
-            color: Colors.red,
-            size: 50,
-          ),
-          Text(error.toString()),
-        ],
+      errorWidget: (error) => const Icon(
+        Icons.error_outline_sharp,
+        color: Colors.red,
+        size: 50,
       ),
     );
   }

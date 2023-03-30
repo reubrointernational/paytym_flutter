@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,9 +5,9 @@ import 'package:paytym/models/chat/chat_group_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:paytym/screens/admin/chat/chat_listing_page.dart';
+import 'package:paytym/screens/employee/chats/chat_controller.dart';
 
 import '../../../core/dialog_helper.dart';
-import '../../../models/chat/chat_create_request.dart';
 import '../../../network/end_points.dart';
 import '../../../routes/app_routes.dart';
 import '../../login/login_controller.dart';
@@ -39,7 +38,7 @@ class ChatControllerAdmin extends GetxController with BaseController {
 
   final searchKeyword = ''.obs;
 
-  final members = [].obs;
+  List<EmployeeList>? members = [];
   final picker = ''.obs;
 
   ImagePicker imagePicker = ImagePicker();
@@ -89,7 +88,8 @@ class ChatControllerAdmin extends GetxController with BaseController {
   }
 
   createChatGroup() async {
-    if (members.isEmpty) {
+    List<String>? userIdList = members?.map((e) => e.id.toString()).toList();
+    if (userIdList?.isEmpty ?? true) {
       DialogHelper.showToast(
           desc: 'Group members should not be empty',
           backgroundColor: Colors.red);
@@ -103,26 +103,36 @@ class ChatControllerAdmin extends GetxController with BaseController {
       showLoading();
       var request = http.MultipartRequest(
           "POST", Uri.parse(ApiEndPoints.createChatGroup));
-      ChatCreateRequestModel chatCreateRequestModel = ChatCreateRequestModel(
-          employerId: Get.find<LoginController>()
-                  .loginResponseModel
-                  ?.employee
-                  ?.employerId
-                  .toString() ??
-              '',
-          groupName: groupNameController.text,
-          members: members.toString());
-      request.fields.addAll(chatCreateRequestModel.toJson());
-      request.headers.addAll(Get.find<LoginController>().getHeader()!);
+
+      request.fields['employer_id'] = Get.find<LoginController>()
+              .loginResponseModel
+              ?.employee
+              ?.employerId
+              .toString() ??
+          '';
+      request.fields['group_name'] = groupNameController.text;
+      if (userIdList != null) {
+        userIdList.forEach((element) {
+          request.fields.addAll({"members[]": element.toString()});
+        });
+      }
+      request.headers['Authorization'] =
+          'Bearer ${Get.find<LoginController>().loginResponseModel?.token}';
       var multipartFile =
           await http.MultipartFile.fromPath('profile_pic', picker.value);
       request.files.add(multipartFile);
       var streamResponse = await request.send();
       var response = await http.Response.fromStream(streamResponse);
-      print(response.body);
-      hideLoading();
 
-      DialogHelper.showToast(desc: 'New Chat Group Created');
+      hideLoading();
+      if (response.statusCode == 200) {
+        DialogHelper.showToast(desc: 'New Chat Group Created');
+        Get.back();
+        Get.back();
+        Get.find<ChatController>().fetchChatGroupList();
+      } else {
+        DialogHelper.showToast(desc: response.body);
+      }
     }
   }
 }

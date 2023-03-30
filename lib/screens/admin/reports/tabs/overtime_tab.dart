@@ -24,7 +24,7 @@ class OvertimeTabAdmin extends StatelessWidget {
     });
     return Obx(() {
       List<EmployeeList>? overtimeDetails =
-          Get.find<ReportsControllerAdmin>().getFilteredOvertimeList();
+          Get.find<ReportsControllerAdmin>().getFilteredOvertimeList()?.where((element) => element.status == '0').toList();
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: overtimeDetails?.length ?? 0,

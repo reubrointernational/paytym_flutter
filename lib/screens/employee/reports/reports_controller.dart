@@ -51,9 +51,10 @@ class ReportsController extends GetxController
   final attendanceResponseModel = AttendanceEmployeeResponseModel().obs;
   Map<String, double> pieChartData = {'': 2};
 
-  final selectedDropdownYear = years.first.obs;
-  final selectedDropdownMonth = monthsList.first.obs;
-  final selectedDropdownDay = daysDummyList.first.obs;
+  final selectedDropdownYear = years[0].obs;
+  final selectedDropdownMonth = monthsList[DateTime.now().month - 1].obs;
+  final selectedDropdownDay = Rxn<String>();
+  List<String> dateList = [];
 
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
 
@@ -76,10 +77,15 @@ class ReportsController extends GetxController
 
   fetchPayslip() async {
     showLoading();
+    final map = {
+      'year': selectedDropdownYear.value,
+      'month': (monthsList.indexOf(selectedDropdownMonth.value) + 1).toString()
+    };
+
     Get.find<BaseClient>().onError = fetchPayslip;
     var responseString = await Get.find<BaseClient>()
-        .post(
-            ApiEndPoints.payslip, null, Get.find<LoginController>().getHeader())
+        .post(ApiEndPoints.payslip, jsonEncode(map),
+            Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
@@ -88,6 +94,10 @@ class ReportsController extends GetxController
       payslipResponseModel.value = payslipResponseModelFromJson(responseString);
       payslipResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
+      for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
+        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.endDate!));
+      }
+      selectedDropdownDay.value = dateList.first;
     }
   }
 
@@ -115,7 +125,7 @@ class ReportsController extends GetxController
     }
   }
 
-  fetchFileTypeListAndFetchFiles() async {
+  fetchFileTypeListAndFetchFiles([int? employeeId]) async {
     showLoading();
     if (filesTypeListModel.value.message.isEmpty) {
       Get.find<BaseClient>().onError = fetchFileTypeListAndFetchFiles;
@@ -127,36 +137,36 @@ class ReportsController extends GetxController
         return;
       } else {
         filesTypeListModel.value = filesTypeListModelFromJson(responseString);
-        fetchFiles(filesTypeListModel.value);
+        fetchFiles(filesTypeListModel.value, employeeId);
       }
     } else {
-      fetchFiles(filesTypeListModel.value);
+      fetchFiles(filesTypeListModel.value, employeeId);
     }
   }
 
-  fetchFiles(FilesTypeListModel fileTypes) async {
-    if (fileListResponseModel.value.message.isEmpty) {
-      Get.find<BaseClient>().onError = () {
-        fetchFiles(fileTypes);
-      };
-      var requestModel = {
-        'status': '0',
-        'employee_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
-      };
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      hideLoading();
-      if (responseString == null) {
-        return;
-      } else {
-        fileListResponseModel.value =
-            employeeFilesListModelFromJson(responseString);
-        fileListResponseModel.refresh();
-        Get.find<BaseClient>().onError = null;
-      }
+  fetchFiles(FilesTypeListModel fileTypes, [int? employeeId]) async {
+    Get.find<BaseClient>().onError = () {
+      fetchFiles(fileTypes);
+    };
+    var requestModel = {
+      'status': '0',
+      //0 employee, 1 for HR
+
+      'employee_id':
+          employeeId == null?'${Get.find<LoginController>().loginResponseModel?.employee?.id}':employeeId.toString()
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      fileListResponseModel.value =
+          employeeFilesListModelFromJson(responseString);
+      fileListResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
     }
   }
 
@@ -275,7 +285,7 @@ class ReportsController extends GetxController
         savedDir: await DownloadPath().getDownloadPath(),
         showNotification: true,
         openFileFromNotification: false,
-        // fileName: 'payslip.pdf',
+        // fileName: 'paytym_doc_.pdf',
       );
     }
   }
@@ -333,6 +343,7 @@ class ReportsController extends GetxController
       //download completed
       if (status == DownloadTaskStatus.complete) {
         //Download completed from Share button
+        print('Download completed from Share button');
         if (isSharingOrDownloading.value == SharingOrDownloading.sharing) {
           Share.shareXFiles([XFile(sharePath)]);
           sharePath = '';

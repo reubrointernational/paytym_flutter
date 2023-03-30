@@ -16,27 +16,27 @@ class LeaveAcceptDeclineRequestModel {
   LeaveAcceptDeclineRequestModel({
     this.employeeId,
     this.approvalStatus,
-    this.startDate,
+    this.leaveRequestId,
     this.reason,
   });
 
   String? employeeId;
   String? approvalStatus;
-  String? startDate;
+  String? leaveRequestId;
   String? reason;
 
   factory LeaveAcceptDeclineRequestModel.fromJson(Map<String, dynamic> json) =>
       LeaveAcceptDeclineRequestModel(
         employeeId: json["employee_id"],
         approvalStatus: json["approval_status"],
-        startDate: json["start_date"],
+        leaveRequestId: json["leave_request_id"],
         reason: json["reason"],
       );
 
   Map<String, dynamic> toJson() => {
         "employee_id": employeeId,
         "approval_status": approvalStatus,
-        "start_date": startDate,
+        "leave_request_id": leaveRequestId,
         "reason": reason,
       };
 }

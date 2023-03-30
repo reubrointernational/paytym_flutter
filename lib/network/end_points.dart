@@ -1,7 +1,8 @@
 const kBaseUrl = 'http://52.40.210.26:2000/api';
 // const kStorageUrl = 'https://paytym.net/storage/';
-const kStorageUrl = 'http://52.40.210.26:2000/storage/';
+// const kStorageUrl = 'http://52.40.210.26:2000/storage/';
 // const kBaseUrl = 'https://paytym.net/api';
+const kStorageUrl = 'http://192.168.1.13:8000/storage/';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
 const kDomainUrl = 'paytym.net';
 
@@ -22,7 +23,7 @@ class ApiEndPoints {
   static const deductions = '$kBaseUrl/deductions';
   static const employeeAttendance = '$kBaseUrl/attendance';
   static const meetings = '$kBaseUrl/meetings';
-  static const getChat = '$kBaseUrl/get-chat';
+  static const getChat = '$kBaseUrl/chat_group_detais';
   static const sendChat = '$kBaseUrl/send-chat';
   static const quitCompany = '$kBaseUrl/quit_company';
   static const events = '$kBaseUrl/events_list';

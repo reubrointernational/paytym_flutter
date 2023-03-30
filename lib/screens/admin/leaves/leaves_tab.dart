@@ -11,62 +11,41 @@ class LeavesTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      leave != leaveTabListAdmin[2]
-          ? Get.find<LeavesControllerAdmin>().fetchLeaveData(0)
-          : Get.find<LeavesControllerAdmin>().fetchLeaveData(1);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<LeavesControllerAdmin>().fetchLeaveData(1);
     });
-    return leave != leaveTabListAdmin[2]
-        ? Obx(
-            () {
-              List<LeaveRequest>? allLeaves;
-              if (leave == leaveTabListAdmin[0]) {
-                allLeaves = Get.find<LeavesControllerAdmin>()
-                    .getFilteredLeavesList()!
-                    .where((element) => Get.find<LeavesControllerAdmin>()
-                        .isToday(element.createdAt ?? DateTime.now()))
-                    .toList();
-              } else if (leave == leaveTabListAdmin[1]) {
-                allLeaves = Get.find<LeavesControllerAdmin>()
-                    .getFilteredLeavesList()!
-                    .where((element) => Get.find<LeavesControllerAdmin>()
-                        .isYesterday(element.createdAt ?? DateTime.now()))
-                    .toList();
-              } else {
-                allLeaves = Get.find<LeavesControllerAdmin>().getFilteredLeavesList();
-              }
+    return Obx(
+      () {
+        List<LeaveRequest>? allLeaves;
+        if (leave == leaveTabListAdmin[0]) {
+          allLeaves = Get.find<LeavesControllerAdmin>()
+              .getFilteredLeavesList()!
+              .where((element) => Get.find<LeavesControllerAdmin>()
+                  .isToday(element.createdAt ?? DateTime.now()))
+              .toList();
+        } else if (leave == leaveTabListAdmin[1]) {
+          allLeaves = Get.find<LeavesControllerAdmin>()
+              .getFilteredLeavesList()!
+              .where((element) => Get.find<LeavesControllerAdmin>()
+                  .isYesterday(element.createdAt ?? DateTime.now()))
+              .toList();
+        } else {
+          allLeaves = Get.find<LeavesControllerAdmin>().getFilteredLeavesList();
+        }
 
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: allLeaves?.length,
-                itemBuilder: (context, index) {
-                  final leave = allLeaves?[index];
+        return ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: allLeaves?.length,
+          itemBuilder: (context, index) {
+            final leave = allLeaves?[index];
 
-                  return LeavesCardAdmin(
-                    leave: leave,
-                    index: index,
-                  );
-                },
-              );
-            },
-          )
-        : Obx(
-            () {
-              List<LeaveRequest>? allLeaves = Get.find<LeavesControllerAdmin>().getFilteredLeavesList();
-
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: allLeaves!.length,
-                itemBuilder: (context, index) {
-                  final leave = allLeaves[index];
-
-                  return LeavesCardAdmin(
-                    leave: leave,
-                    index: index,
-                  );
-                },
-              );
-            },
-          );
+            return LeavesCardAdmin(
+              leave: leave,
+              index: index,
+            );
+          },
+        );
+      },
+    );
   }
 }

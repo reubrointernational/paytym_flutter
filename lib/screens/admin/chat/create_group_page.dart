@@ -20,7 +20,6 @@ class CreateGroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ReportsControllerAdmin());
-    
     var memberList = Get.find<DashboardControllerAdmin>()
         .employeeList
         .value
@@ -33,6 +32,7 @@ class CreateGroupPage extends StatelessWidget {
                 .employeeList
                 ?.indexOf(element)))
         .toList();
+    Get.find<ChatControllerAdmin>().members = memberList;
     return CustomAdminScaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.find<ChatControllerAdmin>().createChatGroup(),
@@ -49,11 +49,11 @@ class CreateGroupPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SizedBox(
-              height: (memberList?.isEmpty??true) ? 0 : 60,
+              height: (memberList?.isEmpty ?? true) ? 0 : 60,
               width: double.infinity,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: memberList?.length??0,
+                itemCount: memberList?.length ?? 0,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 10),

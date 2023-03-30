@@ -12,6 +12,7 @@ import 'package:paytym/screens/employee/reports/widgets/cached_image.dart';
 import 'package:paytym/screens/employee/reports/widgets/pdf_viewer.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../network/end_points.dart';
 import '../widgets/year_dropdown.dart';
 
 class PayslipTab extends StatelessWidget {
@@ -20,7 +21,9 @@ class PayslipTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ReportsController reportsController = Get.put(ReportsController());
-    reportsController.selectedDropdownYear.value = years.first;
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => reportsController.fetchPayslip());
+
     return Column(
       children: [
         Row(
@@ -32,8 +35,9 @@ class PayslipTab extends StatelessWidget {
                 value: reportsController.selectedDropdownYear.value,
                 onChanged: (value) {
                   reportsController.selectedDropdownYear.value = value!;
+                  reportsController.fetchPayslip();
                 },
-                hint: '2022 ',
+                hint: '2023 ',
               );
             }),
             Obx(() {
@@ -42,13 +46,19 @@ class PayslipTab extends StatelessWidget {
                 value: reportsController.selectedDropdownMonth.value,
                 onChanged: (value) {
                   reportsController.selectedDropdownMonth.value = value!;
+                  reportsController.fetchPayslip();
                 },
                 hint: 'Jan ',
               );
             }),
             Obx(() {
+              if (reportsController.selectedDropdownDay.value == null) {
+                return const SizedBox(
+                  width: 50,
+                );
+              }
               return CustomDropdownYearButton(
-                lists: daysDummyList,
+                lists: reportsController.dateList,
                 value: reportsController.selectedDropdownDay.value,
                 onChanged: (value) {
                   reportsController.selectedDropdownDay.value = value!;
@@ -74,11 +84,18 @@ class PayslipTab extends StatelessWidget {
       children: [
         Expanded(
           child: Obx(() {
-            url = Get.find<ReportsController>()
-                .payslipResponseModel
-                .value
-                .payroll
-                ?.paySlip;
+            if (Get.find<ReportsController>()
+                    .payslipResponseModel
+                    .value
+                    .payroll
+                    ?.isNotEmpty ??
+                false) {
+              url =
+                  '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
+            } else {
+              return const SizedBox();
+            }
+
             if (url?.getType() == 'pdf') {
               return PdfViewer(
                 url: url!,

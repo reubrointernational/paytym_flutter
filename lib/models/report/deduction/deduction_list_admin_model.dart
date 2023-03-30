@@ -15,11 +15,13 @@ class DeductionListAdminModel {
     this.message,
     this.deductions,
     this.deductionsTypes,
+    this.paymentAdvance,
   });
 
   String? message;
   List<PurpleDeduction>? deductions;
   List<DeductionsTypeElement>? deductionsTypes;
+  List<PaymentAdvance>? paymentAdvance;
 
   factory DeductionListAdminModel.fromJson(Map<String, dynamic> json) =>
       DeductionListAdminModel(
@@ -32,6 +34,10 @@ class DeductionListAdminModel {
             ? []
             : List<DeductionsTypeElement>.from(json["deductions types"]!
                 .map((x) => DeductionsTypeElement.fromJson(x))),
+        paymentAdvance: json["payment advance"] == null
+            ? []
+            : List<PaymentAdvance>.from(json["payment advance"]!
+                .map((x) => PaymentAdvance.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,6 +48,9 @@ class DeductionListAdminModel {
         "deductions types": deductionsTypes == null
             ? []
             : List<dynamic>.from(deductionsTypes!.map((x) => x.toJson())),
+        "payment advance": paymentAdvance == null
+            ? []
+            : List<dynamic>.from(paymentAdvance!.map((x) => x.toJson())),
       };
 }
 
@@ -80,6 +89,7 @@ class PurpleDeduction {
         "first_name": firstName,
         "last_name": lastName,
         "branch_id": branchId,
+        "department_id": departmentId,
         "assign_deduction": assignDeduction == null
             ? []
             : List<dynamic>.from(assignDeduction!.map((x) => x.toJson())),
@@ -163,5 +173,72 @@ class DeductionsTypeElement {
         "name": name,
         "description": description,
         "employer_id": employerId,
+      };
+}
+
+class PaymentAdvance {
+  PaymentAdvance({
+    this.id,
+    this.userId,
+    this.employerId,
+    this.advanceAmount,
+    this.paidAmount,
+    this.remainingAmount,
+    this.requestedDate,
+    this.dateApproved,
+    this.status,
+    this.description,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? userId;
+  int? employerId;
+  String? advanceAmount;
+  dynamic paidAmount;
+  dynamic remainingAmount;
+  DateTime? requestedDate;
+  dynamic dateApproved;
+  String? status;
+  String? description;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory PaymentAdvance.fromJson(Map<String, dynamic> json) => PaymentAdvance(
+        id: json["id"],
+        userId: json["user_id"],
+        employerId: json["employer_id"],
+        advanceAmount: json["advance_amount"],
+        paidAmount: json["paid_amount"],
+        remainingAmount: json["remaining_amount"],
+        requestedDate: json["requested_date"] == null
+            ? null
+            : DateTime.parse(json["requested_date"]),
+        dateApproved: json["date_approved"],
+        status: json["status"],
+        description: json["description"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "employer_id": employerId,
+        "advance_amount": advanceAmount,
+        "paid_amount": paidAmount,
+        "remaining_amount": remainingAmount,
+        "requested_date":
+            "${requestedDate!.year.toString().padLeft(4, '0')}-${requestedDate!.month.toString().padLeft(2, '0')}-${requestedDate!.day.toString().padLeft(2, '0')}",
+        "date_approved": dateApproved,
+        "status": status,
+        "description": description,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

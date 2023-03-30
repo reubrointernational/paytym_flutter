@@ -20,11 +20,11 @@ import '../widgets/reason_bottomsheet.dart';
 import '../../../models/leaves/leave_type_model.dart' as leave_type;
 import 'leaves_filter_controller.dart';
 
-class LeavesControllerAdmin extends GetxController with BaseController, LeavesFilterController {
+class LeavesControllerAdmin extends GetxController
+    with BaseController, LeavesFilterController {
   final leaveAdminResponseModel =
       LeavesListAdminModel(message: '', leaveRequest: []).obs;
-  final leaveAdminResponseModelPending =
-      LeavesListAdminModel(message: '', leaveRequest: []).obs;
+
   final searchKeyword = ''.obs;
 
   final formKey = GlobalKey<FormState>();
@@ -144,11 +144,8 @@ class LeavesControllerAdmin extends GetxController with BaseController, LeavesFi
     if (responseString == null) {
       return;
     } else {
-      status == 1
-          ? leaveAdminResponseModel.value =
-              leavesListAdminModelFromJson(responseString)
-          : leaveAdminResponseModelPending.value =
-              leavesListAdminModelFromJson(responseString);
+      leaveAdminResponseModel.value =
+          leavesListAdminModelFromJson(responseString);
 
       Get.find<BaseClient>().onError = null;
     }
@@ -160,7 +157,7 @@ class LeavesControllerAdmin extends GetxController with BaseController, LeavesFi
         reason: acceptRejectReason,
         employeeId: selectedLeaveRequest.userId.toString(),
         approvalStatus: reasonButton == ReasonButton.leaveApprove ? '0' : '1',
-        startDate: selectedLeaveRequest.startDate!);
+        leaveRequestId: selectedLeaveRequest.id.toString());
 
     var responseString = await Get.find<BaseClient>()
         .post(
@@ -174,6 +171,9 @@ class LeavesControllerAdmin extends GetxController with BaseController, LeavesFi
       hideLoading();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+      Get.back();
+      leaveAdminResponseModel.value.leaveRequest?.remove(selectedLeaveRequest);
+      leaveAdminResponseModel.refresh();
     }
     selectedLeaveRequest = LeaveRequest();
   }

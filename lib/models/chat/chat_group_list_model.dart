@@ -12,52 +12,100 @@ String chatListGroupModelToJson(ChatListGroupModel data) =>
 
 class ChatListGroupModel {
   ChatListGroupModel({
-    required this.message,
-    required this.chats,
+    this.message,
+    this.chats,
   });
 
-  String message;
-  List<Chat> chats;
+  String? message;
+  List<Chat>? chats;
 
   factory ChatListGroupModel.fromJson(Map<String, dynamic> json) =>
       ChatListGroupModel(
         message: json["message"],
-        chats: List<Chat>.from(json["chats"].map((x) => Chat.fromJson(x))),
+        chats: json["chats"] == null
+            ? []
+            : List<Chat>.from(json["chats"]!.map((x) => Chat.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "chats": List<dynamic>.from(chats.map((x) => x.toJson())),
+        "chats": chats == null
+            ? []
+            : List<dynamic>.from(chats!.map((x) => x.toJson())),
       };
 }
 
 class Chat {
   Chat({
-    required this.id,
-    required this.employerId,
-    required this.adminId,
-    required this.profilePic,
-    required this.groupName,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.groupChatId,
+    this.memberId,
+    this.createdAt,
+    this.updatedAt,
+    this.group,
   });
 
-  int id;
-  int employerId;
-  int adminId;
-  String profilePic;
-  String groupName;
-  DateTime createdAt;
-  DateTime updatedAt;
+  int? id;
+  int? groupChatId;
+  int? memberId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  Group? group;
 
   factory Chat.fromJson(Map<String, dynamic> json) => Chat(
+        id: json["id"],
+        groupChatId: json["group_chat_id"],
+        memberId: json["member_id"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        group: json["group"] == null ? null : Group.fromJson(json["group"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "group_chat_id": groupChatId,
+        "member_id": memberId,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "group": group?.toJson(),
+      };
+}
+
+class Group {
+  Group({
+    this.id,
+    this.employerId,
+    this.adminId,
+    this.profilePic,
+    this.groupName,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? employerId;
+  int? adminId;
+  String? profilePic;
+  String? groupName;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory Group.fromJson(Map<String, dynamic> json) => Group(
         id: json["id"],
         employerId: json["employer_id"],
         adminId: json["admin_id"],
         profilePic: json["profile_pic"],
         groupName: json["group_name"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,7 +114,7 @@ class Chat {
         "admin_id": adminId,
         "profile_pic": profilePic,
         "group_name": groupName,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

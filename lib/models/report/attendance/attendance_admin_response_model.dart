@@ -74,7 +74,7 @@ class History {
   DateTime? checkIn;
   DateTime? checkOut;
   String? status;
-  dynamic approveReject;
+  String? approveReject;
   dynamic reason;
   DateTime? date;
   DateTime? createdAt;

@@ -12,21 +12,25 @@ String chatRequestModelToJson(ChatRequestModel data) =>
 
 class ChatRequestModel {
   ChatRequestModel({
-    this.message,
-    this.employerId,
+    required this.message,
+    required this.employerId,
+    required this.groupChatId,
   });
 
-  String? message;
-  int? employerId;
+  String message;
+  String employerId;
+  String groupChatId;
 
   factory ChatRequestModel.fromJson(Map<String, dynamic> json) =>
       ChatRequestModel(
         message: json["message"],
         employerId: json["employer_id"],
+        groupChatId: json["group_chat_id"],
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
         "employer_id": employerId,
+        "group_chat_id": groupChatId,
       };
 }

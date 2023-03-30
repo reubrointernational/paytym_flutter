@@ -302,7 +302,7 @@ List<Map<String, dynamic>> payrollList = [
   },
 ];
 
-List<String> years = ['2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+List<String> years = ['2023','2022', '2021', '2020', '2019'];
 
 List<String> monthsList = [
   'Jan',
@@ -319,12 +319,7 @@ List<String> monthsList = [
   'Dec'
 ];
 
-List<String> daysDummyList = [
-  '08-02-2023',
-  '09-02-2023',
-  '10-02-2023',
-  '11-02-2023'
-];
+
 
 List<String> branchesDummyData = [
   'Branches 1',

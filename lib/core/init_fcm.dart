@@ -22,13 +22,11 @@ Future<void> initFcm() async {
   });
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
-
-    if (message.notification != null) {
-      print(
-          'Message also contained a notification: ${message.notification?.title}');
-    }
+    print("FCM foreground message");
+    print('id = ${message.messageId}');
+    print('data = ${message.data.toString()}');
+    print('notification body = ${message.notification?.body}');
+    print('notification title = ${message.notification?.title}');
   });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -36,5 +34,9 @@ Future<void> initFcm() async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
+  print("FCM background message");
+  print('id = ${message.messageId}');
+  print('data = ${message.data.toString()}');
+  print('notification body = ${message.notification?.body}');
+  print('notification title = ${message.notification?.title}');
 }

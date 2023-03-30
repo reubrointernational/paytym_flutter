@@ -41,41 +41,45 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Obx(() {
-                    return CustomTimePicker(
-                      title: "Check in time:",
-                      hintText: 'Check In',
-                      label: Get.find<ReportsControllerAdmin>()
-                          .editAttendanceCheckInTime
-                          .value,
-                      onTap: (() async {
-                        TimeOfDay? selectedTime = await showTimePicker(
-                            context: context, initialTime: TimeOfDay.now());
-                        print(selectedTime!.format(context));
-                        Get.find<ReportsControllerAdmin>()
+                  Expanded(
+                    child: Obx(() {
+                      return CustomTimePicker(
+                        title: "Check in time:",
+                        hintText: 'Check In',
+                        label: Get.find<ReportsControllerAdmin>()
                             .editAttendanceCheckInTime
-                            .value = selectedTime.format(context).toString();
-                      }),
-                    );
-                  }),
+                            .value,
+                        onTap: (() async {
+                          TimeOfDay? selectedTime = await showTimePicker(
+                              context: context, initialTime: TimeOfDay.now());
+                          print(selectedTime!.format(context));
+                          Get.find<ReportsControllerAdmin>()
+                              .editAttendanceCheckInTime
+                              .value = selectedTime.format(context).toString();
+                        }),
+                      );
+                    }),
+                  ),
                   kSizedBoxH4,
-                  Obx(() {
-                    return CustomTimePicker(
-                      title: "Check out time:",
-                      hintText: 'Check Out',
-                      label: Get.find<ReportsControllerAdmin>()
-                          .editAttendanceCheckOutTime
-                          .value,
-                      onTap: (() async {
-                        TimeOfDay? selectedTime = await showTimePicker(
-                            context: context, initialTime: TimeOfDay.now());
-                        print(selectedTime!.format(context).toString());
-                        Get.find<ReportsControllerAdmin>()
+                  Expanded(
+                    child: Obx(() {
+                      return CustomTimePicker(
+                        title: "Check out time:",
+                        hintText: 'Check Out',
+                        label: Get.find<ReportsControllerAdmin>()
                             .editAttendanceCheckOutTime
-                            .value = selectedTime.format(context).toString();
-                      }),
-                    );
-                  }),
+                            .value,
+                        onTap: (() async {
+                          TimeOfDay? selectedTime = await showTimePicker(
+                              context: context, initialTime: TimeOfDay.now());
+                          print(selectedTime!.format(context).toString());
+                          Get.find<ReportsControllerAdmin>()
+                              .editAttendanceCheckOutTime
+                              .value = selectedTime.format(context).toString();
+                        }),
+                      );
+                    }),
+                  ),
                 ],
               ),
             ),

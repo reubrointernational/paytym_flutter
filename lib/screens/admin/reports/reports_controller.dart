@@ -35,6 +35,7 @@ import '../../../models/report/projects/project_details_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../employee/dashboard/dashboard_controller.dart';
+import '../../employee/reports/reports_controller.dart';
 import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
@@ -58,6 +59,7 @@ class ReportsControllerAdmin extends GetxController
     percentage: '',
     description: '',
   );
+  int? selectedEmployeeId = 0;
 
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
@@ -314,15 +316,10 @@ class ReportsControllerAdmin extends GetxController
               .toString() ??
           '',
       fileTypeId: fileNameDropdownIndex.value.toString(),
-      userId: Get.find<LoginController>()
-              .loginResponseModel
-              ?.employee
-              ?.id
-              .toString() ??
-          '',
+      userId: selectedEmployeeId.toString(),
+      //0 for upload and 1 for delete
       status: '0',
-      id: '4',
-      //todo change id
+      id: '',
     );
     request.fields.addAll(fileUploadRequestModel.toJson());
     request.headers.addAll(Get.find<LoginController>().getHeader()!);
@@ -330,9 +327,39 @@ class ReportsControllerAdmin extends GetxController
         await http.MultipartFile.fromPath('file', filePath.value);
     request.files.add(multipartFile);
     var streamResponse = await request.send();
-    var response = await http.Response.fromStream(streamResponse);
+    await http.Response.fromStream(streamResponse);
+    fileNameDropdownIndex.value = 0;
+    filePath.value = '';
     hideLoading();
     DialogHelper.showToast(desc: 'File uploaded');
+  }
+
+  deleteFiles(int id) async {
+    showLoading();
+    Map<String, dynamic> map = {
+      'id': id.toString(),
+      'status': '1',
+    };
+
+    Get.find<BaseClient>().onError = fetchFileTypeList;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.uploadFiles, jsonEncode(map),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      DialogHelper.showToast(desc: 'File deleted');
+      Get.find<BaseClient>().onError = null;
+      Get.find<ReportsController>().fileListResponseModel.value.files.remove(
+          Get.find<ReportsController>()
+              .fileListResponseModel
+              .value
+              .files
+              .firstWhere((element) => element.id == id));
+      Get.find<ReportsController>().fileListResponseModel.refresh();
+    }
   }
 
   fetchProjects() async {
@@ -492,6 +519,7 @@ class ReportsControllerAdmin extends GetxController
           TextEditingController();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+      getOvertime();
     }
   }
 
@@ -514,6 +542,26 @@ class ReportsControllerAdmin extends GetxController
           deductionListAdminModelFromJson(responseString);
       deductionResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
+
+      for (PaymentAdvance advance
+          in deductionResponseModel.value.paymentAdvance ?? []) {
+        deductionResponseModel.value.deductions
+            ?.firstWhere(
+                (PurpleDeduction element) =>
+                    element.assignDeduction?.first.userId.toString() ==
+                    advance.userId.toString(), orElse: () {
+              return PurpleDeduction();
+              //   PurpleDeduction purpleDeduction = PurpleDeduction(firstName: advance.,lastName: , branchId: , departmentId: );
+              //  deductionResponseModel.value.deductions?.add(purpleDeduction);
+              //  return deductionResponseModel.value.deductions![deductionResponseModel.value.deductions!.length-1];
+            })
+            .assignDeduction
+            ?.add(AssignDeduction(
+                employerId: advance.employerId,
+                userId: advance.userId,
+                rate: int.parse(advance.advanceAmount ?? '0'),
+                deduction: DeductionsTypeElement(name: 'Advance')));
+      }
     }
   }
 
@@ -596,12 +644,14 @@ class ReportsControllerAdmin extends GetxController
                 .value.history?[selectedItemIndex].userId
                 .toString() ??
             '',
-        reason: 'ddd',
+        reason: '',
+        //0 for decline, 1 for approve
         approvalStatus:
-            reasonButton == ReasonButton.attendanceApprove ? '0' : '1',
-        startDate: DateFormat('yyyy-MM-dd').format(
-            attendanceResponseModel.value.history?[selectedItemIndex].date ??
-                DateTime(0, 0, 0)));
+            reasonButton == ReasonButton.attendanceApprove ? '1' : '0',
+        attendanceId: attendanceResponseModel
+            .value.history![selectedItemIndex].id!
+            .toString());
+
     var responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.attendanceAcceptReject,
@@ -612,6 +662,12 @@ class ReportsControllerAdmin extends GetxController
       return;
     } else {
       hideLoading();
+      attendanceResponseModel.value.history?[selectedItemIndex].approveReject =
+          reasonButton == ReasonButton.attendanceApprove ? '1' : '0';
+      if (reasonButton != ReasonButton.attendanceApprove) {
+        Get.back();
+      }
+      attendanceResponseModel.refresh();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
@@ -645,13 +701,28 @@ class ReportsControllerAdmin extends GetxController
 
   updateAttendance() async {
     showLoading();
-    AttendanceEditRequestModel attendanceEditRequestModel =
-        AttendanceEditRequestModel(
-            employeeId: "5",
-            date: selectedDate.value,
-            checkIn: editAttendanceCheckInTime.value,
-            checkOut: editAttendanceCheckOutTime.value,
-            reason: editAttendanceReason.value);
+    // 2023-03-29 17:59:15.000000 = in
+    // 2024-11-14 06:17:38.000000 = out
+    String checkInReceived = attendanceResponseModel
+        .value.history![selectedItemIndex].checkIn
+        .toString()
+        .split(' ')
+        .first;
+    String checkOutReceived = attendanceResponseModel
+        .value.history![selectedItemIndex].checkOut
+        .toString()
+        .split(' ')
+        .first;
+
+    AttendanceEditRequestModel attendanceEditRequestModel = AttendanceEditRequestModel(
+        attendanceId: attendanceResponseModel
+            .value.history![selectedItemIndex].id!
+            .toString(),
+        checkIn:
+            '$checkInReceived ${DateFormat("HH:mm").format(DateFormat("hh:mm aa").parse(editAttendanceCheckInTime.value))}',
+        checkOut:
+            '$checkInReceived ${DateFormat("HH:mm").format(DateFormat("hh:mm aa").parse(editAttendanceCheckOutTime.value))}',
+        reason: editAttendanceReason.value);
 
     var responseString = await Get.find<BaseClient>()
         .post(
@@ -661,6 +732,20 @@ class ReportsControllerAdmin extends GetxController
         )
         .catchError(handleError);
     hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      attendanceResponseModel.value.history?[selectedItemIndex].approveReject =
+          '1';
+
+      Get.back();
+
+      attendanceResponseModel.refresh();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+      if (Get.isDialogOpen ?? false) Get.back();
+      Get.find<BaseClient>().onError = null;
+    }
   }
 
   String formatNumber(String value) {
@@ -718,12 +803,6 @@ class ReportsControllerAdmin extends GetxController
 
   String? notEmptyValidator(String value) {
     return (value.isEmpty) ? 'Value cannot be empty' : null;
-  }
-
-  void requestPayment() {
-    requestAdvanceModel = RequestAdvanceModel(
-        amount: payslipResponseModel.value.payroll?.salary ?? '0');
-    requestAdvanceOrSalary(true);
   }
 
   String? descriptionValidator(String value) {

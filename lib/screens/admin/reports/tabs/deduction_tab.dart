@@ -19,8 +19,7 @@ class DeductionTabAdmin extends StatelessWidget {
       Get.find<ReportsControllerAdmin>().getDeduction();
       Get.find<DashboardControllerAdmin>().clearFilter();
     });
-    List<PurpleDeduction>? deductionDetails =
-        Get.find<ReportsControllerAdmin>().getFilteredDeductionList();
+
     return Column(
       children: [
         // SizedBox(
@@ -91,11 +90,11 @@ class DeductionTabAdmin extends StatelessWidget {
         kSizedBoxH10,
         Expanded(
           child: Obx(() {
+            List<PurpleDeduction>? deductionDetails =
+                Get.find<ReportsControllerAdmin>().getFilteredDeductionList();
             return ListView.separated(
               physics: const BouncingScrollPhysics(),
-              itemCount: deductionDetails
-                      ?.length ??
-                  0,
+              itemCount: deductionDetails?.length ?? 0,
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
@@ -141,9 +140,8 @@ class DeductionTabAdmin extends StatelessWidget {
                           // ),
                           kSizedBoxH6,
                           for (AssignDeduction deduction
-                              in deductionDetails?[index]
-                                      .assignDeduction ??
-                                  [])
+                              in deductionDetails?[index].assignDeduction ?? [])
+                              
                             Padding(
                               padding: const EdgeInsets.only(bottom: 6),
                               child: Row(
@@ -155,7 +153,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                     style: kTextStyleS12W600CcustomGrey,
                                   ),
                                   Text(
-                                    deduction.rate.toString(),
+                                    '\$${deduction.rate.toString()}',
                                     style: kTextStyleS12W600CcustomGrey,
                                   ),
                                 ],
@@ -206,7 +204,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                             []) {
                                       amount += deduction.rate ?? 0;
                                     }
-                                    return amount.toString();
+                                    return '\$${amount.toString()}';
                                   }(),
                                   style: kTextStyleS13W600Cblue.copyWith(
                                       color: Colors.lightBlue),

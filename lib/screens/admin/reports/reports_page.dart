@@ -21,6 +21,7 @@ class ReportsPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reportsController = Get.put(ReportsControllerAdmin());
+    
     final reportsTabListAdmin = reportsController.fillReportTab();
 
     return CustomAdminScaffoldWithTabBar(

@@ -104,19 +104,20 @@ class ProjectsTabAdmin extends StatelessWidget {
                                                       .employeeproject
                                                       ?.length ??
                                                   0,
-                                              (index) => Positioned(
+                                              (projectIndex) => Positioned(
                                                 left: 20 * (index + 0),
                                                 child: CircleAvatar(
                                                   radius: 19,
-                                                  backgroundColor: index == 2
-                                                      ? Colors.grey.shade300
-                                                      : Colors.white,
+                                                  backgroundColor:
+                                                      projectIndex == 2
+                                                          ? Colors.grey.shade300
+                                                          : Colors.white,
                                                   child: Stack(
                                                     alignment: Alignment.center,
                                                     children: [
                                                       CircleAvatar(
                                                         backgroundColor:
-                                                            index == 2
+                                                            projectIndex == 2
                                                                 ? Colors.white
                                                                 : Colors.grey
                                                                     .shade300,
@@ -127,10 +128,10 @@ class ProjectsTabAdmin extends StatelessWidget {
                                                             ? const NetworkImage(
                                                                 '')
                                                             : NetworkImage(
-                                                                '$kStorageUrl${projects[index].employeeproject![index].user.image}'),
+                                                                '$kStorageUrl${projects[index].employeeproject![projectIndex].user.image}'),
                                                         radius: 18,
                                                       ),
-                                                      index == 2
+                                                      projectIndex == 2
                                                           ? Text(
                                                               '${projects[index].employeeproject!.length}',
                                                               style: const TextStyle(
@@ -274,6 +275,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
                             "Total Cost: \$ ${projects[index].budget}",
+                            textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: CustomColors.grey156x3TextColor,
                               fontWeight: FontWeight.bold,
@@ -282,21 +284,21 @@ class ProjectsTabAdmin extends StatelessWidget {
                           ),
                         ),
                       ),
-                      kSizedBoxH12,
-                      const Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            "Spent: \$ 5,500",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              color: CustomColors.grey156x3TextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // kSizedBoxH12,
+                      // const Expanded(
+                      //   child: Padding(
+                      //     padding: EdgeInsets.symmetric(horizontal: 8),
+                      //     child: Text(
+                      //       "Spent: \$ 5,500",
+                      //       textAlign: TextAlign.right,
+                      //       style: TextStyle(
+                      //         color: CustomColors.grey156x3TextColor,
+                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: 16,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   kSizedBoxH12,

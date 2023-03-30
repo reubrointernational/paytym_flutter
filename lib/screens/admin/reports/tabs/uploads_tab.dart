@@ -12,7 +12,8 @@ class UploadsTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_)=> Get.find<DashboardControllerAdmin>().clearFilter());
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Get.find<DashboardControllerAdmin>().clearFilter());
     return Obx(() {
       List<EmployeeList>? chatList =
           Get.find<DashboardControllerAdmin>().getFilteredEmployeeList();
@@ -20,7 +21,10 @@ class UploadsTabAdmin extends StatelessWidget {
         itemCount: chatList?.length ?? 0,
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () => Get.toNamed(Routes.uploadFilesPage),
+            onTap: () {
+             Get.find<ReportsControllerAdmin>().selectedEmployeeId = chatList?[index].id;
+              Get.toNamed(Routes.uploadFilesPage);
+            },
             child: Container(
               margin: const EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(

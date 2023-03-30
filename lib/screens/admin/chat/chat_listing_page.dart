@@ -19,10 +19,9 @@ class ChatListingPageAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ChatController());
+    final chatController = Get.put(ChatController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Get.find().fetchChatGroupList(1);
-      //1 for admin
+      chatController.fetchChatGroupList();
     });
     return Scaffold(
       backgroundColor: CustomColors.lightBlueColor,
@@ -85,18 +84,19 @@ class ChatListingPageAdmin extends StatelessWidget {
                         .chatGrouplist
                         .value
                         .chats
-                        .reversed
+                        ?.reversed
                         .toList()
-                        .where((element) => element.groupName
-                            .toLowerCase()
-                            .contains(Get.find<ChatController>()
-                                .searchKeyword
-                                .value
-                                .toLowerCase()))
+                        .where((element) =>
+                            element.group?.groupName?.toLowerCase().contains(
+                                Get.find<ChatController>()
+                                    .searchKeyword
+                                    .value
+                                    .toLowerCase()) ??
+                            false)
                         .toList();
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: chat.length,
+                      itemCount: chat?.length ?? 0,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
@@ -121,7 +121,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                                       radius: 25,
                                       backgroundColor: Colors.pink.shade200,
                                       backgroundImage: NetworkImage(
-                                          '$kStorageUrl${chat[index].profilePic}'),
+                                          '$kStorageUrl${chat?[index].group?.profilePic ?? ''}'),
                                     ),
                                     const Positioned(
                                       right: 2,
@@ -146,7 +146,7 @@ class ChatListingPageAdmin extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            chat[index].groupName,
+                                            chat?[index].group?.groupName ?? '',
                                             style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.black,
@@ -157,11 +157,12 @@ class ChatListingPageAdmin extends StatelessWidget {
                                             DateFormat('dd/MM/yyyy').format(
                                                 DateTime.parse(
                                                     Get.find<ChatController>()
-                                                        .chatGrouplist
-                                                        .value
-                                                        .chats[index]
-                                                        .createdAt
-                                                        .toString())),
+                                                            .chatGrouplist
+                                                            .value
+                                                            .chats?[index]
+                                                            .createdAt
+                                                            .toString() ??
+                                                        '')),
                                             style: const TextStyle(
                                               fontSize: 13,
                                               color: CustomColors.greyIconColor,

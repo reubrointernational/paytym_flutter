@@ -19,13 +19,17 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ChatController());
     final controller = Get.find<ChatController>();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => controller.fetchChat(),
+    );
 
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.black,
         elevation: 0,
-        title: Text(controller
-            .chatGrouplist.value.chats[controller.selectedItemIndex].groupName),
+        title: Text(controller.chatGrouplist.value
+                .chats?[controller.selectedItemIndex].group?.groupName ??
+            'Chat'),
         backgroundColor: CustomColors.backgroundColor,
       ),
       backgroundColor: CustomColors.backgroundColor,
@@ -45,23 +49,20 @@ class ChatPage extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                   child: Obx(
                     () {
-                      print(Get.find<ChatController>()
-                          .chatResponseModel
-                          .value
-                          .chats);
                       return ListView.builder(
-                        //controller: Get.find<ChatController>().scrollController,
+                        controller: Get.find<ChatController>().scrollController,
                         physics: const BouncingScrollPhysics(),
                         itemCount: Get.find<ChatController>()
-                            .chatResponseModel
-                            .value
-                            .chats!
-                            .length,
+                                .chatResponseModel
+                                .value
+                                .chats
+                                ?.length ??
+                            0,
                         itemBuilder: (context, index) {
                           final chat = Get.find<ChatController>()
                               .chatResponseModel
                               .value
-                              .chats![index];
+                              .chats?[index];
                           final userId = Get.find<LoginController>()
                               .loginResponseModel!
                               .employee!
@@ -105,25 +106,25 @@ class ChatPage extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: Align(
-                              alignment: userId == chat.userId
+                              alignment: userId == chat?.userId
                                   ? Alignment.centerRight
                                   : Alignment.centerLeft,
                               child: ClipPath(
-                                clipper: userId == chat.userId
+                                clipper: userId == chat?.userId
                                     ? CustomSenderChatDesign()
                                     : CustomReceiverChatDesign(),
                                 child: Container(
                                   width: w * 0.85,
-                                  padding: userId == chat.userId
+                                  padding: userId == chat?.userId
                                       ? const EdgeInsets.fromLTRB(
                                           15, 15, 20, 15)
                                       : const EdgeInsets.fromLTRB(
                                           20, 15, 15, 15),
                                   decoration: BoxDecoration(
-                                      color: userId == chat.userId
+                                      color: userId == chat?.userId
                                           ? Colors.indigoAccent
                                           : Colors.indigo,
-                                      borderRadius: userId == chat.userId
+                                      borderRadius: userId == chat?.userId
                                           ? const BorderRadius.only(
                                               //topRight: Radius.circular(15),
                                               topLeft: Radius.circular(12),
@@ -141,34 +142,28 @@ class ChatPage extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            userId != chat.userId
-                                                ? Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 6),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        const SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Text(
-                                                          chat.employee
-                                                                  ?.firstName ??
-                                                              '',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 6),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    '~${chat?.employee?.firstName ?? ''}',
+                                                    style: const TextStyle(
+                                                      color: Colors.white70,
                                                     ),
-                                                  )
-                                                : Container(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                             Text(
-                                              chat.message!,
+                                              chat?.message ?? '',
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   color: CustomColors
@@ -183,7 +178,8 @@ class ChatPage extends StatelessWidget {
                                         child: Text(
                                           DateFormat('hh:mm a').format(
                                               DateTime.parse(
-                                                  chat.createdAt.toString())),
+                                                  chat?.createdAt.toString() ??
+                                                      '')),
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.white,

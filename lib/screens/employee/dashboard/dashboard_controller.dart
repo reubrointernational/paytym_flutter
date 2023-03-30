@@ -59,16 +59,54 @@ class DashboardController extends GetxController with BaseController {
     return '';
   }
 
-  
+  getNextShift() {
+    if (dashboardModel.value.nextShift?.startTime == null ||
+        dashboardModel.value.nextShift?.endDate == null) {
+      return '-';
+    } else {
+      DateTime dateTimeTomorrow = DateTime.now();
+      dateTimeTomorrow.day + 1;
+
+      if (dateTimeTomorrow.isBefore(dashboardModel.value.nextShift!.endDate!)) {
+        DateTime startTime = DateFormat("hh:mm")
+            .parse(dashboardModel.value.nextShift?.startTime ?? '00:00:00');
+        if (startTime != DateTime(0)) {
+          return DateFormat('hh:mm aa').format(startTime);
+        }
+      }
+    }
+
+    return '-';
+  }
+
+  getNextShiftDate() {
+    if (dashboardModel.value.nextShift?.endDate == null) {
+      return '-';
+    } else {
+      DateTime dateTimeTomorrow = DateTime.now();
+      dateTimeTomorrow.day + 1;
+
+      if (dateTimeTomorrow.isBefore(dashboardModel.value.nextShift!.endDate!)) {
+        return DateFormat('MMM dd').format(dateTimeTomorrow);
+      }
+    }
+
+    return '-';
+  }
+
   updateFCMToken() async {
     Map<String, String> map = {
-      'user_id': Get.find<LoginController>().loginResponseModel?.employee?.id.toString() ?? '',
+      'user_id': Get.find<LoginController>()
+              .loginResponseModel
+              ?.employee
+              ?.id
+              .toString() ??
+          '',
       'device_id': LoginController.FCMToken
     };
 
     await Get.find<BaseClient>().post(ApiEndPoints.updateFCMToken,
         jsonEncode(map), Get.find<LoginController>().getHeader());
-
   }
 
   String? amountValidator(String value) {
@@ -207,7 +245,6 @@ class DashboardController extends GetxController with BaseController {
         }
         qr = null;
       }
-
       sliderValueChanged = false;
     }
   }
@@ -278,7 +315,7 @@ class DashboardController extends GetxController with BaseController {
   void onReady() {
     super.onReady();
     updateTime();
-    nowIsTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    nowIsTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       updateTime();
     });
     //update check-in data when app starts
@@ -297,6 +334,15 @@ class DashboardController extends GetxController with BaseController {
     } else {
       dashboardModel.value = dashboardResponseModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
+      if (dashboardModel.value.lastCheckedIn != null) {
+        seconds.value = DateTime.now()
+            .difference(dashboardModel.value.lastCheckedIn ?? DateTime.now())
+            .inMinutes;
+            startCheckInTimer();
+        checkInStatus = true;
+        sliderValueChanged = true;
+        sliderController(100);
+      }
     }
   }
 
@@ -336,6 +382,7 @@ class DashboardController extends GetxController with BaseController {
       checkInOutTimer =
           Timer.periodic(const Duration(minutes: 1), (timer) async {
         seconds.value++;
+       
       });
     } catch (e) {
       print(e.toString());
@@ -431,8 +478,8 @@ class DashboardController extends GetxController with BaseController {
     String endPoint =
         isCheckIn ? ApiEndPoints.checkInByScan : ApiEndPoints.checkOutByScan;
     showLoading();
-    // employerIdModel['qr_code'] = qr!;
-    employerIdModel['qr_code'] = 'ss123';
+    employerIdModel['qr_code'] = qr!;
+    // employerIdModel['qr_code'] = 'ss123';
     var responseString = await Get.find<BaseClient>()
         .post(endPoint, jsonEncode(employerIdModel),
             Get.find<LoginController>().getHeader())

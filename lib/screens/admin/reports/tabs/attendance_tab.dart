@@ -43,14 +43,14 @@ class AttendanceTabAdmin extends StatelessWidget {
                       )),
                   Row(
                     children: [
-                      Obx(() => Text(
-                            Get.find<ReportsControllerAdmin>()
-                                .selectedDate
-                                .value,
-                            style: TextStyle(
-                                color: Colors.blue.shade800,
-                                fontWeight: FontWeight.w500),
-                          )),
+                      Obx(
+                        () => Text(
+                          Get.find<ReportsControllerAdmin>().selectedDate.value,
+                          style: TextStyle(
+                              color: Colors.blue.shade800,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
                       kSizedBoxW10,
                       IconButton(
                           onPressed: () {
@@ -118,6 +118,9 @@ class AttendanceTabAdmin extends StatelessWidget {
             () {
               List<History>? attendanceList = Get.find<ReportsControllerAdmin>()
                   .getFilteredAttendanceList();
+              attendanceList = attendanceList
+                  ?.where((element) => element.approveReject == null)
+                  .toList();
               return ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemCount: attendanceList?.length ?? 0,
@@ -143,7 +146,13 @@ class AttendanceTabAdmin extends StatelessWidget {
                             IconButton(
                               onPressed: () {
                                 Get.find<ReportsControllerAdmin>()
-                                    .selectedItemIndex = index;
+                                        .selectedItemIndex =
+                                    Get.find<ReportsControllerAdmin>()
+                                        .attendanceResponseModel
+                                        .value
+                                        .history
+                                        ?.indexOf(attendanceList![index])??-1;
+                                
                                 Get.find<ReportsControllerAdmin>()
                                     .approveOrDeclineAttendance(
                                         ReasonButton.attendanceApprove);
@@ -156,7 +165,13 @@ class AttendanceTabAdmin extends StatelessWidget {
                             IconButton(
                               onPressed: () {
                                 Get.find<ReportsControllerAdmin>()
-                                    .selectedItemIndex = index;
+                                        .selectedItemIndex =
+                                    Get.find<ReportsControllerAdmin>()
+                                            .attendanceResponseModel
+                                            .value
+                                            .history
+                                            ?.indexOf(attendanceList![index]) ??
+                                        -1;
                                 Get.find<ReportsControllerAdmin>()
                                     .showBottomSheetForReason(
                                         ReasonButton.attendanceEdit);
@@ -169,8 +184,15 @@ class AttendanceTabAdmin extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () {
-                                Get.find<ReportsControllerAdmin>()
-                                    .selectedItemIndex = index;
+                                
+                               Get.find<ReportsControllerAdmin>()
+                                        .selectedItemIndex =
+                                    Get.find<ReportsControllerAdmin>()
+                                            .attendanceResponseModel
+                                            .value
+                                            .history
+                                            ?.indexOf(attendanceList![index]) ??
+                                        -1;
                                 Get.find<ReportsControllerAdmin>()
                                     .showBottomSheetForReason(
                                         ReasonButton.attendanceDecline);
@@ -217,7 +239,6 @@ class AttendanceCardColumn extends StatelessWidget {
           Row(
             children: [
               const Expanded(
-                flex: 1,
                 child: Text(
                   'Branch',
                   style: kTextStyleS15W600CGrey,
@@ -225,7 +246,6 @@ class AttendanceCardColumn extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 3,
                 child: Text(
                   attendanceElement.user!.branch?.name.toString() ?? '',
                   style: kTextStyleS15W600CBlack,
@@ -238,7 +258,6 @@ class AttendanceCardColumn extends StatelessWidget {
           Row(
             children: [
               const Expanded(
-                flex: 1,
                 child: Text(
                   'Name',
                   style: kTextStyleS15W600CGrey,
@@ -246,7 +265,6 @@ class AttendanceCardColumn extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 3,
                 child: Text(
                   '${attendanceElement.user!.firstName} ${attendanceElement.user!.lastName}',
                   style: kTextStyleS15W600CBlack,
@@ -259,7 +277,6 @@ class AttendanceCardColumn extends StatelessWidget {
           Row(
             children: [
               const Expanded(
-                flex: 1,
                 child: Text(
                   'ID',
                   style: kTextStyleS15W600CGrey,
@@ -267,7 +284,6 @@ class AttendanceCardColumn extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 3,
                 child: Text(
                   '#${attendanceElement.userId.toString().padLeft(5, '0')}',
                   style: kTextStyleS15W600CBlack,

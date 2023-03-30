@@ -21,6 +21,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   final selectMemberTab = SelectChatMemberTab.all.obs;
   final selectedDropdownDepartments = Rxn<String>();
   final selectedDropdownBranches = Rxn<String>();
+  //index list of selected items
   final selectedItemList = <int>[].obs;
   bool isSelectMembersPageFromChat = true;
   final searchKeyword = ''.obs;
