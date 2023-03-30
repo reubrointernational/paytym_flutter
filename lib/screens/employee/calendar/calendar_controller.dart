@@ -28,74 +28,66 @@ class CalendarController extends GetxController with BaseController {
   //todo add onError in getshedule as in getmeeting
 
   getMeeting() async {
-    if (meetingResponseModel.value.message?.isEmpty ?? true) {
-      showLoading();
-      Get.find<BaseClient>().onError = getMeeting;
-      var requestModel = {
-        'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-      };
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.meetings, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        hideLoading();
-        meetingResponseModel.value =
-            meetingResponseModelFromJson(responseString);
-        meetingResponseModel.refresh();
-        Get.find<BaseClient>().onError = null;
-      }
+    showLoading();
+    Get.find<BaseClient>().onError = getMeeting;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.meetings, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      meetingResponseModel.value = meetingResponseModelFromJson(responseString);
+      meetingResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
     }
   }
 
   getHolidays() async {
-    if (leaveAdminResponseModel.value.message.isEmpty) {
-      showLoading();
-      Get.find<BaseClient>().onError = getHolidays;
-      var requestModel = {
-        'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-      };
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.holidayRequestAdmin, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        hideLoading();
-        leaveAdminResponseModel.value =
-            holidayAdminResponseModelFromJson(responseString);
-        leaveAdminResponseModel.refresh();
-        Get.find<BaseClient>().onError = null;
-      }
+    showLoading();
+    Get.find<BaseClient>().onError = getHolidays;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.holidayRequestAdmin, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      leaveAdminResponseModel.value =
+          holidayAdminResponseModelFromJson(responseString);
+      leaveAdminResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
     }
   }
 
   getEvents() async {
-    if (eventsResponseModel.value.message?.isEmpty ?? true) {
-      showLoading();
-      Get.find<BaseClient>().onError = getEvents;
-      var requestModel = {
-        'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-      };
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.events, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        hideLoading();
-        eventsResponseModel.value =
-            eventsResponseModelFromJson(responseString);
-        eventsResponseModel.refresh();
-        Get.find<BaseClient>().onError = null;
-      }
+    showLoading();
+    Get.find<BaseClient>().onError = getEvents;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.events, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      eventsResponseModel.value = eventsResponseModelFromJson(responseString);
+      eventsResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
     }
   }
 
@@ -103,6 +95,4 @@ class CalendarController extends GetxController with BaseController {
     final DateTime now = DateTime.parse(time);
     return DateFormat('hh:mm a').format(now);
   }
-
-
 }

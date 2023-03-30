@@ -202,14 +202,18 @@ class ProjectsTabAdmin extends StatelessWidget {
                                   color: CustomColors.blackTextColor,
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 20),
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.download_for_offline_outlined,
-                                      color: CustomColors.redColor,
-                                    )),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(bottom: 20),
+                              //   child: IconButton(
+                              //       onPressed: () {},
+                              //       icon: const Icon(
+                              //         Icons.download_for_offline_outlined,
+                              //         color: CustomColors.redColor,
+                              //       )),
+                              // ),
+                              const Padding(
+                                padding: EdgeInsets.only(bottom: 20),
+                                child: kSizedBoxH20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

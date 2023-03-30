@@ -20,7 +20,7 @@ class ChatPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ChatControllerAdmin());
-    Get.find<DashboardControllerAdmin>().isSelectMembersPageFromChat = true;
+    
     Get.find<DashboardControllerAdmin>().selectedItemList.clear();
      WidgetsBinding.instance.addPostFrameCallback(
       (_) => Get.find<ChatController>().fetchChat(),

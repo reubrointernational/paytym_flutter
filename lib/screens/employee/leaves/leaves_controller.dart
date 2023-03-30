@@ -32,7 +32,6 @@ class LeavesController extends GetxController with BaseController {
   final TextEditingController startTimeController = TextEditingController();
   final TextEditingController endTimeController = TextEditingController();
 
-
   fetchLeaveData() async {
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
@@ -50,8 +49,8 @@ class LeavesController extends GetxController with BaseController {
 
   Future<MessageOnlyResponseModel?> applyForLeave() async {
     showLoading();
-    leaveRequestModel.employerId = 
-    '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+    leaveRequestModel.employerId =
+        '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
     leaveRequestModel.startDate = '${leaveRequestModel.startDate} 00:00:00';
     leaveRequestModel.endDate = '${leaveRequestModel.endDate} 00:00:00';
     leaveRequestModel.type ??=
@@ -65,6 +64,8 @@ class LeavesController extends GetxController with BaseController {
       return null;
     } else {
       hideLoading();
+      Get.back();
+      fetchLeaveData();
       return messageOnlyResponseModelFromJson(responseString);
     }
   }
@@ -74,7 +75,7 @@ class LeavesController extends GetxController with BaseController {
       Get.find<BaseClient>().onError = getLeaveTypes;
       Map<String, dynamic> requestModel = {
         'employer_id':
-        '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.leaveTypes, jsonEncode(requestModel),
@@ -160,8 +161,7 @@ class LeavesController extends GetxController with BaseController {
         String hour24timeStart = DateFormat("HH:mm").format(startDateLocal);
 
         try {
-          endDateLocal =
-              DateFormat.jm().parse(startTimeController.text);
+          endDateLocal = DateFormat.jm().parse(startTimeController.text);
         } on Exception catch (e) {
           endDateLocal = DateTime(0);
         }
@@ -174,7 +174,17 @@ class LeavesController extends GetxController with BaseController {
               '${getDateReverseString(leaveRequestModel.startDate)} $hour24timeStart',
           endDate:
               '${getDateReverseString(leaveRequestModel.endDate)} $hour24timeEnd',
-          leaveType: LeaveType(id: -1, leaveType: leaveTypesModel.value.leaveTypes!.firstWhere((element) => element.id.toString()== leaveRequestModel.type).leaveType!, noOfDaysAllowed: -1, employerId: Get.find<LoginController>().loginResponseModel!.employee!.employerId!),
+          leaveType: LeaveType(
+              id: -1,
+              leaveType: leaveTypesModel.value.leaveTypes!
+                  .firstWhere((element) =>
+                      element.id.toString() == leaveRequestModel.type)
+                  .leaveType!,
+              noOfDaysAllowed: -1,
+              employerId: Get.find<LoginController>()
+                  .loginResponseModel!
+                  .employee!
+                  .employerId!),
         );
         leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
         leaveRequestModel = LeaveRequestModel();

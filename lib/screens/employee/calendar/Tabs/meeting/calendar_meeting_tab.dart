@@ -15,7 +15,7 @@ class CalendarMeeting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<CalendarController>().getMeeting();
     });
     return Obx(

@@ -11,8 +11,8 @@ import 'package:paytym/routes/app_routes.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/widgets.dart';
 import '../../employee/chats/chat_controller.dart';
+import '../dashboard/dashboard_controller.dart';
 import '../dashboard/widgets/custom_text_form_field.dart';
-import 'chat_controller.dart';
 
 class ChatListingPageAdmin extends StatelessWidget {
   const ChatListingPageAdmin({super.key});
@@ -22,6 +22,7 @@ class ChatListingPageAdmin extends StatelessWidget {
     final chatController = Get.put(ChatController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       chatController.fetchChatGroupList();
+      Get.find<DashboardControllerAdmin>().isSelectMembersPageFromChat = true;
     });
     return Scaffold(
       backgroundColor: CustomColors.lightBlueColor,
