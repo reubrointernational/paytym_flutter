@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../core/colors/colors.dart';
 import '../../../../../core/constants/strings.dart';
@@ -22,11 +23,12 @@ class CalendarHolidayCard extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  Get.find<CalendarController>()
-                      .leaveAdminResponseModel
-                      .value
-                      .leaveList[index]
-                      .date,
+                  DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                      Get.find<CalendarController>()
+                          .leaveAdminResponseModel
+                          .value
+                          .leaveList[index]
+                          .date)),
                   style: kTextStyleS13W600CustomGrey,
                 ),
                 VerticalDivider(

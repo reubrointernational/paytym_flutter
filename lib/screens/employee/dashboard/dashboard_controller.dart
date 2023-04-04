@@ -84,7 +84,8 @@ class DashboardController extends GetxController with BaseController {
       return '-';
     } else {
       DateTime dateTimeTomorrow = DateTime.now();
-      dateTimeTomorrow.day + 1;
+      dateTimeTomorrow = DateTime(dateTimeTomorrow.year, dateTimeTomorrow.month,
+          dateTimeTomorrow.day + 1);
 
       if (dateTimeTomorrow.isBefore(dashboardModel.value.nextShift!.endDate!)) {
         return DateFormat('MMM dd').format(dateTimeTomorrow);
@@ -315,7 +316,7 @@ class DashboardController extends GetxController with BaseController {
   void onReady() {
     super.onReady();
     updateTime();
-    nowIsTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    nowIsTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       updateTime();
     });
     //update check-in data when app starts
@@ -338,7 +339,7 @@ class DashboardController extends GetxController with BaseController {
         seconds.value = DateTime.now()
             .difference(dashboardModel.value.lastCheckedIn ?? DateTime.now())
             .inMinutes;
-            startCheckInTimer();
+        startCheckInTimer();
         checkInStatus = true;
         sliderValueChanged = true;
         sliderController(100);
@@ -382,7 +383,6 @@ class DashboardController extends GetxController with BaseController {
       checkInOutTimer =
           Timer.periodic(const Duration(minutes: 1), (timer) async {
         seconds.value++;
-       
       });
     } catch (e) {
       print(e.toString());

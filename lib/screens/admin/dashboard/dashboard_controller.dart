@@ -198,7 +198,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     }
   }
 
-  getEmployees() {
+ List<EmployeeList>? getEmployees() {
     switch (selectMemberTab.value) {
       case SelectChatMemberTab.branch:
         return selectedDropdownDepartments.value == null
@@ -207,7 +207,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
             : Get.find<DashboardControllerAdmin>()
                 .deptwiseEmployeeMap[selectedDropdownDepartments.value]
                 ?.where((element) =>
-                    element.branch?.name == selectedDropdownBranches.value);
+                    element.branch?.name == selectedDropdownBranches.value).toList();
       case SelectChatMemberTab.department:
         return Get.find<DashboardControllerAdmin>()
             .deptwiseEmployeeMap[selectedDropdownDepartments.value];

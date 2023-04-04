@@ -141,8 +141,25 @@ class ChatListingPage extends StatelessWidget {
                                         ],
                                       ),
                                       kSizedBoxH2,
-                                      const Text(
-                                        'Hai, John! How are you doing?',
+                                      Text(
+                                        (Get.find<ChatController>()
+                                                    .chatGrouplist
+                                                    .value
+                                                    .chats?[index]
+                                                    .group
+                                                    ?.chats
+                                                    ?.isNotEmpty ??
+                                                false)
+                                            ? (Get.find<ChatController>()
+                                                    .chatGrouplist
+                                                    .value
+                                                    .chats![index]
+                                                    .group!
+                                                    .chats!
+                                                    .first
+                                                    .message ??
+                                                '')
+                                            : '',
                                         style: TextStyle(
                                           fontSize: 13,
                                           color: CustomColors.greyIconColor,

@@ -36,26 +36,12 @@ class PaymentBottomSheet extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Card details',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        kSizedBoxH4,
-                        Text(
-                          'Please enter your details',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                    const Text(
+                      'Split Payment',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     index == 0
                         ? const Icon(
@@ -72,44 +58,14 @@ class PaymentBottomSheet extends StatelessWidget {
                   ],
                 ),
                 kSizedBoxH15,
-                const PaymentCardTextFields(
-                  hint: 'Card Holder name',
-                  label: 'name',
-                  width: double.infinity,
-                  keyboardType: TextInputType.text,
-                ),
-                const PaymentCardTextFields(
-                  hint: 'Card Number',
-                  label: '01230 4587 8901 1234',
+                PaymentCardTextFields(
+                  hint: 'Enter the amount',
+                  label: '0',
                   width: double.infinity,
                   keyboardType: TextInputType.number,
+                  onChanged: (value) =>
+                      Get.find<ReportsController>().splitAmount.value = value,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PaymentCardTextFields(
-                      hint: 'Expiry Date',
-                      label: '05/23',
-                      width: w / 2 - 22,
-                      keyboardType: TextInputType.datetime,
-                    ),
-                    PaymentCardTextFields(
-                      hint: 'CCV',
-                      label: '159',
-                      width: w / 2 - 22,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ],
-                ),
-                PaymentCardTextFields(
-                    hint: 'Total',
-                    label: '\$2000.00',
-                    width: double.infinity,
-                    onChanged: (value) {
-                      Get.find<ReportsController>().splitAmount.value = value;
-                    },
-                    keyboardType: TextInputType.number),
-                kSizedBoxH15,
                 SizedBox(
                   height: h / 14,
                   width: w,

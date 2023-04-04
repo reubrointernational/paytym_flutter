@@ -1,65 +1,88 @@
+// To parse this JSON data, do
+//
+//     final splitPaymentResponseModel = splitPaymentResponseModelFromJson(jsonString);
+
 import 'dart:convert';
 
-SplitPaymentResponseModel splitPaymentResponseModelFromJson(String str) => SplitPaymentResponseModel.fromJson(json.decode(str));
+SplitPaymentResponseModel splitPaymentResponseModelFromJson(String str) =>
+    SplitPaymentResponseModel.fromJson(json.decode(str));
 
-String splitPaymentResponseModelToJson(SplitPaymentResponseModel data) => json.encode(data.toJson());
+String splitPaymentResponseModelToJson(SplitPaymentResponseModel data) =>
+    json.encode(data.toJson());
 
 class SplitPaymentResponseModel {
-    SplitPaymentResponseModel({
-        this.message,
-         this.splitpayment,
-    });
+  SplitPaymentResponseModel({
+    this.message,
+    this.mycash,
+    this.mpaisa,
+    this.bank,
+  });
 
-    String? message;
-    Splitpayment? splitpayment;
+  String? message;
+  Bank? mycash;
+  Bank? mpaisa;
+  Bank? bank;
 
-    factory SplitPaymentResponseModel.fromJson(Map<String, dynamic> json) => SplitPaymentResponseModel(
+  factory SplitPaymentResponseModel.fromJson(Map<String, dynamic> json) =>
+      SplitPaymentResponseModel(
         message: json["message"],
-        splitpayment: Splitpayment.fromJson(json["splitpayment"]),
-    );
+        mycash: json["mycash"] == null ? null : Bank.fromJson(json["mycash"]),
+        mpaisa: json["mpaisa"] == null ? null : Bank.fromJson(json["mpaisa"]),
+        bank: json["bank"] == null ? null : Bank.fromJson(json["bank"]),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "message": message,
-        "splitpayment": splitpayment!.toJson(),
-    };
+        "mycash": mycash?.toJson(),
+        "mpaisa": mpaisa?.toJson(),
+        "bank": bank?.toJson(),
+      };
 }
 
-class Splitpayment {
-    Splitpayment({
-       this.employerId,
-         this.employeeId,
-         this.paymentWallet,
-         this.amount,
-         this.updatedAt,
-         this.createdAt,
-         this.id,
-    });
+class Bank {
+  Bank({
+    this.id,
+    this.employeeId,
+    this.employerId,
+    this.paymentWallet,
+    this.amount,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-    String? employerId;
-    String? employeeId;
-    String? paymentWallet;
-    String? amount;
-    DateTime? updatedAt;
-    DateTime? createdAt;
-    int? id;
+  int? id;
+  int? employeeId;
+  int? employerId;
+  String? paymentWallet;
+  String? amount;
+  int? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
-    factory Splitpayment.fromJson(Map<String, dynamic> json) => Splitpayment(
-        employerId: json["employer_id"],
+  factory Bank.fromJson(Map<String, dynamic> json) => Bank(
+        id: json["id"],
         employeeId: json["employee_id"],
+        employerId: json["employer_id"],
         paymentWallet: json["payment_wallet"],
         amount: json["amount"],
-        updatedAt: DateTime.parse(json["updated_at"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        id: json["id"],
-    );
+        status: json["status"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
-    Map<String, dynamic> toJson() => {
-        "employer_id": employerId,
+  Map<String, dynamic> toJson() => {
+        "id": id,
         "employee_id": employeeId,
+        "employer_id": employerId,
         "payment_wallet": paymentWallet,
         "amount": amount,
-        "updated_at": updatedAt!.toIso8601String(),
-        "created_at": createdAt!.toIso8601String(),
-        "id": id,
-    };
+        "status": status,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }

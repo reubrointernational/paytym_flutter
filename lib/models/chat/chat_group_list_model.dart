@@ -17,14 +17,15 @@ class ChatListGroupModel {
   });
 
   String? message;
-  List<Chat>? chats;
+  List<ChatListGroupModelChat>? chats;
 
   factory ChatListGroupModel.fromJson(Map<String, dynamic> json) =>
       ChatListGroupModel(
         message: json["message"],
         chats: json["chats"] == null
             ? []
-            : List<Chat>.from(json["chats"]!.map((x) => Chat.fromJson(x))),
+            : List<ChatListGroupModelChat>.from(
+                json["chats"]!.map((x) => ChatListGroupModelChat.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,8 +36,8 @@ class ChatListGroupModel {
       };
 }
 
-class Chat {
-  Chat({
+class ChatListGroupModelChat {
+  ChatListGroupModelChat({
     this.id,
     this.groupChatId,
     this.memberId,
@@ -52,7 +53,8 @@ class Chat {
   DateTime? updatedAt;
   Group? group;
 
-  factory Chat.fromJson(Map<String, dynamic> json) => Chat(
+  factory ChatListGroupModelChat.fromJson(Map<String, dynamic> json) =>
+      ChatListGroupModelChat(
         id: json["id"],
         groupChatId: json["group_chat_id"],
         memberId: json["member_id"],
@@ -84,6 +86,7 @@ class Group {
     this.groupName,
     this.createdAt,
     this.updatedAt,
+    this.chats,
   });
 
   int? id;
@@ -93,6 +96,7 @@ class Group {
   String? groupName;
   DateTime? createdAt;
   DateTime? updatedAt;
+  List<GroupChat>? chats;
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
         id: json["id"],
@@ -106,6 +110,10 @@ class Group {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        chats: json["chats"] == null
+            ? []
+            : List<GroupChat>.from(
+                json["chats"]!.map((x) => GroupChat.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -114,6 +122,53 @@ class Group {
         "admin_id": adminId,
         "profile_pic": profilePic,
         "group_name": groupName,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "chats": chats == null
+            ? []
+            : List<dynamic>.from(chats!.map((x) => x.toJson())),
+      };
+}
+
+class GroupChat {
+  GroupChat({
+    this.id,
+    this.userId,
+    this.employerId,
+    this.groupChatId,
+    this.message,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? userId;
+  int? employerId;
+  int? groupChatId;
+  String? message;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory GroupChat.fromJson(Map<String, dynamic> json) => GroupChat(
+        id: json["id"],
+        userId: json["user_id"],
+        employerId: json["employer_id"],
+        groupChatId: json["group_chat_id"],
+        message: json["message"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "employer_id": employerId,
+        "group_chat_id": groupChatId,
+        "message": message,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };

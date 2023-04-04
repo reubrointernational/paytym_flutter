@@ -31,9 +31,10 @@ Future<void> initFcm() async {
         if (message.notification!.body!.contains('message')) {
           if (Get.find<ChatController>().initialized &&
               Get.find<ChatController>().selectedItemIndex != -1) {
+            Get.find<ChatController>().fetchChatGroupList();
             Get.find<ChatController>().fetchChat(isFromNotification: true);
           }
-        }  else {
+        } else {
           DialogHelper.showSnackBar(
               message.notification!.title!, message.notification!.body!);
         }

@@ -1,7 +1,8 @@
-const kBaseUrl = 'http://52.40.210.26:2000/api';
+// const kBaseUrl = 'http://52.40.210.26:2000/api';
 // const kStorageUrl = 'https://paytym.net/storage/';
-const kStorageUrl = 'http://52.40.210.26:2000/storage/';
-// const kBaseUrl = 'https://paytym.net/api';
+// const kStorageUrl = 'http://52.40.210.26:2000/storage/';
+const kStorageUrl = 'https://paytym.net/storage/';
+const kBaseUrl = 'https://paytym.net/api';
 // const kStorageUrl = 'http://192.168.1.13:8000/storage/';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';
 const kDomainUrl = 'paytym.net';
@@ -44,6 +45,7 @@ class ApiEndPoints {
   static const meetingsList = '$kBaseUrl/list_meetings';
   static const medicalList = '$kBaseUrl/extra_details';
   static const splitPayment = '$kBaseUrl/split_payment';
+  static const splitPaymentList = '$kBaseUrl/split_payment_list';
 
   static const createMeetings = '$kBaseUrl/create_meetings';
   static const deleteMeetings = '$kBaseUrl/meetings_delete';

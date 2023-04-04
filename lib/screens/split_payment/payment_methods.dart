@@ -24,17 +24,14 @@ class _PaymentMethodsState extends State<PaymentMethods> {
       {
         'icon': IconPath.windcavePng,
         'selected': Get.find<PaymentController>().isWindcaveSelected.value,
-        'amount': 00.00
       },
       {
         'icon': IconPath.mPesaPng,
         'selected': Get.find<PaymentController>().isMpesaSelected.value,
-        'amount': 00.00
       },
       {
         'icon': IconPath.myCashPng,
         'selected': Get.find<PaymentController>().isMyCashSelected.value,
-        'amount': 00.00
       },
     ];
     return SizedBox(
@@ -64,32 +61,26 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                   border: Border.all(width: 2, color: Colors.orange)),
               child: Stack(
                 children: [
-                  Obx(() {
-                    return Get.find<ReportsController>()
-                                .splitPaymentAmountList[index] >
-                            0
-                        ? Positioned(
-                            top: 20,
-                            left: -10,
-                            child: Container(
-                              height: 25,
-                              width: 90,
-                              color: Colors.amber,
-                              alignment: Alignment.centerLeft,
-                              padding: const EdgeInsets.only(left: 10),
-                              transform: Matrix4.rotationZ(-0.5),
-                              child: Text(
-                                'Split'.toUpperCase(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 1.2,
-                                    fontSize: 13,
-                                    color: Colors.orange.shade800),
-                              ),
-                            ),
-                          )
-                        : const SizedBox();
-                  }),
+                  Positioned(
+                    top: 20,
+                    left: -10,
+                    child: Container(
+                      height: 25,
+                      width: 90,
+                      color: Colors.amber,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(left: 10),
+                      transform: Matrix4.rotationZ(-0.5),
+                      child: Text(
+                        'Split'.toUpperCase(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.2,
+                            fontSize: 13,
+                            color: Colors.orange.shade800),
+                      ),
+                    ),
+                  ),
                   index == 0
                       ? const Center(
                           child: Icon(
@@ -110,20 +101,9 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                     bottom: 20,
                     left: 0,
                     right: 0,
-                    child: Get.find<ReportsController>()
-                                .splitPaymentResponseModel
-                                .value
-                                .splitpayment !=
-                            null
-                        ? Text(
-                            Get.find<ReportsController>()
-                                        .splitPaymentResponseModel
-                                        .value
-                                        .splitpayment!
-                                        .id ==
-                                    index
-                                ? '\$${Get.find<ReportsController>().splitAmount}'
-                                : '\$0',
+                    child: Text(
+                          Get.find<ReportsController>().getSplitAmount(index),
+                             
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 16,
@@ -131,15 +111,7 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                               color: CustomColors.greyShade600TextColor,
                             ),
                           )
-                        : Text(
-                            '\$0',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: CustomColors.greyShade600TextColor,
-                            ),
-                          ),
+                        
                   ),
                 ],
               ),

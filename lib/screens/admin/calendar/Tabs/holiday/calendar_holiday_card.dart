@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
 
 import '../../../../../core/colors/colors.dart';
@@ -32,11 +33,12 @@ class CalendarHolidayCardAdmin extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                           child: Text(
-                            Get.find<CalendarControllerAdmin>()
-                                .leaveAdminResponseModel
-                                .value
-                                .leaveList[index]
-                                .date,
+                            DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                                Get.find<CalendarControllerAdmin>()
+                                    .leaveAdminResponseModel
+                                    .value
+                                    .leaveList[index]
+                                    .date)),
                             style: kTextStyleS13W600CustomGrey,
                           ),
                         ),

@@ -80,14 +80,14 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     final List<EmployeeList> selectedEmployees =
         Get.find<DashboardControllerAdmin>()
             .getEmployees()
-            .where((element) => Get.find<DashboardControllerAdmin>()
+            ?.where((element) => Get.find<DashboardControllerAdmin>()
                 .selectedItemList
                 .contains(Get.find<DashboardControllerAdmin>()
                     .employeeList
                     .value
                     .employeeList
                     ?.indexOf(element)))
-            .toList();
+            .toList()??[];
     var model = CreateCalendarRequestModel(
       employerId: Get.find<LoginController>()
           .loginResponseModel!

@@ -109,9 +109,9 @@ class ChatControllerAdmin extends GetxController with BaseController {
           '';
       request.fields['group_name'] = groupNameController.text;
       if (userIdList != null) {
-        userIdList.forEach((element) {
-          request.fields.addAll({"members[]": element.toString()});
-        });
+        for (int i = 0; i < userIdList.length; i++) {
+          request.fields['members[$i]'] = userIdList[i];
+        }
       }
       request.headers['Authorization'] =
           'Bearer ${Get.find<LoginController>().loginResponseModel?.token}';

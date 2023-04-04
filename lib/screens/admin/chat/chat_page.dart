@@ -9,6 +9,7 @@ import 'package:paytym/screens/admin/chat/chat_controller.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/styles.dart';
+import '../../../models/chat/chat_response_model.dart';
 import '../dashboard/dashboard_controller.dart';
 import '../../employee/chats/chat_controller.dart';
 import '../../login/login_controller.dart';
@@ -20,11 +21,12 @@ class ChatPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ChatControllerAdmin());
-    
+
     Get.find<DashboardControllerAdmin>().selectedItemList.clear();
-     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => Get.find<ChatController>().fetchChat(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ChatController>().chatResponseModel.value = ChatResponseModel();
+      Get.find<ChatController>().fetchChat();
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -63,10 +65,11 @@ class ChatPageAdmin extends StatelessWidget {
                     physics: const BouncingScrollPhysics(),
                     controller: Get.find<ChatController>().scrollController,
                     itemCount: Get.find<ChatController>()
-                        .chatResponseModel
-                        .value
-                        .chats
-                        ?.length??0,
+                            .chatResponseModel
+                            .value
+                            .chats
+                            ?.length ??
+                        0,
                     itemBuilder: (context, index) {
                       final chat = Get.find<ChatController>()
                           .chatResponseModel

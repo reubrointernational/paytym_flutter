@@ -75,7 +75,8 @@ class ChatController extends GetxController with BaseController {
     if (chatTextController.text.isNotEmpty) {
       final employee =
           Get.find<LoginController>().loginResponseModel!.employee!;
-      chatResponseModel.value.chats!.add(
+      chatResponseModel.value.chats ??= [];
+      chatResponseModel.value.chats?.add(
         Chat(
             userId: employee.id,
             employerId: employee.employerId,

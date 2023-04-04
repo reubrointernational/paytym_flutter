@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/network/end_points.dart';
 import 'package:paytym/routes/app_routes.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import '../../../../core/constants/enums.dart';
@@ -22,7 +23,8 @@ class UploadsTabAdmin extends StatelessWidget {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-             Get.find<ReportsControllerAdmin>().selectedEmployeeId = chatList?[index].id;
+              Get.find<ReportsControllerAdmin>().selectedEmployeeId =
+                  chatList?[index].id;
               Get.toNamed(Routes.uploadFilesPage);
             },
             child: Container(
@@ -40,7 +42,8 @@ class UploadsTabAdmin extends StatelessWidget {
                     Text('#${chatList?[index].id.toString().padLeft(5, '0')}'),
                 leading: CircleAvatar(
                   radius: 28,
-                  backgroundImage: NetworkImage(chatList?[index].image ?? ''),
+                  backgroundImage: NetworkImage(
+                      '$kStorageUrl${chatList?[index].image ?? ''}'),
                 ),
                 trailing: Text(
                   chatList?[index].branch?.name ?? '',

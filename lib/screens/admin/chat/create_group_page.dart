@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/dialog_helper.dart';
+import 'package:paytym/network/end_points.dart';
 import 'package:paytym/screens/admin/chat/chat_controller.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../core/colors/colors.dart';
@@ -60,7 +61,7 @@ class CreateGroupPage extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 28,
                       backgroundImage:
-                          NetworkImage(memberList?[index].image ?? ''),
+                          NetworkImage('$kStorageUrl${memberList?[index].image ?? ''}'),
                     ),
                   );
                 },
@@ -126,13 +127,11 @@ class CreateGroupPage extends StatelessWidget {
                       File(Get.find<ChatControllerAdmin>().picker.value),
                       fit: BoxFit.contain,
                     )
-                  : Container(
-                      child: const Icon(
-                        Icons.photo_outlined,
-                        size: 50,
-                        color: CustomColors.greyTextColor,
-                      ),
-                    ),
+                  : const Icon(
+                    Icons.photo_outlined,
+                    size: 50,
+                    color: CustomColors.greyTextColor,
+                  ),
             );
           }),
         ]),

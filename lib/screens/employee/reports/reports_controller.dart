@@ -9,6 +9,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
@@ -73,6 +74,15 @@ class ReportsController extends GetxController
       default:
         return '';
     }
+  }
+
+  String getSplitAmount(int index) {
+    if (index == 0) {
+      return '\$${splitPaymentResponseModel.value.mycash?.amount??'0'}';
+    } else if (index == 1) {
+      return '\$${splitPaymentResponseModel.value.mpaisa?.amount ?? '0'}';
+    }
+    return '\$${splitPaymentResponseModel.value.bank?.amount ?? '0'}';
   }
 
   fetchPayslip() async {
@@ -152,8 +162,9 @@ class ReportsController extends GetxController
       'status': '0',
       //0 employee, 1 for HR
 
-      'employee_id':
-          employeeId == null?'${Get.find<LoginController>().loginResponseModel?.employee?.id}':employeeId.toString()
+      'employee_id': employeeId == null
+          ? '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+          : employeeId.toString()
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
@@ -185,9 +196,10 @@ class ReportsController extends GetxController
       'employer_id': Get.find<LoginController>()
           .loginResponseModel!
           .employee!
-          .employerId
+          .id
           .toString(),
-      'employee_id': '2',
+      'employee_id':
+          Get.find<LoginController>().loginResponseModel!.employee!.employerId,
       'amount': splitAmount.value,
       'payment_wallet': index.toString(),
     };
@@ -203,9 +215,39 @@ class ReportsController extends GetxController
       return;
     } else {
       hideLoading();
+
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+      getSplitPayment();
+      //Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  getSplitPayment() async {
+    showLoading();
+    //Get.find<BaseClient>().onError = setSplitPayment(index);
+
+    var responseString = await Get.find<BaseClient>().post(
+      ApiEndPoints.splitPaymentList,
+      jsonEncode({
+        'employer_id': Get.find<LoginController>()
+            .loginResponseModel
+            ?.employee
+            ?.employerId
+            .toString()
+      }),
+      Get.find<LoginController>().getHeader(),
+    );
+
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
       splitPaymentResponseModel.value =
           splitPaymentResponseModelFromJson(responseString);
+
       splitPaymentResponseModel.refresh();
+
       //Get.find<BaseClient>().onError = null;
     }
   }

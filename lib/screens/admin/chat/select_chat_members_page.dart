@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/network/end_points.dart';
 import 'package:paytym/routes/app_routes.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../core/constants/strings.dart';
@@ -124,7 +125,7 @@ class SelectChatMembersPage extends StatelessWidget {
               child: Obx(() {
                 var chatList = Get.find<DashboardControllerAdmin>()
                     .getEmployees()
-                    .where((element) => Get.find<DashboardControllerAdmin>()
+                    ?.where((element) => Get.find<DashboardControllerAdmin>()
                         .selectedItemList
                         .contains(Get.find<DashboardControllerAdmin>()
                             .employeeList
@@ -133,11 +134,11 @@ class SelectChatMembersPage extends StatelessWidget {
                             ?.indexOf(element)))
                     .toList();
                 return SizedBox(
-                    height: chatList.isEmpty ? 0 : 60,
+                    height: (chatList?.isEmpty??true) ? 0 : 60,
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: chatList.length,
+                      itemCount: chatList?.length??0,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 10),
@@ -145,8 +146,8 @@ class SelectChatMembersPage extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 28,
-                                backgroundImage:
-                                    NetworkImage(chatList[index].image ?? ''),
+                                backgroundImage: NetworkImage(
+                                    "$kStorageUrl${chatList?[index].image ?? ''}"),
                               ),
                               Positioned(
                                 bottom: 5,
@@ -182,7 +183,7 @@ class SelectChatMembersPage extends StatelessWidget {
                   final chatList =
                       Get.find<DashboardControllerAdmin>().getEmployees();
                   return ListView.builder(
-                    itemCount: chatList.length,
+                    itemCount: chatList?.length??0,
                     itemBuilder: (context, index) {
                       return Obx(() => InkWell(
                             onTap: () => Get.find<DashboardControllerAdmin>()
@@ -203,17 +204,17 @@ class SelectChatMembersPage extends StatelessWidget {
                               ),
                               child: ListTile(
                                 title: Text(
-                                  '${chatList[index].firstName} ${chatList[index].lastName}',
+                                  '${chatList?[index].firstName} ${chatList?[index].lastName}',
                                   style: kTextStyleS18W600CBlack,
                                 ),
                                 subtitle: Text(
-                                    '#${chatList[index].id.toString().padLeft(5, '0')}'),
+                                    '#${chatList?[index].id.toString().padLeft(5, '0')}'),
                                 leading: Stack(
                                   children: [
                                     CircleAvatar(
                                       radius: 28,
                                       backgroundImage: NetworkImage(
-                                          chatList[index].image ?? ''),
+                                          '$kStorageUrl${chatList?[index].image ?? ''}'),
                                     ),
                                     Positioned(
                                       bottom: 2,
@@ -237,8 +238,7 @@ class SelectChatMembersPage extends StatelessWidget {
                                   ],
                                 ),
                                 trailing: Text(
-                                  //todo change with branch name
-                                  chatList[index].branchId.toString(),
+                                  chatList?[index].branch?.name??'',
                                   style: kTextStyleS13W500Cgrey,
                                 ),
                               ),

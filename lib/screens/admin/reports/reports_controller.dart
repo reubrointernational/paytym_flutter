@@ -24,6 +24,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../models/leaves/leaves_admin_response_model.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/attendance/attendance_edit_request.dart';
@@ -37,6 +38,7 @@ import '../../../network/end_points.dart';
 import '../../employee/dashboard/dashboard_controller.dart';
 import '../../employee/reports/reports_controller.dart';
 import '../chat/chat_controller.dart';
+import '../leaves/leaves_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
 
@@ -191,7 +193,7 @@ class ReportsControllerAdmin extends GetxController
         showDialogue();
       } else if (sliderValue.value < 5) {
         sliderValue.value = 0;
-        showDialogue();
+        // showDialogue();
       } else {
         sliderValue.value = sliderStartValue;
       }
@@ -386,18 +388,18 @@ class ReportsControllerAdmin extends GetxController
   }
 
   findProjectProgress(String startDate, String endDate) {
-    DateTime startDateTime =
-        startDate.isEmpty ? DateTime.now() : DateTime.parse(startDate);
-    DateTime endDateTime =
-        endDate.isEmpty ? DateTime.now() : DateTime.parse(endDate);
+    DateTime? startDateTime =
+        startDate.isEmpty ? null : DateTime.parse(startDate);
+    DateTime? endDateTime =
+        endDate.isEmpty ? null : DateTime.parse(endDate);
     DateTime currentDateTime = DateTime.now();
     final differenceStartToEnd =
-        endDateTime.difference(startDateTime).inSeconds;
+       startDateTime!=null ? endDateTime?.difference(startDateTime).inSeconds: 1;
     final differenceStartToCurrent =
-        currentDateTime.difference(startDateTime).inSeconds;
+        startDateTime!=null ? currentDateTime.difference(startDateTime).inSeconds: 0;
 
     projectPercentage =
-        (differenceStartToCurrent / differenceStartToEnd).floorToDouble();
+        (differenceStartToCurrent / (differenceStartToEnd??1)).floorToDouble();
   }
 
   getStatus(int status) {
@@ -865,23 +867,37 @@ class ReportsControllerAdmin extends GetxController
   }
 
   void processPayroll(payrollStatus) async {
-    showLoading();
-    var requestModel = {
-      'payroll_status': payrollStatus.toString(),
-      'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-    };
-    var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-            Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-    if (responseString == null) {
-      return;
-    } else {
-      hideLoading();
-      DialogHelper.showToast(
-          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
-      Get.back();
+    if (payrollStatus == 1) {
+      final leaveController = Get.put(LeavesControllerAdmin());
+      await leaveController.fetchLeaveData(1);
+      final val = leaveController.getFilteredLeavesList();
+
+      if (val?.isEmpty ?? true) {
+        showLoading();
+        var requestModel = {
+          'payroll_status': payrollStatus.toString(),
+          'employer_id':
+              '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+        };
+        var responseString = await Get.find<BaseClient>()
+            .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+                Get.find<LoginController>().getHeader())
+            .catchError(handleError);
+        if (responseString == null) {
+          return;
+        } else {
+          hideLoading();
+          DialogHelper.showToast(
+              desc: messageOnlyResponseModelFromJson(responseString).message ??
+                  '');
+          Get.back();
+        }
+      } else {
+        Get.back();
+        sliderValue.value = 0;
+        // sliderController();
+        DialogHelper.showToast(desc: 'Please approve pending leave requests');
+      }
     }
   }
 
