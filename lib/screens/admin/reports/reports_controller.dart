@@ -379,7 +379,7 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
+      
       projectlistResponseModel.value = projectListModelFromJson(responseString);
       projectlistResponseModel.refresh();
 

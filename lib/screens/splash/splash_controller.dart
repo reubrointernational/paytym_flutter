@@ -12,7 +12,9 @@ class SplashController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    
     Timer(const Duration(seconds: 4), () async {
+      await Get.find<SharedPreferenceHelper>().deleteSharedPrefOnStart();
       Map<String, String> storageMap =
           await Get.find<SharedPreferenceHelper>().getStorageData();
       if (storageMap['loginDetails'] != null) {

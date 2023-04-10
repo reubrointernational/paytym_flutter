@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/login/login_response_model.dart';
 
@@ -19,6 +20,17 @@ class SharedPreferenceHelper extends GetxController {
         ? await storage.write(key: 'checkIn', value: DateTime.now().toString())
         : await storage.write(
             key: 'checkInQr', value: DateTime.now().toString());
+  }
+
+  deleteSharedPrefOnStart() async {
+    final prefs = await SharedPreferences.getInstance();
+
+if (prefs.getBool('first_run') ?? true) {
+
+  await storage.deleteAll();
+
+  prefs.setBool('first_run', false);
+}
   }
 
   Future<Map<String, String>> getStorageData() async {

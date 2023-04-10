@@ -13,8 +13,9 @@ Future<void> initFcm() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print('fcm token =  ${fcmToken ?? '000'} this is not a value');
   LoginController.FCMToken = fcmToken ?? '';
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+  messaging.onTokenRefresh.listen((fcmToken) {
     LoginController.FCMToken = fcmToken;
     if (Get.find<DashboardController>().initialized) {
       Get.find<DashboardController>().updateFCMToken();
@@ -24,6 +25,22 @@ Future<void> initFcm() async {
   }).onError((err) {
     // Error getting token.
   });
+
+  NotificationSettings settings = await messaging.requestPermission(
+  alert: true,
+  announcement: false,
+  badge: true,
+  carPlay: false,
+  criticalAlert: false,
+  provisional: false,
+  sound: true,
+);
+
+if (settings.authorizationStatus != AuthorizationStatus.authorized)
+{
+  DialogHelper.showToast(desc: 'Some functionalities like chat won\'t work without notification permission');
+}
+
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     try {

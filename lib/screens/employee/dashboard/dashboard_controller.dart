@@ -284,26 +284,29 @@ class DashboardController extends GetxController with BaseController {
 
   logout() async {
     showLoading();
+    resetControllerAndGoToLogin();
+     //cancel inactive timer
+    Get.find<LogoutController>().cancelTimer();
     var responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.logout, null, Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-
+        ;
+    hideLoading();
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
-      resetControllerAndGoToLogin();
-      //cancel inactive timer
-      Get.find<LogoutController>().cancelTimer();
+      
+      Get.offAllNamed(Routes.login);
+     
     }
+    
   }
 
   resetControllerAndGoToLogin() {
     Get.find<LoginController>().loginResponseModel = null;
     Get.find<LoginController>().userModel = UserModel();
     Get.find<SharedPreferenceHelper>().deleteAll();
-    Get.offAllNamed(Routes.login);
+    
   }
 
   @override
