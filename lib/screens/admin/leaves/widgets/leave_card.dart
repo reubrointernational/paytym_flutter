@@ -93,7 +93,7 @@ Get.find<LeavesControllerAdmin>().getLeaveType(leave?.type),
                                 ReasonButton.leaveDecline);
                       },
                       child: Container(
-                        width: 65,
+                        width: 70,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 5),
@@ -121,7 +121,7 @@ Get.find<LeavesControllerAdmin>().getLeaveType(leave?.type),
                                 ReasonButton.leaveApprove);
                       },
                       child: Container(
-                        width: 65,
+                        width: 70,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 5),

@@ -42,23 +42,45 @@ class DialogHelper {
                 style: const TextStyle(fontSize: 18),
               ),
               kSizedBoxH10,
-              SizedBox(
-                width: w * 0.8,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (Get.find<BaseClient>().onError != null) {
-                      Get.find<BaseClient>().onError!();
-                    }
-                    if (Get.isDialogOpen ?? false) Get.back();
-                  },
-                  child: Text(
-                    Get.find<BaseClient>().onError != null ? 'Retry' : 'OK',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: w * 0.4,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        
+                        Get.back();
+                      },
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  kSizedBoxW12,
+                  SizedBox(
+                    width: w * 0.4,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (Get.find<BaseClient>().onError != null) {
+                          Get.find<BaseClient>().onError!();
+                        }
+                        if (Get.isDialogOpen ?? false) Get.back();
+                      },
+                      child: Text(
+                        Get.find<BaseClient>().onError != null ? 'Retry' : 'OK',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               )
             ],
           ),
