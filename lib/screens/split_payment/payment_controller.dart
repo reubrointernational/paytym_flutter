@@ -7,9 +7,7 @@ import '../../models/split_payment/mpaisa_response_model.dart';
 import '../webview/custom_webview_page.dart';
 
 class PaymentController extends GetxController {
-  final isWindcaveSelected = false.obs;
-  final isMpesaSelected = false.obs;
-  final isMyCashSelected = false.obs;
+
 
   String getImagePath(int index) {
     if (index == 0) {
@@ -21,17 +19,7 @@ class PaymentController extends GetxController {
     }
   }
 
-  selectPaymentMethod(index) {
-    if (index == 0) {
-      isWindcaveSelected.value = true;
-    }
-    if (index == 1) {
-      isMpesaSelected.value = true;
-    }
-    if (index == 2) {
-      isMyCashSelected.value = true;
-    }
-  }
+
 
   // goToMPaisaPayment() async {
   //   Mpaisa mpaisa = Mpaisa();

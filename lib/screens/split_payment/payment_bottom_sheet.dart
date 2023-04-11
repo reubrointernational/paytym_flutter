@@ -72,7 +72,7 @@ class PaymentBottomSheet extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      paymentController.selectPaymentMethod(index);
+                      
                       Get.find<ReportsController>().setSplitPayment(index);
                     },
                     style: ElevatedButton.styleFrom(

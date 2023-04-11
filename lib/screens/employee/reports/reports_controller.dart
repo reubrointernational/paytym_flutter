@@ -78,11 +78,18 @@ class ReportsController extends GetxController
 
   String getSplitAmount(int index) {
     if (index == 0) {
-      return '\$${splitPaymentResponseModel.value.mycash?.amount??'0'}';
+      int myCash =
+          int.tryParse(splitPaymentResponseModel.value.mycash?.amount ?? '0') ??
+              0;
+      int mPaisa =
+          int.tryParse(splitPaymentResponseModel.value.mpaisa?.amount ?? '0') ??
+              0;
+      return '\$${splitPaymentResponseModel.value.bank?.amount ?? '${int.tryParse(Get.find<LoginController>().loginResponseModel?.employee?.rate ?? '0') ?? 0 - myCash - mPaisa}'}';
     } else if (index == 1) {
       return '\$${splitPaymentResponseModel.value.mpaisa?.amount ?? '0'}';
+    } else {
+      return '\$${splitPaymentResponseModel.value.mycash?.amount ?? '0'}';
     }
-    return '\$${splitPaymentResponseModel.value.bank?.amount ?? '0'}';
   }
 
   fetchPayslip() async {

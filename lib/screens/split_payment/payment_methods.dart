@@ -20,27 +20,14 @@ class _PaymentMethodsState extends State<PaymentMethods> {
   @override
   Widget build(BuildContext context) {
     final paymentController = Get.put(PaymentController());
-    List<Map<String, dynamic>> paymentMethods = [
-      {
-        'icon': IconPath.windcavePng,
-        'selected': Get.find<PaymentController>().isWindcaveSelected.value,
-      },
-      {
-        'icon': IconPath.mPesaPng,
-        'selected': Get.find<PaymentController>().isMpesaSelected.value,
-      },
-      {
-        'icon': IconPath.myCashPng,
-        'selected': Get.find<PaymentController>().isMyCashSelected.value,
-      },
-    ];
+
     return SizedBox(
       height: h / 4.5,
       width: w,
       child: ListView.separated(
         physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: paymentMethods.length,
+        itemCount: 3,
         separatorBuilder: (context, index) => const SizedBox(
           width: 8,
         ),
@@ -72,7 +59,7 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                       padding: const EdgeInsets.only(left: 10),
                       transform: Matrix4.rotationZ(-0.5),
                       child: Text(
-                        'Split'.toUpperCase(),
+                        'SPLIT',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             letterSpacing: 1.2,
@@ -91,28 +78,25 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                         )
                       : Center(
                           child: Image.asset(
-                            paymentMethods[index]['icon'],
+                            paymentController.getImagePath(index),
                             height: h * 0.08,
                             width: w * 0.25,
                             fit: BoxFit.contain,
                           ),
                         ),
                   Positioned(
-                    bottom: 20,
-                    left: 0,
-                    right: 0,
-                    child: Text(
-                          Get.find<ReportsController>().getSplitAmount(index),
-                             
+                      bottom: 20,
+                      left: 0,
+                      right: 0,
+                      child: Obx(() => Text(
+                            Get.find<ReportsController>().getSplitAmount(index),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: CustomColors.greyShade600TextColor,
                             ),
-                          )
-                        
-                  ),
+                          ))),
                 ],
               ),
             ),

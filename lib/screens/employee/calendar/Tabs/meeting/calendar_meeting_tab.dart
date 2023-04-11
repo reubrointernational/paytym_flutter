@@ -8,6 +8,7 @@ import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 
 import '../../../../../core/constants/styles.dart';
+import '../../../../../network/end_points.dart';
 import '../../../../widgets/custom_cached_network_image.dart';
 
 class CalendarMeeting extends StatelessWidget {
@@ -72,7 +73,7 @@ class CalendarMeeting extends StatelessWidget {
                   child: Row(
                     children: [
                       CustomCachedNetworkImage(
-                        imageUrl: meeting?.user?.image ?? '',
+                        imageUrl: '$kStorageUrl${meeting?.user?.image}',
                         radius: 25,
                       ),
                       kSizedBoxW12,

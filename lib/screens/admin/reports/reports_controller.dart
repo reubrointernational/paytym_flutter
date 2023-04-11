@@ -317,7 +317,9 @@ class ReportsControllerAdmin extends GetxController
               ?.employerId
               .toString() ??
           '',
-      fileTypeId: fileNameDropdownIndex.value.toString(),
+      fileTypeId: fileTypeListResponseModel
+          .value.fileTypes[fileNameDropdownIndex.value].id
+          .toString(),
       userId: selectedEmployeeId.toString(),
       //0 for upload and 1 for delete
       status: '0',
@@ -334,6 +336,8 @@ class ReportsControllerAdmin extends GetxController
     filePath.value = '';
     hideLoading();
     DialogHelper.showToast(desc: 'File uploaded');
+    Get.find<ReportsController>().fetchFileTypeListAndFetchFiles(
+            selectedEmployeeId);
   }
 
   deleteFiles(int id) async {
@@ -379,7 +383,6 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      
       projectlistResponseModel.value = projectListModelFromJson(responseString);
       projectlistResponseModel.refresh();
 
@@ -390,16 +393,17 @@ class ReportsControllerAdmin extends GetxController
   findProjectProgress(String startDate, String endDate) {
     DateTime? startDateTime =
         startDate.isEmpty ? null : DateTime.parse(startDate);
-    DateTime? endDateTime =
-        endDate.isEmpty ? null : DateTime.parse(endDate);
+    DateTime? endDateTime = endDate.isEmpty ? null : DateTime.parse(endDate);
     DateTime currentDateTime = DateTime.now();
-    final differenceStartToEnd =
-       startDateTime!=null ? endDateTime?.difference(startDateTime).inSeconds: 1;
-    final differenceStartToCurrent =
-        startDateTime!=null ? currentDateTime.difference(startDateTime).inSeconds: 0;
+    final differenceStartToEnd = startDateTime != null
+        ? endDateTime?.difference(startDateTime).inSeconds
+        : 1;
+    final differenceStartToCurrent = startDateTime != null
+        ? currentDateTime.difference(startDateTime).inSeconds
+        : 0;
 
-    projectPercentage =
-        (differenceStartToCurrent / (differenceStartToEnd??1)).floorToDouble();
+    projectPercentage = (differenceStartToCurrent / (differenceStartToEnd ?? 1))
+        .floorToDouble();
   }
 
   getStatus(int status) {
