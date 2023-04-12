@@ -70,7 +70,7 @@ class LeavesController extends GetxController with BaseController {
     }
   }
 
-  getLeaveTypes() async {
+  Future<bool> getLeaveTypes() async {
     if (leaveTypesModel.value.leaveTypes?.isEmpty ?? true) {
       Get.find<BaseClient>().onError = getLeaveTypes;
       Map<String, dynamic> requestModel = {
@@ -83,15 +83,17 @@ class LeavesController extends GetxController with BaseController {
           .catchError(handleError);
 
       if (responseString == null) {
-        return;
+        return false;
       } else {
         leaveTypesModel.value =
             leave_type.leaveTypesModelFromJson(responseString);
         selectedItem.value = leaveTypesModel.value.leaveTypes![0];
         leaveTypesModel.refresh();
         Get.find<BaseClient>().onError = null;
+       
       }
     }
+    return true;
   }
 
   String formatDate(String? date) {

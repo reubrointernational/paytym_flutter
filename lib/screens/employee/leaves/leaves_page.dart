@@ -17,35 +17,46 @@ class LeavesPage extends StatelessWidget {
       Get.find<LeavesController>().fetchLeaveData();
     });
     Get.put(LeavesController());
-    return DefaultTabController(
-      length: leaveTabList.length,
-      child: Scaffold(
-        backgroundColor: CustomColors.backgroundColor,
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Column(
-              children: [
-                const LeavesAppBar(),
-                kSizedBoxH15,
-                CustomTabBar(
-                  tabsList: leaveTabList,
-                  color: CustomColors.blueTextColor,
-                ),
-                kSizedBoxH10,
-                Expanded(
-                  child: TabBarView(
-                    physics: const BouncingScrollPhysics(),
-                    children:
-                        leaveTabList.map((e) => LeavesTab(leave: e)).toList(),
+    return FutureBuilder<bool>(
+        future: Get.find<LeavesController>().getLeaveTypes(),
+        builder: (context, snapshot) {
+          List<String> tabList = ['All'];
+          tabList.addAll(Get.find<LeavesController>()
+                      .leaveTypesModel
+                      .value
+                      .leaveTypes
+                      ?.map((e) => e.leaveType ?? '')??[]);
+             
+          return DefaultTabController(
+            length: tabList.length,
+            child: Scaffold(
+              backgroundColor: CustomColors.backgroundColor,
+              resizeToAvoidBottomInset: false,
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Column(
+                    children: [
+                      const LeavesAppBar(),
+                      kSizedBoxH15,
+                      CustomTabBar(
+                        tabsList: tabList,
+                        color: CustomColors.blueTextColor,
+                      ),
+                      kSizedBoxH10,
+                      Expanded(
+                        child: TabBarView(
+                          physics: const BouncingScrollPhysics(),
+                          children:
+                              tabList.map((e) => LeavesTab(leave: e)).toList(),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        });
   }
 }
