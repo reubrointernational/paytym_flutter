@@ -151,7 +151,8 @@ class ChatPageAdmin extends StatelessWidget {
                                     child: Text(
                                       DateFormat('hh:mm a').format(
                                           DateTime.parse(
-                                              chat.createdAt.toString())),
+                                              chat.createdAt.toString())
+                                              .toLocal()),
                                       style: const TextStyle(
                                         fontSize: 12,
                                         color: Colors.white,

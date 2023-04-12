@@ -179,7 +179,7 @@ class ChatPage extends StatelessWidget {
                                           DateFormat('hh:mm a').format(
                                               DateTime.parse(
                                                   chat?.createdAt.toString() ??
-                                                      '')),
+                                                      '').toLocal()),
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.white,
