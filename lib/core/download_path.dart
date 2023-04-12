@@ -14,6 +14,7 @@ class DownloadPath {
               await getApplicationDocumentsDirectory();
         }
       }
+     
     } catch (err) {
       directory = await getApplicationDocumentsDirectory();
     }

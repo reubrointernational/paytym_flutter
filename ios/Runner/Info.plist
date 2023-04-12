@@ -30,6 +30,12 @@
 	<string>Camera is used to scan QR Code</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Sending photos need photo library access</string>
+	<key>UISupportsDocumentBrowser</key> 
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
