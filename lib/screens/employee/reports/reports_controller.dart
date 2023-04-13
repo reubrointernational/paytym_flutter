@@ -197,37 +197,43 @@ class ReportsController extends GetxController
   }
 
   setSplitPayment(index) async {
-    showLoading();
-    //Get.find<BaseClient>().onError = setSplitPayment(index);
-    var requestModel = {
-      'employer_id': Get.find<LoginController>()
-          .loginResponseModel!
-          .employee!
-          .id
-          .toString(),
-      'employee_id':
-          Get.find<LoginController>().loginResponseModel!.employee!.employerId,
-      'amount': splitAmount.value,
-      'payment_wallet': index.toString(),
-    };
-    var responseString = await Get.find<BaseClient>()
-        .post(
-          ApiEndPoints.splitPayment,
-          jsonEncode(requestModel),
-          Get.find<LoginController>().getHeader(),
-        )
-        .catchError(handleError);
-
-    if (responseString == null) {
-      return;
-    } else {
-      hideLoading();
-
-      DialogHelper.showToast(
-          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
-      getSplitPayment();
-      //Get.find<BaseClient>().onError = null;
-    }
+    if (int.parse(splitAmount.value)<int.parse(Get.find<LoginController>()
+    .loginResponseModel?.employee?.rate??'0')) {
+  showLoading();
+  //Get.find<BaseClient>().onError = setSplitPayment(index);
+  var requestModel = {
+    'employer_id': Get.find<LoginController>()
+        .loginResponseModel!
+        .employee!
+        .employerId
+        .toString(),
+    'employee_id':
+        Get.find<LoginController>().loginResponseModel!.employee!.id.toString(),
+    'amount': splitAmount.value,
+    'payment_wallet': (2 - index).toString(),
+  };
+  var responseString = await Get.find<BaseClient>()
+      .post(
+        ApiEndPoints.splitPayment,
+        jsonEncode(requestModel),
+        Get.find<LoginController>().getHeader(),
+      )
+      .catchError(handleError);
+  
+  if (responseString == null) {
+    return;
+  } else {
+    hideLoading();
+  
+    DialogHelper.showToast(
+        desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+    getSplitPayment();
+    //Get.find<BaseClient>().onError = null;
+  }
+} else {
+  DialogHelper.showToast(
+          desc: 'Split amount should be less than salary');
+}
   }
 
   getSplitPayment() async {
