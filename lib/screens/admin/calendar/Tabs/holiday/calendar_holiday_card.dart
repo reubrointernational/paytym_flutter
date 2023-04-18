@@ -28,52 +28,50 @@ class CalendarHolidayCardAdmin extends StatelessWidget {
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                          child: Text(
-                            DateFormat('dd-MM-yyyy').format(DateTime.parse(
-                                Get.find<CalendarControllerAdmin>()
-                                    .leaveAdminResponseModel
-                                    .value
-                                    .leaveList[index]
-                                    .date)),
-                            style: kTextStyleS13W600CustomGrey,
-                          ),
-                        ),
-                        VerticalDivider(
-                          width: w * 0.15,
-                          thickness: 3,
-                          color: CustomColors.greenColor,
-                        ),
-                        Text(
-                          Get.find<CalendarControllerAdmin>()
-                              .leaveAdminResponseModel
-                              .value
-                              .leaveList[index]
-                              .name,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: Text(
+                        DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                            Get.find<CalendarControllerAdmin>()
+                                .leaveAdminResponseModel
+                                .value
+                                .leaveList[index]
+                                .date)),
+                        style: kTextStyleS13W600CustomGrey,
+                      ),
                     ),
-                    GestureDetector( 
-                      onTap:() { 
+                    kSizedBoxW12,
+                    VerticalDivider(
+                      width: w * 0.15,
+                      thickness: 3,
+                      color: CustomColors.greenColor,
+                    ),
+                    kSizedBoxW12,
+                    Expanded(
+                      child: Text(
+                        Get.find<CalendarControllerAdmin>()
+                            .leaveAdminResponseModel
+                            .value
+                            .leaveList[index]
+                            .name,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
                         DialogHelper.showConfirmDialog(
-                                              title: 'Delete Holiday',
-                                              desc:
-                                                  'Do you want to delete this holiday?',
-                                              onConfirm: () {
-                                                Get.find<CalendarControllerAdmin>()
+                            title: 'Delete Holiday',
+                            desc: 'Do you want to delete this holiday?',
+                            onConfirm: () {
+                              Get.find<CalendarControllerAdmin>()
                                   .deleteHoliday(index);
-                                                Get.back();
-                                              });
-                        
-                        },
+                              Get.back();
+                            });
+                      },
                       child: const Icon(
                         Icons.delete_outline,
                         color: CustomColors.redColor,

@@ -50,13 +50,21 @@ class CalendarMeeting extends StatelessWidget {
                         size: 22,
                       ),
                       kSizedBoxW10,
+                      Center(
+                        child: Text(
+                          "${Get.find<CalendarController>().getTime(meeting?.startTime.toString() ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().getTime(meeting?.endTime.toString() ?? '0000-00-00 00:00:00')}",
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: kTextStyleS13W600CustomGrey,
+                        ),
+                      ),
+                      kSizedBoxW10,
                       Expanded(
-                        child: Center(
-                          child: Text(
-                            "${Get.find<CalendarController>().getTime(meeting?.startTime.toString() ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().getTime(meeting?.endTime.toString() ?? '0000-00-00 00:00:00')}",
-                            overflow: TextOverflow.ellipsis,
-                            style: kTextStyleS13W600CustomGrey,
-                          ),
+                        child: Text(
+                          meeting?.location ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                          style: kTextStyleS13W600CustomGrey,
                         ),
                       ),
                       kSizedBoxW10,
@@ -112,7 +120,7 @@ class CalendarMeeting extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          meeting?.location ?? '',
+                          meeting?.name ?? '',
                           overflow: TextOverflow.ellipsis,
                           style: kTextStyleS13W600CustomGrey,
                         ),

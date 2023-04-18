@@ -343,8 +343,8 @@ class CalendarCardAdmin extends StatelessWidget {
                                   kSizedBoxH6,
                                   Get.find<CalendarControllerAdmin>()
                                               .selectedCalendarDropdown
-                                              .value ==
-                                          calendarTabList[1]
+                                              .value !=
+                                          calendarTabList[2]
                                       ? CustomTextFormField(
                                           hintText: 'Location',
                                           onSaved: (value) => Get.find<
@@ -359,6 +359,7 @@ class CalendarCardAdmin extends StatelessWidget {
                                                   value!, 'Location'),
                                         )
                                       : const SizedBox(),
+                                  kSizedBoxH6,
                                   Visibility(
                                     visible: Get.find<CalendarControllerAdmin>()
                                             .selectedCalendarDropdown

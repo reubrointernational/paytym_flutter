@@ -45,7 +45,7 @@ class CsvDownloader {
     DateTime dateTime = DateTime.now();
     final date = DateFormat('dd_MM_yyyy_H_m_s').format(dateTime);
     File f = File("$appDocPath/payroll_$date.csv");
-    f.writeAsString(csv);
-    DialogHelper.showToast(desc: 'File downloaded');
+    await f.writeAsString(csv);
+    DialogHelper.showToast(desc: 'File downloaded at ${f.path}');
   }
 }

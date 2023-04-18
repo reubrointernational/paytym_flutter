@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:paytym/core/constants/widgets.dart';
 
 import '../../../../../core/colors/colors.dart';
 import '../../../../../core/constants/strings.dart';
@@ -31,21 +32,25 @@ class CalendarHolidayCard extends StatelessWidget {
                           .date)),
                   style: kTextStyleS13W600CustomGrey,
                 ),
+                kSizedBoxW12,
                 VerticalDivider(
                   width: w * 0.15,
                   thickness: 3,
                   color: CustomColors.greenColor,
                 ),
-                Text(
-                  Get.find<CalendarController>()
-                      .leaveAdminResponseModel
-                      .value
-                      .leaveList[index]
-                      .name,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
+                kSizedBoxW12,
+                Expanded(
+                  child: Text(
+                    Get.find<CalendarController>()
+                        .leaveAdminResponseModel
+                        .value
+                        .leaveList[index]
+                        .name,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ],

@@ -41,11 +41,13 @@ class EventRow extends StatelessWidget {
               ),
             ],
           ),
+          kSizedBoxW12,
           VerticalDivider(
             width: w * 0.15,
             thickness: 3,
             color: CustomColors.redColor,
           ),
+          kSizedBoxW12,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -97,7 +97,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       name: createCalendarRequestModel.name,
       description: 'description',
       attendees: selectedEmployees.map((e) => e.id!).toList(),
-      place: createCalendarRequestModel.name,
+      place: createCalendarRequestModel.place,
       startDate: createCalendarRequestModel.startDate, //2023-01-15
       startTime:
           '${createCalendarRequestModel.startDate} ${DateFormat('HH:mm').format(DateFormat.jm().parse(createCalendarRequestModel.startTime))}', //2023-01-15 13:56:00

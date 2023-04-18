@@ -32,7 +32,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
               .value
               .meetingsListe?[index];
           return SizedBox(
-            height: 120,
+            height: 135,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -101,6 +101,11 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                         .copyWith(color: Colors.grey),
                                   ),
                                 ],
+                              ),
+                              Text(
+                                meeting?.location ?? '',
+                                style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
+                                    color: Colors.grey),
                               ),
                             ],
                           ),
