@@ -112,8 +112,9 @@ class ReportsController extends GetxController
       payslipResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
       for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
-        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.endDate!));
+       dateList.add(DateFormat('dd-MM-yyyy').format(payroll.endDate!));
       }
+      dateList = dateList.toSet().toList();
       selectedDropdownDay.value = dateList.first;
     }
   }

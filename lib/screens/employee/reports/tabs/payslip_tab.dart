@@ -52,14 +52,14 @@ class PayslipTab extends StatelessWidget {
               );
             }),
             Obx(() {
-              if (reportsController.selectedDropdownDay.value == null) {
+              if (reportsController.selectedDropdownDay.value == null || reportsController.dateList.isEmpty) {
                 return const SizedBox(
                   width: 50,
                 );
               }
               return CustomDropdownYearButton(
                 lists: reportsController.dateList,
-                value: reportsController.selectedDropdownDay.value,
+                value: reportsController.dateList.firstWhere((element) => element==reportsController.selectedDropdownDay.value),
                 onChanged: (value) {
                   reportsController.selectedDropdownDay.value = value!;
                 },
