@@ -67,12 +67,12 @@ class PaymentBottomSheet extends StatelessWidget {
                       Get.find<ReportsController>().splitAmount.value = value,
                 ),
                 SizedBox(
-                  height: h / 14,
+                  height: 60,
                   width: w,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      
+
                       Get.find<ReportsController>().setSplitPayment(index);
                     },
                     style: ElevatedButton.styleFrom(

@@ -8,12 +8,12 @@ import 'init_fcm.dart';
 
 Future<void> initApp() async {
   final WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isAndroid) {
-    binding.renderView.automaticSystemUiAdjustment = false;
-  }
+  // if (Platform.isAndroid) {
+  //   binding.renderView.automaticSystemUiAdjustment = false;
+  // }
 
-  await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // await SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/employee/reports/widgets/bottomsheet_text_field.dart';
@@ -16,19 +17,31 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
   const RequestOvertimeBottomsheet({super.key, this.index});
   @override
   Widget build(BuildContext context) {
+    int? originalIndex;
     if (index != null) {
+      List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
+          .getFilteredOvertimeList()
+          ?.where((element) => element.status == '0')
+          .toList();
+      originalIndex = Get.find<ReportsControllerAdmin>()
+          .overtimeResponseModel
+          .value
+          .employeeList
+          .indexOf(overtimeDetails?[index!] ?? EmployeeList());
       Get.find<DashboardController>().overtimeTextEditingController!.text =
           DateFormat('dd-MM-yyyy').format(Get.find<ReportsControllerAdmin>()
-              .overtimeResponseModel
-              .value
-              .employeeList[index!]
-              .date??DateTime(0000,00,00));
+                  .overtimeResponseModel
+                  .value
+                  .employeeList[originalIndex]
+                  .date ??
+              DateTime(0000, 00, 00));
       Get.find<DashboardController>().overtimeApproveEditRequestModel.date =
           DateFormat('yyyy-MM-dd').format(Get.find<ReportsControllerAdmin>()
-              .overtimeResponseModel
-              .value
-              .employeeList[index!]
-              .date??DateTime(0000,00,00));
+                  .overtimeResponseModel
+                  .value
+                  .employeeList[originalIndex]
+                  .date ??
+              DateTime(0000, 00, 00));
     }
 
     return Container(
@@ -79,7 +92,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                         ? Get.find<ReportsControllerAdmin>()
                             .overtimeResponseModel
                             .value
-                            .employeeList[index!]
+                            .employeeList[originalIndex??index!]
                             .totalHours
                         : null,
                     onSaved: ((value) => Get.find<DashboardController>()
@@ -111,7 +124,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                       ? Get.find<ReportsControllerAdmin>()
                           .overtimeResponseModel
                           .value
-                          .employeeList[index!]
+                          .employeeList[originalIndex ?? index!]
                           .reason
                       : null,
                   maxLines: 3,
@@ -133,7 +146,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => index != null
                   ? Get.find<ReportsControllerAdmin>().approveOrDeclineOvertime(
-                      index!, ReasonButton.overtimeEdit)
+                      originalIndex!, ReasonButton.overtimeEdit)
                   : Get.find<DashboardController>().requestOvertime(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,

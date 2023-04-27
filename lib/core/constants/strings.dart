@@ -65,12 +65,11 @@ List<Map<String, dynamic>> calendarScheduleDetails = [
 
 List<Map<String, dynamic>> employeeLeaves = [
   {
-    //todo change percentage by calculating
     "bgColor": const Color.fromRGBO(0, 148, 66, 1),
     'total':
         "${Get.find<DashboardController>().dashboardModel.value.absence ?? '0'}",
     'icon': Icons.people_outline,
-    "title": "Absentees",
+    "title": "Absent",
     "attendance_percentage":
         "${((1 - ((Get.find<DashboardController>().dashboardModel.value.absence ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
   },
@@ -81,7 +80,8 @@ List<Map<String, dynamic>> employeeLeaves = [
         "${Get.find<DashboardController>().dashboardModel.value.casual ?? '0'}",
     'icon': Icons.text_snippet_outlined,
     "title": "Sick Leave",
-    "attendance_percentage": "${((1 - ((Get.find<DashboardController>().dashboardModel.value.casual ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
+    "attendance_percentage":
+        "${((1 - ((Get.find<DashboardController>().dashboardModel.value.casual ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
   },
   {
     "bgColor": const Color.fromRGBO(255, 92, 17, 1),
@@ -89,7 +89,8 @@ List<Map<String, dynamic>> employeeLeaves = [
         "${Get.find<DashboardController>().dashboardModel.value.annual ?? '0'}",
     'icon': Icons.event,
     "title": 'Annual Leave',
-    "attendance_percentage": "${((1 - ((Get.find<DashboardController>().dashboardModel.value.annual ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
+    "attendance_percentage":
+        "${((1 - ((Get.find<DashboardController>().dashboardModel.value.annual ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
   },
   {
     "bgColor": const Color.fromRGBO(18, 115, 205, 1),
@@ -98,7 +99,8 @@ List<Map<String, dynamic>> employeeLeaves = [
     'icon': Icons.schedule,
     //todo change halfday to late arrival in api
     "title": 'Late Arrival',
-    "attendance_percentage": "${((1 - ((Get.find<DashboardController>().dashboardModel.value.halfday ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
+    "attendance_percentage":
+        "${((1 - ((Get.find<DashboardController>().dashboardModel.value.halfday ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
   },
 ];
 
@@ -367,7 +369,7 @@ List<String> reportsTabList = [
   'Payslip',
   'Deduction',
   'Attendance',
-  'Health'
+  'Medical'
 ];
 
 const kAppNameString = 'Paytym';
@@ -465,8 +467,6 @@ const kHistoryString = 'History';
 const kDateString = 'Date: ';
 
 const kPunchInString = 'Punch In: ';
-
-const kPunchOutString = 'Punch Out: ';
 
 const kDeductionsString = 'Deductions';
 

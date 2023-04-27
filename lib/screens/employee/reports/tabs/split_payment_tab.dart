@@ -25,8 +25,8 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -65,21 +65,33 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
                           ]),
                     ),
                     kSizedBoxH20,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Payment Method',
-                          style: TextStyle(
-                            color: Colors.orange.shade800,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                        kSizedBoxH15,
-                      ],
+                    Text(
+                      'Payment Method',
+                      style: TextStyle(
+                        color: Colors.orange.shade800,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
                     ),
+                    kSizedBoxH15,
                     const PaymentMethods(),
+                    kSizedBoxH15,
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xffbfbfbf), Color(0xffebebeb)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          
+                          borderRadius: BorderRadius.circular(20),),
+                      child: const Text(
+                        'Please note that amounts shown here are based on available Gross Salary and the actual Net Amounts paid will be different',
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(fontSize: 17, height: 1.5),
+                      ),
+                    ),
                   ]),
             ),
             // Align(

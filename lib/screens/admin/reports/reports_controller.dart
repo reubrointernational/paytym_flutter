@@ -336,8 +336,8 @@ class ReportsControllerAdmin extends GetxController
     filePath.value = '';
     hideLoading();
     DialogHelper.showToast(desc: 'File uploaded');
-    Get.find<ReportsController>().fetchFileTypeListAndFetchFiles(
-            selectedEmployeeId);
+    Get.find<ReportsController>()
+        .fetchFileTypeListAndFetchFiles(selectedEmployeeId);
   }
 
   deleteFiles(int id) async {
@@ -474,6 +474,19 @@ class ReportsControllerAdmin extends GetxController
         return;
       }
     }
+    int? originalIndex;
+    if (reasonButton != ReasonButton.overtimeEdit) {
+      List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
+          .getFilteredOvertimeList()
+          ?.where((element) => element.status == '0')
+          .toList();
+
+      originalIndex = Get.find<ReportsControllerAdmin>()
+          .overtimeResponseModel
+          .value
+          .employeeList
+          .indexOf(overtimeDetails?[index] ?? EmployeeList());
+    }
 
     showLoading();
     if (reasonButton == ReasonButton.overtimeApprove) {
@@ -502,8 +515,9 @@ class ReportsControllerAdmin extends GetxController
               .overtimeApproveEditRequestModel
               .totalHours;
     }
-    overtimeApproveEditRequestModel.id =
-        overtimeResponseModel.value.employeeList[index].id.toString();
+    overtimeApproveEditRequestModel.id = overtimeResponseModel
+        .value.employeeList[originalIndex ?? index].id
+        .toString();
 
     var responseString = await Get.find<BaseClient>()
         .post(
@@ -512,10 +526,10 @@ class ReportsControllerAdmin extends GetxController
                 overtimeApproveEditRequestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    hideLoading();
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
       //close bottomsheet if editing
       if (reasonButton == ReasonButton.overtimeEdit) Get.back();
       //reset bottomsheet values

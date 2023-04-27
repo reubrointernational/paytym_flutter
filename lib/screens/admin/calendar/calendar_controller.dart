@@ -79,15 +79,16 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     showLoading();
     final List<EmployeeList> selectedEmployees =
         Get.find<DashboardControllerAdmin>()
-            .getEmployees()
-            ?.where((element) => Get.find<DashboardControllerAdmin>()
-                .selectedItemList
-                .contains(Get.find<DashboardControllerAdmin>()
-                    .employeeList
-                    .value
-                    .employeeList
-                    ?.indexOf(element)))
-            .toList()??[];
+                .getEmployees()
+                ?.where((element) => Get.find<DashboardControllerAdmin>()
+                    .selectedItemList
+                    .contains(Get.find<DashboardControllerAdmin>()
+                        .employeeList
+                        .value
+                        .employeeList
+                        ?.indexOf(element)))
+                .toList() ??
+            [];
     var model = CreateCalendarRequestModel(
       employerId: Get.find<LoginController>()
           .loginResponseModel!
@@ -345,14 +346,13 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     final DateTime? dateTime = await showDatePicker(
       context: context,
       initialDate: startDate,
-      firstDate: isStartDate ? DateTime(1990) : startDate,
+      firstDate: startDate,
       lastDate: DateTime(2030),
     );
-    isStartDate ? startDate = dateTime! : endDate = dateTime!;
 
     isStartDate
-        ? startDateController.text = getDateString(startDate)
-        : endDateController.text = getDateString(endDate);
+        ? startDateController.text = getDateString(dateTime)
+        : endDateController.text = getDateString(dateTime);
   }
 
   String getDateString(DateTime? dateTime) {

@@ -46,11 +46,14 @@ class AttendanceTab extends StatelessWidget {
                         "Early Out : ${Get.find<ReportsController>().pieChartData["EarlyOut"]}"
                   }),
               kSizedBoxH10,
-              const Text(
-                kHistoryString,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+              const Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(
+                  kHistoryString,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               kSizedBoxH8,
@@ -101,29 +104,8 @@ class AttendanceTab extends StatelessWidget {
                                 style: kTextStyleS12W600Cblue,
                               ),
                               Text(
-                                history.checkIn != null
-                                    ? Get.find<ReportsController>()
-                                        .getTime(history.checkIn.toString())
-                                    : '00:00',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                          kSizedBoxH10,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                kPunchOutString,
-                                style: kTextStyleS12W600Cblue,
-                              ),
-                              Text(
-                                history.checkOut != null
-                                    ? Get.find<ReportsController>()
-                                        .getTime(history.checkOut.toString())
-                                    : "00:00",
+                                Get.find<ReportsController>()
+                                    .getTime(history.checkIn.toString()),
                                 style: const TextStyle(
                                   fontSize: 12,
                                 ),
