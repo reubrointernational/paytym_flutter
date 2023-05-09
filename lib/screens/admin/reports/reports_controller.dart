@@ -24,7 +24,6 @@ import 'package:share_plus/share_plus.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
-import '../../../models/leaves/leaves_admin_response_model.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/attendance/attendance_edit_request.dart';
@@ -38,7 +37,6 @@ import '../../../network/end_points.dart';
 import '../../employee/dashboard/dashboard_controller.dart';
 import '../../employee/reports/reports_controller.dart';
 import '../chat/chat_controller.dart';
-import '../leaves/leaves_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
 
@@ -563,25 +561,25 @@ class ReportsControllerAdmin extends GetxController
       deductionResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
 
-      for (PaymentAdvance advance
-          in deductionResponseModel.value.paymentAdvance ?? []) {
-        deductionResponseModel.value.deductions
-            ?.firstWhere(
-                (PurpleDeduction element) =>
-                    element.assignDeduction?.first.userId.toString() ==
-                    advance.userId.toString(), orElse: () {
-              return PurpleDeduction();
-              //   PurpleDeduction purpleDeduction = PurpleDeduction(firstName: advance.,lastName: , branchId: , departmentId: );
-              //  deductionResponseModel.value.deductions?.add(purpleDeduction);
-              //  return deductionResponseModel.value.deductions![deductionResponseModel.value.deductions!.length-1];
-            })
-            .assignDeduction
-            ?.add(AssignDeduction(
-                employerId: advance.employerId,
-                userId: advance.userId,
-                rate: int.parse(advance.advanceAmount ?? '0'),
-                deduction: DeductionsTypeElement(name: 'Advance')));
-      }
+      // for (PaymentAdvance advance
+      //     in deductionResponseModel.value.paymentAdvance ?? []) {
+      //   deductionResponseModel.value.deductions
+      //       ?.firstWhere(
+      //           (PurpleDeduction element) =>
+      //               element.assignDeduction?.first.userId.toString() ==
+      //               advance.userId.toString(), orElse: () {
+      //         return PurpleDeduction();
+      //         //   PurpleDeduction purpleDeduction = PurpleDeduction(firstName: advance.,lastName: , branchId: , departmentId: );
+      //         //  deductionResponseModel.value.deductions?.add(purpleDeduction);
+      //         //  return deductionResponseModel.value.deductions![deductionResponseModel.value.deductions!.length-1];
+      //       })
+      //       .assignDeduction
+      //       ?.add(AssignDeduction(
+      //           employerId: advance.employerId,
+      //           userId: advance.userId,
+      //           rate: int.parse(advance.advanceAmount ?? '0'),
+      //           deduction: DeductionsTypeElement(name: 'Advance')));
+      // }
     }
   }
 
@@ -886,35 +884,26 @@ class ReportsControllerAdmin extends GetxController
 
   void processPayroll(payrollStatus) async {
     if (payrollStatus == 1) {
-      final leaveController = Get.put(LeavesControllerAdmin());
-      await leaveController.fetchLeaveData(1);
-      final val = leaveController.getFilteredLeavesList();
-
-      if (val?.isEmpty ?? true) {
-        showLoading();
-        var requestModel = {
-          'payroll_status': payrollStatus.toString(),
-          'employer_id':
-              '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-        };
-        var responseString = await Get.find<BaseClient>()
-            .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-                Get.find<LoginController>().getHeader())
-            .catchError(handleError);
-        if (responseString == null) {
-          return;
-        } else {
-          hideLoading();
-          DialogHelper.showToast(
-              desc: messageOnlyResponseModelFromJson(responseString).message ??
-                  '');
-          Get.back();
-        }
-      } else {
-        Get.back();
+      showLoading();
+      var requestModel = {
+        'payroll_status': payrollStatus.toString(),
+        'employer_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      if (responseString == null) {
         sliderValue.value = 0;
-        // sliderController();
-        DialogHelper.showToast(desc: 'Please approve pending leave requests');
+        Get.back();
+        return;
+      } else {
+        hideLoading();
+        Get.back();
+        DialogHelper.showToast(
+            desc:
+                messageOnlyResponseModelFromJson(responseString).message ?? '');
       }
     }
   }

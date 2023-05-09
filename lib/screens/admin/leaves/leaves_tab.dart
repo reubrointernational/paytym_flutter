@@ -12,7 +12,7 @@ class LeavesTabAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<LeavesControllerAdmin>().fetchLeaveData(1);
+     leave != leaveTabListAdmin[3] ? Get.find<LeavesControllerAdmin>().fetchLeaveData(1) : Get.find<LeavesControllerAdmin>().fetchLeaveData(3);
     });
     return Obx(
       () {

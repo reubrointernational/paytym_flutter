@@ -5,12 +5,9 @@ import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
-import 'package:paytym/core/extensions/camelcase.dart';
 
 import '../../../../core/colors/colors.dart';
-import '../../../../core/constants/strings.dart';
 import '../../../../models/leaves/leaves_admin_response_model.dart';
-import '../../../../models/leaves/leaves_status_model.dart';
 import '../leaves_controller.dart';
 
 class LeavesCardAdmin extends StatelessWidget {
@@ -30,14 +27,12 @@ class LeavesCardAdmin extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          
           Text(
-            '${DateFormat('dd/MM/yyyy').format(DateTime.parse(leave?.startDate??''))} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(leave?.endDate??''))}',
+            '${DateFormat('dd/MM/yyyy').format(DateTime.parse(leave?.startDate ?? ''))} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(leave?.endDate ?? ''))}',
             style: kTextStyleS15W600CGrey,
           ),
           kSizedBoxH10,
           Container(
-            height: 100,
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -45,102 +40,129 @@ class LeavesCardAdmin extends StatelessWidget {
                   width: 1,
                   color: CustomColors.greyCardBorderColor,
                 )),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${leave?.user?.firstName} ${leave?.user?.lastName}',
-                        overflow: TextOverflow.ellipsis,
-                        style: kTextStyleS18W600,
-                      ),
-                      Text(
-                        '#${leave?.userId.toString().padLeft(5, '0') ?? ''}',
-                        // '${Get.find<LeavesControllerAdmin>().formatDate(leave?.startDate)}-${Get.find<LeavesControllerAdmin>().formatDate(leave?.endDate)}',
-                        style: const TextStyle(
-                          color: CustomColors.greyHeadingTextColor,
-                        ),
-                      ),
-                      Text(
-Get.find<LeavesControllerAdmin>().getLeaveType(leave?.type),
-                        
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: CustomColors.blueLabelColor,
-                        ),
-                      ),
-                      Text(
-                        leave?.title ?? '',
-                        style: kTextStyleS13W500Cgrey,
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.find<LeavesControllerAdmin>().selectedLeaveRequest =
-                            leave!;
-                        Get.find<LeavesControllerAdmin>()
-                            .showBottomSheetForReason(
-                                ReasonButton.leaveDecline);
-                      },
-                      child: Container(
-                        width: 70,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.red.shade100,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const Text(
-                          'Decline',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.red,
-                            fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${leave?.user?.firstName} ${leave?.user?.lastName}',
+                            overflow: TextOverflow.ellipsis,
+                            style: kTextStyleS18W600,
                           ),
-                        ),
+                          kSizedBoxH3,
+                          Text(
+                            '#${leave?.userId.toString().padLeft(5, '0') ?? ''}',
+                            // '${Get.find<LeavesControllerAdmin>().formatDate(leave?.startDate)}-${Get.find<LeavesControllerAdmin>().formatDate(leave?.endDate)}',
+                            style: const TextStyle(
+                              color: CustomColors.greyHeadingTextColor,
+                            ),
+                          ),
+                          kSizedBoxH3,
+                          Text(
+                            Get.find<LeavesControllerAdmin>()
+                                .getLeaveType(leave?.type),
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: CustomColors.blueLabelColor,
+                            ),
+                          ),
+                          kSizedBoxH3,
+                          Text(
+                            leave?.title ?? '',
+                            style: kTextStyleS13W500Cgrey,
+                          ),
+                        ],
                       ),
                     ),
-                    kSizedBoxH8,
-                    GestureDetector(
-                      onTap: () {
-                        Get.find<LeavesControllerAdmin>().selectedLeaveRequest =
-                            leave!;
-                        Get.find<LeavesControllerAdmin>()
-                            .showBottomSheetForReason(
-                                ReasonButton.leaveApprove);
-                      },
-                      child: Container(
-                        width: 70,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade100,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const Text(
-                          'Approve',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.green,
-                            fontWeight: FontWeight.w600,
+                    if (leave!.status == '0')
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.find<LeavesControllerAdmin>()
+                                  .selectedLeaveRequest = leave!;
+                              Get.find<LeavesControllerAdmin>()
+                                  .showBottomSheetForReason(
+                                      ReasonButton.leaveDecline);
+                            },
+                            child: Container(
+                              width: 70,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade100,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Text(
+                                'Decline',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                           ),
+                          kSizedBoxH8,
+                          GestureDetector(
+                            onTap: () {
+                              Get.find<LeavesControllerAdmin>()
+                                  .selectedLeaveRequest = leave!;
+                              Get.find<LeavesControllerAdmin>()
+                                  .showBottomSheetForReason(
+                                      ReasonButton.leaveApprove);
+                            },
+                            child: Container(
+                              width: 70,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade100,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Text(
+                                'Approve',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (leave!.status != '0')
+                      CircleAvatar(
+                        backgroundColor:
+                            leave!.status == '1' ? Colors.green : Colors.red,
+                        child: Icon(
+                          leave!.status == '1' ? Icons.check : Icons.close,
+                          color: Colors.white,
                         ),
                       ),
-                    ),
                   ],
                 ),
+                if (leave?.reason?.isNotEmpty ?? false) kSizedBoxH3,
+                if (leave?.reason?.isNotEmpty ?? false)
+                  Text(
+                    leave?.reason ?? "",
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: CustomColors.blueLabelColor,
+                    ),
+                  ),
               ],
             ),
           ),

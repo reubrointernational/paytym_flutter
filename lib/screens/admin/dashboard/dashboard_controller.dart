@@ -30,7 +30,6 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   seeDetailsPage(index) {
     switch (index) {
       case 0:
-        
         Get.find<LoginController>().bottomNavigationAdminIndex.value = 4;
         break;
       case 1:
@@ -140,17 +139,20 @@ class DashboardControllerAdmin extends GetxController with BaseController {
         'count': dashboardDetails.meetingsCount ?? '',
         'color': Colors.orange,
       },
+      {
+        'icon': IconPath.meetingsIconPng,
+        'title': 'Pending Leaves',
+        'count': dashboardDetails.pendingLeaves ?? '',
+        'color': Colors.amber,
+      },
+      {
+        'icon': IconPath.meetingsIconPng,
+        'title': 'Active Employees Count',
+        'count': dashboardDetails.activeEmployeesCount ?? '',
+        'color': Colors.cyan,
+      },
     ];
-    switch (index) {
-      case 0:
-        return totalEmployeesDetails[0];
-      case 1:
-        return totalEmployeesDetails[1];
-      case 2:
-        return totalEmployeesDetails[2];
-      default:
-        return totalEmployeesDetails[3];
-    }
+    return totalEmployeesDetails[index];
   }
 
   classifyEmployeeListByBranchAndDept() {
@@ -198,7 +200,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     }
   }
 
- List<EmployeeList>? getEmployees() {
+  List<EmployeeList>? getEmployees() {
     switch (selectMemberTab.value) {
       case SelectChatMemberTab.branch:
         return selectedDropdownDepartments.value == null
@@ -207,7 +209,8 @@ class DashboardControllerAdmin extends GetxController with BaseController {
             : Get.find<DashboardControllerAdmin>()
                 .deptwiseEmployeeMap[selectedDropdownDepartments.value]
                 ?.where((element) =>
-                    element.branch?.name == selectedDropdownBranches.value).toList();
+                    element.branch?.name == selectedDropdownBranches.value)
+                .toList();
       case SelectChatMemberTab.department:
         return Get.find<DashboardControllerAdmin>()
             .deptwiseEmployeeMap[selectedDropdownDepartments.value];

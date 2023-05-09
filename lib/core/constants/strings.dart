@@ -361,7 +361,7 @@ List<Map<String, dynamic>> chatList = [
 // List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 // List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
-List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending'];
+List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending', 'All'];
 
 List<String> reportsTabList = [
   'My Files',

@@ -90,7 +90,6 @@ class LeavesController extends GetxController with BaseController {
         selectedItem.value = leaveTypesModel.value.leaveTypes![0];
         leaveTypesModel.refresh();
         Get.find<BaseClient>().onError = null;
-       
       }
     }
     return true;
@@ -157,14 +156,14 @@ class LeavesController extends GetxController with BaseController {
         DateTime endDateLocal;
         try {
           startDateLocal = DateFormat.jm().parse(startTimeController.text);
-        } on Exception catch (e) {
+        } on Exception {
           startDateLocal = DateTime(0);
         }
         String hour24timeStart = DateFormat("HH:mm").format(startDateLocal);
 
         try {
           endDateLocal = DateFormat.jm().parse(startTimeController.text);
-        } on Exception catch (e) {
+        } on Exception {
           endDateLocal = DateTime(0);
         }
         String hour24timeEnd = DateFormat("HH:mm").format(endDateLocal);
@@ -188,7 +187,7 @@ class LeavesController extends GetxController with BaseController {
                   .employee!
                   .employerId!),
         );
-        leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
+        // leaveResponseModel.value.leaveRequests?.insert(0, leaveRequest);
         leaveRequestModel = LeaveRequestModel();
         startDate = DateTime.now();
         endDate = DateTime.now();

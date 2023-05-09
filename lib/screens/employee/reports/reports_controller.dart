@@ -92,6 +92,29 @@ class ReportsController extends GetxController
     }
   }
 
+  getSumDeductionAmount(List deductionList) {
+    bool isEmpty = (Get.find<ReportsController>()
+                .deductionResponseModel
+                .value
+                .deductions
+                ?.isEmpty ??
+            true) ||
+        (Get.find<ReportsController>()
+                .deductionResponseModel
+                .value
+                .deductions
+                ?.first
+                .assignDeduction
+                ?.isEmpty ??
+            true);
+    if (isEmpty) {
+      return 0;
+    }
+    final result =
+        (deductionList as List<AssignDeduction>).fold(0, (value, element) => value + (element.rate ?? 0));
+    return formatNumber(result.toString());
+  }
+
   fetchPayslip() async {
     showLoading();
     final map = {
@@ -112,7 +135,7 @@ class ReportsController extends GetxController
       payslipResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
       for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
-       dateList.add(DateFormat('dd-MM-yyyy').format(payroll.endDate!));
+        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.endDate!));
       }
       dateList = dateList.toSet().toList();
       selectedDropdownDay.value = dateList.first;
@@ -198,43 +221,48 @@ class ReportsController extends GetxController
   }
 
   setSplitPayment(index) async {
-    if (int.parse(splitAmount.value)<int.parse(Get.find<LoginController>()
-    .loginResponseModel?.employee?.rate??'0')) {
-  showLoading();
-  //Get.find<BaseClient>().onError = setSplitPayment(index);
-  var requestModel = {
-    'employer_id': Get.find<LoginController>()
-        .loginResponseModel!
-        .employee!
-        .employerId
-        .toString(),
-    'employee_id':
-        Get.find<LoginController>().loginResponseModel!.employee!.id.toString(),
-    'amount': splitAmount.value,
-    'payment_wallet': (2 - index).toString(),
-  };
-  var responseString = await Get.find<BaseClient>()
-      .post(
-        ApiEndPoints.splitPayment,
-        jsonEncode(requestModel),
-        Get.find<LoginController>().getHeader(),
-      )
-      .catchError(handleError);
-  
-  if (responseString == null) {
-    return;
-  } else {
-    hideLoading();
-  
-    DialogHelper.showToast(
-        desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
-    getSplitPayment();
-    //Get.find<BaseClient>().onError = null;
-  }
-} else {
-  DialogHelper.showToast(
-          desc: 'Split amount should be less than salary');
-}
+    if (int.parse(splitAmount.value) <
+        int.parse(
+            Get.find<LoginController>().loginResponseModel?.employee?.rate ??
+                '0')) {
+      showLoading();
+      //Get.find<BaseClient>().onError = setSplitPayment(index);
+      var requestModel = {
+        'employer_id': Get.find<LoginController>()
+            .loginResponseModel!
+            .employee!
+            .employerId
+            .toString(),
+        'employee_id': Get.find<LoginController>()
+            .loginResponseModel!
+            .employee!
+            .id
+            .toString(),
+        'amount': splitAmount.value,
+        'payment_wallet': (2 - index).toString(),
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(
+            ApiEndPoints.splitPayment,
+            jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader(),
+          )
+          .catchError(handleError);
+
+      if (responseString == null) {
+        return;
+      } else {
+        hideLoading();
+
+        DialogHelper.showToast(
+            desc:
+                messageOnlyResponseModelFromJson(responseString).message ?? '');
+        getSplitPayment();
+        //Get.find<BaseClient>().onError = null;
+      }
+    } else {
+      DialogHelper.showToast(desc: 'Split amount should be less than salary');
+    }
   }
 
   getSplitPayment() async {

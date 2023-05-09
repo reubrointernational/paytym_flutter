@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 
-import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/dialog_helper.dart';
@@ -123,26 +122,10 @@ class DeductionTabAdmin extends StatelessWidget {
                             ],
                           ),
 
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Expanded(
-                          //       child: Text(
-                          //         Get.find<ReportsControllerAdmin>()
-                          //                 .deductionResponseModel
-                          //                 .value
-                          //                 .deductions?[index]
-                          //                 .firstName ??
-                          //             '',
-                          //         style: kTextStyleS12W600CcustomGrey,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                         
                           kSizedBoxH6,
                           for (AssignDeduction deduction
                               in deductionDetails?[index].assignDeduction ?? [])
-                              
                             Padding(
                               padding: const EdgeInsets.only(bottom: 6),
                               child: Row(
@@ -154,39 +137,13 @@ class DeductionTabAdmin extends StatelessWidget {
                                     style: kTextStyleS12W600CcustomGrey,
                                   ),
                                   Text(
-                                    '\$${deduction.rate.toString()}',
+                                    '\$${deduction.rate}',
                                     style: kTextStyleS12W600CcustomGrey,
                                   ),
                                 ],
                               ),
                             ),
 
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     const Text(
-                          //       'Surcharge',
-                          //       style: kTextStyleS12W600CcustomGrey,
-                          //     ),
-                          //     Text(
-                          //       "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
-                          //       style: kTextStyleS12W600CcustomGrey,
-                          //     ),
-                          //   ],
-                          // ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     const Text(
-                          //       'Advance',
-                          //       style: kTextStyleS12W600CcustomGrey,
-                          //     ),
-                          //     Text(
-                          //       "\$${Get.find<ReportsControllerAdmin>().formatNumber(Get.find<ReportsControllerAdmin>().deductionResponseModel.value.details?[index].amount ?? '0')}",
-                          //       style: kTextStyleS12W600CcustomGrey,
-                          //     ),
-                          //   ],
-                          // ),
                           Padding(
                             padding: const EdgeInsets.only(top: 15),
                             child: Row(
@@ -198,12 +155,12 @@ class DeductionTabAdmin extends StatelessWidget {
                                 ),
                                 Text(
                                   () {
-                                    int amount = 0;
+                                    double amount = 0;
                                     for (AssignDeduction deduction
                                         in deductionDetails?[index]
                                                 .assignDeduction ??
                                             []) {
-                                      amount += deduction.rate ?? 0;
+                                      amount += deduction.rate ?? 0.0;
                                     }
                                     return '\$${amount.toString()}';
                                   }(),
@@ -228,7 +185,6 @@ class DeductionTabAdmin extends StatelessWidget {
                                     .deleteDeduction(index);
                                 Get.back();
                               });
-                          
                         },
                         icon: const Icon(
                           Icons.delete_outline_outlined,

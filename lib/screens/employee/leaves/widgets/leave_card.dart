@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/styles.dart';
+import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/models/leaves/leaves_status_model.dart';
 
 import '../../../../core/colors/colors.dart';
-import '../../../../core/constants/strings.dart';
 import '../../../../models/leaves/leaves_response.dart';
 import '../leaves_controller.dart';
-import 'package:paytym/core/extensions/camelcase.dart';
 
 class LeavesCard extends StatelessWidget {
   final LeaveRequest? leave;
@@ -18,8 +17,7 @@ class LeavesCard extends StatelessWidget {
     LeaveStatusModel leaveStatusModel =
         Get.find<LeavesController>().getLeaveStatusModel(leave?.status);
     return Container(
-      height: 120,
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,85 +29,79 @@ class LeavesCard extends StatelessWidget {
               color: CustomColors.blueTextColor,
             ),
           ),
-          Container(
-            height: 90,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  width: 1,
-                  color: const Color.fromRGBO(200, 195, 226, 1),
-                )),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        leave?.leaveType?.leaveType??'',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey.shade800,
-                        ),
-                      ),
-                      Text(
-                        (leave?.leaveType?.leaveType.toLowerCase().trim()??'') ==
-                                'Halfday'.trim()
-                            ? Get.find<LeavesController>()
-                                .formatDate(leave?.startDate)
-                            : '${Get.find<LeavesController>().formatDate(leave?.startDate)}-${Get.find<LeavesController>().formatDate(leave?.endDate)}',
-                        style: kTextStyleS18W600,
-                      ),
-                      Text(
-                        leave?.title ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: CustomColors.greyHeadingTextColor,
-                        ),
-                      ),
-                    ],
+          kSizedBoxH10,
+          Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    width: 1,
+                    color: const Color.fromRGBO(200, 195, 226, 1),
                   ),
                 ),
-                Column(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: leaveStatusModel.textColor,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        leaveStatusModel.text,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: CustomColors.whiteTextColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    Text(
+                      leave?.leaveType?.leaveType ?? '',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey.shade800,
                       ),
                     ),
-                    // Container(
-                    //   height: 25,
-                    //   width: 25,
-                    //   decoration: BoxDecoration(
-                    //     color: CustomColors.blueTextColor,
-                    //     borderRadius: BorderRadius.circular(8),
-                    //   ),
-                    //   child: const Icon(
-                    //     Icons.arrow_forward_ios,
-                    //     size: 12,
-                    //     color: CustomColors.whiteTextColor,
-                    //   ),
-                    // ),
+                    kSizedBoxH3,
+                    Text(
+                      (leave?.leaveType?.leaveType.toLowerCase().trim() ??
+                                  '') ==
+                              'Halfday'.trim()
+                          ? Get.find<LeavesController>()
+                              .formatDate(leave?.startDate)
+                          : '${Get.find<LeavesController>().formatDate(leave?.startDate)}-${Get.find<LeavesController>().formatDate(leave?.endDate)}',
+                      style: kTextStyleS18W600,
+                    ),
+                    kSizedBoxH3,
+                    Text(
+                      leave?.title ?? '',
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: CustomColors.greyHeadingTextColor,
+                      ),
+                    ),
+                    kSizedBoxH3,
+                    Text(
+                      leave?.reason ?? '',
+                      style: const TextStyle(
+                        color: CustomColors.greyHeadingTextColor,
+                      ),
+                    ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                right: 10,
+                top: 15,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: leaveStatusModel.textColor,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    leaveStatusModel.text,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: CustomColors.whiteTextColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

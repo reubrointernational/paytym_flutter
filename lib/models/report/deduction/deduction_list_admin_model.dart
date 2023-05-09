@@ -11,17 +11,17 @@ String deductionListAdminModelToJson(DeductionListAdminModel data) =>
     json.encode(data.toJson());
 
 class DeductionListAdminModel {
+  String? message;
+  List<PurpleDeduction>? deductions;
+  List<DeductionsTypeElement>? deductionsTypes;
+  List<PaymentAdvance>? paymentAdvance;
+
   DeductionListAdminModel({
     this.message,
     this.deductions,
     this.deductionsTypes,
     this.paymentAdvance,
   });
-
-  String? message;
-  List<PurpleDeduction>? deductions;
-  List<DeductionsTypeElement>? deductionsTypes;
-  List<PaymentAdvance>? paymentAdvance;
 
   factory DeductionListAdminModel.fromJson(Map<String, dynamic> json) =>
       DeductionListAdminModel(
@@ -55,6 +55,13 @@ class DeductionListAdminModel {
 }
 
 class PurpleDeduction {
+  int? id;
+  String? firstName;
+  String? lastName;
+  int? branchId;
+  int? departmentId;
+  List<AssignDeduction>? assignDeduction;
+
   PurpleDeduction({
     this.id,
     this.firstName,
@@ -63,13 +70,6 @@ class PurpleDeduction {
     this.departmentId,
     this.assignDeduction,
   });
-
-  int? id;
-  String? firstName;
-  String? lastName;
-  int? branchId;
-  int? departmentId;
-  List<AssignDeduction>? assignDeduction;
 
   factory PurpleDeduction.fromJson(Map<String, dynamic> json) =>
       PurpleDeduction(
@@ -97,6 +97,15 @@ class PurpleDeduction {
 }
 
 class AssignDeduction {
+  int? id;
+  int? employerId;
+  int? userId;
+  int? deductionId;
+  double? rate;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  DeductionsTypeElement? deduction;
+
   AssignDeduction({
     this.id,
     this.employerId,
@@ -108,22 +117,13 @@ class AssignDeduction {
     this.deduction,
   });
 
-  int? id;
-  int? employerId;
-  int? userId;
-  int? deductionId;
-  int? rate;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  DeductionsTypeElement? deduction;
-
   factory AssignDeduction.fromJson(Map<String, dynamic> json) =>
       AssignDeduction(
         id: json["id"],
         employerId: json["employer_id"],
         userId: json["user_id"],
         deductionId: json["deduction_id"],
-        rate: json["rate"],
+        rate: json["rate"]?.toDouble(),
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -148,17 +148,17 @@ class AssignDeduction {
 }
 
 class DeductionsTypeElement {
+  int? id;
+  String? name;
+  String? description;
+  int? employerId;
+
   DeductionsTypeElement({
     this.id,
     this.name,
     this.description,
     this.employerId,
   });
-
-  int? id;
-  String? name;
-  String? description;
-  int? employerId;
 
   factory DeductionsTypeElement.fromJson(Map<String, dynamic> json) =>
       DeductionsTypeElement(
@@ -177,6 +177,19 @@ class DeductionsTypeElement {
 }
 
 class PaymentAdvance {
+  int? id;
+  int? userId;
+  int? employerId;
+  String? advanceAmount;
+  dynamic paidAmount;
+  dynamic remainingAmount;
+  DateTime? requestedDate;
+  dynamic dateApproved;
+  String? status;
+  String? description;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
   PaymentAdvance({
     this.id,
     this.userId,
@@ -191,19 +204,6 @@ class PaymentAdvance {
     this.createdAt,
     this.updatedAt,
   });
-
-  int? id;
-  int? userId;
-  int? employerId;
-  String? advanceAmount;
-  dynamic paidAmount;
-  dynamic remainingAmount;
-  DateTime? requestedDate;
-  dynamic dateApproved;
-  String? status;
-  String? description;
-  DateTime? createdAt;
-  DateTime? updatedAt;
 
   factory PaymentAdvance.fromJson(Map<String, dynamic> json) => PaymentAdvance(
         id: json["id"],

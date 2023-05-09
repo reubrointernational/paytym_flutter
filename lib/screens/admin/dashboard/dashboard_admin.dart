@@ -5,13 +5,12 @@ import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import '../../../core/constants/icons.dart';
-import '../../../core/constants/strings.dart';
 import '../../../routes/app_routes.dart';
 import '../../employee/calendar/widgets/custom_svg.dart';
 import '../../login/login_controller.dart';
 import 'widgets/app_bar.dart';
-import 'widgets/custom_cards.dart';
 import 'widgets/check_in_out_card_admin.dart';
+import 'widgets/custom_cards.dart';
 
 class DashboardAdmin extends StatelessWidget {
   const DashboardAdmin({super.key});
@@ -21,7 +20,7 @@ class DashboardAdmin extends StatelessWidget {
     return Scaffold(
       floatingActionButton: Animate(
         effects: const [
-          ShakeEffect(hz: 0.8, rotation: 90, duration: Duration(seconds: 2)),
+          // ShakeEffect(hz: 0.8, rotation: 10, duration: Duration(seconds: 2)),
           SlideEffect()
         ],
         child: FloatingActionButton(
@@ -81,12 +80,13 @@ class DashboardAdmin extends StatelessWidget {
                           color: CustomColors.whiteCardColor,
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(),
+                        child: Column(
                           children: const [
                             CheckInOutCardAdmin(),
                             kSizedBoxH10,
-                            CustomCardDetails(),
+                            Expanded(
+                              child: CustomCardDetails(),
+                            ),
                           ],
                         ),
                       ),
