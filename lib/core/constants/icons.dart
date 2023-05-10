@@ -81,4 +81,6 @@ abstract class IconPath {
   static const String absenteesIconPng = 'assets/png/absentees_icon.png';
   static const String meetingsIconPng = 'assets/png/meetings_icon.png';
   static const String editIconSvg = 'assets/svg/edit_icon.svg';
+  static const String pendingIconPng = 'assets/png/pending.png';
+  static const String activeIconPng = 'assets/png/active.png';
 }

@@ -11,19 +11,19 @@ String filesTypeListModelToJson(FilesTypeListModel data) =>
     json.encode(data.toJson());
 
 class FilesTypeListModel {
+  String message;
+  List<FileType> fileTypes;
+
   FilesTypeListModel({
     required this.message,
     required this.fileTypes,
   });
 
-  String message;
-  List<FileTypes> fileTypes;
-
   factory FilesTypeListModel.fromJson(Map<String, dynamic> json) =>
       FilesTypeListModel(
         message: json["message"],
-        fileTypes: List<FileTypes>.from(
-            json["file_types"].map((x) => FileTypes.fromJson(x))),
+        fileTypes: List<FileType>.from(
+            json["file_types"].map((x) => FileType.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,22 +32,26 @@ class FilesTypeListModel {
       };
 }
 
-class FileTypes {
-  FileTypes({
-    required this.id,
-    required this.fileType,
-  });
-
+class FileType {
   int id;
   String fileType;
+  int visibleStatus;
 
-  factory FileTypes.fromJson(Map<String, dynamic> json) => FileTypes(
+  FileType({
+    required this.id,
+    required this.fileType,
+    required this.visibleStatus,
+  });
+
+  factory FileType.fromJson(Map<String, dynamic> json) => FileType(
         id: json["id"],
         fileType: json["file_type"],
+        visibleStatus: json["visible_status"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "file_type": fileType,
+        "visible_status": visibleStatus,
       };
 }

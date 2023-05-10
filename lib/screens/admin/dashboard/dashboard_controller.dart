@@ -140,13 +140,13 @@ class DashboardControllerAdmin extends GetxController with BaseController {
         'color': Colors.orange,
       },
       {
-        'icon': IconPath.meetingsIconPng,
+        'icon': IconPath.pendingIconPng,
         'title': 'Pending Leaves',
         'count': dashboardDetails.pendingLeaves ?? '',
         'color': Colors.amber,
       },
       {
-        'icon': IconPath.meetingsIconPng,
+        'icon': IconPath.activeIconPng,
         'title': 'Active Employees Count',
         'count': dashboardDetails.activeEmployeesCount ?? '',
         'color': Colors.cyan,

@@ -1,9 +1,9 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
@@ -21,24 +21,29 @@ import '../../../core/dialog_helper.dart';
 import '../../../core/download_path.dart';
 import '../../../models/report/attendance/attendance_employee_response.dart';
 import '../../../models/report/deduction/deduction_response_model.dart';
+import '../../../models/report/file_upload_request.dart';
 import '../../../models/report/files/employee_files_list_model.dart';
 import '../../../models/report/files/files_type_list.dart';
 import '../../../models/report/medical_list_admin_model.dart';
 import '../../../models/split_payment/split_payment_response.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
+import 'package:http/http.dart' as http;
 
 class ReportsController extends GetxController
     with BaseController, GetTickerProviderStateMixin {
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
-  final filesTypeListModel = FilesTypeListModel(fileTypes: [], message: '').obs;
+  FilesTypeListModel filesTypeListModel =
+      FilesTypeListModel(fileTypes: [], message: '');
 
   late TabController controller;
   late TabController subTabController;
   final medicalResponseModel =
       MedicalListAdminModel(message: '', extraDetails: []).obs;
   int clickedIndex = -1;
+  final filePath = ''.obs;
+  final selectedIndex = 0.obs;
 
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
@@ -76,6 +81,83 @@ class ReportsController extends GetxController
     }
   }
 
+  Future<FilesTypeListModel?> fetchFileTypeList() async {
+    Get.find<BaseClient>().onError = fetchFileTypeList;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.fileTypeListEmployee, null,
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return null;
+    } else {
+      hideLoading();
+      Get.find<BaseClient>().onError = null;
+      filesTypeListModel = filesTypeListModelFromJson(responseString);
+      return filesTypeListModel;
+    }
+  }
+
+  uploadFiles() async {
+    showLoading();
+    var request = http.MultipartRequest(
+        "POST", Uri.parse(ApiEndPoints.uploadFilesEmployee));
+    FileUploadRequestModel fileUploadRequestModel = FileUploadRequestModel(
+      employerId: Get.find<LoginController>()
+              .loginResponseModel
+              ?.employee
+              ?.employerId
+              .toString() ??
+          '',
+      fileTypeId: selectedIndex.value.toString(),
+      userId: Get.find<LoginController>()
+          .loginResponseModel!
+          .employee!
+          .id
+          .toString(),
+      //0 for upload and 1 for delete
+      status: '0',
+      id: '',
+    );
+    request.fields.addAll(fileUploadRequestModel.toJson());
+    request.headers.addAll(Get.find<LoginController>().getHeader()!);
+    var multipartFile =
+        await http.MultipartFile.fromPath('file', filePath.value);
+    request.files.add(multipartFile);
+    var streamResponse = await request.send();
+    await http.Response.fromStream(streamResponse);
+    filePath.value = '';
+    hideLoading();
+    DialogHelper.showToast(desc: 'File uploaded');
+  }
+
+  deleteFiles(int id) async {
+    showLoading();
+    Map<String, dynamic> map = {
+      'id': id.toString(),
+      'status': '1',
+    };
+
+    Get.find<BaseClient>().onError = fetchFileTypeList;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.uploadFilesEmployee, jsonEncode(map),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      DialogHelper.showToast(desc: 'File deleted');
+      Get.find<BaseClient>().onError = null;
+      Get.find<ReportsController>().fileListResponseModel.value.files?.remove(
+          Get.find<ReportsController>()
+              .fileListResponseModel
+              .value
+              .files
+              ?.firstWhere((element) => element.id == id));
+      Get.find<ReportsController>().fileListResponseModel.refresh();
+    }
+  }
+
   String getSplitAmount(int index) {
     if (index == 0) {
       int myCash =
@@ -89,6 +171,14 @@ class ReportsController extends GetxController
       return '\$${splitPaymentResponseModel.value.mpaisa?.amount ?? '0'}';
     } else {
       return '\$${splitPaymentResponseModel.value.mycash?.amount ?? '0'}';
+    }
+  }
+
+  fetchFilesFromPicker() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      filePath.value = file.path!;
     }
   }
 
@@ -110,8 +200,8 @@ class ReportsController extends GetxController
     if (isEmpty) {
       return 0;
     }
-    final result =
-        (deductionList as List<AssignDeduction>).fold(0, (value, element) => value + (element.rate ?? 0));
+    final result = (deductionList as List<AssignDeduction>)
+        .fold(0, (value, element) => value + (element.rate ?? 0));
     return formatNumber(result.toString());
   }
 
@@ -166,29 +256,29 @@ class ReportsController extends GetxController
     }
   }
 
-  fetchFileTypeListAndFetchFiles([int? employeeId]) async {
-    showLoading();
-    if (filesTypeListModel.value.message.isEmpty) {
-      Get.find<BaseClient>().onError = fetchFileTypeListAndFetchFiles;
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.fileTypeList, null,
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        filesTypeListModel.value = filesTypeListModelFromJson(responseString);
-        fetchFiles(filesTypeListModel.value, employeeId);
-      }
-    } else {
-      fetchFiles(filesTypeListModel.value, employeeId);
-    }
-  }
+  // fetchFileTypeListAndFetchFiles([int? employeeId, bool? isFromEmployee]) async {
+  //   showLoading();
+  //   if (filesTypeListModel.value.message.isEmpty) {
+  //     Get.find<BaseClient>().onError = fetchFileTypeListAndFetchFiles;
+  //     var responseString = await Get.find<BaseClient>()
+  //         .post(isFromEmployee==null?ApiEndPoints.fileTypeList:ApiEndPoints.fileTypeListEmployee, null,
+  //             Get.find<LoginController>().getHeader())
+  //         .catchError(handleError);
+  //     if (responseString == null) {
+  //       return;
+  //     } else {
+  //       filesTypeListModel.value = filesTypeListModelFromJson(responseString);
+  //       fetchFiles(filesTypeListModel.value, employeeId);
+  //     }
+  //   } else {
+  //     fetchFiles(filesTypeListModel.value, employeeId);
+  //   }
+  // }
 
-  fetchFiles(FilesTypeListModel fileTypes, [int? employeeId]) async {
-    Get.find<BaseClient>().onError = () {
-      fetchFiles(fileTypes);
-    };
+  fetchFiles([int? employeeId]) async {
+    // Get.find<BaseClient>().onError = () {
+    //   fetchFiles(fileTypes);
+    // };
     var requestModel = {
       'status': '0',
       //0 employee, 1 for HR

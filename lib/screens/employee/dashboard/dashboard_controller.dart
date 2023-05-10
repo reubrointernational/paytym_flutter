@@ -14,6 +14,7 @@ import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/constants/enums.dart';
 import '../../../models/dashboard/dashboard_response_model.dart';
+import '../../../models/employee_list_model.dart';
 import '../../../models/login/user_model.dart';
 import '../../../models/dashboard/request_advance_model.dart';
 import '../../../models/report/overtime_approve_edit_request_model.dart';
@@ -146,7 +147,7 @@ class DashboardController extends GetxController with BaseController {
     } on Exception catch (e) {}
   }
 
-  requestOvertime() async {
+  requestOvertime(EmployeeList? employeeList) async {
     if (requestAdvanceFormKey.currentState!.validate()) {
       requestAdvanceFormKey.currentState!.save();
       showLoading();
@@ -157,12 +158,15 @@ class DashboardController extends GetxController with BaseController {
       overtimeApproveEditRequestModel.status = '0';
       overtimeApproveEditRequestModel.employerId =
           '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
-      overtimeApproveEditRequestModel.employeeId =
-          '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
+      overtimeApproveEditRequestModel.employeeId = employeeList?.id != null
+          ? employeeList!.id.toString()
+          : '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
 
       var responseString = await Get.find<BaseClient>()
           .post(
-              ApiEndPoints.approveOvertime,
+              employeeList?.id != null
+                  ? ApiEndPoints.approveOvertimeHR
+                  : ApiEndPoints.approveOvertime,
               overtimeApproveEditRequestModelToJson(
                   overtimeApproveEditRequestModel),
               Get.find<LoginController>().getHeader())
@@ -283,21 +287,18 @@ class DashboardController extends GetxController with BaseController {
   }
 
   logout() async {
-    
     resetControllerAndGoToLogin();
-     //cancel inactive timer
+    //cancel inactive timer
     Get.find<LogoutController>().cancelTimer();
     Get.offAllNamed(Routes.login);
-    await Get.find<BaseClient>()
-        .post(
-            ApiEndPoints.logout, null, Get.find<LoginController>().getHeader());
+    await Get.find<BaseClient>().post(
+        ApiEndPoints.logout, null, Get.find<LoginController>().getHeader());
   }
 
   resetControllerAndGoToLogin() {
     Get.find<LoginController>().loginResponseModel = null;
     Get.find<LoginController>().userModel = UserModel();
     Get.find<SharedPreferenceHelper>().deleteAll();
-    
   }
 
   @override
@@ -318,14 +319,39 @@ class DashboardController extends GetxController with BaseController {
     updateFCMToken();
   }
 
-  fetchDashboardDetails() async {
+  List<String> getTotal(int index) {
+    switch (index) {
+      case 0:
+        return [
+          "${Get.find<DashboardController>().dashboardModel.value.absence ?? '0'}",
+          "${((1 - ((Get.find<DashboardController>().dashboardModel.value.absence ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}"
+        ];
+      case 1:
+        return [
+          "${Get.find<DashboardController>().dashboardModel.value.sick ?? '0'}",
+          "${((1 - ((Get.find<DashboardController>().dashboardModel.value.sick ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}"
+        ];
+      case 2:
+        return [
+          "${Get.find<DashboardController>().dashboardModel.value.annual ?? '0'}",
+          "${((1 - ((Get.find<DashboardController>().dashboardModel.value.annual ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}"
+        ];
+      default:
+        return [
+          "${Get.find<DashboardController>().dashboardModel.value.lateArrival ?? '0'}",
+          "${((1 - ((Get.find<DashboardController>().dashboardModel.value.lateArrival ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}"
+        ];
+    }
+  }
+
+  Future<DashboardResponseModel?> fetchDashboardDetails() async {
     Get.find<BaseClient>().onError = fetchDashboardDetails;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.dashboard, null,
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
-      return;
+      return null;
     } else {
       dashboardModel.value = dashboardResponseModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
@@ -338,6 +364,7 @@ class DashboardController extends GetxController with BaseController {
         sliderValueChanged = true;
         sliderController(100);
       }
+      return dashboardModel.value;
     }
   }
 

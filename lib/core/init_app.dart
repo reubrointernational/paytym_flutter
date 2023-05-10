@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +14,21 @@ Future<void> initApp() async {
   // await SystemChrome.setPreferredOrientations(
   //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
+  final data = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+  if (data.size.shortestSide > 600) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeRight,
+    ]);
+  } else {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,7 +38,7 @@ Future<void> initApp() async {
           true, // optional: set to false to disable printing logs to console (default: true) //todo set to false
       ignoreSsl: true //todo delete if server is https
       //todo delete usescleartext from manifest file
-      
+
       );
 
   initFcm();

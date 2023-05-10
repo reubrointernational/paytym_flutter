@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
+import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../models/dashboard/dashboard_response_model.dart';
 
 class DashboardColoredCard extends StatelessWidget {
   final int index;
-  const DashboardColoredCard({super.key, required this.index});
+  final DashboardResponseModel? model;
+  const DashboardColoredCard(
+      {super.key, required this.index, required this.model});
 
   @override
   Widget build(BuildContext context) {
     final leaves = employeeLeaves[index];
+    final total = Get.find<DashboardController>().getTotal(index);
     return Stack(
       children: [
         Padding(
@@ -25,7 +31,7 @@ class DashboardColoredCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 6),
                   child: Text(
-                    leaves["total"].toString(),
+                    total[0].toString(),
                     style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w600,
@@ -58,7 +64,7 @@ class DashboardColoredCard extends StatelessWidget {
                   ),
                   kSizedBoxH4,
                   Text(
-                    "${leaves["attendance_percentage"]}% attendance",
+                    "${total[1]}% attendance",
                     style: TextStyle(
                         fontSize: 12,
                         letterSpacing: 0.5,

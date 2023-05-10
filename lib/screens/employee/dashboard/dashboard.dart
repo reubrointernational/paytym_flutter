@@ -13,6 +13,7 @@ import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/strings.dart';
+import '../../../models/dashboard/dashboard_response_model.dart';
 import '../../../routes/app_routes.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -107,7 +108,7 @@ class DashboardPage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: DashboardColoredCard(
-                                      index: index,
+                                      index: index, model: snapshot.data, 
                                     ),
                                   ),
                                 ],

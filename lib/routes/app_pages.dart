@@ -15,6 +15,7 @@ import '../screens/admin/reports/project_employee_list_page.dart';
 import '../screens/admin/reports/upload_files_page.dart';
 import '../screens/employee/bottom_nav/bottom_nav_page.dart';
 import '../screens/employee/dashboard/dashboard.dart';
+import '../screens/employee/reports/employee_uploads_page.dart';
 import '../screens/login/forgot_password.dart';
 import '../screens/login/reset_password_page.dart';
 import 'app_routes.dart';
@@ -97,5 +98,10 @@ class AppPages {
       name: Routes.uploadFilesPage,
       page: () => const UploadFilesPage(),
     ),
+    GetPage(
+      name: Routes.employeeUploadFilesPage,
+      page: () => const EmployeeUploadFilesPage(),
+    ),
+    
   ];
 }

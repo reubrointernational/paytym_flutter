@@ -64,6 +64,7 @@ class ReportsControllerAdmin extends GetxController
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
+  
 
   List<String> reportsTabListAdmin = [
     'Projects',
@@ -222,9 +223,8 @@ class ReportsControllerAdmin extends GetxController
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
-  final fileTypeListResponseModel = FilesTypeListModel(
-          fileTypes: [FileTypes(id: 0, fileType: '')], message: '')
-      .obs;
+  final fileTypeListResponseModel =
+      FilesTypeListModel(fileTypes: [], message: '').obs;
   final projectlistResponseModel =
       ProjectListModel(message: '', projectsLists: []).obs;
 
@@ -334,8 +334,7 @@ class ReportsControllerAdmin extends GetxController
     filePath.value = '';
     hideLoading();
     DialogHelper.showToast(desc: 'File uploaded');
-    Get.find<ReportsController>()
-        .fetchFileTypeListAndFetchFiles(selectedEmployeeId);
+    Get.find<ReportsController>().fetchFiles(selectedEmployeeId);
   }
 
   deleteFiles(int id) async {
@@ -356,12 +355,12 @@ class ReportsControllerAdmin extends GetxController
       hideLoading();
       DialogHelper.showToast(desc: 'File deleted');
       Get.find<BaseClient>().onError = null;
-      Get.find<ReportsController>().fileListResponseModel.value.files.remove(
+      Get.find<ReportsController>().fileListResponseModel.value.files?.remove(
           Get.find<ReportsController>()
               .fileListResponseModel
               .value
               .files
-              .firstWhere((element) => element.id == id));
+              ?.firstWhere((element) => element.id == id));
       Get.find<ReportsController>().fileListResponseModel.refresh();
     }
   }

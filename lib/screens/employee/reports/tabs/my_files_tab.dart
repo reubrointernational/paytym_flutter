@@ -7,8 +7,7 @@ import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/icons.dart';
-import '../../../../models/report/files/employee_files_list_model.dart';
-import '../../../../models/report/files/files_type_list.dart';
+import '../../../../routes/app_routes.dart';
 
 class MyFilesTab extends StatelessWidget {
   const MyFilesTab({super.key});
@@ -16,57 +15,147 @@ class MyFilesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsController>().fetchFileTypeListAndFetchFiles());
-    return Obx(() {
-      final files =
-          Get.find<ReportsController>().fileListResponseModel.value.files;
-      return ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemCount: files.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey.shade300,
-              ),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
+        (_) => Get.find<ReportsController>().fetchFiles());
+    return Stack(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                'Office Records',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            child: ListTile(
-              title: Text(Get.find<ReportsController>()
-                  .filesTypeListModel
-                  .value
-                  .fileTypes
-                  .firstWhere(
-                    (element) => files[index].fileTypeId == element.id,
-                    orElse: () => FileTypes(fileType: '', id: 0),
-                  )
-                  .fileType),
-              trailing: CircleAvatar(
-                backgroundColor: CustomColors.blueCardColor,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.find<ReportsController>()
-                        .downloadPdf('$kStorageUrl${files[index].file}');
-                    Get.find<ReportsController>().clickedIndex = index;
+            Obx(
+              () {
+                final files = Get.find<ReportsController>()
+                    .fileListResponseModel
+                    .value
+                    .files
+                    ?.where((element) => element.filetype?.visibleStatus == 1)
+                    .toList();
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: files?.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                        ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: ListTile(
+                        title: Text(files?[index].filetype?.fileType ?? ''),
+                        trailing: CircleAvatar(
+                          backgroundColor: CustomColors.blueCardColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.find<ReportsController>().downloadPdf(
+                                  '$kStorageUrl${files?[index].file}');
+                              Get.find<ReportsController>().clickedIndex =
+                                  index;
+                            },
+                            child: Obx(() => Get.find<ReportsController>()
+                                            .isSharingOrDownloading
+                                            .value ==
+                                        SharingOrDownloading.downloading &&
+                                    Get.find<ReportsController>()
+                                            .clickedIndex ==
+                                        index
+                                ? Lottie.asset(IconPath.downloadingJson)
+                                : const Icon(
+                                    Icons.download,
+                                    color: CustomColors.whiteCardColor,
+                                  )),
+                          ),
+                        ),
+                      ),
+                    );
                   },
-                  child: Obx(() => Get.find<ReportsController>()
-                                  .isSharingOrDownloading
-                                  .value ==
-                              SharingOrDownloading.downloading && Get.find<ReportsController>().clickedIndex == index
-                      ? Lottie.asset(IconPath.downloadingJson)
-                      : const Icon(
-                          Icons.download,
-                          color: CustomColors.whiteCardColor,
-                        )),
-                ),
+                );
+              },
+            ),
+            const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                'Employee Records',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-          );
-        },
-      );
-    });
+            Obx(
+              () {
+                final files = Get.find<ReportsController>()
+                    .fileListResponseModel
+                    .value
+                    .files
+                    ?.where((element) => element.filetype?.visibleStatus == 0)
+                    .toList();
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: files?.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                        ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: ListTile(
+                        title: Text(files?[index].filetype?.fileType ?? ''),
+                        trailing: CircleAvatar(
+                          backgroundColor: CustomColors.blueCardColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.find<ReportsController>().downloadPdf(
+                                  '$kStorageUrl${files?[index].file}');
+                              Get.find<ReportsController>().clickedIndex =
+                                  index;
+                            },
+                            child: Obx(() => Get.find<ReportsController>()
+                                            .isSharingOrDownloading
+                                            .value ==
+                                        SharingOrDownloading.downloading &&
+                                    Get.find<ReportsController>()
+                                            .clickedIndex ==
+                                        index
+                                ? Lottie.asset(IconPath.downloadingJson)
+                                : const Icon(
+                                    Icons.download,
+                                    color: CustomColors.whiteCardColor,
+                                  )),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+        Positioned(
+          right: 20,
+          bottom: 20,
+          child: FloatingActionButton(
+            onPressed: () {
+              Get.toNamed(Routes.employeeUploadFilesPage);
+            },
+            child: const Icon(Icons.add),
+          ),
+        ),
+      ],
+    );
   }
 }

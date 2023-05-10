@@ -112,6 +112,17 @@ class ChatControllerAdmin extends GetxController with BaseController {
         for (int i = 0; i < userIdList.length; i++) {
           request.fields['members[$i]'] = userIdList[i];
         }
+        if (!userIdList.contains(Get.find<LoginController>()
+            .loginResponseModel!
+            .employee!
+            .id!
+            .toString())) {
+          userIdList.add(Get.find<LoginController>()
+              .loginResponseModel!
+              .employee!
+              .id!
+              .toString());
+        }
       }
       request.headers['Authorization'] =
           'Bearer ${Get.find<LoginController>().loginResponseModel?.token}';

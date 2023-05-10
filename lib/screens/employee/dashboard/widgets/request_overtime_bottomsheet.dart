@@ -11,10 +11,12 @@ import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../models/employee_list_model.dart' as emp;
 
 class RequestOvertimeBottomsheet extends StatelessWidget {
+  final emp.EmployeeList? employeeList;
   final int? index;
-  const RequestOvertimeBottomsheet({super.key, this.index});
+  const RequestOvertimeBottomsheet({super.key, this.index, this.employeeList});
   @override
   Widget build(BuildContext context) {
     int? originalIndex;
@@ -66,7 +68,17 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
           Form(
             key: Get.find<DashboardController>().requestAdvanceFormKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (employeeList != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      '${employeeList?.firstName} ${employeeList?.lastName}',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 BottomsheetTextField(
                   controller: Get.find<DashboardController>()
                       .overtimeTextEditingController,
@@ -92,7 +104,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                         ? Get.find<ReportsControllerAdmin>()
                             .overtimeResponseModel
                             .value
-                            .employeeList[originalIndex??index!]
+                            .employeeList[originalIndex ?? index!]
                             .totalHours
                         : null,
                     onSaved: ((value) => Get.find<DashboardController>()
@@ -147,7 +159,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
               onPressed: () => index != null
                   ? Get.find<ReportsControllerAdmin>().approveOrDeclineOvertime(
                       originalIndex!, ReasonButton.overtimeEdit)
-                  : Get.find<DashboardController>().requestOvertime(),
+                  : Get.find<DashboardController>().requestOvertime(employeeList),
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(

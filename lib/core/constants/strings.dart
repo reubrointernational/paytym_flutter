@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../screens/employee/dashboard/dashboard_controller.dart';
-import '../../screens/login/login_controller.dart';
 import 'icons.dart';
 
 double w = Get.width;
@@ -63,44 +62,32 @@ List<Map<String, dynamic>> calendarScheduleDetails = [
   },
 ];
 
+
+
 List<Map<String, dynamic>> employeeLeaves = [
   {
     "bgColor": const Color.fromRGBO(0, 148, 66, 1),
-    'total':
-        "${Get.find<DashboardController>().dashboardModel.value.absence ?? '0'}",
     'icon': Icons.people_outline,
     "title": "Absent",
-    "attendance_percentage":
-        "${((1 - ((Get.find<DashboardController>().dashboardModel.value.absence ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
+
   },
   {
     "bgColor": const Color.fromRGBO(250, 42, 20, 1),
-    //todo change casual to sick leave in api
-    'total':
-        "${Get.find<DashboardController>().dashboardModel.value.casual ?? '0'}",
     'icon': Icons.text_snippet_outlined,
     "title": "Sick Leave",
-    "attendance_percentage":
-        "${((1 - ((Get.find<DashboardController>().dashboardModel.value.casual ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
+
   },
   {
     "bgColor": const Color.fromRGBO(255, 92, 17, 1),
-    'total':
-        "${Get.find<DashboardController>().dashboardModel.value.annual ?? '0'}",
     'icon': Icons.event,
     "title": 'Annual Leave',
-    "attendance_percentage":
-        "${((1 - ((Get.find<DashboardController>().dashboardModel.value.annual ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
+
   },
   {
     "bgColor": const Color.fromRGBO(18, 115, 205, 1),
-    'total':
-        "${Get.find<DashboardController>().dashboardModel.value.halfday ?? '0'}",
     'icon': Icons.schedule,
-    //todo change halfday to late arrival in api
     "title": 'Late Arrival',
-    "attendance_percentage":
-        "${((1 - ((Get.find<DashboardController>().dashboardModel.value.halfday ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}",
+
   },
 ];
 
