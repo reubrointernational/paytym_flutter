@@ -35,45 +35,51 @@ class PaymentBottomSheet extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       'Split Payment',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    index == 0
-                        ? const Icon(
-                            Icons.account_balance,
-                            size: 30,
-                            color: Colors.blue,
-                          )
-                        : Image.asset(
-                            image!,
-                            height: h / 15,
-                            width: w / 5,
-                            fit: BoxFit.contain,
-                          ),
                   ],
                 ),
                 kSizedBoxH15,
                 PaymentCardTextFields(
-                  hint: 'Enter the amount',
+                  hint: 'Enter percentage for bank account',
                   label: '0',
                   width: double.infinity,
                   keyboardType: TextInputType.number,
                   onChanged: (value) =>
-                      Get.find<ReportsController>().splitAmount.value = value,
+                      Get.find<ReportsController>().splitAmount[0] = int.parse(value),
+                ),
+                PaymentCardTextFields(
+                  hint: 'Enter percentage for M-Paisa',
+                  label: '0',
+                  width: double.infinity,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) =>
+                      Get.find<ReportsController>()
+                      .splitAmount[1] = int.parse(value),
+                ),
+                PaymentCardTextFields(
+                  hint: 'Enter percentage for MyCash',
+                  label: '0',
+                  width: double.infinity,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) =>
+                      Get.find<ReportsController>()
+                      .splitAmount[2] = int.parse(value),
                 ),
                 SizedBox(
                   height: 60,
                   width: w,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      
 
-                      Get.find<ReportsController>().setSplitPayment(index);
+                      Get.find<ReportsController>().setSplitPayment(context);
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

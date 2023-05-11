@@ -11,61 +11,62 @@ String splitPaymentResponseModelToJson(SplitPaymentResponseModel data) =>
     json.encode(data.toJson());
 
 class SplitPaymentResponseModel {
+  String? message;
+  List<SplitPaymentList>? splitPaymentList;
+
   SplitPaymentResponseModel({
     this.message,
-    this.mycash,
-    this.mpaisa,
-    this.bank,
+    this.splitPaymentList,
   });
-
-  String? message;
-  Bank? mycash;
-  Bank? mpaisa;
-  Bank? bank;
 
   factory SplitPaymentResponseModel.fromJson(Map<String, dynamic> json) =>
       SplitPaymentResponseModel(
         message: json["message"],
-        mycash: json["mycash"] == null ? null : Bank.fromJson(json["mycash"]),
-        mpaisa: json["mpaisa"] == null ? null : Bank.fromJson(json["mpaisa"]),
-        bank: json["bank"] == null ? null : Bank.fromJson(json["bank"]),
+        splitPaymentList: json["split_payment_list"] == null
+            ? []
+            : List<SplitPaymentList>.from(json["split_payment_list"]!
+                .map((x) => SplitPaymentList.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "mycash": mycash?.toJson(),
-        "mpaisa": mpaisa?.toJson(),
-        "bank": bank?.toJson(),
+        "split_payment_list": splitPaymentList == null
+            ? []
+            : List<dynamic>.from(splitPaymentList!.map((x) => x.toJson())),
       };
 }
 
-class Bank {
-  Bank({
+class SplitPaymentList {
+  int? id;
+  int? employeeId;
+  int? employerId;
+  int? bank;
+  int? mycash;
+  int? mpaisa;
+  dynamic status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  SplitPaymentList({
     this.id,
     this.employeeId,
     this.employerId,
-    this.paymentWallet,
-    this.amount,
+    this.bank,
+    this.mycash,
+    this.mpaisa,
     this.status,
     this.createdAt,
     this.updatedAt,
   });
 
-  int? id;
-  int? employeeId;
-  int? employerId;
-  String? paymentWallet;
-  String? amount;
-  int? status;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-
-  factory Bank.fromJson(Map<String, dynamic> json) => Bank(
+  factory SplitPaymentList.fromJson(Map<String, dynamic> json) =>
+      SplitPaymentList(
         id: json["id"],
         employeeId: json["employee_id"],
         employerId: json["employer_id"],
-        paymentWallet: json["payment_wallet"],
-        amount: json["amount"],
+        bank: json["bank"],
+        mycash: json["mycash"],
+        mpaisa: json["mpaisa"],
         status: json["status"],
         createdAt: json["created_at"] == null
             ? null
@@ -79,8 +80,9 @@ class Bank {
         "id": id,
         "employee_id": employeeId,
         "employer_id": employerId,
-        "payment_wallet": paymentWallet,
-        "amount": amount,
+        "bank": bank,
+        "mycash": mycash,
+        "mpaisa": mpaisa,
         "status": status,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

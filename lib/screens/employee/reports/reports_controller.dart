@@ -51,7 +51,7 @@ class ReportsController extends GetxController
   final fileListResponseModel =
       EmployeeFilesListModel(files: [], message: '').obs;
 
-  final splitAmount = ''.obs;
+  final splitAmount = [0, 0, 0].obs;
   final splitPaymentResponseModel = SplitPaymentResponseModel().obs;
   final deductionResponseModel = DeductionResponseModel().obs;
   final attendanceResponseModel = AttendanceEmployeeResponseModel().obs;
@@ -160,17 +160,11 @@ class ReportsController extends GetxController
 
   String getSplitAmount(int index) {
     if (index == 0) {
-      int myCash =
-          int.tryParse(splitPaymentResponseModel.value.mycash?.amount ?? '0') ??
-              0;
-      int mPaisa =
-          int.tryParse(splitPaymentResponseModel.value.mpaisa?.amount ?? '0') ??
-              0;
-      return '\$${splitPaymentResponseModel.value.bank?.amount ?? '${int.tryParse(Get.find<LoginController>().loginResponseModel?.employee?.rate ?? '0') ?? 0 - myCash - mPaisa}'}';
+      return '${splitPaymentResponseModel.value.splitPaymentList?[0].bank.toString() ?? '0'}%';
     } else if (index == 1) {
-      return '\$${splitPaymentResponseModel.value.mpaisa?.amount ?? '0'}';
+      return '${splitPaymentResponseModel.value.splitPaymentList?[0].mpaisa.toString() ?? '0'}%';
     } else {
-      return '\$${splitPaymentResponseModel.value.mycash?.amount ?? '0'}';
+      return '${splitPaymentResponseModel.value.splitPaymentList?[0].mycash.toString() ?? '0'}%';
     }
   }
 
@@ -310,11 +304,11 @@ class ReportsController extends GetxController
     }
   }
 
-  setSplitPayment(index) async {
-    if (int.parse(splitAmount.value) <
-        int.parse(
-            Get.find<LoginController>().loginResponseModel?.employee?.rate ??
-                '0')) {
+  setSplitPayment(BuildContext context) async {
+    if (splitAmount
+            .reduce((previousValue, element) => previousValue + element) ==
+        100) {
+      Navigator.pop(context);
       showLoading();
       //Get.find<BaseClient>().onError = setSplitPayment(index);
       var requestModel = {
@@ -328,8 +322,9 @@ class ReportsController extends GetxController
             .employee!
             .id
             .toString(),
-        'amount': splitAmount.value,
-        'payment_wallet': (2 - index).toString(),
+        'bank': splitAmount[0],
+        'mycash': splitAmount[2],
+        'mpaisa': splitAmount[1],
       };
       var responseString = await Get.find<BaseClient>()
           .post(
@@ -338,12 +333,10 @@ class ReportsController extends GetxController
             Get.find<LoginController>().getHeader(),
           )
           .catchError(handleError);
-
+      hideLoading();
       if (responseString == null) {
         return;
       } else {
-        hideLoading();
-
         DialogHelper.showToast(
             desc:
                 messageOnlyResponseModelFromJson(responseString).message ?? '');
@@ -351,7 +344,7 @@ class ReportsController extends GetxController
         //Get.find<BaseClient>().onError = null;
       }
     } else {
-      DialogHelper.showToast(desc: 'Split amount should be less than salary');
+      DialogHelper.showToast(desc: 'Total percentage should be 100');
     }
   }
 
@@ -370,11 +363,10 @@ class ReportsController extends GetxController
       }),
       Get.find<LoginController>().getHeader(),
     );
-
+    hideLoading();
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
       splitPaymentResponseModel.value =
           splitPaymentResponseModelFromJson(responseString);
 
