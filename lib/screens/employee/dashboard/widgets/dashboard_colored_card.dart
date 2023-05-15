@@ -64,7 +64,7 @@ class DashboardColoredCard extends StatelessWidget {
                   ),
                   kSizedBoxH4,
                   Text(
-                    "${total[1]}% attendance",
+                    total[1],
                     style: TextStyle(
                         fontSize: 12,
                         letterSpacing: 0.5,

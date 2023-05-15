@@ -1,5 +1,7 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/splash/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/login/login_response_model.dart';
@@ -25,12 +27,12 @@ class SharedPreferenceHelper extends GetxController {
   deleteSharedPrefOnStart() async {
     final prefs = await SharedPreferences.getInstance();
 
-if (prefs.getBool('first_run') ?? true) {
+    if (prefs.getBool('first_run') ?? true) {
+      await storage.deleteAll();
 
-  await storage.deleteAll();
-
-  prefs.setBool('first_run', false);
-}
+      prefs.setBool('first_run', false);
+      Get.off(() => const SplashScreen());
+    }
   }
 
   Future<Map<String, String>> getStorageData() async {

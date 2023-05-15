@@ -11,20 +11,23 @@ String dashboardResponseModelToJson(DashboardResponseModel data) =>
     json.encode(data.toJson());
 
 class DashboardResponseModel {
-  DashboardResponseModel({
-    this.message,
-    this.casual,
-    this.absence,
-    this.annual,
-    this.halfday,
-    this.sick,
-    this.lateArrival,
-    this.totalWorkDays,
-    this.hours,
-    this.rosterCheckInTime,
-    this.nextShift,
-    this.lastCheckedIn,
-  });
+  DashboardResponseModel(
+      {this.message,
+      this.casual,
+      this.absence,
+      this.annual,
+      this.halfday,
+      this.sick,
+      this.lateArrival,
+      this.totalWorkDays,
+      this.hours,
+      this.rosterCheckInTime,
+      this.nextShift,
+      this.lastCheckedIn,
+      this.allowedAbsent,
+      this.allowedAnnualLeave,
+      this.allowedLateArrival,
+      this.allowedSickLeave});
 
   String? message;
   int? casual;
@@ -38,6 +41,10 @@ class DashboardResponseModel {
   String? rosterCheckInTime;
   NextShift? nextShift;
   DateTime? lastCheckedIn;
+  int? allowedAbsent;
+  int? allowedSickLeave;
+  int? allowedAnnualLeave;
+  int? allowedLateArrival;
 
   factory DashboardResponseModel.fromJson(Map<String, dynamic> json) =>
       DashboardResponseModel(
@@ -57,6 +64,10 @@ class DashboardResponseModel {
         lastCheckedIn: json["last_checked_in"] == null
             ? null
             : DateTime.parse(json["last_checked_in"]),
+        allowedAbsent: json["allowed_absent"],
+        allowedSickLeave: json["allowed_sick_leave"],
+        allowedAnnualLeave: json["allowed_annual_leave"],
+        allowedLateArrival: json["allowed_late_arrival"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -72,6 +83,10 @@ class DashboardResponseModel {
         "roster_check_in_time": rosterCheckInTime,
         "next shift": nextShift?.toJson(),
         "last_checked_in": lastCheckedIn?.toIso8601String(),
+        "allowed_absent": allowedAbsent,
+        "allowed_sick_leave": allowedSickLeave,
+        "allowed_annual_leave": allowedAnnualLeave,
+        "allowed_late_arrival": allowedLateArrival,
       };
 }
 

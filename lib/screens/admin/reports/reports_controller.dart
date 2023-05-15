@@ -64,14 +64,14 @@ class ReportsControllerAdmin extends GetxController
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
-  
 
   List<String> reportsTabListAdmin = [
-    'Projects',
     'Attendance',
-    'Uploads',
     'Overtime',
-    // 'Deduction',
+    //payroll
+    //deduction
+    'Projects',
+    'Uploads',
     // 'Medical',
     // 'Contract period'
   ];
@@ -147,11 +147,12 @@ class ReportsControllerAdmin extends GetxController
         Get.find<LoginController>().loginResponseModel?.capabilities;
     if (capabilityList?.first.viewPayroll == 1 &&
         !reportsTabListAdmin.contains('Payroll')) {
-      reportsTabListAdmin.add('Payroll');
+      reportsTabListAdmin.insert(2, 'Payroll');
     }
     if (capabilityList?.first.deductions == 1 &&
         !reportsTabListAdmin.contains('Deduction')) {
-      reportsTabListAdmin.add('Deduction');
+      bool payrollPresent = reportsTabListAdmin.contains('Payroll');
+      reportsTabListAdmin.insert(payrollPresent ? 3 : 2, 'Deduction');
     }
     if (capabilityList?.first.medical == 1 &&
         !reportsTabListAdmin.contains('Medical')) {
@@ -247,7 +248,7 @@ class ReportsControllerAdmin extends GetxController
   final payrollClickedButton = 0.obs;
 
   final chatGroupList = dummy_data.obs;
-  int selectedItemIndex = 0;
+  History selectedItem = History();
   String projectName = '';
   final projectDetailsResponseModel =
       ProjectDetailsModel(message: '', projectsListe: []).obs;
@@ -657,17 +658,12 @@ class ReportsControllerAdmin extends GetxController
   approveOrDeclineAttendance(ReasonButton reasonButton) async {
     showLoading();
     final model = AttendanceAcceptDeclineRequestModel(
-        employeeId: attendanceResponseModel
-                .value.history?[selectedItemIndex].userId
-                .toString() ??
-            '',
+        employeeId: selectedItem.userId.toString(),
         reason: '',
         //0 for decline, 1 for approve
         approvalStatus:
             reasonButton == ReasonButton.attendanceApprove ? '1' : '0',
-        attendanceId: attendanceResponseModel
-            .value.history![selectedItemIndex].id!
-            .toString());
+        attendanceId: selectedItem.id!.toString());
 
     var responseString = await Get.find<BaseClient>()
         .post(
@@ -675,12 +671,27 @@ class ReportsControllerAdmin extends GetxController
             attendanceAcceptDeclineRequestModelToJson(model),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    hideLoading();
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
-      attendanceResponseModel.value.history?[selectedItemIndex].approveReject =
-          reasonButton == ReasonButton.attendanceApprove ? '1' : '0';
+      try {
+        attendanceResponseModel.value.history
+                ?.firstWhere((element) => element.id == selectedItem.id)
+                .approveReject =
+            reasonButton == ReasonButton.attendanceApprove ? '1' : '0';
+      } on Exception {
+        // TODO
+      }
+
+      try {
+        attendanceResponseModel.value.pending
+                ?.firstWhere((element) => element.id == selectedItem.id)
+                .approveReject =
+            reasonButton == ReasonButton.attendanceApprove ? '1' : '0';
+      } on Exception {
+        // TODO
+      }
       if (reasonButton != ReasonButton.attendanceApprove) {
         Get.back();
       }
@@ -688,6 +699,9 @@ class ReportsControllerAdmin extends GetxController
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
+    Future.delayed(const Duration(seconds: 1), () {
+      hideLoading();
+    });
   }
 
   getAttendance() async {
@@ -720,21 +734,11 @@ class ReportsControllerAdmin extends GetxController
     showLoading();
     // 2023-03-29 17:59:15.000000 = in
     // 2024-11-14 06:17:38.000000 = out
-    String checkInReceived = attendanceResponseModel
-        .value.history![selectedItemIndex].checkIn
-        .toString()
-        .split(' ')
-        .first;
-    String checkOutReceived = attendanceResponseModel
-        .value.history![selectedItemIndex].checkOut
-        .toString()
-        .split(' ')
-        .first;
+    String checkInReceived = selectedItem.checkIn.toString().split(' ').first;
+    String checkOutReceived = selectedItem.checkOut.toString().split(' ').first;
 
     AttendanceEditRequestModel attendanceEditRequestModel = AttendanceEditRequestModel(
-        attendanceId: attendanceResponseModel
-            .value.history![selectedItemIndex].id!
-            .toString(),
+        attendanceId: selectedItem.id!.toString(),
         checkIn:
             '$checkInReceived ${DateFormat("HH:mm").format(DateFormat("hh:mm aa").parse(editAttendanceCheckInTime.value))}',
         checkOut:
@@ -752,8 +756,21 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      attendanceResponseModel.value.history?[selectedItemIndex].approveReject =
-          '1';
+      try {
+        attendanceResponseModel.value.history
+            ?.firstWhere((element) => element.id == selectedItem.id)
+            .approveReject = '1';
+      } on Exception {
+        // TODO
+      }
+
+      try {
+        attendanceResponseModel.value.pending
+            ?.firstWhere((element) => element.id == selectedItem.id)
+            .approveReject = '1';
+      } on Exception {
+        // TODO
+      }
 
       Get.back();
 

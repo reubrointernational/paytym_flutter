@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
 import 'package:paytym/models/calendar/meeting_response_model.dart';
@@ -92,7 +90,11 @@ class CalendarController extends GetxController with BaseController {
   }
 
   getTime(String time) {
-    final DateTime now = DateTime.parse(time);
-    return DateFormat('hh:mm a').format(now);
+    try {
+      final DateTime now = DateTime.parse(time);
+      return DateFormat('hh:mm a').format(now);
+    } on Exception {
+      return '00:00 00';
+    }
   }
 }

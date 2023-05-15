@@ -21,7 +21,7 @@ class ReportsPageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reportsController = Get.put(ReportsControllerAdmin());
-    
+
     final reportsTabListAdmin = reportsController.fillReportTab();
 
     return CustomAdminScaffoldWithTabBar(
@@ -30,15 +30,7 @@ class ReportsPageAdmin extends StatelessWidget {
       children: [
         Animate(
           effects: const [FadeEffect()],
-          child: const ProjectsTabAdmin(),
-        ),
-        Animate(
-          effects: const [FadeEffect()],
           child: const AttendanceTabAdmin(),
-        ),
-        Animate(
-          effects: const [FadeEffect()],
-          child: const UploadsTabAdmin(),
         ),
         Animate(
           effects: const [FadeEffect()],
@@ -49,11 +41,21 @@ class ReportsPageAdmin extends StatelessWidget {
             effects: const [FadeEffect()],
             child: const PayrollTab(),
           ),
-        if (reportsTabListAdmin.contains('Deduction'))
+          if (reportsTabListAdmin.contains('Deduction'))
           Animate(
             effects: const [FadeEffect()],
             child: const DeductionTabAdmin(),
           ),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const ProjectsTabAdmin(),
+        ),
+        Animate(
+          effects: const [FadeEffect()],
+          child: const UploadsTabAdmin(),
+        ),
+        
+        
         if (reportsTabListAdmin.contains('Medical'))
           Animate(
             effects: const [FadeEffect()],

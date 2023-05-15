@@ -3,13 +3,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
+import 'package:paytym/screens/admin/reports/widgets/pending_payroll_listview.dart';
 import 'package:paytym/screens/admin/reports/widgets/rounded_icons.dart';
 
-import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../models/report/attendance/attendance_admin_response_model.dart';
 import '../../dashboard/dashboard_controller.dart';
+import '../pending_page.dart';
 import '../reports_controller.dart';
 
 class AttendanceTabAdmin extends StatelessWidget {
@@ -32,15 +33,23 @@ class AttendanceTabAdmin extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Obx(() => Text(
-                        Get.find<ReportsControllerAdmin>().selectedDate.value ==
-                                DateFormat('dd-MM-yyyy').format(DateTime.now())
-                            ? 'Today'
-                            : '',
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.blue),
+                      ),
+                      onPressed: () {
+                        Get.to(() => const PendingAttendanceScreen());
+                      },
+                      child: Text(
+                        'Pending',
                         style: TextStyle(
                             color: Colors.blue.shade800,
                             fontWeight: FontWeight.w500),
-                      )),
+                      ),
+                    ),
+                  ),
                   Row(
                     children: [
                       Obx(
@@ -121,7 +130,7 @@ class AttendanceTabAdmin extends StatelessWidget {
               attendanceList = attendanceList
                   ?.where((element) => element.approveReject == null)
                   .toList();
-                  
+
               return ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemCount: attendanceList?.length ?? 0,
@@ -147,13 +156,9 @@ class AttendanceTabAdmin extends StatelessWidget {
                             IconButton(
                               onPressed: () {
                                 Get.find<ReportsControllerAdmin>()
-                                        .selectedItemIndex =
-                                    Get.find<ReportsControllerAdmin>()
-                                        .attendanceResponseModel
-                                        .value
-                                        .history
-                                        ?.indexOf(attendanceList![index])??-1;
-                                
+                                        .selectedItem =
+                                    attendanceList![index];
+
                                 Get.find<ReportsControllerAdmin>()
                                     .approveOrDeclineAttendance(
                                         ReasonButton.attendanceApprove);
@@ -166,13 +171,8 @@ class AttendanceTabAdmin extends StatelessWidget {
                             IconButton(
                               onPressed: () {
                                 Get.find<ReportsControllerAdmin>()
-                                        .selectedItemIndex =
-                                    Get.find<ReportsControllerAdmin>()
-                                            .attendanceResponseModel
-                                            .value
-                                            .history
-                                            ?.indexOf(attendanceList![index]) ??
-                                        -1;
+                                        .selectedItem =
+                                    attendanceList![index];
                                 Get.find<ReportsControllerAdmin>()
                                     .showBottomSheetForReason(
                                         ReasonButton.attendanceEdit);
@@ -185,15 +185,9 @@ class AttendanceTabAdmin extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () {
-                                
-                               Get.find<ReportsControllerAdmin>()
-                                        .selectedItemIndex =
-                                    Get.find<ReportsControllerAdmin>()
-                                            .attendanceResponseModel
-                                            .value
-                                            .history
-                                            ?.indexOf(attendanceList![index]) ??
-                                        -1;
+                                Get.find<ReportsControllerAdmin>()
+                                        .selectedItem =
+                                    attendanceList![index];
                                 Get.find<ReportsControllerAdmin>()
                                     .showBottomSheetForReason(
                                         ReasonButton.attendanceDecline);
@@ -248,7 +242,7 @@ class AttendanceCardColumn extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  attendanceElement.user!.branch?.name.toString() ?? '',
+                  attendanceElement.user?.branch?.name.toString() ?? '',
                   style: kTextStyleS15W600CBlack,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -267,7 +261,7 @@ class AttendanceCardColumn extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '${attendanceElement.user!.firstName} ${attendanceElement.user!.lastName}',
+                  '${attendanceElement.user?.firstName} ${attendanceElement.user?.lastName}',
                   style: kTextStyleS15W600CBlack,
                   overflow: TextOverflow.ellipsis,
                 ),

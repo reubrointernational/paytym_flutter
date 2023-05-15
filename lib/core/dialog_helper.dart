@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 import '../network/base_client.dart';
 import 'constants/strings.dart';
@@ -23,7 +22,6 @@ class DialogHelper {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
-          
             children: [
               // Lottie.asset('assets/json/404_error.json'),
               const CircleAvatar(
@@ -34,7 +32,9 @@ class DialogHelper {
               Text(
                 title,
                 style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.red),
               ),
               kSizedBoxH10,
               Text(
@@ -49,7 +49,6 @@ class DialogHelper {
                     width: w * 0.4,
                     child: ElevatedButton(
                       onPressed: () {
-                        
                         Get.back();
                       },
                       child: const Text(
@@ -128,13 +127,14 @@ class DialogHelper {
       {String desc = 'Something went wrong',
       Color backgroundColor = Colors.blue}) {
     Fluttertoast.showToast(
-        msg: desc,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: backgroundColor,
-        textColor: Colors.white,
-        fontSize: 16.0);
+      msg: desc,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 3,
+      backgroundColor: backgroundColor,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 
   //show snack bar

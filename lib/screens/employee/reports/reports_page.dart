@@ -123,15 +123,12 @@ class ReportsPage extends StatelessWidget {
                             physics: const BouncingScrollPhysics(),
                             children: [
                               Animate(
-                                  effects: const [FadeEffect()],
-                                  child: const MyFilesTab()),
-                              Animate(
                                 effects: const [FadeEffect()],
-                                child: const SplitPaymentTab(),
+                                child: const AttendanceTab(),
                               ),
                               Animate(
                                 effects: const [FadeEffect()],
-                                child: const PayslipTab(),
+                                child: const SplitPaymentTab(),
                               ),
                               Animate(
                                 effects: const [FadeEffect()],
@@ -139,8 +136,11 @@ class ReportsPage extends StatelessWidget {
                               ),
                               Animate(
                                 effects: const [FadeEffect()],
-                                child: const AttendanceTab(),
+                                child: const PayslipTab(),
                               ),
+                              Animate(
+                                  effects: const [FadeEffect()],
+                                  child: const MyFilesTab()),
                               Animate(
                                 effects: const [FadeEffect()],
                                 child: const MedicalTab(),

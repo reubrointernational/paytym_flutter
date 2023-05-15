@@ -18,6 +18,7 @@ class AttendanceAdminModel {
     this.absent = 0,
     this.late = 0,
     this.totalCount = 0,
+    this.pending,
   });
 
   String? message;
@@ -26,6 +27,7 @@ class AttendanceAdminModel {
   int absent;
   int late;
   int totalCount;
+  List<History>? pending;
 
   factory AttendanceAdminModel.fromJson(Map<String, dynamic> json) =>
       AttendanceAdminModel(
@@ -38,6 +40,13 @@ class AttendanceAdminModel {
         absent: json["absent"],
         late: json["late"],
         totalCount: json["total_count"],
+        pending: json["pending_attendance"] == null
+            ? []
+            : List<History>.from(
+                json["pending_attendance"]!.map((x) => History.fromJson(x))),
+        
+        
+        
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,6 +58,7 @@ class AttendanceAdminModel {
         "absent": absent,
         "late": late,
         "total_count": totalCount,
+        "pending_attendance": pending,
       };
 }
 
@@ -341,3 +351,5 @@ class Branch {
         "name": name,
       };
 }
+
+

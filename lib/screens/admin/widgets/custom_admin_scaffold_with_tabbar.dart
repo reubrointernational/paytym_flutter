@@ -21,9 +21,11 @@ class CustomAdminScaffoldWithTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<LoginController>().initialIndex = 0);
+        (_) => Get.find<LoginController>().initialTab = '');
     return DefaultTabController(
-      initialIndex: Get.find<LoginController>().initialIndex ?? 0,
+      initialIndex: Get.find<LoginController>().initialTab.isEmpty
+          ? 0
+          : tabList.indexOf(Get.find<LoginController>().initialTab),
       length: tabList.length,
       child: Scaffold(
         floatingActionButton: CustomFloatingActionButton(

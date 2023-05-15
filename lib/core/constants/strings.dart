@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../screens/employee/dashboard/dashboard_controller.dart';
 import 'icons.dart';
 
 double w = Get.width;
@@ -62,32 +61,26 @@ List<Map<String, dynamic>> calendarScheduleDetails = [
   },
 ];
 
-
-
 List<Map<String, dynamic>> employeeLeaves = [
   {
     "bgColor": const Color.fromRGBO(0, 148, 66, 1),
     'icon': Icons.people_outline,
     "title": "Absent",
-
   },
   {
     "bgColor": const Color.fromRGBO(250, 42, 20, 1),
     'icon': Icons.text_snippet_outlined,
     "title": "Sick Leave",
-
   },
   {
     "bgColor": const Color.fromRGBO(255, 92, 17, 1),
     'icon': Icons.event,
     "title": 'Annual Leave',
-
   },
   {
     "bgColor": const Color.fromRGBO(18, 115, 205, 1),
     'icon': Icons.schedule,
     "title": 'Late Arrival',
-
   },
 ];
 
@@ -348,14 +341,19 @@ List<Map<String, dynamic>> chatList = [
 // List<String> calendarTabList = ['Meeting', 'Event', 'Schedule', 'Holiday'];
 List<String> calendarTabList = ['Meeting', 'Event', 'Holiday'];
 // List<String> leaveTabList = ['All', 'Sick', 'Casual', 'Annual', 'Halfday'];
-List<String> leaveTabListAdmin = ['Today', 'Yesterday', 'Pending', 'All'];
+List<String> leaveTabListAdmin = [
+  'Pending',
+  'All',
+  'Today',
+  'Yesterday',
+];
 
 List<String> reportsTabList = [
-  'My Files',
-  'Split Payment',
-  'Payslip',
-  'Deduction',
   'Attendance',
+  'Split Payment',
+  'Deduction',
+  'Payslip',
+  'My Files',
   'Medical'
 ];
 

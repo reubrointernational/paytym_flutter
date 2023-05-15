@@ -144,7 +144,7 @@ class DashboardController extends GetxController with BaseController {
           DateFormat('yyyy-MM-dd').format(dateTime!);
       overtimeTextEditingController?.text =
           DateFormat('dd-MM-yyyy').format(dateTime);
-    } on Exception catch (e) {}
+    } on Exception {}
   }
 
   requestOvertime(EmployeeList? employeeList) async {
@@ -324,22 +324,22 @@ class DashboardController extends GetxController with BaseController {
       case 0:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.absence ?? '0'}",
-          "${((1 - ((Get.find<DashboardController>().dashboardModel.value.absence ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedAbsent??0} remaining"
         ];
       case 1:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.sick ?? '0'}",
-          "${((1 - ((Get.find<DashboardController>().dashboardModel.value.sick ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedSickLeave??0} remaining"
         ];
       case 2:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.annual ?? '0'}",
-          "${((1 - ((Get.find<DashboardController>().dashboardModel.value.annual ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedAnnualLeave??0} remaining"
         ];
       default:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.lateArrival ?? '0'}",
-          "${((1 - ((Get.find<DashboardController>().dashboardModel.value.lateArrival ?? 0) / (Get.find<DashboardController>().dashboardModel.value.totalWorkDays ?? 1))) * 100).toInt()}"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedLateArrival??0} remaining"
         ];
     }
   }
