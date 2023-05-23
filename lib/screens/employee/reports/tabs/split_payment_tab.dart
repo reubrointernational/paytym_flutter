@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
-import 'package:paytym/core/constants/strings.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
-import 'package:paytym/screens/split_payment/payment_controller.dart';
 
 import '../../../login/login_controller.dart';
 import '../../../split_payment/payment_methods.dart';
@@ -46,7 +44,7 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Your balance is',
+                              'Your Gross salary is',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -66,7 +64,7 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
                     ),
                     kSizedBoxH20,
                     Text(
-                      'Payment Method',
+                      'My Payment Accounts',
                       style: TextStyle(
                         color: Colors.orange.shade800,
                         fontWeight: FontWeight.w600,
@@ -79,15 +77,15 @@ class _SplitPaymentTabState extends State<SplitPaymentTab> {
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xffbfbfbf), Color(0xffebebeb)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          
-                          borderRadius: BorderRadius.circular(20),),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xffbfbfbf), Color(0xffebebeb)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: const Text(
-                        'Please note that amounts shown here are based on available Gross Salary and the actual Net Amounts paid will be different',
+                        'Please note that amount shown is base Gross Salary and the final processed amount will be the Net Salary actually paid.',
                         textAlign: TextAlign.justify,
                         style: TextStyle(fontSize: 17, height: 1.5),
                       ),

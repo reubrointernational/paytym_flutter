@@ -12,7 +12,11 @@ class LeavesTabAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-     leave != leaveTabListAdmin[1] ? Get.find<LeavesControllerAdmin>().fetchLeaveData(1) : Get.find<LeavesControllerAdmin>().fetchLeaveData(3);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        leave != leaveTabListAdmin[1]
+            ? Get.find<LeavesControllerAdmin>().fetchLeaveData(1)
+            : Get.find<LeavesControllerAdmin>().fetchLeaveData(3);
+      });
     });
     return Obx(
       () {
@@ -29,8 +33,13 @@ class LeavesTabAdmin extends StatelessWidget {
               .where((element) => Get.find<LeavesControllerAdmin>()
                   .isYesterday(element.createdAt ?? DateTime.now()))
               .toList();
-        } else {
+        } else if (leave == leaveTabListAdmin[0]) {
           allLeaves = Get.find<LeavesControllerAdmin>().getFilteredLeavesList();
+        } else {
+          allLeaves =
+              Get.find<LeavesControllerAdmin>().getFilteredLeavesList(3);
+          allLeaves?.sort((a, b) => b.status!.compareTo(a.status!));
+          allLeaves?.sort((a, b) => a.status!.compareTo(b.status!));
         }
 
         return ListView.builder(

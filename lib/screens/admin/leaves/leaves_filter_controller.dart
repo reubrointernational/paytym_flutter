@@ -4,19 +4,17 @@ import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
 import '../../../models/leaves/leaves_admin_response_model.dart';
 import '../dashboard/dashboard_controller.dart';
 
-
 class LeavesFilterController {
-  
-
-  List<LeaveRequest>? getFilteredLeavesList() {
+  List<LeaveRequest>? getFilteredLeavesList([int allLeaves = 0]) {
     List<LeaveRequest>? leavesList;
+    LeavesListAdminModel model = allLeaves == 3
+        ? Get.find<LeavesControllerAdmin>().leaveAdminResponseModelAll.value
+        : Get.find<LeavesControllerAdmin>().leaveAdminResponseModel.value;
     if (Get.find<DashboardControllerAdmin>()
             .selectedDropdownDepartments
             .value !=
         null) {
-      leavesList = Get.find<LeavesControllerAdmin>()
-          .leaveAdminResponseModel
-          .value
+      leavesList = model
           .leaveRequest
           ?.where((element) =>
               (element.user?.departmentId ?? 0) ==
@@ -47,9 +45,7 @@ class LeavesFilterController {
     } else if (leavesList == null &&
         Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
             null) {
-      leavesList = Get.find<LeavesControllerAdmin>()
-          .leaveAdminResponseModel
-          .value
+      leavesList = model
           .leaveRequest
           ?.where((element) =>
               (element.user?.branchId ?? 0) ==
@@ -64,9 +60,7 @@ class LeavesFilterController {
                   0))
           .toList();
     }
-    leavesList ??= Get.find<LeavesControllerAdmin>()
-        .leaveAdminResponseModel
-        .value
+    leavesList ??= model
         .leaveRequest;
     leavesList = leavesList
         ?.where(
@@ -81,6 +75,4 @@ class LeavesFilterController {
         .toList();
     return leavesList;
   }
-
-  
 }

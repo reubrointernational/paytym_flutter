@@ -11,13 +11,13 @@ String meetingResponseModelToJson(MeetingResponseModel data) =>
     json.encode(data.toJson());
 
 class MeetingResponseModel {
+  String? message;
+  List<Meeting>? meetings;
+
   MeetingResponseModel({
     this.message,
     this.meetings,
   });
-
-  String? message;
-  List<Meeting>? meetings;
 
   factory MeetingResponseModel.fromJson(Map<String, dynamic> json) =>
       MeetingResponseModel(
@@ -37,7 +37,49 @@ class MeetingResponseModel {
 }
 
 class Meeting {
+  int? id;
+  int? meetingId;
+  int? attendeeId;
+  Meetings? meetings;
+
   Meeting({
+    this.id,
+    this.meetingId,
+    this.attendeeId,
+    this.meetings,
+  });
+
+  factory Meeting.fromJson(Map<String, dynamic> json) => Meeting(
+        id: json["id"],
+        meetingId: json["meeting_id"],
+        attendeeId: json["attendee_id"],
+        meetings: json["meetings"] == null
+            ? null
+            : Meetings.fromJson(json["meetings"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "meeting_id": meetingId,
+        "attendee_id": attendeeId,
+        "meetings": meetings?.toJson(),
+      };
+}
+
+class Meetings {
+  int? id;
+  int? userId;
+  int? employerId;
+  String? name;
+  DateTime? date;
+  DateTime? startTime;
+  DateTime? endTime;
+  String? location;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  User? user;
+
+  Meetings({
     this.id,
     this.userId,
     this.employerId,
@@ -51,19 +93,7 @@ class Meeting {
     this.user,
   });
 
-  int? id;
-  int? userId;
-  int? employerId;
-  String? name;
-  DateTime? date;
-  DateTime? startTime;
-  DateTime? endTime;
-  String? location;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  User? user;
-
-  factory Meeting.fromJson(Map<String, dynamic> json) => Meeting(
+  factory Meetings.fromJson(Map<String, dynamic> json) => Meetings(
         id: json["id"],
         userId: json["user_id"],
         employerId: json["employer_id"],
@@ -101,12 +131,57 @@ class Meeting {
 }
 
 class User {
+  int? id;
+  int? employerId;
+  DateTime? employmentStartDate;
+  DateTime? employmentEndDate;
+  DateTime? payedDate;
+  DateTime? payDate;
+  String? bankBranchName;
+  int? businessId;
+  int? departmentId;
+  String? salaryType;
+  String? rate;
+  String? payPeriod;
+  String? workdaysPerWeek;
+  String? totalHoursPerWeek;
+  String? extraHoursAtBaseRate;
+  String? employeeType;
+  String? firstName;
+  String? lastName;
+  String? company;
+  int? branchId;
+  int? position;
+  String? email;
+  String? phone;
+  DateTime? dateOfBirth;
+  String? street;
+  String? city;
+  String? town;
+  String? postcode;
+  String? countryId;
+  String? tin;
+  String? fnpf;
+  String? bank;
+  String? accountNumber;
+  String? image;
+  String? isFirst;
+  String? otp;
+  String? deviceId;
+  dynamic emailVerifiedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  dynamic forgotPassOtp;
+  int? status;
+  Role? role;
+
   User({
     this.id,
     this.employerId,
     this.employmentStartDate,
     this.employmentEndDate,
     this.payedDate,
+    this.payDate,
     this.bankBranchName,
     this.businessId,
     this.departmentId,
@@ -129,7 +204,7 @@ class User {
     this.city,
     this.town,
     this.postcode,
-    this.country,
+    this.countryId,
     this.tin,
     this.fnpf,
     this.bank,
@@ -137,60 +212,29 @@ class User {
     this.image,
     this.isFirst,
     this.otp,
+    this.deviceId,
     this.emailVerifiedAt,
     this.createdAt,
     this.updatedAt,
     this.forgotPassOtp,
     this.status,
+    this.role,
   });
-
-  int? id;
-  int? employerId;
-  dynamic employmentStartDate;
-  dynamic employmentEndDate;
-  dynamic payedDate;
-  dynamic bankBranchName;
-  dynamic businessId;
-  int? departmentId;
-  String? salaryType;
-  dynamic rate;
-  dynamic payPeriod;
-  dynamic workdaysPerWeek;
-  dynamic totalHoursPerWeek;
-  dynamic extraHoursAtBaseRate;
-  dynamic employeeType;
-  String? firstName;
-  String? lastName;
-  String? company;
-  int? branchId;
-  Position? position;
-  String? email;
-  String? phone;
-  DateTime? dateOfBirth;
-  String? street;
-  String? city;
-  String? town;
-  String? postcode;
-  String? country;
-  String? tin;
-  String? fnpf;
-  String? bank;
-  String? accountNumber;
-  String? image;
-  String? isFirst;
-  String? otp;
-  dynamic emailVerifiedAt;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  dynamic forgotPassOtp;
-  int? status;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         employerId: json["employer_id"],
-        employmentStartDate: json["employment_start_date"],
-        employmentEndDate: json["employment_end_date"],
-        payedDate: json["payed_date"],
+        employmentStartDate: json["employment_start_date"] == null
+            ? null
+            : DateTime.parse(json["employment_start_date"]),
+        employmentEndDate: json["employment_end_date"] == null
+            ? null
+            : DateTime.parse(json["employment_end_date"]),
+        payedDate: json["payed_date"] == null
+            ? null
+            : DateTime.parse(json["payed_date"]),
+        payDate:
+            json["pay_date"] == null ? null : DateTime.parse(json["pay_date"]),
         bankBranchName: json["bank_branch_name"],
         businessId: json["business_id"],
         departmentId: json["department_id"],
@@ -205,9 +249,7 @@ class User {
         lastName: json["last_name"],
         company: json["company"],
         branchId: json["branch_id"],
-        position: json["position"] == null
-            ? null
-            : Position.fromJson(json["position"]),
+        position: json["position"],
         email: json["email"],
         phone: json["phone"],
         dateOfBirth: json["date_of_birth"] == null
@@ -217,7 +259,7 @@ class User {
         city: json["city"],
         town: json["town"],
         postcode: json["postcode"],
-        country: json["country"],
+        countryId: json["country_id"],
         tin: json["tin"],
         fnpf: json["fnpf"],
         bank: json["bank"],
@@ -225,6 +267,7 @@ class User {
         image: json["image"],
         isFirst: json["isFirst"],
         otp: json["otp"],
+        deviceId: json["device_id"],
         emailVerifiedAt: json["email_verified_at"],
         createdAt: json["created_at"] == null
             ? null
@@ -234,14 +277,20 @@ class User {
             : DateTime.parse(json["updated_at"]),
         forgotPassOtp: json["forgot_pass_otp"],
         status: json["status"],
+        role: json["role"] == null ? null : Role.fromJson(json["role"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "employer_id": employerId,
-        "employment_start_date": employmentStartDate,
-        "employment_end_date": employmentEndDate,
-        "payed_date": payedDate,
+        "employment_start_date":
+            "${employmentStartDate!.year.toString().padLeft(4, '0')}-${employmentStartDate!.month.toString().padLeft(2, '0')}-${employmentStartDate!.day.toString().padLeft(2, '0')}",
+        "employment_end_date":
+            "${employmentEndDate!.year.toString().padLeft(4, '0')}-${employmentEndDate!.month.toString().padLeft(2, '0')}-${employmentEndDate!.day.toString().padLeft(2, '0')}",
+        "payed_date":
+            "${payedDate!.year.toString().padLeft(4, '0')}-${payedDate!.month.toString().padLeft(2, '0')}-${payedDate!.day.toString().padLeft(2, '0')}",
+        "pay_date":
+            "${payDate!.year.toString().padLeft(4, '0')}-${payDate!.month.toString().padLeft(2, '0')}-${payDate!.day.toString().padLeft(2, '0')}",
         "bank_branch_name": bankBranchName,
         "business_id": businessId,
         "department_id": departmentId,
@@ -256,7 +305,7 @@ class User {
         "last_name": lastName,
         "company": company,
         "branch_id": branchId,
-        "position": position?.toJson(),
+        "position": position,
         "email": email,
         "phone": phone,
         "date_of_birth":
@@ -265,7 +314,7 @@ class User {
         "city": city,
         "town": town,
         "postcode": postcode,
-        "country": country,
+        "country_id": countryId,
         "tin": tin,
         "fnpf": fnpf,
         "bank": bank,
@@ -273,30 +322,36 @@ class User {
         "image": image,
         "isFirst": isFirst,
         "otp": otp,
+        "device_id": deviceId,
         "email_verified_at": emailVerifiedAt,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "forgot_pass_otp": forgotPassOtp,
         "status": status,
+        "role": role?.toJson(),
       };
 }
 
-class Position {
-  Position({
+class Role {
+  int? id;
+  dynamic employerId;
+  String? roleName;
+
+  Role({
     this.id,
+    this.employerId,
     this.roleName,
   });
 
-  int? id;
-  String? roleName;
-
-  factory Position.fromJson(Map<String, dynamic> json) => Position(
+  factory Role.fromJson(Map<String, dynamic> json) => Role(
         id: json["id"],
+        employerId: json["employer_id"],
         roleName: json["role_name"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "employer_id": employerId,
         "role_name": roleName,
       };
 }

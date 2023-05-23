@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
+import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
@@ -69,11 +70,18 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                     ),
                   ),
                   index == 0
-                      ? const Center(
-                          child: Icon(
-                            Icons.account_balance,
-                            size: 30,
-                            color: Colors.blue,
+                      ? Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.account_balance,
+                                size: 30,
+                                color: Colors.blue,
+                              ),
+                              kSizedBoxW4,
+                              Text('Bank', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),),
+                            ],
                           ),
                         )
                       : Center(

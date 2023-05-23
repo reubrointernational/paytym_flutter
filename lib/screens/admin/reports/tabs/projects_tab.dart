@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paytym/core/constants/enums.dart';
+import 'package:intl/intl.dart';
 import 'package:paytym/screens/admin/reports/project_employee_list_page.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 
@@ -8,7 +8,6 @@ import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../network/end_points.dart';
-import '../../../../routes/app_routes.dart';
 import '../../dashboard/dashboard_controller.dart';
 import '../widgets/custom_progress_indicator.dart';
 
@@ -236,8 +235,12 @@ class ProjectsTabAdmin extends StatelessWidget {
                                       ),
                                       kSizedBoxW4,
                                       Text(
-                                        projects[index].startDate ??
-                                            'Not provided',
+                                        projects[index].startDate == null
+                                            ? 'Not Provided'
+                                            : DateFormat('dd-MM-yyyy').format(
+                                                DateTime.parse(
+                                                    projects[index].startDate),
+                                              ),
                                         style: const TextStyle(
                                           color: CustomColors.blackTextColor,
                                           fontWeight: FontWeight.bold,
@@ -255,8 +258,12 @@ class ProjectsTabAdmin extends StatelessWidget {
                                       ),
                                       kSizedBoxW4,
                                       Text(
-                                        projects[index].endDate ??
-                                            'Not provided',
+                                        projects[index].endDate == null
+                                            ? 'Not Provided'
+                                            : DateFormat('dd-MM-yyyy').format(
+                                                DateTime.parse(
+                                                    projects[index].endDate),
+                                              ),
                                         style: const TextStyle(
                                           color: CustomColors.blackTextColor,
                                           fontWeight: FontWeight.bold,

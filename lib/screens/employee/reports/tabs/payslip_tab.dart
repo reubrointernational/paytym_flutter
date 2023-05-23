@@ -52,14 +52,16 @@ class PayslipTab extends StatelessWidget {
               );
             }),
             Obx(() {
-              if (reportsController.selectedDropdownDay.value == null || reportsController.dateList.isEmpty) {
+              if (reportsController.selectedDropdownDay.value == null ||
+                  reportsController.dateList.isEmpty) {
                 return const SizedBox(
                   width: 50,
                 );
               }
               return CustomDropdownYearButton(
                 lists: reportsController.dateList,
-                value: reportsController.dateList.firstWhere((element) => element==reportsController.selectedDropdownDay.value),
+                value: reportsController.dateList.firstWhere((element) =>
+                    element == reportsController.selectedDropdownDay.value),
                 onChanged: (value) {
                   reportsController.selectedDropdownDay.value = value!;
                 },
@@ -84,15 +86,19 @@ class PayslipTab extends StatelessWidget {
       children: [
         Expanded(
           child: Obx(() {
-            if (Get.find<ReportsController>()
-                    .payslipResponseModel
-                    .value
-                    .payroll
-                    ?.isNotEmpty ??
-                false) {
-              url =
-                  '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
-            } else {
+            try {
+              if (Get.find<ReportsController>()
+                      .payslipResponseModel
+                      .value
+                      .payroll
+                      ?.isNotEmpty ??
+                  false) {
+                url =
+                    '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
+              } else {
+                return const SizedBox();
+              }
+            } on Exception {
               return const SizedBox();
             }
 

@@ -25,6 +25,7 @@ import '../../../models/report/file_upload_request.dart';
 import '../../../models/report/files/employee_files_list_model.dart';
 import '../../../models/report/files/files_type_list.dart';
 import '../../../models/report/medical_list_admin_model.dart';
+import '../../../models/report/overtime_list_response_model.dart';
 import '../../../models/split_payment/split_payment_response.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -60,9 +61,11 @@ class ReportsController extends GetxController
   final selectedDropdownYear = years[0].obs;
   final selectedDropdownMonth = monthsList[DateTime.now().month - 1].obs;
   final selectedDropdownDay = Rxn<String>();
-  List<String> dateList = [];
+  final dateList = <String>[].obs;
 
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
+  final overtimeResponseModel =
+      OvertimeListResponseModel(message: '', employeeList: []).obs;
 
   String getMedicalDetails(int index) {
     switch (index) {
@@ -78,6 +81,28 @@ class ReportsController extends GetxController
 
       default:
         return '';
+    }
+  }
+
+  getOvertime() async {
+    showLoading();
+    var model = {
+      'employee_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+    };
+    Get.find<BaseClient>().onError = getOvertime;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.getOvertime, jsonEncode(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      overtimeResponseModel.value =
+          overtimeListResponseModelFromJson(responseString);
+      overtimeResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
     }
   }
 
@@ -200,7 +225,9 @@ class ReportsController extends GetxController
   }
 
   fetchPayslip() async {
+    dateList.value = [];
     showLoading();
+
     final map = {
       'year': selectedDropdownYear.value,
       'month': (monthsList.indexOf(selectedDropdownMonth.value) + 1).toString()
@@ -219,10 +246,11 @@ class ReportsController extends GetxController
       payslipResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
       for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
-        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.endDate!));
+        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.createdAt!));
       }
-      dateList = dateList.toSet().toList();
+      dateList.value = dateList.toSet().toList();
       selectedDropdownDay.value = dateList.first;
+      dateList.refresh();
     }
   }
 

@@ -350,6 +350,7 @@ List<String> leaveTabListAdmin = [
 
 List<String> reportsTabList = [
   'Attendance',
+  'Overtime',
   'Split Payment',
   'Deduction',
   'Payslip',

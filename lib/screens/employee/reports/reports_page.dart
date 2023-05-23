@@ -15,6 +15,7 @@ import '../../widgets/custom_cached_network_image.dart';
 import 'tabs/attendance_tab.dart';
 import 'tabs/deduction_tab.dart';
 import 'tabs/medical_tab.dart';
+import 'tabs/overtime_tab.dart';
 import 'tabs/payslip_tab.dart';
 import 'tabs/split_payment_tab.dart';
 import 'widgets/reports_app_bar.dart';
@@ -65,11 +66,11 @@ class ReportsPage extends StatelessWidget {
                               '#${Get.find<LoginController>().loginResponseModel?.employee?.id?.toString().padLeft(5, '0') ?? "#00000"}',
                               style: kTextStyleS13W500Cgrey,
                             ),
-                            kSizedBoxH4,
-                            Text(
-                              "$kNetPayString \$${Get.find<LoginController>().loginResponseModel?.employee?.rate} ${Get.find<LoginController>().loginResponseModel?.employee?.salaryType == '0' ? '/month' : '/hour'}",
-                              style: kTextStyleS13W500Cgrey,
-                            ),
+                            // kSizedBoxH4,
+                            // Text(
+                            //   "$kNetPayString \$${Get.find<LoginController>().loginResponseModel?.employee?.rate} ${Get.find<LoginController>().loginResponseModel?.employee?.salaryType == '0' ? '/month' : '/hour'}",
+                            //   style: kTextStyleS13W500Cgrey,
+                            // ),
                           ],
                         ),
                       ],
@@ -125,6 +126,10 @@ class ReportsPage extends StatelessWidget {
                               Animate(
                                 effects: const [FadeEffect()],
                                 child: const AttendanceTab(),
+                              ),
+                              Animate(
+                                effects: const [FadeEffect()],
+                                child: const OvertimeTab(),
                               ),
                               Animate(
                                 effects: const [FadeEffect()],

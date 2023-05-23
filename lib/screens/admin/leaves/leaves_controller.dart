@@ -24,6 +24,8 @@ class LeavesControllerAdmin extends GetxController
     with BaseController, LeavesFilterController {
   final leaveAdminResponseModel =
       LeavesListAdminModel(message: '', leaveRequest: []).obs;
+  final leaveAdminResponseModelAll =
+      LeavesListAdminModel(message: '', leaveRequest: []).obs;
 
   final searchKeyword = ''.obs;
 
@@ -129,6 +131,13 @@ class LeavesControllerAdmin extends GetxController
 
   fetchLeaveData([int status = 1]) async {
     //status 1 means all leaves,
+    if (status == 3) {
+      leaveAdminResponseModelAll.value =
+          LeavesListAdminModel(message: '', leaveRequest: []);
+    } else {
+      leaveAdminResponseModel.value =
+          LeavesListAdminModel(message: '', leaveRequest: []);
+    }
     showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var requestModel = {
@@ -144,36 +153,54 @@ class LeavesControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      leaveAdminResponseModel.value =
-          leavesListAdminModelFromJson(responseString);
+      if (status == 3) {
+        leaveAdminResponseModelAll.value =
+            leavesListAdminModelFromJson(responseString);
+      } else {
+        leaveAdminResponseModel.value =
+            leavesListAdminModelFromJson(responseString);
+      }
 
       Get.find<BaseClient>().onError = null;
     }
   }
 
   approveOrDeclineLeave(ReasonButton reasonButton) async {
-    showLoading();
+    Get.back();
+
     final model = LeaveAcceptDeclineRequestModel(
         reason: acceptRejectReason,
         employeeId: selectedLeaveRequest.userId.toString(),
         approvalStatus: reasonButton == ReasonButton.leaveApprove ? '1' : '0',
         leaveRequestId: selectedLeaveRequest.id.toString());
-
+    // showLoading();
     var responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.leaveAcceptReject,
             leaveAcceptDeclineRequestModelToJson(model),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    hideLoading();
+
     if (responseString == null) {
       return;
     } else {
+      try {
+        leaveAdminResponseModel.value.leaveRequest
+            ?.remove(selectedLeaveRequest);
+      } on Exception {
+        // TODO
+      }
+
+      try {
+        leaveAdminResponseModelAll.value.leaveRequest
+            ?.remove(selectedLeaveRequest);
+      } on Exception {
+        // TODO
+      }
+      leaveAdminResponseModelAll.refresh();
+      leaveAdminResponseModel.refresh();
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
-      Get.back();
-      leaveAdminResponseModel.value.leaveRequest?.remove(selectedLeaveRequest);
-      leaveAdminResponseModel.refresh();
     }
     selectedLeaveRequest = LeaveRequest();
   }

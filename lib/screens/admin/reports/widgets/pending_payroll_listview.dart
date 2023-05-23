@@ -321,6 +321,15 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                   size: 20,
                                 ),
                               ),
+                            ),
+                            Positioned(
+                              right: 20,
+                              top: 12,
+                              child: Text(
+                                'PID${employees?.payroll?.id}',
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w600),
+                              ),
                             )
                           ],
                         ),

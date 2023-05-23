@@ -19,20 +19,18 @@ class CalendarMeeting extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<CalendarController>().getMeeting();
     });
-    return Obx(
-      () => ListView.builder(
+    return Obx(() {
+      final meetingList = Get.find<CalendarController>()
+          .meetingResponseModel
+          .value
+          .meetings
+          ?.where((element) => element.meetings != null)
+          .toList();
+      return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: Get.find<CalendarController>()
-                .meetingResponseModel
-                .value
-                .meetings
-                ?.length ??
-            0,
+        itemCount: meetingList?.length ?? 0,
         itemBuilder: (context, index) {
-          final meeting = Get.find<CalendarController>()
-              .meetingResponseModel
-              .value
-              .meetings?[index];
+          final meeting = meetingList?[index];
           return Card(
             color: CustomColors.whiteTabColor,
             elevation: 10,
@@ -52,7 +50,7 @@ class CalendarMeeting extends StatelessWidget {
                       kSizedBoxW10,
                       Center(
                         child: Text(
-                          "${Get.find<CalendarController>().getTime(meeting?.startTime.toString() ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().getTime(meeting?.endTime.toString() ?? '0000-00-00 00:00:00')}",
+                          "${Get.find<CalendarController>().getTime(meeting?.meetings?.startTime.toString() ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().getTime(meeting?.meetings?.endTime.toString() ?? '0000-00-00 00:00:00')}",
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: kTextStyleS13W600CustomGrey,
@@ -61,7 +59,7 @@ class CalendarMeeting extends StatelessWidget {
                       kSizedBoxW10,
                       Expanded(
                         child: Text(
-                          meeting?.location ?? '',
+                          meeting?.meetings?.location ?? '',
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.end,
                           style: kTextStyleS13W600CustomGrey,
@@ -81,7 +79,8 @@ class CalendarMeeting extends StatelessWidget {
                   child: Row(
                     children: [
                       CustomCachedNetworkImage(
-                        imageUrl: '$kStorageUrl${meeting?.user?.image}',
+                        imageUrl:
+                            '$kStorageUrl${meeting?.meetings?.user?.image}',
                         radius: 25,
                       ),
                       kSizedBoxW12,
@@ -90,7 +89,7 @@ class CalendarMeeting extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${meeting?.user?.firstName} ${meeting?.user?.lastName}',
+                              '${meeting?.meetings?.user?.firstName} ${meeting?.meetings?.user?.lastName}',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontSize: 17,
@@ -99,7 +98,7 @@ class CalendarMeeting extends StatelessWidget {
                             ),
                             kSizedBoxH4,
                             Text(
-                              meeting?.user?.position?.roleName ?? '',
+                              meeting?.meetings?.user?.role?.roleName ?? '',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontSize: 14,
@@ -120,14 +119,15 @@ class CalendarMeeting extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          meeting?.name ?? '',
+                          meeting?.meetings?.name ?? '',
                           overflow: TextOverflow.ellipsis,
                           style: kTextStyleS13W600CustomGrey,
                         ),
                       ),
                       Text(
                         DateFormat('dd-MM-yyyy').format(DateTime.parse(
-                            meeting?.date.toString() ?? '0000-00-00')),
+                            meeting?.meetings?.date.toString() ??
+                                '0000-00-00')),
                         overflow: TextOverflow.ellipsis,
                         style: kTextStyleS13W600CustomGrey,
                       ),
@@ -138,7 +138,7 @@ class CalendarMeeting extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
+      );
+    });
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 
-import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../models/employee_list_model.dart';
 import '../../dashboard/dashboard_controller.dart';
@@ -19,8 +18,10 @@ class ContractPeriodTabAdmin extends StatelessWidget {
       Get.find<DashboardControllerAdmin>().clearFilter();
     });
     return Obx(() {
-       List<EmployeeList>? employeesList =
+      List<EmployeeList>? employeesList =
           Get.find<DashboardControllerAdmin>().getFilteredEmployeeList();
+      employeesList
+          ?.sort((a, b) => (a.employmentEndDate??DateTime(0)).compareTo(b.employmentEndDate??DateTime(0)));
       return ListView.separated(
         physics: const BouncingScrollPhysics(),
         itemCount: employeesList?.length ?? 0,
@@ -45,7 +46,15 @@ class ContractPeriodTabAdmin extends StatelessWidget {
                     Text('Employment Period',
                         style: kTextStyleS14C255140x3.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.black)),
-                    Text('6 Months',
+                    Text(
+                        (employeesList?[index]
+                                        .employmentEndDate
+                                        ?.difference(DateTime.now())
+                                        .inDays ??
+                                    0) <=
+                                0
+                            ? '0 days'
+                            : '${employeesList?[index].employmentEndDate?.difference(DateTime.now()).inDays.toString()} days',
                         style: kTextStyleS14C255140x3.copyWith(
                             color: Colors.lightBlue)),
                   ],
