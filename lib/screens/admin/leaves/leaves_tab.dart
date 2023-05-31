@@ -41,13 +41,11 @@ class LeavesTabAdmin extends StatelessWidget {
           allLeaves?.sort((a, b) => b.status!.compareTo(a.status!));
           allLeaves?.sort((a, b) => a.status!.compareTo(b.status!));
         }
-
         return ListView.builder(
           physics: const BouncingScrollPhysics(),
           itemCount: allLeaves?.length,
           itemBuilder: (context, index) {
             final leave = allLeaves?[index];
-
             return LeavesCardAdmin(
               leave: leave,
               index: index,

@@ -37,10 +37,13 @@ class DashboardControllerAdmin extends GetxController with BaseController {
         Get.find<LoginController>().bottomNavigationAdminIndex.value = 4;
         break;
       case 2:
-        Get.find<LoginController>().bottomNavigationAdminIndex.value = 1;
+        Get.find<LoginController>().bottomNavigationAdminIndex.value = 4;
         break;
       case 3:
         Get.find<LoginController>().bottomNavigationAdminIndex.value = 2;
+        break;
+      case 4:
+        Get.find<LoginController>().bottomNavigationAdminIndex.value = 1;
         break;
     }
   }

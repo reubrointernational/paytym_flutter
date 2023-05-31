@@ -114,15 +114,15 @@ class DashboardController extends GetxController with BaseController {
   String? amountValidator(String value) {
     if (value.isEmpty) {
       return 'Value cannot be empty';
-    } else if (int.parse(
+    } else if (double.parse(
             Get.find<LoginController>().loginResponseModel?.employee?.rate ??
-                '1000') <
-        int.parse(value)) {
+                '0') <
+        double.parse(value)) {
       return 'Request amount should be less than salary';
-    } else if (int.parse(value) < 50) {
-      return 'Request amount should be greater than 50';
+    } else if (double.parse(value) <= 0) {
+      return 'Request amount should be greater than 0';
     }
-    return GetUtils.isLengthLessThan(value, 2) ? "Enter a valid number" : null;
+    return GetUtils.isLengthLessThan(value, 1) ? "Enter a valid number" : null;
   }
 
   changeSliderPosition(double value) {
@@ -324,22 +324,22 @@ class DashboardController extends GetxController with BaseController {
       case 0:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.absence ?? '0'}",
-          "${Get.find<DashboardController>().dashboardModel.value.allowedAbsent??0} remaining"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedAbsent ?? 0} remaining"
         ];
       case 1:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.sick ?? '0'}",
-          "${Get.find<DashboardController>().dashboardModel.value.allowedSickLeave??0} remaining"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedSickLeave ?? 0} remaining"
         ];
       case 2:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.annual ?? '0'}",
-          "${Get.find<DashboardController>().dashboardModel.value.allowedAnnualLeave??0} remaining"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedAnnualLeave ?? 0} remaining"
         ];
       default:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.lateArrival ?? '0'}",
-          "${Get.find<DashboardController>().dashboardModel.value.allowedLateArrival??0} remaining"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedLateArrival ?? 0} remaining"
         ];
     }
   }
