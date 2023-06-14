@@ -202,8 +202,8 @@ class LeavesController extends GetxController with BaseController {
   }
 
   String? titleValidator(String value) {
-    return GetUtils.isLengthLessThan(value, 5)
-        ? "Reason should be minimum 5 characters"
+    return GetUtils.isLengthLessThan(value, 3)
+        ? "Reason should be minimum 3 characters"
         : null;
   }
 

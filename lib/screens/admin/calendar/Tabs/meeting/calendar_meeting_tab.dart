@@ -32,12 +32,12 @@ class CalendarMeetingAdmin extends StatelessWidget {
               .value
               .meetingsListe?[index];
           return SizedBox(
-            height: 135,
+            height: 153,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 40,
+                  width: 50,
                   child: Column(
                     children: [
                       kSizedBoxH10,
@@ -65,87 +65,82 @@ class CalendarMeetingAdmin extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 25),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                meeting?.name ?? '',
-                                style: kTextStyleS18W600.copyWith(
-                                    color: CustomColors.blackTextColor),
-                              ),
-                              kSizedBoxH4,
-                              Text(
-                                '${meeting?.user?.firstName ?? ''} ${meeting?.user?.lastName ?? ''}',
-                                style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
-                                    color: Colors.grey),
-                              ),
-                              Text(
-                                meeting?.user?.position?.roleName ?? '',
-                                style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
-                                    color: Colors.grey),
-                              ),
-                              const Spacer(),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.schedule,
-                                    size: 15,
-                                    color: Colors.grey,
-                                  ),
-                                  kSizedBoxW4,
-                                  Text(
-                                    '${DateFormat.jm().format(meeting?.startTime ?? DateTime(0000, 00, 00))} - ${DateFormat.jm().format(meeting?.endTime ?? DateTime(0000, 00, 00))}',
-                                    style: kTextStyleS14W600Cgrey300LS0p2
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                meeting?.location ?? '',
-                                style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
-                                    color: Colors.grey),
-                              ),
-                            ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 25),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  meeting?.name ?? '',
+                                  style: kTextStyleS18W600.copyWith(
+                                      color: CustomColors.blackTextColor),
+                                ),
+                                kSizedBoxH4,
+                                Text(
+                                  '${meeting?.user?.firstName ?? ''} ${meeting?.user?.lastName ?? ''}',
+                                  style: kTextStyleS14W600Cgrey300LS0p2
+                                      .copyWith(color: Colors.grey),
+                                ),
+                                Text(
+                                  meeting?.user?.position?.roleName ?? '',
+                                  style: kTextStyleS14W600Cgrey300LS0p2
+                                      .copyWith(color: Colors.grey),
+                                ),
+                                const Spacer(),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.schedule,
+                                      size: 15,
+                                      color: Colors.grey,
+                                    ),
+                                    kSizedBoxW4,
+                                    Text(
+                                      '${DateFormat.jm().format(meeting?.startTime ?? DateTime(0000, 00, 00))} - ${DateFormat.jm().format(meeting?.endTime ?? DateTime(0000, 00, 00))}',
+                                      style: kTextStyleS14W600Cgrey300LS0p2
+                                          .copyWith(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  meeting?.location ?? '',
+                                  style: kTextStyleS14W600Cgrey300LS0p2
+                                      .copyWith(color: Colors.grey),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                  onPressed: meeting?.userId ==
-                                          Get.find<LoginController>()
-                                              .loginResponseModel!
-                                              .employee!
-                                              .id
-                                      ? () {
-                                          DialogHelper.showConfirmDialog(
-                                              title: 'Delete Meeting',
-                                              desc:
-                                                  'Do you want to delete this meeting?',
-                                              onConfirm: () {
-                                                Get.find<
-                                                        CalendarControllerAdmin>()
-                                                    .deleteMeeting(index);
-                                                Get.back();
-                                              });
-                                        }
-                                      : null,
-                                  icon: Icon(
-                                    Icons.delete_outline_outlined,
-                                    color: meeting?.userId ==
-                                            Get.find<LoginController>()
-                                                .loginResponseModel!
-                                                .employee!
-                                                .id
-                                        ? CustomColors.redColor
-                                        : CustomColors.greyTextColor,
-                                  )),
-                            ],
-                          ),
+                        Center(
+                          child: IconButton(
+                              onPressed: meeting?.userId ==
+                                      Get.find<LoginController>()
+                                          .loginResponseModel!
+                                          .employee!
+                                          .id
+                                  ? () {
+                                      DialogHelper.showConfirmDialog(
+                                          title: 'Delete Meeting',
+                                          desc:
+                                              'Do you want to delete this meeting?',
+                                          onConfirm: () {
+                                            Get.find<CalendarControllerAdmin>()
+                                                .deleteMeeting(index);
+                                            Get.back();
+                                          });
+                                    }
+                                  : null,
+                              icon: Icon(
+                                Icons.delete_outline_outlined,
+                                color: meeting?.userId ==
+                                        Get.find<LoginController>()
+                                            .loginResponseModel!
+                                            .employee!
+                                            .id
+                                    ? CustomColors.redColor
+                                    : CustomColors.greyTextColor,
+                              )),
                         ),
                       ],
                     ),

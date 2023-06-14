@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,8 +17,29 @@ import '../../employee/chats/chat_controller.dart';
 import '../../login/login_controller.dart';
 import '../../widgets/chat_clippath_cut.dart';
 
-class ChatPageAdmin extends StatelessWidget {
+class ChatPageAdmin extends StatefulWidget {
   const ChatPageAdmin({super.key});
+
+  @override
+  State<ChatPageAdmin> createState() => _ChatPageAdminState();
+}
+
+class _ChatPageAdminState extends State<ChatPageAdmin> {
+  Timer? timer;
+  
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      Get.find<ChatController>().fetchChat(isFromNotification: true);
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +48,6 @@ class ChatPageAdmin extends StatelessWidget {
     Get.find<DashboardControllerAdmin>().selectedItemList.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<ChatController>().chatResponseModel.value = ChatResponseModel();
-      Get.find<ChatController>().fetchChat();
     });
     return Scaffold(
       appBar: AppBar(
@@ -151,7 +173,7 @@ class ChatPageAdmin extends StatelessWidget {
                                     child: Text(
                                       DateFormat('hh:mm a').format(
                                           DateTime.parse(
-                                              chat.createdAt.toString())
+                                                  chat.createdAt.toString())
                                               .toLocal()),
                                       style: const TextStyle(
                                         fontSize: 12,

@@ -56,7 +56,7 @@ class DashboardColoredCard extends StatelessWidget {
                   Text(
                     leaves["title"],
                     style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         overflow: TextOverflow.ellipsis,
                         letterSpacing: 0.5,
                         fontWeight: FontWeight.w600,

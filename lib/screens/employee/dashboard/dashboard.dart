@@ -1,5 +1,4 @@
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/styles.dart';
@@ -13,7 +12,6 @@ import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/strings.dart';
-import '../../../models/dashboard/dashboard_response_model.dart';
 import '../../../routes/app_routes.dart';
 
 class DashboardPage extends StatelessWidget {

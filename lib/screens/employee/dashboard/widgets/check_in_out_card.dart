@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/custom_slider_thumb.dart';
@@ -17,7 +15,7 @@ class CheckInOutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 158,
+      height: 170,
       child: Card(
         color: CustomColors.blueTextColor,
         elevation: 5,
@@ -33,7 +31,7 @@ class CheckInOutCard extends StatelessWidget {
               const Text(
                 kCheckInOutString,
                 style: TextStyle(
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                   color: CustomColors.whiteTextColor,
                 ),
               ),
@@ -184,7 +182,7 @@ class CheckInOutCard extends StatelessWidget {
                     style: TextStyle(
                       color: CustomColors.whiteTextColor,
                       fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   Row(

@@ -1,3 +1,5 @@
+import 'package:avatar_stack/avatar_stack.dart';
+import 'package:avatar_stack/positions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +9,7 @@ import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../models/report/projects/projects_list_model.dart';
 import '../../../../network/end_points.dart';
 import '../../dashboard/dashboard_controller.dart';
 import '../widgets/custom_progress_indicator.dart';
@@ -29,8 +32,8 @@ class ProjectsTabAdmin extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           itemCount: projects?.length ?? 0,
           itemBuilder: (context, index) {
-            var startDate = projects![index].startDate ?? '';
-            var endDate = projects[index].endDate ?? '';
+            DateTime? startDate = projects![index].startDate;
+            DateTime? endDate = projects[index].endDate;
             reportController.findProjectProgress(startDate, endDate);
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 8),
@@ -84,71 +87,98 @@ class ProjectsTabAdmin extends StatelessWidget {
                                           project: project,
                                         ));
                                       },
-                                      child: SizedBox(
-                                        width: 100,
-                                        child: Stack(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 19,
-                                              backgroundColor: Colors.white,
-                                              child: CircleAvatar(
-                                                backgroundColor:
-                                                    Colors.grey.shade300,
-                                                radius: 18,
-                                              ),
-                                            ),
-                                            ...List.generate(
-                                              //3,
-                                              projects[index]
-                                                      .employeeproject
-                                                      ?.length ??
-                                                  0,
-                                              (projectIndex) => Positioned(
-                                                left: 20 * (index + 0),
-                                                child: CircleAvatar(
-                                                  radius: 19,
-                                                  backgroundColor:
-                                                      projectIndex == 2
-                                                          ? Colors.grey.shade300
-                                                          : Colors.white,
-                                                  child: Stack(
-                                                    alignment: Alignment.center,
-                                                    children: [
-                                                      CircleAvatar(
-                                                        backgroundColor:
-                                                            projectIndex == 2
-                                                                ? Colors.white
-                                                                : Colors.grey
-                                                                    .shade300,
-                                                        backgroundImage: projects[
-                                                                    index]
-                                                                .employeeproject!
-                                                                .isEmpty
-                                                            ? const NetworkImage(
-                                                                '')
-                                                            : NetworkImage(
-                                                                '$kStorageUrl${projects[index].employeeproject![projectIndex].user.image}'),
-                                                        radius: 18,
-                                                      ),
-                                                      projectIndex == 2
-                                                          ? Text(
-                                                              '${projects[index].employeeproject!.length}',
-                                                              style: const TextStyle(
-                                                                  color: CustomColors
-                                                                      .lightBlueColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            )
-                                                          : const SizedBox(),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ).toList(),
-                                          ],
-                                        ),
+                                      child: AvatarStack(
+                                        height: 50,
+                                        settings: RestrictedAmountPositions(
+                                            maxAmountItems: 3,
+                                            minCoverage: 0.5),
+                                        infoWidgetBuilder: (surplus) {
+                                          return CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            child: CircleAvatar(
+                                                radius: 23,
+                                                child: Text(
+                                                  '+$surplus',
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                )),
+                                          );
+                                        },
+                                        avatars: [
+                                          for (ProjectsListEmployeeproject item
+                                              in projects[index]
+                                                      .employeeproject ??
+                                                  [])
+                                            NetworkImage(
+                                                '$kStorageUrl${item.user?.image}')
+                                        ],
                                       ),
+                                      // child: SizedBox(
+                                      //   width: 100,
+                                      //   child: Stack(
+                                      //     children: [
+                                      //       CircleAvatar(
+                                      //         radius: 19,
+                                      //         backgroundColor: Colors.white,
+                                      //         child: CircleAvatar(
+                                      //           backgroundColor:
+                                      //               Colors.grey.shade300,
+                                      //           radius: 18,
+                                      //         ),
+                                      //       ),
+                                      //       const SizedBox(height: 10),
+
+                                      //       ...List.generate(
+                                      //         //3,
+                                      //         projects[index]
+                                      //                 .employeeproject
+                                      //                 ?.length ??
+                                      //             0,
+                                      //         (projectIndex) => Positioned(
+                                      //           left: 20 * (index + 0),
+                                      //           child: CircleAvatar(
+                                      //             radius: 19,
+                                      //             backgroundColor:
+                                      //                 projectIndex == 2
+                                      //                     ? Colors.grey.shade300
+                                      //                     : Colors.white,
+                                      //             child: Stack(
+                                      //               alignment: Alignment.center,
+                                      //               children: [
+                                      //                 CircleAvatar(
+                                      //                   backgroundColor:
+                                      //                       projectIndex == 2
+                                      //                           ? Colors.white
+                                      //                           : Colors.grey
+                                      //                               .shade300,
+                                      //                   backgroundImage: projects[
+                                      //                               index]
+                                      //                           .employeeproject!
+                                      //                           .isEmpty
+                                      //                       ? const NetworkImage(
+                                      //                           '')
+                                      //                       : NetworkImage(
+                                      //                           '$kStorageUrl${projects[index].employeeproject![projectIndex].user?.image}'),
+                                      //                   radius: 18,
+                                      //                 ),
+                                      //                 projectIndex == 2
+                                      //                     ? Text(
+                                      //                         '${projects[index].employeeproject!.length}',
+                                      //                         style: const TextStyle(
+                                      //                             color: CustomColors
+                                      //                                 .lightBlueColor,
+                                      //                             fontWeight:
+                                      //                                 FontWeight
+                                      //                                     .bold),
+                                      //                       )
+                                      //                     : const SizedBox(),
+                                      //               ],
+                                      //             ),
+                                      //           ),
+                                      //         ),
+                                      //       ).toList(),
+                                      //     ],
+                                      //   ),
                                     ),
                                   ],
                                 ),
@@ -195,7 +225,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                             children: [
                               Text(
                                 projects[index].branch != null
-                                    ? projects[index].branch!.name
+                                    ? projects[index].branch!.name ?? ''
                                     : "Branch",
                                 style: const TextStyle(
                                   color: CustomColors.blackTextColor,
@@ -238,9 +268,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                         projects[index].startDate == null
                                             ? 'Not Provided'
                                             : DateFormat('dd-MM-yyyy').format(
-                                                DateTime.parse(
-                                                    projects[index].startDate),
-                                              ),
+                                                projects[index].startDate!),
                                         style: const TextStyle(
                                           color: CustomColors.blackTextColor,
                                           fontWeight: FontWeight.bold,
@@ -261,8 +289,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                         projects[index].endDate == null
                                             ? 'Not Provided'
                                             : DateFormat('dd-MM-yyyy').format(
-                                                DateTime.parse(
-                                                    projects[index].endDate),
+                                                projects[index].endDate!,
                                               ),
                                         style: const TextStyle(
                                           color: CustomColors.blackTextColor,

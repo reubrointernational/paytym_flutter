@@ -313,12 +313,16 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                         !employees.isExpanded;
                                   });
                                 },
-                                child: Icon(
-                                  employees?.isExpanded ?? false
-                                      ? Icons.expand_less
-                                      : Icons.expand_more,
-                                  color: Colors.grey,
-                                  size: 20,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(28, 28, 28, 0),
+                                  child: Icon(
+                                    employees?.isExpanded ?? false
+                                        ? Icons.expand_less
+                                        : Icons.expand_more,
+                                    color: Colors.grey,
+                                    size: 25,
+                                  ),
                                 ),
                               ),
                             ),

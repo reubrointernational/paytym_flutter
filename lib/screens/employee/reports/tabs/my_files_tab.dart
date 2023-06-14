@@ -36,6 +36,12 @@ class MyFilesTab extends StatelessWidget {
                     .files
                     ?.where((element) => element.filetype?.visibleStatus == 1)
                     .toList();
+                if (files?.isEmpty ?? true) {
+                  return const Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Text('No records found'),
+                  );
+                }
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -97,6 +103,12 @@ class MyFilesTab extends StatelessWidget {
                     .files
                     ?.where((element) => element.filetype?.visibleStatus == 0)
                     .toList();
+                if (files?.isEmpty ?? true) {
+                  return const Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Text('No records found'),
+                  );
+                }
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),

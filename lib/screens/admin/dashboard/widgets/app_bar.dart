@@ -53,23 +53,29 @@ class HrAppBar extends StatelessWidget {
           ).toList(),
           onSelected: (DashboardDropDown value) =>
               Get.find<DashboardController>().onClickMenuItem(value),
-          child: CachedNetworkImage(
-            imageUrl:
-                '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image ?? ''}',
-            imageBuilder: (context, imageProvider) => CircleAvatar(
-              backgroundColor: CustomColors.whiteCardColor,
-              radius: 17,
-              child: CircleAvatar(
-                backgroundColor: Colors.grey.shade300,
-                radius: 15,
-                backgroundImage: imageProvider,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
+            child: CachedNetworkImage(
+              imageUrl:
+                  '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image ?? ''}',
+              imageBuilder: (context, imageProvider) => CircleAvatar(
+                backgroundColor: CustomColors.whiteCardColor,
+                radius: 20,
+                child: CircleAvatar(
+                  backgroundColor: Colors.grey.shade300,
+                  radius: 18,
+                  backgroundImage: imageProvider,
+                ),
+              ),
+              placeholder: (context, url) => const SpinKitDoubleBounce(
+                color: Colors.white,
+                size: 30,
+              ),
+              errorWidget: (context, url, error) => const Icon(
+                Icons.person,
+                color: Colors.white,
               ),
             ),
-            placeholder: (context, url) => const SpinKitDoubleBounce(
-              color: Colors.white,
-              size: 30,
-            ),
-            errorWidget: (context, url, error) => const Icon(Icons.person, color: Colors.white,),
           ),
         ),
       ],

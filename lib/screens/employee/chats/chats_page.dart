@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -12,8 +14,28 @@ import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../widgets/chat_clippath_cut.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  Timer? timer;
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      Get.find<ChatController>().fetchChat(isFromNotification: true);
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,9 +199,10 @@ class ChatPage extends StatelessWidget {
                                         alignment: Alignment.bottomRight,
                                         child: Text(
                                           DateFormat('hh:mm a').format(
-                                              DateTime.parse(
-                                                  chat?.createdAt.toString() ??
-                                                      '').toLocal()),
+                                              DateTime.parse(chat?.createdAt
+                                                          .toString() ??
+                                                      '')
+                                                  .toLocal()),
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.white,

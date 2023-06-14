@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -40,8 +41,10 @@ class ChatController extends GetxController with BaseController {
   }
 
   fetchChat({bool isFromNotification = false}) async {
-    if (!isFromNotification) showLoading();
-    Get.find<BaseClient>().onError = fetchChat;
+    if (!isFromNotification) {
+      showLoading();
+      Get.find<BaseClient>().onError = fetchChat;
+    }
     var responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.getChat,
@@ -117,4 +120,6 @@ class ChatController extends GetxController with BaseController {
       }
     }
   }
+
+  
 }

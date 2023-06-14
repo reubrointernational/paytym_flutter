@@ -388,17 +388,19 @@ class ReportsControllerAdmin extends GetxController
     }
   }
 
-  findProjectProgress(String startDate, String endDate) {
-    DateTime? startDateTime =
-        startDate.isEmpty ? null : DateTime.parse(startDate);
-    DateTime? endDateTime = endDate.isEmpty ? null : DateTime.parse(endDate);
+  findProjectProgress(DateTime? startDate, DateTime? endDate) {
+    if (endDate != null &&
+        startDate != null &&
+        startDate.difference(endDate) <= const Duration(seconds: 0)) {
+      projectPercentage = 100;
+      return;
+    }
+
     DateTime currentDateTime = DateTime.now();
-    final differenceStartToEnd = startDateTime != null
-        ? endDateTime?.difference(startDateTime).inSeconds
-        : 1;
-    final differenceStartToCurrent = startDateTime != null
-        ? currentDateTime.difference(startDateTime).inSeconds
-        : 0;
+    final differenceStartToEnd =
+        startDate != null ? endDate?.difference(startDate).inSeconds : 1;
+    final differenceStartToCurrent =
+        startDate != null ? currentDateTime.difference(startDate).inSeconds : 0;
 
     projectPercentage = (differenceStartToCurrent / (differenceStartToEnd ?? 1))
         .floorToDouble();
@@ -656,7 +658,6 @@ class ReportsControllerAdmin extends GetxController
   }
 
   approveOrDeclineAttendance(ReasonButton reasonButton) async {
-    showLoading();
     final model = AttendanceAcceptDeclineRequestModel(
         employeeId: selectedItem.userId.toString(),
         reason: '',
@@ -671,10 +672,16 @@ class ReportsControllerAdmin extends GetxController
             attendanceAcceptDeclineRequestModelToJson(model),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    hideLoading();
     if (responseString == null) {
       return;
     } else {
+      // for (final history in attendanceResponseModel.value.history!) {
+      //   print(history.id);
+      //   print(history.approveReject);
+      //   print(history.checkIn.toString());
+      // }
+      // print(selectedItem.id);
+      // print(selectedItem.checkIn.toString());
       try {
         attendanceResponseModel.value.history
                 ?.firstWhere((element) => element.id == selectedItem.id)
@@ -699,9 +706,6 @@ class ReportsControllerAdmin extends GetxController
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
-    Future.delayed(const Duration(seconds: 1), () {
-      hideLoading();
-    });
   }
 
   getAttendance() async {

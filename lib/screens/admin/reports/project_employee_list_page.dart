@@ -33,18 +33,18 @@ class ProjectEmployeeListPage extends StatelessWidget {
                   ),
                   child: ListTile(
                     title: Text(
-                      '${members.user.firstName} ${members.user.lastName}',
+                      '${members.user?.firstName} ${members.user?.lastName}',
                       style: kTextStyleS15W600CBlack,
                     ),
-                    subtitle: Text('ID: ${members.user.id}'),
+                    subtitle: Text('ID: ${members.user?.id}'),
                     leading: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.grey,
                       backgroundImage:
-                          NetworkImage('$kStorageUrl${members.user.image}'),
+                          NetworkImage('$kStorageUrl${members.user?.image}'),
                     ),
                     trailing: Text(
-                      project!.branch!.name,
+                      project!.branch!.name??"",
                       style: kTextStyleS13W500Cgrey,
                     ),
                   ),

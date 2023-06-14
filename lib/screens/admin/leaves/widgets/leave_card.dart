@@ -95,7 +95,7 @@ class LeavesCardAdmin extends StatelessWidget {
                                       ReasonButton.leaveDecline);
                             },
                             child: Container(
-                              width: 70,
+                              width: 75,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 5),
@@ -123,7 +123,7 @@ class LeavesCardAdmin extends StatelessWidget {
                                       ReasonButton.leaveApprove);
                             },
                             child: Container(
-                              width: 70,
+                              width: 75,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 5),

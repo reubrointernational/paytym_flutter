@@ -11,7 +11,6 @@ import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/list_maps.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../network/end_points.dart';
-import '../../../../routes/app_routes.dart';
 import '../../calendar/widgets/custom_svg.dart';
 import '../../../login/login_controller.dart';
 import '../../../widgets/paytym_logo.dart';
@@ -46,7 +45,7 @@ class DashboardAppBar extends StatelessWidget {
                           ?.first
                           .role
                           ?.roleName !=
-                     'Employee')
+                      'Employee')
                     PopupMenuItem(
                       value: kDashboardDropDownItemList[3].dropDownItem,
                       child: Text(
@@ -72,25 +71,28 @@ class DashboardAppBar extends StatelessWidget {
               },
               onSelected: (DashboardDropDown value) =>
                   Get.find<DashboardController>().onClickMenuItem(value),
-              child: CachedNetworkImage(
-                imageUrl:
-                    '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image}',
-                imageBuilder: (context, imageProvider) => Animate(
-                  effects: const [
-                    ScaleEffect(duration: Duration(microseconds: 500))
-                  ],
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey.shade300,
-                    radius: 15,
-                    backgroundImage: imageProvider,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image}',
+                  imageBuilder: (context, imageProvider) => Animate(
+                    effects: const [
+                      ScaleEffect(duration: Duration(microseconds: 500))
+                    ],
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey.shade300,
+                      radius: 20,
+                      backgroundImage: imageProvider,
+                    ),
                   ),
+                  placeholder: (context, url) => const SpinKitDoubleBounce(
+                    color: Colors.blue,
+                    size: 30,
+                  ),
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.person, color: Colors.blue),
                 ),
-                placeholder: (context, url) => const SpinKitDoubleBounce(
-                  color: Colors.blue,
-                  size: 30,
-                ),
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.person, color: Colors.blue),
               ),
             ),
           ],

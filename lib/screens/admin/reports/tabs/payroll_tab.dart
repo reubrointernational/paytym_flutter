@@ -1,14 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/screens/admin/reports/widgets/pending_payroll_listview.dart';
-import 'package:paytym/screens/employee/reports/reports_controller.dart';
-import '../../../../core/constants/enums.dart';
-import '../../../../core/constants/strings.dart';
-import '../../../employee/reports/widgets/year_dropdown.dart';
 import '../widgets/pay_payment.dart';
 
 class PayrollTab extends StatefulWidget {

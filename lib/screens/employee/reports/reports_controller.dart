@@ -407,22 +407,20 @@ class ReportsController extends GetxController
 //todo add onError in get attendance as well. Don't forget '()' will not be present on function
 
   getDeduction() async {
-    if (deductionResponseModel.value.deductions == null) {
-      showLoading();
-      Get.find<BaseClient>().onError = getDeduction;
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.deductions, null,
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        hideLoading();
-        deductionResponseModel.value =
-            deductionResponseModelFromJson(responseString);
-        deductionResponseModel.refresh();
-        Get.find<BaseClient>().onError = null;
-      }
+    showLoading();
+    Get.find<BaseClient>().onError = getDeduction;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.deductions, null,
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      deductionResponseModel.value =
+          deductionResponseModelFromJson(responseString);
+      deductionResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
     }
   }
 
