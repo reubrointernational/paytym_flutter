@@ -133,7 +133,8 @@ class ReportsController extends GetxController
               ?.employerId
               .toString() ??
           '',
-      fileTypeId: selectedIndex.value.toString(),
+      fileTypeId:
+          filesTypeListModel.fileTypes[selectedIndex.value].id.toString(),
       userId: Get.find<LoginController>()
           .loginResponseModel!
           .employee!
@@ -153,6 +154,8 @@ class ReportsController extends GetxController
     filePath.value = '';
     hideLoading();
     DialogHelper.showToast(desc: 'File uploaded');
+    Get.back();
+    fetchFiles();
   }
 
   deleteFiles(int id) async {
