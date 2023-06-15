@@ -181,10 +181,10 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                     final files = Get.find<ReportsController>()
                         .fileListResponseModel
                         .value
-                        .files;
-                    // ?.where(
-                    //     (element) => element.filetype?.visibleStatus == 0)
-                    // .toList();
+                        .files
+                    ?.where(
+                        (element) => element.filetype?.visibleStatus == 0)
+                    .toList();
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       itemCount: files?.length,

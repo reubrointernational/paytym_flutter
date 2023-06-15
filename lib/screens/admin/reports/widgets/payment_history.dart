@@ -61,7 +61,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                                           fontSize: 12.5),
                                     ),
                                     Text(
-                                      '${employees?.firstName} ${employees?.lastName}',
+                                      '${employees?.firstName ?? ''} ${employees?.lastName ?? ''}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),

@@ -115,7 +115,7 @@ class DeductionTabAdmin extends StatelessWidget {
                                 child: MedicalTitleTag(
                                   branch: '',
                                   name:
-                                      '${Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?[index].firstName} ${Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?[index].lastName}',
+                                      '${Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?[index].firstName ?? ''} ${Get.find<ReportsControllerAdmin>().deductionResponseModel.value.deductions?[index].lastName ?? ''}',
                                   employmentId: '',
                                 ),
                               ),

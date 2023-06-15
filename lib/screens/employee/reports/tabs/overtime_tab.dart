@@ -67,7 +67,7 @@ class OvertimeTab extends StatelessWidget {
                                           fontSize: 12.5),
                                     ),
                                     Text(
-                                      '${overtimeDetail.user?.firstName} ${overtimeDetail.user?.lastName}',
+                                      '${overtimeDetail.user?.firstName ?? ''} ${overtimeDetail.user?.lastName ?? ''}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),

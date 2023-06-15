@@ -52,7 +52,7 @@ class LeavesCardAdmin extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${leave?.user?.firstName} ${leave?.user?.lastName}',
+                            '${leave?.user?.firstName ?? ''} ${leave?.user?.lastName ?? ''}',
                             overflow: TextOverflow.ellipsis,
                             style: kTextStyleS18W600,
                           ),

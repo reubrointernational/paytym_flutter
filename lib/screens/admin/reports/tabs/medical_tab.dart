@@ -40,7 +40,7 @@ class MedicalTabAdmin extends StatelessWidget {
                       child: MedicalTitleTag(
                         branch: '',
                         name:
-                            '${medicalDetails?[index].users?.firstName} ${medicalDetails?[index].users?.lastName}',
+                            '${medicalDetails?[index].users?.firstName ?? ''} ${medicalDetails?[index].users?.lastName ?? ''}',
                         employmentId:
                             '#${medicalDetails?[index].users?.id?.toString().padLeft(5, '0') ?? ''}',
                       ),

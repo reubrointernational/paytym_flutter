@@ -149,7 +149,7 @@ class _ChatPageAdminState extends State<ChatPageAdmin> {
                                                 width: 10,
                                               ),
                                               Text(
-                                                '~${chat.employee?.firstName}',
+                                                '~${chat.employee?.firstName??''}',
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                 ),

@@ -675,30 +675,24 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      // for (final history in attendanceResponseModel.value.history!) {
-      //   print(history.id);
-      //   print(history.approveReject);
-      //   print(history.checkIn.toString());
-      // }
-      // print(selectedItem.id);
-      // print(selectedItem.checkIn.toString());
-      try {
-        attendanceResponseModel.value.history
-                ?.firstWhere((element) => element.id == selectedItem.id)
-                .approveReject =
+      History? history = attendanceResponseModel.value.history?.firstWhere(
+        (element) => element.id == selectedItem.id,
+        orElse: () => History(),
+      );
+      if (history?.id != null) {
+        history!.approveReject =
             reasonButton == ReasonButton.attendanceApprove ? '1' : '0';
-      } on Exception {
-        // TODO
       }
 
-      try {
-        attendanceResponseModel.value.pending
-                ?.firstWhere((element) => element.id == selectedItem.id)
-                .approveReject =
+      history = attendanceResponseModel.value.pending?.firstWhere(
+        (element) => element.id == selectedItem.id,
+        orElse: () => History(),
+      );
+      if (history?.id != null) {
+        history!.approveReject =
             reasonButton == ReasonButton.attendanceApprove ? '1' : '0';
-      } on Exception {
-        // TODO
       }
+
       if (reasonButton != ReasonButton.attendanceApprove) {
         Get.back();
       }

@@ -35,7 +35,7 @@ class UploadsTabAdmin extends StatelessWidget {
               ),
               child: ListTile(
                 title: Text(
-                  '${chatList?[index].firstName} ${chatList?[index].lastName}',
+                  '${chatList?[index].firstName??''} ${chatList?[index].lastName??''}',
                   style: kTextStyleS18W600CBlack,
                 ),
                 subtitle:

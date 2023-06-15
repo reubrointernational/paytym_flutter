@@ -164,7 +164,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                '${employees?.firstName} ${employees?.lastName}',
+                                                '${employees?.firstName ?? ''} ${employees?.lastName ?? ''}',
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                 ),

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
-import 'package:paytym/screens/admin/reports/widgets/pending_payroll_listview.dart';
 import 'package:paytym/screens/admin/reports/widgets/rounded_icons.dart';
 
 import '../../../../core/constants/styles.dart';
@@ -156,9 +155,8 @@ class AttendanceTabAdmin extends StatelessWidget {
                             IconButton(
                               onPressed: () {
                                 Get.find<ReportsControllerAdmin>()
-                                        .selectedItem =
-                                    attendanceList![index];
-
+                                    .selectedItem = attendanceList![index];
+                                
                                 Get.find<ReportsControllerAdmin>()
                                     .approveOrDeclineAttendance(
                                         ReasonButton.attendanceApprove);
@@ -171,8 +169,7 @@ class AttendanceTabAdmin extends StatelessWidget {
                             IconButton(
                               onPressed: () {
                                 Get.find<ReportsControllerAdmin>()
-                                        .selectedItem =
-                                    attendanceList![index];
+                                    .selectedItem = attendanceList![index];
                                 Get.find<ReportsControllerAdmin>()
                                     .showBottomSheetForReason(
                                         ReasonButton.attendanceEdit);
@@ -186,8 +183,7 @@ class AttendanceTabAdmin extends StatelessWidget {
                             IconButton(
                               onPressed: () {
                                 Get.find<ReportsControllerAdmin>()
-                                        .selectedItem =
-                                    attendanceList![index];
+                                    .selectedItem = attendanceList![index];
                                 Get.find<ReportsControllerAdmin>()
                                     .showBottomSheetForReason(
                                         ReasonButton.attendanceDecline);
@@ -261,7 +257,7 @@ class AttendanceCardColumn extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '${attendanceElement.user?.firstName} ${attendanceElement.user?.lastName}',
+                  '${attendanceElement.user?.firstName ?? ''} ${attendanceElement.user?.lastName ?? ''}',
                   style: kTextStyleS15W600CBlack,
                   overflow: TextOverflow.ellipsis,
                 ),

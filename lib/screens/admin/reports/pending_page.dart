@@ -53,9 +53,10 @@ class PendingAttendanceScreen extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
+                             
                               Get.find<ReportsControllerAdmin>().selectedItem =
                                   attendanceList![index];
-
+                              
                               Get.find<ReportsControllerAdmin>()
                                   .approveOrDeclineAttendance(
                                       ReasonButton.attendanceApprove);

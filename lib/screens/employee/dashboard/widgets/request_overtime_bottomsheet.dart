@@ -74,7 +74,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
-                      '${employeeList?.firstName} ${employeeList?.lastName}',
+                      '${employeeList?.firstName ?? ''} ${employeeList?.lastName ?? ''}',
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),

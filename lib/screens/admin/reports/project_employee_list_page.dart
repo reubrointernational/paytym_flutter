@@ -33,7 +33,7 @@ class ProjectEmployeeListPage extends StatelessWidget {
                   ),
                   child: ListTile(
                     title: Text(
-                      '${members.user?.firstName} ${members.user?.lastName}',
+                      '${members.user?.firstName ?? ''} ${members.user?.lastName ?? ''}',
                       style: kTextStyleS15W600CBlack,
                     ),
                     subtitle: Text('ID: ${members.user?.id}'),

@@ -36,7 +36,7 @@ class ContractPeriodTabAdmin extends StatelessWidget {
                 MedicalTitleTag(
                   branch: employeesList?[index].branch?.name ?? '',
                   name:
-                      '${employeesList?[index].firstName} ${employeesList?[index].lastName}',
+                      '${employeesList?[index].firstName ?? ''} ${employeesList?[index].lastName ?? ''}',
                   employmentId:
                       '#${employeesList?[index].id.toString().padLeft(5, '0')}',
                 ),

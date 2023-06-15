@@ -89,7 +89,7 @@ class CalendarMeeting extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${meeting?.meetings?.user?.firstName} ${meeting?.meetings?.user?.lastName}',
+                              '${meeting?.meetings?.user?.firstName ?? ''} ${meeting?.meetings?.user?.lastName ?? ''}',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontSize: 17,
