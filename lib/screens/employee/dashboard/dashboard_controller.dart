@@ -324,22 +324,22 @@ class DashboardController extends GetxController with BaseController {
       case 0:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.absence ?? '0'}",
-          "${Get.find<DashboardController>().dashboardModel.value.allowedAbsent ?? 0} remaining"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedAbsent ?? 0} allowed"
         ];
       case 1:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.sick ?? '0'}",
-          "${Get.find<DashboardController>().dashboardModel.value.allowedSickLeave ?? 0} remaining"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedSickLeave ?? 0} allowed"
         ];
       case 2:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.annual ?? '0'}",
-          "${Get.find<DashboardController>().dashboardModel.value.allowedAnnualLeave ?? 0} remaining"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedAnnualLeave ?? 0} allowed"
         ];
       default:
         return [
           "${Get.find<DashboardController>().dashboardModel.value.lateArrival ?? '0'}",
-          "${Get.find<DashboardController>().dashboardModel.value.allowedLateArrival ?? 0} remaining"
+          "${Get.find<DashboardController>().dashboardModel.value.allowedLateArrival ?? 0} allowed"
         ];
     }
   }

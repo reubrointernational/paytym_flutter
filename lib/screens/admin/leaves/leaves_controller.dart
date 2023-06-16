@@ -130,7 +130,7 @@ class LeavesControllerAdmin extends GetxController
   }
 
   fetchLeaveData([int status = 1]) async {
-    //status 1 means all leaves,
+    //status 1 means month leaves, 3 means all leaves
     if (status == 3) {
       leaveAdminResponseModelAll.value =
           LeavesListAdminModel(message: '', leaveRequest: []);
@@ -154,8 +154,10 @@ class LeavesControllerAdmin extends GetxController
       return;
     } else {
       if (status == 3) {
+        print('fetch leave data 1');
         leaveAdminResponseModelAll.value =
             leavesListAdminModelFromJson(responseString);
+        print('fetch leave data 13');
       } else {
         leaveAdminResponseModel.value =
             leavesListAdminModelFromJson(responseString);
