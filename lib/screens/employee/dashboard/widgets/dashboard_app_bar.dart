@@ -38,14 +38,23 @@ class DashboardAppBar extends StatelessWidget {
             PopupMenuButton<DashboardDropDown>(
               color: CustomColors.blueTextColor,
               itemBuilder: (BuildContext context) {
+                List<PopupMenuButton> buttonList = [];
                 return [
                   if (Get.find<LoginController>()
-                          .loginResponseModel
-                          ?.capabilities
-                          ?.first
-                          .role
-                          ?.roleName !=
-                      'Employee')
+                              .loginResponseModel
+                              ?.capabilities !=
+                          null &&
+                      Get.find<LoginController>()
+                          .loginResponseModel!
+                          .capabilities!
+                          .isNotEmpty &&
+                      Get.find<LoginController>()
+                              .loginResponseModel
+                              ?.capabilities
+                              ?.first
+                              .role
+                              ?.roleName !=
+                          'Employee')
                     PopupMenuItem(
                       value: kDashboardDropDownItemList[3].dropDownItem,
                       child: Text(

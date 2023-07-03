@@ -214,7 +214,7 @@ class ReportsControllerAdmin extends GetxController
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
       },
       onCancel: () {
-        sliderValue.value = sliderValue.value == 100 ? 0 : 100;
+        sliderValue.value = 0;
       },
     );
   }
