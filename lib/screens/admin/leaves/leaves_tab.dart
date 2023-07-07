@@ -43,7 +43,7 @@ class LeavesTabAdmin extends StatelessWidget {
         }
         return ListView.builder(
           physics: const BouncingScrollPhysics(),
-          itemCount: allLeaves?.length,
+          itemCount: allLeaves?.length ?? 0,
           itemBuilder: (context, index) {
             final leave = allLeaves?[index];
             return LeavesCardAdmin(

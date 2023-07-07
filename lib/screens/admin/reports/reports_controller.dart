@@ -206,8 +206,8 @@ class ReportsControllerAdmin extends GetxController
     DialogHelper.showConfirmDialog(
       title: sliderValue.value == 100 ? 'Process Payroll' : 'Reverse Payroll',
       desc: sliderValue.value == 100
-          ? 'Do you like to process payroll?'
-          : 'Do you like to reverse process payroll?',
+          ? 'Are you sure to process payroll?'
+          : 'Are you sure to reverse payroll?',
       onConfirm: () {
         //0 for process payroll and 1 for reverse payroll
         sliderValue.value == 100 ? processPayroll(1) : processPayroll(0);

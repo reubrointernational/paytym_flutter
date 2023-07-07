@@ -12,6 +12,7 @@ import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../models/leaves/leave_type_model.dart';
 import '../../../models/leaves/leaves_admin_response_model.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../network/base_client.dart';
@@ -73,7 +74,10 @@ class LeavesControllerAdmin extends GetxController
 
   getLeaveType(int? typeId) {
     return leaveTypesModel.value.leaveTypes
-            ?.firstWhere((element) => element.id == typeId)
+            ?.firstWhere(
+              (element) => element.id == typeId,
+              orElse: () => LeaveType()..leaveType = 'Not provided',
+            )
             .leaveType ??
         '';
   }

@@ -31,13 +31,13 @@ class CsvDownloader {
       payroll.add([
         '${e.firstName} ${e.lastName}',
         e.id.toString(),
-        e.payroll?.grossSalary??'',
-        e.payroll?.baseSalary??'',
-        e.payroll?.totalTax??'',
-        e.payroll?.totalAllowance??'',
-        e.payroll?.totalDeduction??'',
-        e.payroll?.totalBonus??'',
-        e.payroll?.totalCommission??'',
+        e.payroll?.grossSalary ?? '',
+        e.payroll?.baseSalary ?? '',
+        e.payroll?.totalTax ?? '',
+        e.payroll?.totalAllowance ?? '',
+        e.payroll?.totalDeduction ?? '',
+        e.payroll?.totalBonus ?? '',
+        e.payroll?.totalCommission ?? '',
       ]);
     }
     String csv = const ListToCsvConverter().convert(payroll);
@@ -46,6 +46,7 @@ class CsvDownloader {
     final date = DateFormat('dd_MM_yyyy_H_m_s').format(dateTime);
     File f = File("$appDocPath/payroll_$date.csv");
     await f.writeAsString(csv);
+    print(f.path);
     DialogHelper.showToast(desc: 'File downloaded at ${f.path}');
   }
 }
