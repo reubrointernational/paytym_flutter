@@ -24,31 +24,61 @@ class AttendanceTabAdmin extends StatelessWidget {
     Get.put(LeavesControllerAdmin());
     return Column(
       children: [
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.blue),
+                ),
+                onPressed: () {
+                  Get.to(() => const PendingAttendanceScreen());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Pending',
+                    style: TextStyle(
+                        color: Colors.blue.shade800,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+            ),
+            // kSizedBoxW10,
+            // Expanded(
+            //   child: OutlinedButton(
+            //     style: OutlinedButton.styleFrom(
+            //       side: const BorderSide(color: Colors.blue),
+            //     ),
+            //     onPressed: () {
+            //       Get.to(() => const ListEmployeesAdmin(
+            //             title: 'Add Attendance',
+            //           ));
+            //     },
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(12.0),
+            //       child: Text(
+            //         'Add Attendance',
+            //         style: TextStyle(
+            //             color: Colors.blue.shade800,
+            //             fontSize: 16,
+            //             fontWeight: FontWeight.w500),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
         SizedBox(
           height: 120,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.blue),
-                      ),
-                      onPressed: () {
-                        Get.to(() => const PendingAttendanceScreen());
-                      },
-                      child: Text(
-                        'Pending',
-                        style: TextStyle(
-                            color: Colors.blue.shade800,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
                   Row(
                     children: [
                       Obx(
@@ -156,7 +186,7 @@ class AttendanceTabAdmin extends StatelessWidget {
                               onPressed: () {
                                 Get.find<ReportsControllerAdmin>()
                                     .selectedItem = attendanceList![index];
-                                
+
                                 Get.find<ReportsControllerAdmin>()
                                     .approveOrDeclineAttendance(
                                         ReasonButton.attendanceApprove);

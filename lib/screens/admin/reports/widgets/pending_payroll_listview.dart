@@ -4,6 +4,8 @@ import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/admin/reports/csv_download.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import '../../../../core/colors/colors.dart';
+import '../../../../core/constants/enums.dart';
+import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../core/custom_slider_thumb.dart';
 import '../../../../models/employee_list_model.dart';
@@ -28,7 +30,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 130,
+                // height: 130,
                 child: Card(
                   color: CustomColors.whiteCardColor,
                   elevation: 5,
@@ -51,7 +53,6 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                 color: CustomColors.blackTextColor,
                               ),
                             ),
-                            //Finance only
                             IconButton(
                               icon: const Icon(
                                 Icons.download,
@@ -74,34 +75,19 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                             ),
                           ],
                         ),
-                        kSizedBoxH10,
-                        Obx(() => SliderTheme(
-                              data: SliderThemeData(
-                                overlayShape: SliderComponentShape.noOverlay,
-                                thumbShape: const CustomRoundSliderThumbShape(
-                                  enabledThumbRadius: 18.0,
-                                ),
-                              ),
-                              child: Slider(
-                                value: Get.find<ReportsControllerAdmin>()
-                                    .sliderValue
-                                    .value,
-                                max: 100,
-                                thumbColor: CustomColors.lightBlueColor,
-                                inactiveColor: CustomColors.lightBlueColor,
-                                activeColor: CustomColors.orangeColor,
-                                onChanged: (double value) {
-                                  Get.find<ReportsControllerAdmin>()
-                                      .changeSliderPosition(value);
-                                },
-                                onChangeStart: (value) =>
-                                    Get.find<ReportsControllerAdmin>()
-                                        .sliderStartValue = value,
-                                onChangeEnd: (double value) =>
-                                    Get.find<ReportsControllerAdmin>()
-                                        .sliderController(),
-                              ),
-                            )),
+                        const SliderColumn(
+                          // title: 'ALL',
+                          title: '',
+                          processPayrollTypes: ProcessPayrollTypes.all,
+                        ),
+                        // const SliderColumn(
+                        //   title: 'DEPARTMENT',
+                        //   processPayrollTypes: ProcessPayrollTypes.dept,
+                        // ),
+                        // const SliderColumn(
+                        //   title: 'BRANCH',
+                        //   processPayrollTypes: ProcessPayrollTypes.branch,
+                        // ),
                       ],
                     ),
                   ),
@@ -330,7 +316,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                               right: 20,
                               top: 12,
                               child: Text(
-                                'PID${employees?.payroll?.id??0}',
+                                'PID${employees?.payroll?.id ?? 0}',
                                 style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w600),
                               ),
@@ -345,6 +331,123 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SliderColumn extends StatelessWidget {
+  final String title;
+  final ProcessPayrollTypes processPayrollTypes;
+  const SliderColumn({
+    super.key,
+    required this.title,
+    required this.processPayrollTypes,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: CustomColors.blackTextColor,
+            ),
+          ),
+          if (processPayrollTypes != ProcessPayrollTypes.all)
+            Container(
+              width: double.infinity,
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                      width: 1.2,
+                      color: const Color.fromRGBO(182, 182, 182, 1))),
+              child: Obx(
+                () => DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: processPayrollTypes == ProcessPayrollTypes.branch
+                        ? Get.find<DashboardControllerAdmin>()
+                            .selectedDropdownBranches
+                            .value
+                        : Get.find<DashboardControllerAdmin>()
+                            .selectedDropdownDepartments
+                            .value,
+                    onChanged: (String? value) {
+                      processPayrollTypes == ProcessPayrollTypes.branch
+                          ? Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownBranches
+                              .value = value!
+                          : Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownDepartments
+                              .value = value!;
+                    },
+                    hint: Text(processPayrollTypes == ProcessPayrollTypes.dept
+                        ? 'Departments'
+                        : 'Branches'),
+                    isExpanded: true,
+                    icon: Image.asset(
+                      IconPath.dropdownIconPng,
+                      height: 20,
+                      width: 20,
+                    ),
+                    items: processPayrollTypes == ProcessPayrollTypes.branch
+                        ? Get.find<DashboardControllerAdmin>()
+                            .branchwiseEmployeeMap
+                            .keys
+                            .toList()
+                            .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                                value: value, child: Text(value));
+                          }).toList()
+                        : Get.find<DashboardControllerAdmin>()
+                            .deptwiseEmployeeMap
+                            .keys
+                            .toList()
+                            .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                                value: value, child: Text(value));
+                          }).toList(),
+                  ),
+                ),
+              ),
+            ),
+          Padding(
+            padding: EdgeInsets.only(
+                top: processPayrollTypes != ProcessPayrollTypes.all ? 0 : 10),
+            child: Obx(() => SliderTheme(
+                  data: SliderThemeData(
+                    overlayShape: SliderComponentShape.noOverlay,
+                    thumbShape: const CustomRoundSliderThumbShape(
+                      enabledThumbRadius: 18.0,
+                    ),
+                  ),
+                  child: Slider(
+                    value: Get.find<ReportsControllerAdmin>().sliderValue.value,
+                    max: 100,
+                    thumbColor: CustomColors.lightBlueColor,
+                    inactiveColor: CustomColors.lightBlueColor,
+                    activeColor: CustomColors.orangeColor,
+                    onChanged: (double value) {
+                      Get.find<ReportsControllerAdmin>()
+                          .changeSliderPosition(value);
+                    },
+                    onChangeStart: (value) => Get.find<ReportsControllerAdmin>()
+                        .sliderStartValue = value,
+                    onChangeEnd: (double value) =>
+                        Get.find<ReportsControllerAdmin>().sliderController(),
+                  ),
+                )),
+          ),
+        ],
       ),
     );
   }

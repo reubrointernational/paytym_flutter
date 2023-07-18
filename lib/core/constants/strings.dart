@@ -474,6 +474,8 @@ const kReportsString = 'Reports';
 
 const kWorkProfileString = 'Work Profile';
 
+const kProcessPayrollString = 'Process Payroll';
+
 const kEmployeeProfileString = 'Employee Profile';
 
 const kReasonString = 'Reason';

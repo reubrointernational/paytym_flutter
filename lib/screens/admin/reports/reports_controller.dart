@@ -27,6 +27,7 @@ import '../../../core/dialog_helper.dart';
 import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/attendance/attendance_edit_request.dart';
+import '../../../models/report/attendance/attendance_request_model.dart';
 import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/file_upload_request.dart';
@@ -64,8 +65,9 @@ class ReportsControllerAdmin extends GetxController
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
-
-  List<String> reportsTabListAdmin = [
+  final attendanceFormKey = GlobalKey<FormState>();
+  final attendanceRequestModel = AttendanceRequestModel();
+  final List<String> reportsTabListAdmin = [
     'Attendance',
     'Overtime',
     //payroll
@@ -110,6 +112,7 @@ class ReportsControllerAdmin extends GetxController
 
     getAttendance();
   }
+  
 
   String getAttendanceCount(int index) {
     switch (index) {

@@ -19,8 +19,6 @@ class BottomNavigationPageAdmin extends StatefulWidget {
 }
 
 class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
-  
-
   Widget switchWidgets(index) {
     switch (index) {
       case 0:
@@ -41,6 +39,7 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        Get.find<LoginController>().bottomNavigationAdminIndex.value = 0;
         return false;
       },
       child: Obx(() => Scaffold(
@@ -53,7 +52,8 @@ class _BottomNavigationPageAdminState extends State<BottomNavigationPageAdmin> {
               unselectedItemColor: CustomColors.whiteCardColor,
               selectedFontSize: 10,
               unselectedFontSize: 10,
-              currentIndex: Get.find<LoginController>().bottomNavigationAdminIndex.value,
+              currentIndex:
+                  Get.find<LoginController>().bottomNavigationAdminIndex.value,
               onTap: (value) {
                 Get.find<LoginController>().bottomNavigationAdminIndex.value =
                     value;

@@ -40,7 +40,7 @@ class HrAppBar extends StatelessWidget {
         PopupMenuButton(
           color: CustomColors.lightBlueColor,
           itemBuilder: (BuildContext context) => List.generate(
-            2,
+            3,
             (index) => PopupMenuItem(
               value: kReportDropDownItemListWorkProfile[index].dropDownItem,
               child: Text(

@@ -20,11 +20,12 @@ class CustomCardDetails extends StatelessWidget {
         future: Get.find<DashboardControllerAdmin>().fetchDashboardDetails(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return GridView.builder(
+              physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 3,
-                  crossAxisSpacing: 2,
-                  childAspectRatio: 3 / 2),
+                crossAxisCount: 2,
+                mainAxisSpacing: 3,
+                crossAxisSpacing: 2,
+              ),
               itemCount: 6,
               itemBuilder: (context, index) {
                 final details =
@@ -55,6 +56,7 @@ class CustomCardDetails extends StatelessWidget {
                                 )),
                             Text(
                               details['title'],
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: details['color'],
                               ),

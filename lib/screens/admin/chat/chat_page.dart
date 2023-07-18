@@ -26,7 +26,7 @@ class ChatPageAdmin extends StatefulWidget {
 
 class _ChatPageAdminState extends State<ChatPageAdmin> {
   Timer? timer;
-  
+
   @override
   void initState() {
     super.initState();
@@ -62,7 +62,7 @@ class _ChatPageAdminState extends State<ChatPageAdmin> {
           style: kTextStyleS18W600white,
         ),
         elevation: 0,
-        backgroundColor: CustomColors.lightBlueColor,
+        backgroundColor: const Color.fromARGB(255, 3, 4, 5),
       ),
       backgroundColor: CustomColors.lightBlueColor,
       body: SafeArea(
@@ -149,7 +149,7 @@ class _ChatPageAdminState extends State<ChatPageAdmin> {
                                                 width: 10,
                                               ),
                                               Text(
-                                                '~${chat.employee?.firstName??''}',
+                                                '~${chat.employee?.firstName ?? ''}',
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                 ),

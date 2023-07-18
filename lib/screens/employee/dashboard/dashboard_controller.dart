@@ -22,6 +22,7 @@ import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../../network/shared_preference_helper.dart';
 import '../../../routes/app_routes.dart';
+import '../../admin/dashboard/dashboard_controller.dart';
 
 class DashboardController extends GetxController with BaseController {
   final time = '00:00 AM'.obs;
@@ -254,7 +255,7 @@ class DashboardController extends GetxController with BaseController {
     }
   }
 
-  onClickMenuItem(DashboardDropDown value) {
+  onClickMenuItem(DashboardDropDown value, [isFromAdmin = true]) {
     if (value == DashboardDropDown.advance) {
       DialogHelper.showBottomSheet(const RequestAdvanceBottomsheet());
     } else if (value == DashboardDropDown.logout) {
@@ -263,6 +264,12 @@ class DashboardController extends GetxController with BaseController {
       Get.toNamed(Routes.bottomNavAdmin);
     } else if (value == DashboardDropDown.overTime) {
       DialogHelper.showBottomSheet(const RequestOvertimeBottomsheet());
+    } else if (value == DashboardDropDown.payroll) {
+      if (!isFromAdmin) {
+        print('open admin bottom nav panel');
+        Get.toNamed(Routes.bottomNavAdmin);
+      }
+      Get.find<DashboardControllerAdmin>().seeDetailsPage(5);
     } else {
       Get.back();
     }

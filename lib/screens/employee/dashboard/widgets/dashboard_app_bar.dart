@@ -38,7 +38,6 @@ class DashboardAppBar extends StatelessWidget {
             PopupMenuButton<DashboardDropDown>(
               color: CustomColors.blueTextColor,
               itemBuilder: (BuildContext context) {
-                List<PopupMenuButton> buttonList = [];
                 return [
                   if (Get.find<LoginController>()
                               .loginResponseModel
@@ -56,16 +55,16 @@ class DashboardAppBar extends StatelessWidget {
                               ?.roleName !=
                           'Employee')
                     PopupMenuItem(
-                      value: kDashboardDropDownItemList[3].dropDownItem,
+                      value: kDashboardDropDownItemList[4].dropDownItem,
                       child: Text(
-                        kDashboardDropDownItemList[3].label,
+                        kDashboardDropDownItemList[4].label,
                         style: const TextStyle(
                           color: CustomColors.whiteTextColor,
                         ),
                       ),
                     ),
                   ...List.generate(
-                    3,
+                    4,
                     (index) => PopupMenuItem(
                       value: kDashboardDropDownItemList[index].dropDownItem,
                       child: Text(
@@ -79,7 +78,7 @@ class DashboardAppBar extends StatelessWidget {
                 ];
               },
               onSelected: (DashboardDropDown value) =>
-                  Get.find<DashboardController>().onClickMenuItem(value),
+                  Get.find<DashboardController>().onClickMenuItem(value, false),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
                 child: CachedNetworkImage(
