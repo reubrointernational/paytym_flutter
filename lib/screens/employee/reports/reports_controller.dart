@@ -56,7 +56,12 @@ class ReportsController extends GetxController
   final splitPaymentResponseModel = SplitPaymentResponseModel().obs;
   final deductionResponseModel = DeductionResponseModel().obs;
   final attendanceResponseModel = AttendanceEmployeeResponseModel().obs;
-  Map<String, double> pieChartData = {'': 2};
+  Map<String, double> pieChartData = {
+    'OnTime': 0.0,
+    'Leaves': 0.0,
+    'Late': 0.0,
+    'EarlyOut': 0.0
+  };
 
   final selectedDropdownYear = years[0].obs;
   final selectedDropdownMonth = monthsList[DateTime.now().month - 1].obs;
@@ -428,40 +433,36 @@ class ReportsController extends GetxController
   }
 
   getAttendance() async {
-    if (attendanceResponseModel.value.history == null) {
-      showLoading();
-      var requestModel = {
-        'employer_id': Get.find<LoginController>()
-            .loginResponseModel!
-            .employee!
-            .employerId,
-        'date': DateTime.now.toString(),
+    showLoading();
+    var requestModel = {
+      'employer_id':
+          Get.find<LoginController>().loginResponseModel!.employee!.employerId,
+      'date': DateTime.now.toString(),
+    };
+
+    var responseString = await Get.find<BaseClient>()
+        .post(
+          ApiEndPoints.employeeAttendance,
+          jsonEncode(requestModel),
+          Get.find<LoginController>().getHeader(),
+        )
+        .catchError(handleError);
+
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      attendanceResponseModel.value =
+          attendanceEmployeeResponseModelFromJson(responseString);
+      //print(attendanceResponseModel.value.ontime);
+
+      pieChartData = {
+        "OnTime": attendanceResponseModel.value.ontime!.toDouble(),
+        "Leaves": attendanceResponseModel.value.leaves!.toDouble(),
+        "Late": attendanceResponseModel.value.late!.toDouble(),
+        "EarlyOut": attendanceResponseModel.value.earlyout!.toDouble(),
       };
-
-      var responseString = await Get.find<BaseClient>()
-          .post(
-            ApiEndPoints.employeeAttendance,
-            jsonEncode(requestModel),
-            Get.find<LoginController>().getHeader(),
-          )
-          .catchError(handleError);
-
-      if (responseString == null) {
-        return;
-      } else {
-        hideLoading();
-        attendanceResponseModel.value =
-            attendanceEmployeeResponseModelFromJson(responseString);
-        //print(attendanceResponseModel.value.ontime);
-        attendanceResponseModel.refresh();
-
-        pieChartData = {
-          "OnTime": attendanceResponseModel.value.ontime + .0,
-          "Leaves": attendanceResponseModel.value.leaves + .0,
-          "Late": attendanceResponseModel.value.late + .0,
-          "EarlyOut": attendanceResponseModel.value.earlyout + .0,
-        };
-      }
+      attendanceResponseModel.refresh();
     }
   }
 

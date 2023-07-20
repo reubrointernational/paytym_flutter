@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 
 import 'icons.dart';
 
-double w = Get.width;
-double h = Get.height;
+double w = Get.mediaQuery.size.width;
+double h = Get.mediaQuery.size.height;
 
 List<Map<String, dynamic>> calendarMeetingDetails = [
   {

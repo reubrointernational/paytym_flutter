@@ -30,7 +30,6 @@ class CustomCardDetails extends StatelessWidget {
               itemBuilder: (context, index) {
                 final details =
                     Get.find<DashboardControllerAdmin>().getCardDetails(index);
-
                 return InkWell(
                   onTap: () => Get.find<DashboardControllerAdmin>()
                       .seeDetailsPage(index),

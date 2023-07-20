@@ -7,7 +7,7 @@ String attendanceEmployeeResponseModelToJson(AttendanceEmployeeResponseModel dat
 class AttendanceEmployeeResponseModel {
     AttendanceEmployeeResponseModel({
          this.message,
-       this.history,
+         this.history,
          this.ontime,
          this.late,
          this.earlyout,
@@ -16,18 +16,18 @@ class AttendanceEmployeeResponseModel {
 
     String? message;
     List<History>? history;
-    dynamic ontime;
-    dynamic late;
-    dynamic earlyout;
-    dynamic leaves;
+    int? ontime;
+    int? late;
+    int? earlyout;
+    int? leaves;
 
     factory AttendanceEmployeeResponseModel.fromJson(Map<String, dynamic> json) => AttendanceEmployeeResponseModel(
         message: json["message"],
         history: List<History>.from(json["history"].map((x) => History.fromJson(x))),
-        ontime: json["ontime"],
-        late: json["late"],
-        earlyout: json["earlyout"],
-        leaves: json["leaves"],
+        ontime: json["ontime"]??0,
+        late: json["late"]??0,
+        earlyout: json["earlyout"]??0,
+        leaves: json["leaves"]??0,
     );
 
     Map<String, dynamic> toJson() => {

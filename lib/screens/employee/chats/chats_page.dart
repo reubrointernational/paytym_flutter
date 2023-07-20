@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,10 +6,10 @@ import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:paytym/models/chat/chat_response_model.dart';
 import 'package:paytym/screens/employee/chats/chat_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
+import '../../../models/chat/chat_response_model.dart';
 import '../../widgets/chat_clippath_cut.dart';
 
 class ChatPage extends StatefulWidget {
@@ -22,28 +20,29 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  Timer? timer;
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      Get.find<ChatController>().fetchChat(isFromNotification: true);
-    });
-  }
+  // Timer? timer;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     Get.find<ChatController>().fetchChat(isFromNotification: true);
+  //   });
+  // }
 
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   timer?.cancel();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     Get.put(ChatController());
     final controller = Get.find<ChatController>();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => controller.fetchChat(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchChat(isFromNotification: true);
+      controller.chatResponseModel.value = ChatResponseModel();
+    });
 
     return Scaffold(
       appBar: AppBar(

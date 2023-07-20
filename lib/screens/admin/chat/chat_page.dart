@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,19 +23,19 @@ class ChatPageAdmin extends StatefulWidget {
 }
 
 class _ChatPageAdminState extends State<ChatPageAdmin> {
-  Timer? timer;
+  // Timer? timer;
 
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      Get.find<ChatController>().fetchChat(isFromNotification: true);
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     Get.find<ChatController>().fetchChat(isFromNotification: true);
+  //   });
+  // }
 
   @override
   void dispose() {
-    timer?.cancel();
+    // timer?.cancel();
     super.dispose();
   }
 
@@ -47,6 +45,7 @@ class _ChatPageAdminState extends State<ChatPageAdmin> {
 
     Get.find<DashboardControllerAdmin>().selectedItemList.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ChatController>().fetchChat(isFromNotification: true);
       Get.find<ChatController>().chatResponseModel.value = ChatResponseModel();
     });
     return Scaffold(

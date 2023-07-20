@@ -28,23 +28,24 @@ class AttendanceTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PieChart(
-                  dataMap: Get.find<ReportsController>().pieChartData,
-                  chartRadius: w / 3.2,
-                  chartLegendSpacing: 60,
-                  colorList: CustomColors.cardColorList,
-                  chartValuesOptions: const ChartValuesOptions(
-                    showChartValues: false,
-                  ),
-                  legendLabels: <String, String>{
-                    "OnTime":
-                        "On Time : ${Get.find<ReportsController>().pieChartData["OnTime"]}",
-                    "Leaves":
-                        "Leaves : ${Get.find<ReportsController>().pieChartData["Leaves"]}",
-                    "Late":
-                        "Late : ${Get.find<ReportsController>().pieChartData["Late"]}",
-                    "EarlyOut":
-                        "Early Out : ${Get.find<ReportsController>().pieChartData["EarlyOut"]}"
-                  }),
+                dataMap: Get.find<ReportsController>().pieChartData,
+                chartRadius: 120,
+                chartLegendSpacing: 60,
+                colorList: CustomColors.cardColorList,
+                chartValuesOptions: const ChartValuesOptions(
+                  showChartValues: false,
+                ),
+                legendLabels: <String, String>{
+                  "OnTime":
+                      "On Time : ${Get.find<ReportsController>().pieChartData["OnTime"]}",
+                  "Leaves":
+                      "Leaves : ${Get.find<ReportsController>().pieChartData["Leaves"]}",
+                  "Late":
+                      "Late : ${Get.find<ReportsController>().pieChartData["Late"]}",
+                  "EarlyOut":
+                      "Early Out : ${Get.find<ReportsController>().pieChartData["EarlyOut"]}"
+                }
+              ),
               kSizedBoxH10,
               const Padding(
                 padding: EdgeInsets.only(left: 8),

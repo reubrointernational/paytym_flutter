@@ -101,22 +101,20 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   }
 
   fetchDashboardDetails() async {
-    if (dashboardDetails.message?.isEmpty ?? true) {
-      Get.find<BaseClient>().onError = fetchDashboardDetails;
-      var requestModel = {
-        'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-      };
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.adminDashboard, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        return;
-      } else {
-        dashboardDetails = dashboardAdminResponseModelFromJson(responseString);
-        Get.find<BaseClient>().onError = null;
-      }
+    Get.find<BaseClient>().onError = fetchDashboardDetails;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.adminDashboard, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      dashboardDetails = dashboardAdminResponseModelFromJson(responseString);
+      Get.find<BaseClient>().onError = null;
     }
   }
 
@@ -142,7 +140,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       },
       {
         'icon': IconPath.meetingsIconPng,
-        'title': 'Total Meetings',
+        'title': 'Total Meetings Today',
         'count': dashboardDetails.meetingsCount ?? '',
         'color': Colors.orange,
       },
