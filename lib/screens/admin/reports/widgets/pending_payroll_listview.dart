@@ -9,6 +9,7 @@ import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../core/custom_slider_thumb.dart';
 import '../../../../models/employee_list_model.dart';
+import '../../widgets/filter_payroll_bottomsheet.dart';
 
 class PendingPayrollListview extends StatefulWidget {
   const PendingPayrollListview({super.key});
@@ -18,6 +19,7 @@ class PendingPayrollListview extends StatefulWidget {
 }
 
 class _PendingPayrollListviewState extends State<PendingPayrollListview> {
+  bool isAllSelected = true;
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -75,6 +77,68 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                             ),
                           ],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor:
+                                    isAllSelected ? Colors.blue : Colors.white,
+                                side: const BorderSide(color: Colors.blue),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isAllSelected = true;
+                                });
+
+                                // Get.to(() => const PendingAttendanceScreen());
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(1.0),
+                                child: Text(
+                                  'All Employees',
+                                  style: TextStyle(
+                                      color: isAllSelected
+                                          ? Colors.white
+                                          : Colors.blue,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor:
+                                    isAllSelected ? Colors.white : Colors.blue,
+                                side: const BorderSide(color: Colors.blue),
+                              ),
+                              onPressed: () {
+                                isAllSelected = false;
+                                showFilterBottomSheet(context,
+                                    Get.find<ReportsControllerAdmin>());
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: Text(
+                                  'Choose Employee',
+                                  style: TextStyle(
+                                      color: isAllSelected
+                                          ? Colors.blue
+                                          : Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // const Text(
+                        //   'Selected Employee',
+                        //   style: TextStyle(
+                        //     fontWeight: FontWeight.w700,
+                        //     color: CustomColors.blackTextColor,
+                        //   ),
+                        // ),
                         const SliderColumn(
                           // title: 'ALL',
                           title: '',
@@ -348,7 +412,7 @@ class SliderColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
