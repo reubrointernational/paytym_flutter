@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/strings.dart';
@@ -18,7 +17,7 @@ class SplashScreen extends StatelessWidget {
     Get.put(LoginController(), permanent: true);
     Get.put(SplashController());
     Get.lazyPut(() => SharedPreferenceHelper(), fenix: true);
- 
+
     return Scaffold(
       backgroundColor: CustomColors.blueCardColor,
       body: Stack(
