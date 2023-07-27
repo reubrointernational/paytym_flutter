@@ -112,6 +112,7 @@ class ReportsControllerAdmin extends GetxController
 
     getAttendance();
   }
+
   
 
   String getAttendanceCount(int index) {
@@ -205,6 +206,8 @@ class ReportsControllerAdmin extends GetxController
     }
   }
 
+  
+
   showDialogue() {
     DialogHelper.showConfirmDialog(
       title: sliderValue.value == 100 ? 'Process Payroll' : 'Reverse Payroll',
@@ -255,8 +258,6 @@ class ReportsControllerAdmin extends GetxController
   String projectName = '';
   final projectDetailsResponseModel =
       ProjectDetailsModel(message: '', projectsListe: []).obs;
-
-  double projectPercentage = 0;
 
   TextEditingController checkInTimeController = TextEditingController();
   TextEditingController checkOutTimeController = TextEditingController();
@@ -391,21 +392,20 @@ class ReportsControllerAdmin extends GetxController
     }
   }
 
-  findProjectProgress(DateTime? startDate, DateTime? endDate) {
+  double findProjectProgress(DateTime? startDate, DateTime? endDate) {
     if (endDate != null &&
         startDate != null &&
-        startDate.difference(endDate) <= const Duration(seconds: 0)) {
-      projectPercentage = 100;
-      return;
+        endDate.difference(startDate) <= const Duration(seconds: 0)) {
+      return 100.0;
     }
 
     DateTime currentDateTime = DateTime.now();
     final differenceStartToEnd =
-        startDate != null ? endDate?.difference(startDate).inSeconds : 1;
+        startDate != null ? endDate?.difference(startDate).inDays : 1;
     final differenceStartToCurrent =
-        startDate != null ? currentDateTime.difference(startDate).inSeconds : 0;
+        startDate != null ? currentDateTime.difference(startDate).inDays : 0;
 
-    projectPercentage = (differenceStartToCurrent / (differenceStartToEnd ?? 1))
+    return ((differenceStartToCurrent / (differenceStartToEnd ?? 1)) * 100)
         .floorToDouble();
   }
 

@@ -128,6 +128,7 @@ class LeavesControllerAdmin extends GetxController
             leave_type.leaveTypesModelFromJson(responseString);
 
         leaveTypesModel.refresh();
+        leaveAdminResponseModel.refresh();
         Get.find<BaseClient>().onError = null;
       }
     }

@@ -130,7 +130,7 @@ class DashboardController extends GetxController with BaseController {
     if ((sliderValue.value - value).abs() < 20) {
       sliderValue.value = value;
       sliderValueChanged = true;
-    }
+    } 
   }
 
   Future<void> selectDateTime(BuildContext context) async {
@@ -231,7 +231,7 @@ class DashboardController extends GetxController with BaseController {
           updateCheckInOut(CheckInOutStatus.checkIn);
         } else if (isCheckedInWithQR && sliderValue.value == 0) {
           //checkout not possible if checkedin with qrcode
-          Get.find<DashboardController>().sliderValue.value = 100;
+          sliderValue.value = 100;
           checkInStatus = true;
           DialogHelper.showToast(desc: 'Use QR scanner to checkout');
         } else {
@@ -242,7 +242,7 @@ class DashboardController extends GetxController with BaseController {
           //checkin
           updateCheckInOut(CheckInOutStatus.qrCheckIn);
         } else if (!isCheckedInWithQR && sliderValue.value == 0) {
-          Get.find<DashboardController>().sliderValue.value = 100;
+          sliderValue.value = 100;
           checkInStatus = true;
           DialogHelper.showToast(desc: 'Use Slider to checkout');
           Get.back();
@@ -427,7 +427,6 @@ class DashboardController extends GetxController with BaseController {
   updateCheckInOut(checkInOutStatus) async {
     switch (checkInOutStatus) {
       case CheckInOutStatus.checkIn:
-        print('checkin');
         if (!checkInStatus) {
           bool status = await serverCheckInOut(true);
           if (status) {
@@ -530,6 +529,9 @@ class DashboardController extends GetxController with BaseController {
         if (message.toLowerCase().contains('success')) {
           Get.back();
           return true;
+        } else if (message.toLowerCase().contains('manually')) {
+          Get.back();
+          return false;
         } else if (!message.toLowerCase().contains('success')) {
           Get.back();
           return false;
