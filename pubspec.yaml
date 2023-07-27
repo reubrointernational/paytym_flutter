@@ -33,7 +33,7 @@ dependencies:
   fluttertoast: 8.1.2
   get: ^4.6.5
   image_picker: ^0.8.6+1
-  intl: ^0.17.0
+  intl: ^0.18.0
   lottie: ^1.4.3
   mobile_scanner: ^2.1.0
   path_provider: ^2.0.11

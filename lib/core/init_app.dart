@@ -6,7 +6,7 @@ import '../firebase_options.dart';
 import 'init_fcm.dart';
 
 Future<void> initApp() async {
-  final WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // if (Platform.isAndroid) {
   //   binding.renderView.automaticSystemUiAdjustment = false;
   // }
