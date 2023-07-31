@@ -15,6 +15,8 @@ class PendingPayrollListview extends StatelessWidget {
   const PendingPayrollListview({super.key});
 
 
+class _PendingPayrollListviewState extends State<PendingPayrollListview> {
+  bool isAllSelected = true;
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -74,7 +76,7 @@ class PendingPayrollListview extends StatelessWidget {
                           ],
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             OutlinedButton(
                               style: OutlinedButton.styleFrom(
@@ -83,9 +85,9 @@ class PendingPayrollListview extends StatelessWidget {
                                 side: const BorderSide(color: Colors.blue),
                               ),
                               onPressed: () {
-                                // setState(() {
-                                //   isAllSelected = true;
-                                // });
+                                setState(() {
+                                  isAllSelected = true;
+                                });
 
                                 // Get.to(() => const PendingAttendanceScreen());
                               },
@@ -116,7 +118,7 @@ class PendingPayrollListview extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(1.0),
                                 child: Text(
-                                  'Choose Employee',
+                                  'custom',
                                   style: TextStyle(
                                       color: isAllSelected
                                           ? Colors.blue
