@@ -34,7 +34,7 @@ class ProjectsTabAdmin extends StatelessWidget {
           itemBuilder: (context, index) {
             DateTime? startDate = projects![index].startDate;
             DateTime? endDate = projects[index].endDate;
-            reportController.findProjectProgress(startDate, endDate);
+
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
@@ -186,7 +186,8 @@ class ProjectsTabAdmin extends StatelessWidget {
                               kSizedBoxH15,
                               SizedBox(
                                 child: ProgressBar(
-                                  current: reportController.projectPercentage,
+                                  current: reportController.findProjectProgress(
+                                      startDate, endDate),
                                   max: 100,
                                 ),
                               ),
@@ -202,9 +203,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                           .copyWith(color: Colors.black),
                                     ),
                                     Text(
-                                      reportController.projectPercentage.isNaN
-                                          ? '0%'
-                                          : '${reportController.projectPercentage}%',
+                                      '${reportController.findProjectProgress(startDate, endDate)}%',
                                       style: kTextStyleS14W600Cgrey300LS0p2
                                           .copyWith(color: Colors.black),
                                     ),
@@ -249,7 +248,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                 children: [
                                   kSizedBoxH4,
                                   const Text(
-                                    "Due Date",
+                                    "Start Date",
                                     style: TextStyle(
                                       color: CustomColors.grey156x3TextColor,
                                       fontWeight: FontWeight.bold,
@@ -275,6 +274,14 @@ class ProjectsTabAdmin extends StatelessWidget {
                                         ),
                                       ),
                                     ],
+                                  ),
+                                  kSizedBoxH4,
+                                  const Text(
+                                    "Due Date",
+                                    style: TextStyle(
+                                      color: CustomColors.grey156x3TextColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   kSizedBoxH4,
                                   Row(
@@ -306,38 +313,32 @@ class ProjectsTabAdmin extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            "Total Cost: \$ ${projects[index].budget}",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: CustomColors.grey156x3TextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Total Cost: \$ ${projects[index].budget}",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: CustomColors.grey156x3TextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
-                      ),
-                      // kSizedBoxH12,
-                      // const Expanded(
-                      //   child: Padding(
-                      //     padding: EdgeInsets.symmetric(horizontal: 8),
-                      //     child: Text(
-                      //       "Spent: \$ 5,500",
-                      //       textAlign: TextAlign.right,
-                      //       style: TextStyle(
-                      //         color: CustomColors.grey156x3TextColor,
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: 16,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
+                        kSizedBoxH12,
+                        Text(
+                          "Spent: \$ ${projects[index].spentAmount ?? 0}",
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(
+                            color: CustomColors.grey156x3TextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   kSizedBoxH12,
                 ],

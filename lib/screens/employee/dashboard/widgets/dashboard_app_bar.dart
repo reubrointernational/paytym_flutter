@@ -7,11 +7,9 @@ import 'package:paytym/screens/employee/dashboard/dashboard_controller.dart';
 
 import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/enums.dart';
-import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/list_maps.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../network/end_points.dart';
-import '../../calendar/widgets/custom_svg.dart';
 import '../../../login/login_controller.dart';
 import '../../../widgets/paytym_logo.dart';
 
@@ -25,8 +23,8 @@ class DashboardAppBar extends StatelessWidget {
       children: [
         Row(
           children: const [
-            CustomSVG(IconPath.menuSvg, size: 20),
-            kSizedBoxW15,
+            // CustomSVG(IconPath.menuSvg, size: 20),
+            // kSizedBoxW15,
             PaytymLogo(
               size: 60,
             )

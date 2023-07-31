@@ -28,6 +28,9 @@ import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/attendance/attendance_edit_request.dart';
 import '../../../models/report/attendance/attendance_request_model.dart';
+import '../../../models/report/attendance/branch_model.dart';
+import '../../../models/report/attendance/business_model.dart';
+import '../../../models/report/attendance/department_model.dart';
 import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/file_upload_request.dart';
@@ -61,6 +64,9 @@ class ReportsControllerAdmin extends GetxController
     description: '',
   );
   int? selectedEmployeeId = 0;
+  final businessModel = FetchBusinessModel(businesses: [], message: '').obs;
+  final departmentModel = DepartmentModel(departments: [], message: '').obs;
+  final branchModel = BranchesModel(branches: [], message: '').obs;
 
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
@@ -112,7 +118,6 @@ class ReportsControllerAdmin extends GetxController
 
     getAttendance();
   }
-  
 
   String getAttendanceCount(int index) {
     switch (index) {
@@ -256,8 +261,6 @@ class ReportsControllerAdmin extends GetxController
   final projectDetailsResponseModel =
       ProjectDetailsModel(message: '', projectsListe: []).obs;
 
-  double projectPercentage = 0;
-
   TextEditingController checkInTimeController = TextEditingController();
   TextEditingController checkOutTimeController = TextEditingController();
 
@@ -297,6 +300,44 @@ class ReportsControllerAdmin extends GetxController
           filesTypeListModelFromJson(responseString);
       fileTypeListResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  fetchBusiness() async {
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.fetchBusiness,
+        null,
+        Get.find<LoginController>().getHeader());
+    if (responseString == null) {
+      return;
+    } else {
+      businessModel.value = fetchBusinessModelFromJson(responseString);
+    }
+  }
+
+  fetchDepartments(int branchId) async {
+    print('fetchDepartment');
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.fetchDepartment,
+        jsonEncode({'branch_id': branchId.toString()}),
+        Get.find<LoginController>().getHeader());
+    if (responseString == null) {
+      return;
+    } else {
+      print('object');
+      departmentModel.value = departmentModelFromJson(responseString);
+    }
+  }
+
+  fetchBranches(int businessId) async {
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.fetchBranch,
+        jsonEncode({'business_id': businessId.toString()}),
+        Get.find<LoginController>().getHeader());
+    if (responseString == null) {
+      return;
+    } else {
+      branchModel.value = branchesModelFromJson(responseString);
     }
   }
 
@@ -391,21 +432,20 @@ class ReportsControllerAdmin extends GetxController
     }
   }
 
-  findProjectProgress(DateTime? startDate, DateTime? endDate) {
+  double findProjectProgress(DateTime? startDate, DateTime? endDate) {
     if (endDate != null &&
         startDate != null &&
-        startDate.difference(endDate) <= const Duration(seconds: 0)) {
-      projectPercentage = 100;
-      return;
+        endDate.difference(startDate) <= const Duration(seconds: 0)) {
+      return 100.0;
     }
 
     DateTime currentDateTime = DateTime.now();
     final differenceStartToEnd =
-        startDate != null ? endDate?.difference(startDate).inSeconds : 1;
+        startDate != null ? endDate?.difference(startDate).inDays : 1;
     final differenceStartToCurrent =
-        startDate != null ? currentDateTime.difference(startDate).inSeconds : 0;
+        startDate != null ? currentDateTime.difference(startDate).inDays : 0;
 
-    projectPercentage = (differenceStartToCurrent / (differenceStartToEnd ?? 1))
+    return ((differenceStartToCurrent / (differenceStartToEnd ?? 1)) * 100)
         .floorToDouble();
   }
 

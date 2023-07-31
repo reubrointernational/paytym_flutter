@@ -6,11 +6,8 @@ import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 
 import '../../../../core/constants/enums.dart';
-import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/list_maps.dart';
-import '../../../../core/constants/widgets.dart';
 import '../../../../network/end_points.dart';
-import '../../../employee/calendar/widgets/custom_svg.dart';
 import '../../../employee/dashboard/dashboard_controller.dart';
 import '../../../login/login_controller.dart';
 import '../../../widgets/paytym_logo.dart';
@@ -25,12 +22,12 @@ class HrAppBar extends StatelessWidget {
       children: [
         Row(
           children: const [
-            CustomSVG(
-              IconPath.menuSvg,
-              size: 20,
-              color: CustomColors.whiteCardColor,
-            ),
-            kSizedBoxW15,
+            // CustomSVG(
+            //   IconPath.menuSvg,
+            //   size: 20,
+            //   color: CustomColors.whiteCardColor,
+            // ),
+            // kSizedBoxW15,
             PaytymLogo(
               size: 60,
               color: CustomColors.whiteCardColor,
@@ -54,7 +51,7 @@ class HrAppBar extends StatelessWidget {
           onSelected: (DashboardDropDown value) =>
               Get.find<DashboardController>().onClickMenuItem(value),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
+            padding: const EdgeInsets.fromLTRB(15, 8, 0, 8),
             child: CachedNetworkImage(
               imageUrl:
                   '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image ?? ''}',
