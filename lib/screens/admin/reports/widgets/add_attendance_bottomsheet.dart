@@ -73,7 +73,7 @@ class AddAttendanceBottomSheet extends StatelessWidget {
 
                             // controller:
                             //     Get.find<LeavesController>().startTimeController,
-                            hintText: 'Punch In Time',
+                            hintText: 'Check In Time',
                             keyboardType: TextInputType.datetime,
                             suffixIcon: const Icon(
                               Icons.access_time,
@@ -103,7 +103,7 @@ class AddAttendanceBottomSheet extends StatelessWidget {
 
                             // controller:
                             //     Get.find<LeavesController>().startTimeController,
-                            hintText: 'Punch Out Time',
+                            hintText: 'Check Out Time',
                             keyboardType: TextInputType.datetime,
                             suffixIcon: const Icon(
                               Icons.access_time,

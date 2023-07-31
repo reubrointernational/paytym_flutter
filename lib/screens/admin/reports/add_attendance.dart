@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/network/end_points.dart';
+import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
-import '../../../core/colors/colors.dart';
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/constants/styles.dart';
 import '../../../models/employee_list_model.dart';
 import '../../employee/reports/widgets/year_dropdown.dart';
-import '../../widgets/bordered_text_form_field.dart';
 import '../dashboard/dashboard_controller.dart';
 import 'widgets/add_attendance_bottomsheet.dart';
 
@@ -25,6 +23,7 @@ class AddAttendance extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
         Get.find<DashboardControllerAdmin>().fetchEmployeeList());
+    Get.find<ReportsControllerAdmin>().fetchBusiness();
     return WillPopScope(
       onWillPop: () async {
         Get.find<DashboardControllerAdmin>().resetTabs(SelectChatMemberTab.all);
@@ -46,6 +45,11 @@ class AddAttendance extends StatelessWidget {
                     .branchwiseEmployeeMap
                     .keys
                     .toList();
+
+                final business = Get.find<ReportsControllerAdmin>()
+                    .businessModel
+                    .value
+                    .businesses;
                 return ListView(
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
@@ -81,6 +85,27 @@ class AddAttendance extends StatelessWidget {
                               ),
                             )),
                       ),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.lightBlue),
+                            borderRadius: BorderRadius.circular(5)),
+                        margin: const EdgeInsets.only(bottom: 15),
+                        child: CustomDropdownYearButton(
+                          alignment: Alignment.centerLeft,
+                          lists: business.map((e) => e.name).toList(),
+                          value: Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownBusiness
+                              .value,
+                          onChanged: (value) {
+                            Get.find<DashboardControllerAdmin>()
+                                .selectedDropdownBusiness
+                                .value = value;
+                            Get.find<DashboardControllerAdmin>()
+                                .resetTabs(SelectChatMemberTab.department);
+                          },
+                          hint: selectMembersTabsAttendance[0],
+                        ),
+                      ),
                       ...List.generate(
                         2,
                         (index) => Container(
@@ -90,7 +115,7 @@ class AddAttendance extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 15),
                           child: CustomDropdownYearButton(
                             alignment: Alignment.centerLeft,
-                            lists: index == 0 ? dept : branch,
+                            lists: index == 0 ? branch : dept,
                             value: index == 0
                                 ? Get.find<DashboardControllerAdmin>()
                                     .selectedDropdownDepartments
@@ -111,7 +136,7 @@ class AddAttendance extends StatelessWidget {
                                       ? SelectChatMemberTab.department
                                       : SelectChatMemberTab.branch);
                             },
-                            hint: selectMembersTabs[index],
+                            hint: selectMembersTabsAttendance[index + 1],
                           ),
                         ),
                       ),

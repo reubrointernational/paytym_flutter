@@ -8,7 +8,6 @@ import 'package:paytym/screens/admin/reports/widgets/rounded_icons.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../models/report/attendance/attendance_admin_response_model.dart';
-import '../../../employee/reports/list_employees.dart';
 import '../../dashboard/dashboard_controller.dart';
 import '../add_attendance.dart';
 import '../pending_page.dart';
@@ -60,7 +59,7 @@ class AttendanceTabAdmin extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    'Add Attendance',
+                    'Add',
                     style: TextStyle(
                         color: Colors.blue.shade800,
                         fontSize: 16,

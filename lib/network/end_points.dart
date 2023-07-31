@@ -56,8 +56,7 @@ class ApiEndPoints {
   static const getOvertime = '$kBaseUrl/list_overtime';
   static const approveOvertime =
       '$kBaseUrl/overtime_request_approve_decline_edit';
-      static const approveOvertimeHR =
-      '$kBaseUrl/hr_store_overtime';
+  static const approveOvertimeHR = '$kBaseUrl/hr_store_overtime';
   static const deductionDelete = '$kBaseUrl/deductions_delete';
   static const deductionAdd = '$kBaseUrl/deductions_add';
   static const employeeList = '$kBaseUrl/list_employees';
@@ -77,4 +76,8 @@ class ApiEndPoints {
 
   static const leaveTypes = '$kBaseUrl/get-leave-types';
   static const updateFCMToken = '$kBaseUrl/apply_device_id';
+
+  static const fetchBusiness = '$kBaseUrl/get_business';
+  static const fetchDepartment = '$kBaseUrl/get_department';
+  static const fetchBranch = '$kBaseUrl/get_branch';
 }

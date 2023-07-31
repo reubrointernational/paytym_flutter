@@ -210,7 +210,10 @@ List<Map<String, dynamic>> financeDetails = [
   },
 ];
 
-List<String> selectMembersTabs = ['Departments ', 'Branches '];
+List<String> selectMembersTabs = ['Departments ', 'Branches ', 'Business '];
+
+List<String> selectMembersTabsAttendance = [
+  'Business ', 'Branches ', 'Departments ',  ];
 
 List<Map<String, dynamic>> payrollList = [
   {
@@ -452,7 +455,7 @@ const kHistoryString = 'History';
 
 const kDateString = 'Date: ';
 
-const kPunchInString = 'Punch In: ';
+const kCheckInString = 'Check In: ';
 
 const kDeductionsString = 'Deductions';
 

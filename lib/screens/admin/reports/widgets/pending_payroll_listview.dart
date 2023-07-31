@@ -11,19 +11,15 @@ import '../../../../core/custom_slider_thumb.dart';
 import '../../../../models/employee_list_model.dart';
 import '../../widgets/filter_payroll_bottomsheet.dart';
 
-class PendingPayrollListview extends StatefulWidget {
+class PendingPayrollListview extends StatelessWidget {
   const PendingPayrollListview({super.key});
 
-  @override
-  State<PendingPayrollListview> createState() => _PendingPayrollListviewState();
-}
 
-class _PendingPayrollListviewState extends State<PendingPayrollListview> {
-  bool isAllSelected = true;
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<DashboardControllerAdmin>().clearFilter());
+        bool isAllSelected = true;
     return Expanded(
       child: SizedBox(
         child: SingleChildScrollView(
@@ -87,9 +83,9 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                                 side: const BorderSide(color: Colors.blue),
                               ),
                               onPressed: () {
-                                setState(() {
-                                  isAllSelected = true;
-                                });
+                                // setState(() {
+                                //   isAllSelected = true;
+                                // });
 
                                 // Get.to(() => const PendingAttendanceScreen());
                               },
@@ -358,10 +354,10 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                               left: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    employees?.isExpanded =
-                                        !employees.isExpanded;
-                                  });
+                                  // setState(() {
+                                  //   employees?.isExpanded =
+                                  //       !employees.isExpanded;
+                                  // });
                                 },
                                 child: Padding(
                                   padding:

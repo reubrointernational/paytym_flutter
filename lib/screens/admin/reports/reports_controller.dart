@@ -28,6 +28,7 @@ import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/attendance/attendance_edit_request.dart';
 import '../../../models/report/attendance/attendance_request_model.dart';
+import '../../../models/report/attendance/fetch_business_model.dart';
 import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/file_upload_request.dart';
@@ -61,6 +62,7 @@ class ReportsControllerAdmin extends GetxController
     description: '',
   );
   int? selectedEmployeeId = 0;
+  final businessModel = FetchBusinessModel(businesses: [], message: '').obs;
 
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
@@ -112,8 +114,6 @@ class ReportsControllerAdmin extends GetxController
 
     getAttendance();
   }
-
-  
 
   String getAttendanceCount(int index) {
     switch (index) {
@@ -206,8 +206,6 @@ class ReportsControllerAdmin extends GetxController
     }
   }
 
-  
-
   showDialogue() {
     DialogHelper.showConfirmDialog(
       title: sliderValue.value == 100 ? 'Process Payroll' : 'Reverse Payroll',
@@ -298,6 +296,18 @@ class ReportsControllerAdmin extends GetxController
           filesTypeListModelFromJson(responseString);
       fileTypeListResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  fetchBusiness() async {
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.fetchBusiness,
+        null,
+        Get.find<LoginController>().getHeader());
+    if (responseString == null) {
+      return;
+    } else {
+      businessModel.value =  fetchBusinessModelFromJson(responseString);
     }
   }
 
