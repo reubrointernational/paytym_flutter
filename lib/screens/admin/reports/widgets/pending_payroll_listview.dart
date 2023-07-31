@@ -78,7 +78,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                           ],
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             OutlinedButton(
                               style: OutlinedButton.styleFrom(
@@ -120,7 +120,7 @@ class _PendingPayrollListviewState extends State<PendingPayrollListview> {
                               child: Padding(
                                 padding: const EdgeInsets.all(1.0),
                                 child: Text(
-                                  'Choose Employee',
+                                  'custom',
                                   style: TextStyle(
                                       color: isAllSelected
                                           ? Colors.blue
