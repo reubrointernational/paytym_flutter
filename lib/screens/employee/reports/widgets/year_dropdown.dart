@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:paytym/core/colors/colors.dart';
-import 'package:paytym/core/constants/icons.dart';
 
 class CustomDropdownYearButton extends StatelessWidget {
   final String? value;
+  final AlignmentGeometry alignment;
   final String? hint;
   final bool isIconPresent;
   final void Function(String?)? onChanged;
@@ -15,15 +14,15 @@ class CustomDropdownYearButton extends StatelessWidget {
       this.onChanged,
       required this.lists,
       this.hint,
-      this.isIconPresent = true});
+      this.isIconPresent = true, this.alignment = AlignmentDirectional.center});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
-          alignment: AlignmentDirectional.center,
+          alignment: alignment,
           value: value,
           onChanged: onChanged,
           hint: Text(hint!),

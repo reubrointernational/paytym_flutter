@@ -509,9 +509,9 @@ const kHistoryString = 'History';
 
 const kDateString = 'Date: ';
 
-const kPunchInString = 'Punch In: ';
+const kPunchInString = 'Check In: ';
 
-const kPunchOutString = 'Punch Out: ';
+const kPunchOutString = 'Check Out: ';
 
 const kDeductionsString = 'Deductions';
 

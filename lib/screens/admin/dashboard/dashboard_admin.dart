@@ -38,7 +38,7 @@ class DashboardAdmin extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
+              padding: EdgeInsets.fromLTRB(6, 0, 18, 0),
               child: HrAppBar(),
             ),
             Expanded(

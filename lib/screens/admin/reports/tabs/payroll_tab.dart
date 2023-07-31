@@ -69,12 +69,7 @@ class _PayrollTabState extends State<PayrollTab> {
         //   ),
         // ),
         Obx(() {
-          return Get.find<ReportsControllerAdmin>()
-                      .payrollClickedButton
-                      .value ==
-                  0
-              ? const PendingPayrollListview()
-              : const PayPayment();
+          return const PendingPayrollListview();
         })
       ],
     );

@@ -12,7 +12,11 @@ showFilterBottomSheet(context, controller) {
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (context) {
+<<<<<<< HEAD
         return Container(
+=======
+        return SizedBox(
+>>>>>>> integrate_noushads
           height: MediaQuery.of(context).size.height * 0.75,
           child: Padding(
             // padding: const EdgeInsets.all(5),

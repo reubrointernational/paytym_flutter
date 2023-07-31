@@ -55,6 +55,7 @@ class ProjectsList {
   String? name;
   String? description;
   int? budget;
+  int? spentAmount;
   int? status;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -71,6 +72,7 @@ class ProjectsList {
     this.name,
     this.description,
     this.budget,
+    this.spentAmount,
     this.status,
     this.createdAt,
     this.updatedAt,
@@ -91,6 +93,7 @@ class ProjectsList {
         name: json["name"],
         description: json["description"],
         budget: json["budget"],
+        spentAmount: json["spent_amount"],
         status: json["status"],
         createdAt: json["created_at"] == null
             ? null
@@ -146,9 +149,6 @@ class Branch {
         "name": name,
       };
 }
-
-
-
 
 class ProjectsListEmployeeproject {
   int? id;

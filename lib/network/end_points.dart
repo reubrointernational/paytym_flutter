@@ -77,7 +77,7 @@ class ApiEndPoints {
   static const leaveTypes = '$kBaseUrl/get-leave-types';
   static const updateFCMToken = '$kBaseUrl/apply_device_id';
 
-  static const getBusiness = '$kBaseUrl/get_business';
-  static const getBranch = '$kBaseUrl/get_branch';
-  static const getDepartment = '$kBaseUrl/get_department';
+  static const fetchBusiness = '$kBaseUrl/get_business';
+  static const fetchDepartment = '$kBaseUrl/get_department';
+  static const fetchBranch = '$kBaseUrl/get_branch';
 }

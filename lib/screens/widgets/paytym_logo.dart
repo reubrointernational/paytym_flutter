@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/colors/colors.dart';
-import '../../core/constants/strings.dart';
-
 class PaytymLogo extends StatelessWidget {
   final double size;
   final Color? color;
