@@ -45,6 +45,7 @@ class FileElement {
   DateTime? createdAt;
   DateTime? updatedAt;
   Filetype? filetype;
+  bool? isDownloading;
 
   FileElement({
     this.id,

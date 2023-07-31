@@ -53,16 +53,16 @@ class DashboardAppBar extends StatelessWidget {
                               ?.roleName !=
                           'Employee')
                     PopupMenuItem(
-                      value: kDashboardDropDownItemList[4].dropDownItem,
+                      value: kDashboardDropDownItemList[3].dropDownItem,
                       child: Text(
-                        kDashboardDropDownItemList[4].label,
+                        kDashboardDropDownItemList[3].label,
                         style: const TextStyle(
                           color: CustomColors.whiteTextColor,
                         ),
                       ),
                     ),
                   ...List.generate(
-                    4,
+                    3,
                     (index) => PopupMenuItem(
                       value: kDashboardDropDownItemList[index].dropDownItem,
                       child: Text(
