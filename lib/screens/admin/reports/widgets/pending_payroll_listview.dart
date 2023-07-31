@@ -14,12 +14,10 @@ import '../../widgets/filter_payroll_bottomsheet.dart';
 class PendingPayrollListview extends StatelessWidget {
   const PendingPayrollListview({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<DashboardControllerAdmin>().clearFilter());
-        bool isAllSelected = true;
     return Expanded(
       child: SizedBox(
         child: SingleChildScrollView(
@@ -76,56 +74,70 @@ class PendingPayrollListview extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor:
-                                    isAllSelected ? Colors.blue : Colors.white,
-                                side: const BorderSide(color: Colors.blue),
-                              ),
-                              onPressed: () {
-                                // setState(() {
-                                //   isAllSelected = true;
-                                // });
-
-                                // Get.to(() => const PendingAttendanceScreen());
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(1.0),
-                                child: Text(
-                                  'All Employees',
-                                  style: TextStyle(
-                                      color: isAllSelected
-                                          ? Colors.white
-                                          : Colors.blue,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ),
-                            OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor:
-                                    isAllSelected ? Colors.white : Colors.blue,
-                                side: const BorderSide(color: Colors.blue),
-                              ),
-                              onPressed: () {
-                                isAllSelected = false;
-                                showFilterBottomSheet(context,
-                                    Get.find<ReportsControllerAdmin>());
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Text(
-                                  'Choose Employee',
-                                  style: TextStyle(
-                                      color: isAllSelected
-                                          ? Colors.blue
-                                          : Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ),
+                            Obx(() => OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor:
+                                        Get.find<ReportsControllerAdmin>()
+                                                .isAllEmployeesSelected
+                                                .value
+                                            ? Colors.blue
+                                            : Colors.white,
+                                    side: const BorderSide(color: Colors.blue),
+                                  ),
+                                  onPressed: () {
+                                    Get.find<ReportsControllerAdmin>()
+                                        .isAllEmployeesSelected
+                                        .value = true;
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Text(
+                                      'All Employees',
+                                      style: TextStyle(
+                                          color:
+                                              Get.find<ReportsControllerAdmin>()
+                                                      .isAllEmployeesSelected
+                                                      .value
+                                                  ? Colors.white
+                                                  : Colors.blue,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                )),
+                            Obx(() => OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor:
+                                        Get.find<ReportsControllerAdmin>()
+                                                .isAllEmployeesSelected
+                                                .value
+                                            ? Colors.white
+                                            : Colors.blue,
+                                    side: const BorderSide(color: Colors.blue),
+                                  ),
+                                  onPressed: () {
+                                    Get.find<ReportsControllerAdmin>()
+                                        .isAllEmployeesSelected
+                                        .value = false;
+                                    showFilterBottomSheet(context,
+                                        Get.find<ReportsControllerAdmin>());
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Text(
+                                      'Choose Employee',
+                                      style: TextStyle(
+                                          color:
+                                              Get.find<ReportsControllerAdmin>()
+                                                      .isAllEmployeesSelected
+                                                      .value
+                                                  ? Colors.blue
+                                                  : Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                )),
                           ],
                         ),
                         // const Text(

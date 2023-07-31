@@ -83,6 +83,7 @@ class ReportsControllerAdmin extends GetxController
     // 'Medical',
     // 'Contract period'
   ];
+  final isAllEmployeesSelected = true.obs;
 
   List<Map<String, dynamic>> totalAttendance = [
     {
