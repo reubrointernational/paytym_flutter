@@ -203,6 +203,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     if (tab == SelectChatMemberTab.all) {
       selectedDropdownDepartments.value = null;
       selectedDropdownBranches.value = null;
+      selectedDropdownBusiness.value = null;
     }
   }
 

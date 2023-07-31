@@ -37,14 +37,14 @@ class AddAttendance extends StatelessWidget {
             children: [
               kSizedBoxH15,
               Obx(() {
-                final dept = Get.find<DashboardControllerAdmin>()
-                    .deptwiseEmployeeMap
-                    .keys
-                    .toList();
-                final branch = Get.find<DashboardControllerAdmin>()
-                    .branchwiseEmployeeMap
-                    .keys
-                    .toList();
+                final dept = Get.find<ReportsControllerAdmin>()
+                    .departmentModel
+                    .value
+                    .departments;
+                final branch = Get.find<ReportsControllerAdmin>()
+                    .branchModel
+                    .value
+                    .branches;
 
                 final business = Get.find<ReportsControllerAdmin>()
                     .businessModel
@@ -102,6 +102,13 @@ class AddAttendance extends StatelessWidget {
                                 .value = value;
                             Get.find<DashboardControllerAdmin>()
                                 .resetTabs(SelectChatMemberTab.department);
+
+                            final businessId = business
+                                .firstWhere((element) => element.name == value)
+                                .id;
+
+                            Get.find<ReportsControllerAdmin>()
+                                .fetchBranches(businessId);
                           },
                           hint: selectMembersTabsAttendance[0],
                         ),
@@ -115,26 +122,37 @@ class AddAttendance extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 15),
                           child: CustomDropdownYearButton(
                             alignment: Alignment.centerLeft,
-                            lists: index == 0 ? branch : dept,
+                            lists: index == 0
+                                ? branch.map((e) => e.name).toList()
+                                : dept.map((e) => e.depName).toList(),
                             value: index == 0
                                 ? Get.find<DashboardControllerAdmin>()
-                                    .selectedDropdownDepartments
+                                    .selectedDropdownBranches
                                     .value
                                 : Get.find<DashboardControllerAdmin>()
-                                    .selectedDropdownBranches
+                                    .selectedDropdownDepartments
                                     .value,
                             onChanged: (value) {
                               index == 0
                                   ? Get.find<DashboardControllerAdmin>()
-                                      .selectedDropdownDepartments
+                                      .selectedDropdownBranches
                                       .value = value
                                   : Get.find<DashboardControllerAdmin>()
-                                      .selectedDropdownBranches
+                                      .selectedDropdownDepartments
                                       .value = value;
                               Get.find<DashboardControllerAdmin>().resetTabs(
                                   index == 0
-                                      ? SelectChatMemberTab.department
-                                      : SelectChatMemberTab.branch);
+                                      ? SelectChatMemberTab.branch
+                                      : SelectChatMemberTab.department);
+
+                              if (index == 0) {
+                                final branchId = branch
+                                    .firstWhere(
+                                        (element) => element.name == value)
+                                    .id;
+                                Get.find<ReportsControllerAdmin>()
+                                    .fetchDepartments(branchId);
+                              }
                             },
                             hint: selectMembersTabsAttendance[index + 1],
                           ),

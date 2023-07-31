@@ -28,7 +28,9 @@ import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/attendance/attendance_edit_request.dart';
 import '../../../models/report/attendance/attendance_request_model.dart';
-import '../../../models/report/attendance/fetch_business_model.dart';
+import '../../../models/report/attendance/branch_model.dart';
+import '../../../models/report/attendance/business_model.dart';
+import '../../../models/report/attendance/department_model.dart';
 import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/file_upload_request.dart';
@@ -63,6 +65,8 @@ class ReportsControllerAdmin extends GetxController
   );
   int? selectedEmployeeId = 0;
   final businessModel = FetchBusinessModel(businesses: [], message: '').obs;
+  final departmentModel = DepartmentModel(departments: [], message: '').obs;
+  final branchModel = BranchesModel(branches: [], message: '').obs;
 
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
@@ -307,7 +311,33 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      businessModel.value =  fetchBusinessModelFromJson(responseString);
+      businessModel.value = fetchBusinessModelFromJson(responseString);
+    }
+  }
+
+  fetchDepartments(int branchId) async {
+    print('fetchDepartment');
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.fetchDepartment,
+        jsonEncode({'branch_id': branchId.toString()}),
+        Get.find<LoginController>().getHeader());
+    if (responseString == null) {
+      return;
+    } else {
+      print('object');
+      departmentModel.value = departmentModelFromJson(responseString);
+    }
+  }
+
+  fetchBranches(int businessId) async {
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.fetchBranch,
+        jsonEncode({'business_id': businessId.toString()}),
+        Get.find<LoginController>().getHeader());
+    if (responseString == null) {
+      return;
+    } else {
+      branchModel.value = branchesModelFromJson(responseString);
     }
   }
 
