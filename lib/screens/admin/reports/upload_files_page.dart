@@ -10,8 +10,8 @@ import 'package:paytym/screens/admin/widgets/file_upload_widget.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
 import '../../../core/colors/colors.dart';
-import '../../../core/constants/enums.dart';
 import '../../../core/constants/icons.dart';
+import '../../../core/dialog_helper.dart';
 import '../../../network/end_points.dart';
 import '../widgets/custom_admin_scaffold.dart';
 
@@ -114,28 +114,30 @@ class UploadFilesPage extends StatelessWidget {
                                   backgroundColor: CustomColors.blueCardColor,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Get.find<ReportsController>().downloadPdf(
-                                          '$kStorageUrl${files?[index].file}');
+                                      files?[index].isDownloading = true;
                                       Get.find<ReportsController>()
-                                          .clickedIndex = index;
+                                          .fileListResponseModel
+                                          .refresh();
+                                      Get.find<ReportsControllerAdmin>()
+                                          .downloadFile(
+                                              '$kStorageUrl${files?[index].file}',
+                                              ((progress, total) {
+                                        if (progress == total) {
+                                          files?[index].isDownloading = false;
+                                          Get.find<ReportsController>()
+                                              .fileListResponseModel
+                                              .refresh();
+                                          DialogHelper.showToast(
+                                              desc: 'Download completed');
+                                        }
+                                      }));
                                     },
-                                    child: Obx(
-                                      () => Get.find<ReportsController>()
-                                                      .isSharingOrDownloading
-                                                      .value ==
-                                                  SharingOrDownloading
-                                                      .downloading &&
-                                              Get.find<ReportsController>()
-                                                      .clickedIndex ==
-                                                  index
-                                          ? Lottie.asset(
-                                              IconPath.downloadingJson)
-                                          : const Icon(
-                                              Icons.download,
-                                              color:
-                                                  CustomColors.whiteCardColor,
-                                            ),
-                                    ),
+                                    child: files?[index].isDownloading ?? false
+                                        ? Lottie.asset(IconPath.downloadingJson)
+                                        : const Icon(
+                                            Icons.download,
+                                            color: CustomColors.whiteCardColor,
+                                          ),
                                   ),
                                 ),
                                 CircleAvatar(
@@ -201,28 +203,30 @@ class UploadFilesPage extends StatelessWidget {
                                   backgroundColor: CustomColors.blueCardColor,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Get.find<ReportsController>().downloadPdf(
-                                          '$kStorageUrl${files?[index].file}');
+                                      files?[index].isDownloading = true;
                                       Get.find<ReportsController>()
-                                          .clickedIndex = index;
+                                          .fileListResponseModel
+                                          .refresh();
+                                      Get.find<ReportsControllerAdmin>()
+                                          .downloadFile(
+                                              '$kStorageUrl${files?[index].file}',
+                                              ((progress, total) {
+                                        if (progress == total) {
+                                          files?[index].isDownloading = false;
+                                          Get.find<ReportsController>()
+                                              .fileListResponseModel
+                                              .refresh();
+                                          DialogHelper.showToast(
+                                              desc: 'Download completed');
+                                        }
+                                      }));
                                     },
-                                    child: Obx(
-                                      () => Get.find<ReportsController>()
-                                                      .isSharingOrDownloading
-                                                      .value ==
-                                                  SharingOrDownloading
-                                                      .downloading &&
-                                              Get.find<ReportsController>()
-                                                      .clickedIndex ==
-                                                  index
-                                          ? Lottie.asset(
-                                              IconPath.downloadingJson)
-                                          : const Icon(
-                                              Icons.download,
-                                              color:
-                                                  CustomColors.whiteCardColor,
-                                            ),
-                                    ),
+                                    child: files?[index].isDownloading ?? false
+                                        ? Lottie.asset(IconPath.downloadingJson)
+                                        : const Icon(
+                                            Icons.download,
+                                            color: CustomColors.whiteCardColor,
+                                          ),
                                   ),
                                 ),
                                 CircleAvatar(

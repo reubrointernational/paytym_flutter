@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -19,7 +19,6 @@ import 'package:paytym/models/report/projects/projects_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
@@ -83,6 +82,7 @@ class ReportsControllerAdmin extends GetxController
     // 'Medical',
     // 'Contract period'
   ];
+  final isAllEmployeesSelected = true.obs;
 
   List<Map<String, dynamic>> totalAttendance = [
     {
@@ -828,18 +828,27 @@ class ReportsControllerAdmin extends GetxController
     return formatNum.format(int.parse(value));
   }
 
-  downloadPdf(String? url) async {
-    if (url != null && url.isNotEmpty) {
-      sharePath = '';
-      isSharingOrDownloading.value = SharingOrDownloading.downloading;
-      await FlutterDownloader.enqueue(
-        url: url,
-        saveInPublicStorage: true,
-        savedDir: '/storage/emulated/0/Download',
-        showNotification: true,
-        openFileFromNotification: false,
-        // fileName: 'payslip.pdf',
-      );
+  // downloadPdf(String? url) async {
+  //   if (url != null && url.isNotEmpty) {
+  //     sharePath = '';
+  //     isSharingOrDownloading.value = SharingOrDownloading.downloading;
+  //     await FlutterDownloader.enqueue(
+  //       url: url,
+  //       saveInPublicStorage: true,
+  //       savedDir: '/storage/emulated/0/Download',
+  //       showNotification: true,
+  //       openFileFromNotification: false,
+  //       // fileName: 'payslip.pdf',
+  //     );
+  //   }
+  // }
+
+  downloadFile(String? url, void Function(int, int)? onReceiveProgress) async {
+    if (url != null) {
+      var dio = Dio();
+      final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
+      await dio.download(url, '/storage/emulated/0/Download/paytym_$date',
+          onReceiveProgress: onReceiveProgress);
     }
   }
 
@@ -893,51 +902,51 @@ class ReportsControllerAdmin extends GetxController
 
   //for downloading
 
-  @override
-  void onInit() {
-    super.onInit();
+  // @override
+  // void onInit() {
+  //   super.onInit();
 
-    IsolateNameServer.registerPortWithName(
-        _port.sendPort, 'downloader_send_port');
-    _port.listen((dynamic data) {
-      // String id = data[0];
-      DownloadTaskStatus status = data[1];
-      // int progress = data[2];
+  //   IsolateNameServer.registerPortWithName(
+  //       _port.sendPort, 'downloader_send_port');
+  //   _port.listen((dynamic data) {
+  //     // String id = data[0];
+  //     DownloadTaskStatus status = data[1];
+  //     // int progress = data[2];
 
-      //download completed
-      if (status == DownloadTaskStatus.complete) {
-        //Download completed from Share button
-        if (isSharingOrDownloading.value == SharingOrDownloading.sharing) {
-          Share.shareXFiles([XFile(sharePath)]);
-          sharePath = '';
-          //Download completed from download button
-        } else if (isSharingOrDownloading.value ==
-            SharingOrDownloading.downloading) {
-          DialogHelper.showToast(desc: 'Download completed');
-        }
-        isSharingOrDownloading.value = SharingOrDownloading.idle;
-      } else if (status == DownloadTaskStatus.failed) {
-        sharePath = '';
-        isSharingOrDownloading.value = SharingOrDownloading.idle;
-      }
-    });
+  //     //download completed
+  //     if (status == DownloadTaskStatus.complete) {
+  //       //Download completed from Share button
+  //       if (isSharingOrDownloading.value == SharingOrDownloading.sharing) {
+  //         Share.shareXFiles([XFile(sharePath)]);
+  //         sharePath = '';
+  //         //Download completed from download button
+  //       } else if (isSharingOrDownloading.value ==
+  //           SharingOrDownloading.downloading) {
+  //         DialogHelper.showToast(desc: 'Download completed');
+  //       }
+  //       isSharingOrDownloading.value = SharingOrDownloading.idle;
+  //     } else if (status == DownloadTaskStatus.failed) {
+  //       sharePath = '';
+  //       isSharingOrDownloading.value = SharingOrDownloading.idle;
+  //     }
+  //   });
 
-    FlutterDownloader.registerCallback(downloadCallback);
-  }
+  //   FlutterDownloader.registerCallback(downloadCallback);
+  // }
 
-  @pragma('vm:entry-point')
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-    send!.send([id, status, progress]);
-  }
+  // @pragma('vm:entry-point')
+  // static void downloadCallback(
+  //     String id, DownloadTaskStatus status, int progress) {
+  //   final SendPort? send =
+  //       IsolateNameServer.lookupPortByName('downloader_send_port');
+  //   send!.send([id, status, progress]);
+  // }
 
-  @override
-  void onClose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   IsolateNameServer.removePortNameMapping('downloader_send_port');
+  //   super.onClose();
+  // }
 
   void processPayroll(payrollStatus) async {
     if (payrollStatus == 1) {

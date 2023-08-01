@@ -533,7 +533,7 @@ class ReportsController extends GetxController
     _port.listen((dynamic data) {
       // String id = data[0];
 
-      DownloadTaskStatus status = DownloadTaskStatus(data[1] as int);
+      DownloadTaskStatus status = data[1];
       // int progress = data[2];
 
       //download completed
@@ -562,7 +562,7 @@ class ReportsController extends GetxController
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     IsolateNameServer.lookupPortByName('downloader_send_port')
-        ?.send([id, status.value, progress]);
+        ?.send([id, status, progress]);
   }
 
   @override

@@ -213,7 +213,8 @@ List<Map<String, dynamic>> financeDetails = [
 List<String> selectMembersTabs = ['Departments ', 'Branches ', 'Business '];
 
 List<String> selectMembersTabsAttendance = [
-  'Business ', 'Branches ', 'Departments ',  ];
+  'Business ', 'Branches ', 'Departments ', 'Bank '
+];
 
 List<Map<String, dynamic>> payrollList = [
   {
