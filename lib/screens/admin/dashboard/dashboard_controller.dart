@@ -204,7 +204,13 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       selectedDropdownDepartments.value = null;
       selectedDropdownBranches.value = null;
       selectedDropdownBusiness.value = null;
+    } else if (tab == SelectChatMemberTab.business) {
+      selectedDropdownDepartments.value = null;
+      selectedDropdownBranches.value = null;
+    } else if (tab == SelectChatMemberTab.branch) {
+      selectedDropdownDepartments.value = null;
     }
+    
   }
 
   List<EmployeeList>? getEmployees() {

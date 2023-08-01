@@ -50,6 +50,7 @@ class AddAttendance extends StatelessWidget {
                     .businessModel
                     .value
                     .businesses;
+
                 return ListView(
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
@@ -98,17 +99,22 @@ class AddAttendance extends StatelessWidget {
                               .value,
                           onChanged: (value) {
                             Get.find<DashboardControllerAdmin>()
+                                .resetTabs(SelectChatMemberTab.business);
+                            Get.find<DashboardControllerAdmin>()
                                 .selectedDropdownBusiness
                                 .value = value;
-                            Get.find<DashboardControllerAdmin>()
-                                .resetTabs(SelectChatMemberTab.department);
 
-                            final businessId = business
-                                .firstWhere((element) => element.name == value)
-                                .id;
+                            try {
+                              final businessId = business
+                                  .firstWhere(
+                                      (element) => element.name == value)
+                                  .id;
 
-                            Get.find<ReportsControllerAdmin>()
-                                .fetchBranches(businessId);
+                              Get.find<ReportsControllerAdmin>()
+                                  .fetchBranches(businessId);
+                            } on Exception {
+                              // TODO
+                            }
                           },
                           hint: selectMembersTabsAttendance[0],
                         ),
@@ -133,6 +139,10 @@ class AddAttendance extends StatelessWidget {
                                     .selectedDropdownDepartments
                                     .value,
                             onChanged: (value) {
+                              Get.find<DashboardControllerAdmin>().resetTabs(
+                                  index == 0
+                                      ? SelectChatMemberTab.branch
+                                      : SelectChatMemberTab.department);
                               index == 0
                                   ? Get.find<DashboardControllerAdmin>()
                                       .selectedDropdownBranches
@@ -140,18 +150,19 @@ class AddAttendance extends StatelessWidget {
                                   : Get.find<DashboardControllerAdmin>()
                                       .selectedDropdownDepartments
                                       .value = value;
-                              Get.find<DashboardControllerAdmin>().resetTabs(
-                                  index == 0
-                                      ? SelectChatMemberTab.branch
-                                      : SelectChatMemberTab.department);
 
                               if (index == 0) {
-                                final branchId = branch
-                                    .firstWhere(
-                                        (element) => element.name == value)
-                                    .id;
-                                Get.find<ReportsControllerAdmin>()
-                                    .fetchDepartments(branchId);
+                                try {
+                                  final branchId = branch
+                                      .firstWhere(
+                                        (element) => element.name == value,
+                                      )
+                                      .id;
+                                  Get.find<ReportsControllerAdmin>()
+                                      .fetchDepartments(branchId);
+                                } on Exception {
+                                  // TODO
+                                }
                               }
                             },
                             hint: selectMembersTabsAttendance[index + 1],

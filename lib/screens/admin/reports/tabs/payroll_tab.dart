@@ -14,7 +14,7 @@ class PayrollTab extends StatefulWidget {
 class _PayrollTabState extends State<PayrollTab> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         // SizedBox(
         //   height: 60,
@@ -68,9 +68,7 @@ class _PayrollTabState extends State<PayrollTab> {
         //     ],
         //   ),
         // ),
-        Obx(() {
-          return const PendingPayrollListview();
-        })
+        PendingPayrollListview()
       ],
     );
   }
