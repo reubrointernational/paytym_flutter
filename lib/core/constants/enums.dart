@@ -12,7 +12,7 @@ enum PaymentMethods { windcave, mpaisa, mycash }
 
 enum SharingOrDownloading { sharing, downloading, idle }
 
-enum SelectChatMemberTab {all, branch, department}
+enum SelectChatMemberTab {all, branch, department, business, bank}
 
 enum ProcessPayrollTypes {all, dept, branch}
 
