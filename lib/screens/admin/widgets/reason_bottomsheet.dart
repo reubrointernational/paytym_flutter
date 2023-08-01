@@ -144,7 +144,7 @@ class ReasonBottomSheetAdmin extends StatelessWidget {
                 child: Text(
                   reasonButton.name.contains(RegExp('App|attendanceEdit'))
                       ? 'Approve'
-                      : 'Absent',
+                      : 'Mark Absent',
                   style: const TextStyle(
                     color: CustomColors.whiteTextColor,
                   ),
