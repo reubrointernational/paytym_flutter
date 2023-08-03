@@ -27,24 +27,24 @@ class OvertimeTabAdmin extends StatelessWidget {
           .getFilteredOvertimeList()
           ?.where((element) => element.status == '0')
           .toList();
-          if (overtimeDetails?.isEmpty??true) {
-            return Column(
-              children: [
-                Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Get.to(() => const ListEmployeesAdmin());
-                          },
-                          child: const Text('Add Overtime'),
-                        ),
-                      ),
-                    ),
-              ],
-            );
-          }
+      if (overtimeDetails?.isEmpty ?? true) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.to(() => const ListEmployeesAdmin());
+                  },
+                  child: const Text('Add Overtime'),
+                ),
+              ),
+            ),
+          ],
+        );
+      }
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: overtimeDetails?.length ?? 0,

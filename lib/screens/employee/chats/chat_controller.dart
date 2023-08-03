@@ -120,6 +120,4 @@ class ChatController extends GetxController with BaseController {
       }
     }
   }
-
-  
 }

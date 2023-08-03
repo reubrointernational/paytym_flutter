@@ -80,8 +80,8 @@ class DashboardAdmin extends StatelessWidget {
                           color: CustomColors.whiteCardColor,
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        child: Column(
-                          children: const [
+                        child: const Column(
+                          children: [
                             CheckInOutCardAdmin(),
                             kSizedBoxH10,
                             Expanded(

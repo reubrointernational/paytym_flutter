@@ -18,6 +18,7 @@ class EmployeeListAdminModel {
 
   String? message;
   List<EmployeeList>? employeeList;
+  
 
   factory EmployeeListAdminModel.fromJson(Map<String, dynamic> json) =>
       EmployeeListAdminModel(
@@ -84,6 +85,7 @@ class EmployeeList {
     this.department,
     this.branch,
     this.isExpanded = false,
+    this.isSelected = true,
   });
 
   int? id;
@@ -132,6 +134,7 @@ class EmployeeList {
   Payroll? payroll;
   Department? department;
   Branch? branch;
+  bool isSelected;
 
   factory EmployeeList.fromJson(Map<String, dynamic> json) => EmployeeList(
         id: json["id"],

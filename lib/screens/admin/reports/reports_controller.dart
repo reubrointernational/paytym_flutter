@@ -23,8 +23,10 @@ import 'package:paytym/screens/login/login_controller.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
+import '../../../models/employee_list_model.dart' as employeelist;
 import '../../../models/message_only_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
+import '../../../models/report/attendance/attendance_by_hr_request_model.dart';
 import '../../../models/report/attendance/attendance_edit_request.dart';
 import '../../../models/report/attendance/attendance_request_model.dart';
 import '../../../models/report/attendance/branch_model.dart';
@@ -55,6 +57,7 @@ class ReportsControllerAdmin extends GetxController
   final selectedDate =
       DateFormat('dd-MM-yyyy').format(DateTime.now()).toString().obs;
   final formKey = GlobalKey<FormState>();
+  final attendanceformKey = GlobalKey<FormState>();
   DeductionAddRequestModel deductionAddRequestModel = DeductionAddRequestModel(
     employerId: '',
     name: '',
@@ -66,11 +69,13 @@ class ReportsControllerAdmin extends GetxController
   final businessModel = FetchBusinessModel(businesses: [], message: '').obs;
   final departmentModel = DepartmentModel(departments: [], message: '').obs;
   final branchModel = BranchesModel(branches: [], message: '').obs;
+  final employeeList =
+      employeelist.EmployeeListAdminModel(employeeList: [], message: '').obs;
+  List<employeelist.EmployeeList>? filteredEmployeeList;
 
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
-  final attendanceFormKey = GlobalKey<FormState>();
   final attendanceRequestModel = AttendanceRequestModel();
   final List<String> reportsTabListAdmin = [
     'Attendance',
@@ -83,6 +88,18 @@ class ReportsControllerAdmin extends GetxController
     // 'Contract period'
   ];
   final isAllEmployeesSelected = true.obs;
+  final checkedEmployees = [].obs;
+
+  final attendanceHrDateController = TextEditingController();
+  final startTimeController = TextEditingController();
+  final endTimeController = TextEditingController();
+  AttendanceByHrRequestModel attendanceHrRequestModel =
+      AttendanceByHrRequestModel(
+          checkInTime: '',
+          checkOutTime: '',
+          date: '',
+          employeeId: '',
+          employerId: '');
 
   List<Map<String, dynamic>> totalAttendance = [
     {
@@ -117,6 +134,36 @@ class ReportsControllerAdmin extends GetxController
         DateFormat('dd-MM-yyyy').format(dateTime ?? DateTime(00, 0, 0));
 
     getAttendance();
+  }
+
+  String formatTimeOfDay(TimeOfDay? tod) {
+    final now = DateTime.now();
+    final dt = DateTime(
+        now.year, now.month, now.day, tod?.hour ?? 00, tod?.minute ?? 00);
+    final format = DateFormat.jm(); //"6:00 AM"
+    return format.format(dt);
+  }
+
+  Future<void> showDatePick(BuildContext context) async {
+    DateTime startDate = DateTime.now();
+
+    final DateTime? dateTime = await showDatePicker(
+      context: context,
+      initialDate: startDate,
+      firstDate: DateTime(2022),
+      lastDate: startDate,
+    );
+
+    attendanceHrDateController.text =
+        DateFormat('dd-MM-yyyy').format(dateTime ?? DateTime(00, 0, 0));
+  }
+
+  String? dateValidator(String value) {
+    final regExp =
+        RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
+    return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
+        ? null
+        : "Enter a valid date";
   }
 
   String getAttendanceCount(int index) {
@@ -217,8 +264,7 @@ class ReportsControllerAdmin extends GetxController
           ? 'Are you sure to process payroll?'
           : 'Are you sure to reverse payroll?',
       onConfirm: () {
-        //0 for process payroll and 1 for reverse payroll
-        sliderValue.value == 100 ? processPayroll(1) : processPayroll(0);
+        processPayroll('all');
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
       },
       onCancel: () {
@@ -285,6 +331,54 @@ class ReportsControllerAdmin extends GetxController
     return DateFormat.jm().format(dt);
   }
 
+  validateAndSubmitAttendance() async {
+    attendanceformKey.currentState?.save();
+    showLoading();
+    print(
+        '${attendanceHrRequestModel.date} ${attendanceHrRequestModel.checkInTime}');
+    try {
+      AttendanceByHrRequestModel model = AttendanceByHrRequestModel(
+          checkInTime: convertDateTime(attendanceHrRequestModel.date,
+              attendanceHrRequestModel.checkInTime),
+          checkOutTime: convertDateTime(attendanceHrRequestModel.date,
+              attendanceHrRequestModel.checkOutTime),
+          date: attendanceHrRequestModel.date,
+          employeeId: attendanceHrRequestModel.employeeId,
+          employerId: attendanceHrRequestModel.employerId);
+      var responseString = await Get.find<BaseClient>()
+          .post(
+              ApiEndPoints.attendanceByHr,
+              attendanceByHrRequestModelToJson(model),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      if (responseString == null) {
+        return;
+      } else {
+        Get.back(closeOverlays: true);
+        DialogHelper.showToast(
+            desc:
+                messageOnlyResponseModelFromJson(responseString).message ?? '');
+      }
+    } finally {
+      hideLoading();
+    }
+  }
+
+  String? convertDateTime(String date, String? time) {
+    if (time != null && time.isNotEmpty) {
+      DateTime timeStamp = DateFormat.jm().parse(time);
+      DateTime dateStamp = DateTime.parse(date);
+      dateStamp = dateStamp.add(Duration(
+          hours: timeStamp.hour,
+          minutes: timeStamp.minute,
+          seconds: timeStamp.second));
+
+      return dateStamp.toString();
+    } else {
+      return null;
+    }
+  }
+
   fetchFileTypeList() async {
     showLoading();
     Get.find<BaseClient>().onError = fetchFileTypeList;
@@ -338,6 +432,26 @@ class ReportsControllerAdmin extends GetxController
       return;
     } else {
       branchModel.value = branchesModelFromJson(responseString);
+    }
+  }
+
+  fetchEmployees(int businessId) async {
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.fetchEmployeesBusinessWise,
+        jsonEncode({
+          'business_id': businessId.toString(),
+          'employer_id': Get.find<LoginController>()
+              .loginResponseModel!
+              .employee!
+              .employerId
+              .toString()
+        }),
+        Get.find<LoginController>().getHeader());
+    if (responseString == null) {
+      return;
+    } else {
+      employeeList.value =
+          employeelist.employeeListAdminModelFromJson(responseString);
     }
   }
 
@@ -948,29 +1062,51 @@ class ReportsControllerAdmin extends GetxController
   //   super.onClose();
   // }
 
-  void processPayroll(payrollStatus) async {
-    if (payrollStatus == 1) {
-      showLoading();
-      var requestModel = {
-        'payroll_status': payrollStatus.toString(),
-        'employer_id':
-            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-      };
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      if (responseString == null) {
-        sliderValue.value = 0;
-        Get.back();
-        return;
-      } else {
-        hideLoading();
-        Get.back();
-        DialogHelper.showToast(
-            desc:
-                messageOnlyResponseModelFromJson(responseString).message ?? '');
-      }
+  // Future<List<employee_list_model.EmployeeList>?> getEmployees() async {
+  //   var requestModel = {
+  //     'branch_id': branchId.toString(),
+  //     'employer_id':
+  //         '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}',
+  //     'department_id':depar Get.find<DashboardControllerAdmin>().selectedDropdownDepartments.value,
+  //   };
+  //   var responseString = await Get.find<BaseClient>()
+  //       .post(
+  //           departmentId == null
+  //               ? ApiEndPoints.fetchEmployeesBranchWise
+  //               : ApiEndPoints.fetchEmployeesDepartmentWise,
+  //           jsonEncode(requestModel),
+  //           Get.find<LoginController>().getHeader())
+  //       .catchError(handleError);
+  //   if (responseString == null) {
+  //     return null;
+  //   } else {
+  //     return employee_list_model
+  //         .employeeListAdminModelFromJson(responseString)
+  //         .employeeList;
+  //   }
+  // }
+
+  void processPayroll(String payrollFlag, [List<String>? ids]) async {
+    showLoading();
+    var requestModel = {
+      'flag': payrollFlag,
+      'id': ids,
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      sliderValue.value = 0;
+      Get.back();
+      return;
+    } else {
+      hideLoading();
+      Get.back();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
     }
   }
 

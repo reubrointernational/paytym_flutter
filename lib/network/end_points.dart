@@ -80,4 +80,11 @@ class ApiEndPoints {
   static const fetchBusiness = '$kBaseUrl/get_business';
   static const fetchDepartment = '$kBaseUrl/get_department';
   static const fetchBranch = '$kBaseUrl/get_branch';
+
+  static const fetchEmployeesDepartmentWise =
+      '$kBaseUrl/list_employees_departmentwise';
+  static const fetchEmployeesBranchWise = '$kBaseUrl/list_employees_branchwise';
+
+  static const attendanceByHr = '$kBaseUrl/attendance_by_hr';
+  static const fetchEmployeesBusinessWise = '$kBaseUrl/list_employees_businesswise';
 }

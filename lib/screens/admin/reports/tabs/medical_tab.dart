@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
-import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../models/report/medical_list_admin_model.dart';
@@ -18,7 +17,7 @@ class MedicalTabAdmin extends StatelessWidget {
       Get.find<ReportsControllerAdmin>().getMedical();
       Get.find<DashboardControllerAdmin>().clearFilter();
     });
-    
+
     return Obx(() {
       List<ExtraDetail>? medicalDetails =
           Get.find<ReportsControllerAdmin>().getFilteredMedicalList();
