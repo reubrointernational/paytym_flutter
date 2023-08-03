@@ -72,7 +72,7 @@ class PendingPayrollListview extends StatelessWidget {
                           ],
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Obx(() => OutlinedButton(
                                   style: OutlinedButton.styleFrom(
