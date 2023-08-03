@@ -19,6 +19,7 @@ showFilterBottomSheet(context, controller) {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (context) {
         Get.find<ReportsControllerAdmin>().fetchBusiness();
+        Get.find<ReportsControllerAdmin>().filteredEmployeeList = [];
         return SizedBox(
           child: Padding(
             // padding: const EdgeInsets.all(5),
@@ -359,9 +360,12 @@ showFilterBottomSheet(context, controller) {
                                 ?.isNotEmpty ??
                             false) {
                           List<String>? ids = Get.find<ReportsControllerAdmin>()
-                              .filteredEmployeeList?.where((element) => element.isSelected)
-                              .map((e) => e.id.toString()).toList();
-                              Get.find<ReportsControllerAdmin>().processPayroll('employee', ids);
+                              .filteredEmployeeList
+                              ?.where((element) => element.isSelected)
+                              .map((e) => e.id.toString())
+                              .toList();
+                          Get.find<ReportsControllerAdmin>()
+                              .processPayroll('employee', ids);
                         }
                       },
                       style: ElevatedButton.styleFrom(
