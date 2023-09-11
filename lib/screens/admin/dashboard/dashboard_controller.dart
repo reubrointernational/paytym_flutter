@@ -25,7 +25,9 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   //index list of selected items
   final selectedItemList = <int>[].obs;
   bool isSelectMembersPageFromChat = true;
+  bool payrollProcessDownArrow = false;
   final searchKeyword = ''.obs;
+
   DashboardAdminResponseModel dashboardDetails = DashboardAdminResponseModel();
 
   seeDetailsPage(index) {
@@ -210,7 +212,6 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     } else if (tab == SelectChatMemberTab.branch) {
       selectedDropdownDepartments.value = null;
     }
-    
   }
 
   List<EmployeeList>? getEmployees() {

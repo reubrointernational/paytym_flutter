@@ -56,8 +56,11 @@ class MeetingsListe {
   int? employerId;
   String? name;
   DateTime? date;
-  DateTime? startTime;
-  DateTime? endTime;
+  //Changed dataype of startTime and endTime to String 1sep2023
+  // DateTime? startTime;
+  // DateTime? endTime;
+  String? startTime;
+  String? endTime;
   String? location;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -69,11 +72,16 @@ class MeetingsListe {
         employerId: json["employer_id"],
         name: json["name"],
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
-        startTime: json["start_time"] == null
-            ? null
-            : DateTime.parse(json["start_time"]),
-        endTime:
-            json["end_time"] == null ? null : DateTime.parse(json["end_time"]),
+        // startTime: json["start_time"] == null
+        //     ? null
+        //     : DateTime.parse(json["start_time"]),
+        // endTime:
+        //     json["end_time"] == null ? null : DateTime.parse(json["end_time"]),
+        startTime: json["start_time"],
+        endTime: json["end_time"],
+
+        // startTime: DateTime.now(),
+        // endTime: DateTime.now(),
         location: json["location"],
         createdAt: json["created_at"] == null
             ? null
@@ -91,8 +99,10 @@ class MeetingsListe {
         "name": name,
         "date":
             "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
-        "start_time": startTime?.toIso8601String(),
-        "end_time": endTime?.toIso8601String(),
+        // "start_time": startTime?.toIso8601String(),
+        // "end_time": endTime?.toIso8601String(),
+        "start_time": "10:20",
+        "end_time": "10:40",
         "location": location,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

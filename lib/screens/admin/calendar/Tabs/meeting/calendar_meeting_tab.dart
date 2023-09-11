@@ -96,8 +96,14 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                       color: Colors.grey,
                                     ),
                                     kSizedBoxW4,
+                                    //Commented below text for testing 1sep2023
+                                    // Text(
+                                    //   '${DateFormat.jm().format(meeting?.startTime ?? DateTime(0000, 00, 00))} - ${DateFormat.jm().format(meeting?.endTime ?? DateTime(0000, 00, 00))}',
+                                    //   style: kTextStyleS14W600Cgrey300LS0p2
+                                    //       .copyWith(color: Colors.grey),
+                                    // ),
                                     Text(
-                                      '${DateFormat.jm().format(meeting?.startTime ?? DateTime(0000, 00, 00))} - ${DateFormat.jm().format(meeting?.endTime ?? DateTime(0000, 00, 00))}',
+                                      '${meeting?.startTime} - ${meeting?.endTime}',
                                       style: kTextStyleS14W600Cgrey300LS0p2
                                           .copyWith(color: Colors.grey),
                                     ),

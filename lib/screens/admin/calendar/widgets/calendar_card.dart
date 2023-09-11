@@ -127,6 +127,20 @@ class CalendarCardAdmin extends StatelessWidget {
                                                 value!, 'Subject'),
                                   ),
                                   kSizedBoxH6,
+                                  CustomTextFormField(
+                                    hintText: 'Agenda',
+                                    onSaved: (value) {
+                                      Get.find<CalendarControllerAdmin>()
+                                          .createCalendarRequestModel
+                                          .description = value!;
+                                    },
+                                    inputAction: TextInputAction.next,
+                                    inputType: TextInputType.emailAddress,
+                                    validator: (value) =>
+                                        Get.find<CalendarControllerAdmin>()
+                                            .subjectValidator(value!, 'Agenda'),
+                                  ),
+                                  kSizedBoxH6,
                                   Row(
                                     children: [
                                       Expanded(
@@ -256,6 +270,9 @@ class CalendarCardAdmin extends StatelessWidget {
                                                             initialTime:
                                                                 TimeOfDay
                                                                     .now());
+                                                    print("Time selected" +
+                                                        selectedTime
+                                                            .toString());
                                                     Get.find<
                                                             CalendarControllerAdmin>()
                                                         .createCalendarRequestModel

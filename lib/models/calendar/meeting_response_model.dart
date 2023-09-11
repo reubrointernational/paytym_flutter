@@ -71,9 +71,13 @@ class Meetings {
   int? userId;
   int? employerId;
   String? name;
+  String? agenda;
   DateTime? date;
-  DateTime? startTime;
-  DateTime? endTime;
+  // DateTime? startTime;
+  // DateTime? endTime;
+  // checking by change datetime datatype to time only
+  String? startTime;
+  String? endTime;
   String? location;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -84,6 +88,7 @@ class Meetings {
     this.userId,
     this.employerId,
     this.name,
+    this.agenda,
     this.date,
     this.startTime,
     this.endTime,
@@ -98,12 +103,16 @@ class Meetings {
         userId: json["user_id"],
         employerId: json["employer_id"],
         name: json["name"],
+        agenda: json["agenda"],
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
-        startTime: json["start_time"] == null
-            ? null
-            : DateTime.parse(json["start_time"]),
-        endTime:
-            json["end_time"] == null ? null : DateTime.parse(json["end_time"]),
+        // startTime: json["start_time"] == null
+        //     ? null
+        //     : DateTime.parse(json["start_time"]),
+        // endTime:
+        //     json["end_time"] == null ? null : DateTime.parse(json["end_time"]),
+        startTime:
+            json["start_time"] == null ? null : json["start_time"].toString(),
+        endTime: json["end_time"] == null ? null : json["end_time"].toString(),
         location: json["location"],
         createdAt: json["created_at"] == null
             ? null
@@ -119,10 +128,13 @@ class Meetings {
         "user_id": userId,
         "employer_id": employerId,
         "name": name,
+        "agenda": agenda,
         "date":
             "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
-        "start_time": startTime?.toIso8601String(),
-        "end_time": endTime?.toIso8601String(),
+        // "start_time": startTime?.toIso8601String(),
+        // "end_time": endTime?.toIso8601String(),
+        "start_time": startTime?.toString(),
+        "end_time": endTime?.toString(),
         "location": location,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

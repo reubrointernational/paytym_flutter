@@ -18,6 +18,7 @@ class PendingPayrollListview extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<DashboardControllerAdmin>().clearFilter());
+    bool payrollOpen = true;
     return Expanded(
       child: SizedBox(
         child: SingleChildScrollView(
@@ -208,7 +209,7 @@ class PendingPayrollListview extends StatelessWidget {
                                   children: [
                                     ConstrainedBox(
                                       constraints:
-                                          const BoxConstraints(maxHeight: 80),
+                                          const BoxConstraints(maxHeight: 70),
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -292,98 +293,127 @@ class PendingPayrollListview extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    Visibility(
-                                      visible: employees?.isExpanded ?? false,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Divider(
-                                            thickness: 1,
-                                            height: 15,
-                                            color: Colors.grey.shade300,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              payrollDetails(
-                                                  'Basic Salary: ',
-                                                  employees?.payroll
-                                                          ?.baseSalary ??
-                                                      '0'),
-                                              payrollDetails(
-                                                  'Tax: ',
-                                                  employees
-                                                          ?.payroll?.totalTax ??
-                                                      0),
-                                            ],
-                                          ),
-                                          kSizedBoxH6,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              payrollDetails(
-                                                  'Allowance: ',
-                                                  employees?.payroll
-                                                          ?.totalAllowance ??
-                                                      '0'),
-                                              payrollDetails(
-                                                  'Deduction: ',
-                                                  employees?.payroll
-                                                          ?.totalDeduction ??
-                                                      '0'),
-                                            ],
-                                          ),
-                                          kSizedBoxH6,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              payrollDetails(
-                                                  'Bonus: ',
-                                                  employees?.payroll
-                                                          ?.totalBonus ??
-                                                      '0'),
-                                              payrollDetails(
-                                                  'Commission: ',
-                                                  employees?.payroll
-                                                          ?.totalCommission ??
-                                                      '0'),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                    // Visibility(
+                                    //   // visible: employees!.isExpanded,
+                                    //   visible: payrollOpen,
+                                    //   child:
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Divider(
+                                          thickness: 1,
+                                          height: 5,
+                                          color: Colors.grey.shade300,
+                                        ),
+                                        kSizedBoxH6,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            payrollDetails(
+                                                'Basic Salary: ',
+                                                employees
+                                                        ?.payroll?.baseSalary ??
+                                                    '0'),
+                                            payrollDetails(
+                                                'Tax: ',
+                                                employees?.payroll?.totalTax ??
+                                                    0),
+                                          ],
+                                        ),
+                                        kSizedBoxH6,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            payrollDetails(
+                                                'Allowance: ',
+                                                employees?.payroll
+                                                        ?.totalAllowance ??
+                                                    '0'),
+                                            payrollDetails(
+                                                'Deduction: ',
+                                                employees?.payroll
+                                                        ?.totalDeduction ??
+                                                    '0'),
+                                          ],
+                                        ),
+                                        kSizedBoxH6,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            payrollDetails(
+                                                'Bonus: ',
+                                                employees
+                                                        ?.payroll?.totalBonus ??
+                                                    '0'),
+                                            payrollDetails(
+                                                'Commission: ',
+                                                employees?.payroll
+                                                        ?.totalCommission ??
+                                                    '0'),
+                                          ],
+                                        ),
+                                      ],
                                     ),
+                                    // ),
                                   ],
                                 ),
                               ),
                             ),
-                            Positioned(
-                              bottom: 10,
-                              right: 0,
-                              left: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  // setState(() {
-                                  //   employees?.isExpanded =
-                                  //       !employees.isExpanded;
-                                  // });
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(28, 28, 28, 0),
-                                  child: Icon(
-                                    employees?.isExpanded ?? false
-                                        ? Icons.expand_less
-                                        : Icons.expand_more,
-                                    color: Colors.grey,
-                                    size: 25,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Positioned(
+                            //   bottom: 10,
+                            //   right: 0,
+                            //   left: 0,
+                            //   child: GestureDetector(
+                            //     onTap: () {
+                            //       print(
+                            //           "Sooraj1:${Get.find<DashboardControllerAdmin>().payrollProcessDownArrow}");
+                            //       print("Sooraj 2:${employees!.isExpanded}");
+                            //       // employees!.isExpanded = true;
+                            //
+                            //       if (Get.find<DashboardControllerAdmin>()
+                            //               .payrollProcessDownArrow ==
+                            //           true) {
+                            //         Get.find<DashboardControllerAdmin>()
+                            //             .payrollProcessDownArrow = false;
+                            //       } else {
+                            //         Get.find<DashboardControllerAdmin>()
+                            //             .payrollProcessDownArrow = true;
+                            //       }
+                            //       print("Sooraj 2:${employees!.isExpanded}");
+                            //       print(
+                            //           "Sooraj1:${Get.find<DashboardControllerAdmin>().payrollProcessDownArrow}");
+                            //       if (employees!.isExpanded) {
+                            //         employees!.isExpanded = false;
+                            //       } else {
+                            //         employees!.isExpanded = true;
+                            //       }
+                            //
+                            //       payrollOpen = false;
+                            //       // Get.find<DashboardControllerAdmin>()
+                            //       //     .payrollProcessDownArrow = true;
+                            //
+                            //       // setState(() {r
+                            //       //   employees?.isExpanded =
+                            //       //       !employees.isExpanded;
+                            //       // });
+                            //     },
+                            //     child: Padding(
+                            //       padding:
+                            //           const EdgeInsets.fromLTRB(28, 28, 28, 0),
+                            //       child: Icon(
+                            //         employees?.isExpanded ?? false
+                            //             ? Icons.expand_less
+                            //             : Icons.expand_more,
+                            //         color: Colors.grey,
+                            //         size: 25,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                             Positioned(
                               right: 20,
                               top: 12,

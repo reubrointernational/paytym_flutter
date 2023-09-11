@@ -74,6 +74,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
   }
 
   createMeeting() async {
+    print("createMeeting calling");
     showLoading();
     final List<EmployeeList> selectedEmployees =
         Get.find<DashboardControllerAdmin>()
@@ -87,6 +88,10 @@ class CalendarControllerAdmin extends GetxController with BaseController {
                         ?.indexOf(element)))
                 .toList() ??
             [];
+    print(DateFormat('HH:mm')
+            .format(DateFormat.jm().parse(createCalendarRequestModel.startTime))
+            .toString() +
+        "testing date and time");
     var model = CreateCalendarRequestModel(
       employerId: Get.find<LoginController>()
           .loginResponseModel!
@@ -94,15 +99,20 @@ class CalendarControllerAdmin extends GetxController with BaseController {
           .employerId
           .toString(),
       name: createCalendarRequestModel.name,
-      description: 'description',
+      description: createCalendarRequestModel.description,
       attendees: selectedEmployees.map((e) => e.id!).toList(),
       place: createCalendarRequestModel.place,
       startDate: createCalendarRequestModel.startDate, //2023-01-15
-      startTime:
-          '${createCalendarRequestModel.startDate} ${DateFormat('HH:mm').format(DateFormat.jm().parse(createCalendarRequestModel.startTime))}', //2023-01-15 13:56:00
+      // startTime: '02:30',
+      startTime: DateFormat('HH:mm')
+          .format(DateFormat.jm().parse(createCalendarRequestModel.startTime))
+          .toString(), //2023-01-15 13:56:00
       endDate: createCalendarRequestModel.endDate, //2023-01-15
-      endTime:
-          '${createCalendarRequestModel.startDate} ${DateFormat('HH:mm').format(DateFormat.jm().parse(createCalendarRequestModel.endTime))}', //11:00 am
+      // endTime: '02:40',
+      endTime: DateFormat('HH:mm')
+          .format(DateFormat.jm().parse(createCalendarRequestModel.endTime))
+          .toString(),
+      // '${createCalendarRequestModel.startDate} ${DateFormat('HH:mm').format(DateFormat.jm().parse(createCalendarRequestModel.endTime))}', //11:00 am
       type: '1',
       countryId: '1',
     );
@@ -152,6 +162,10 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     final dt = DateTime(
         now.year, now.month, now.day, tod?.hour ?? 00, tod?.minute ?? 00);
     final format = DateFormat.jm(); //"6:00 AM"
+    print("formatTimeOfDay date:" + dt.toString());
+
+    final f = new DateFormat('yyyy-MM-dd hh:mm');
+
     return format.format(dt);
   }
 

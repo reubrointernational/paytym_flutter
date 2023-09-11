@@ -36,6 +36,7 @@ class CalendarController extends GetxController with BaseController {
         .post(ApiEndPoints.meetings, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print("getMeeting() URL:" + ApiEndPoints.meetings);
     if (responseString == null) {
       return;
     } else {
@@ -90,11 +91,26 @@ class CalendarController extends GetxController with BaseController {
   }
 
   getTime(String time) {
+    print("Gettime called:" + time);
     try {
       final DateTime now = DateTime.parse(time);
-      return DateFormat('hh:mm a').format(now);
+      return DateFormat('hh:mm a').format(now).toString();
+      // return time;
     } on Exception {
       return '00:00 00';
     }
+  }
+
+  timeChange(String inputTime) {
+    // print("Gettime called:" + inputTime);
+    final inputFormat = DateFormat('HH:mm');
+    final outputFormat = DateFormat('hh:mm a');
+
+    final dateTime = inputFormat.parse(inputTime);
+    final formattedTime = outputFormat.format(dateTime);
+
+    // print("Gettime called op:" + formattedTime);
+    return formattedTime;
+    // Output: 05:05 PM
   }
 }

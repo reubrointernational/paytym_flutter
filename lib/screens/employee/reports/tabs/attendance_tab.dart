@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 import 'package:pie_chart/pie_chart.dart';
 
@@ -60,6 +61,7 @@ class AttendanceTab extends StatelessWidget {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
+                reverse: true,
                 itemCount: Get.find<ReportsController>()
                     .attendanceResponseModel
                     .value
@@ -70,6 +72,9 @@ class AttendanceTab extends StatelessWidget {
                       .attendanceResponseModel
                       .value
                       .history![index];
+
+                  print(
+                      "Attendance Date Id:${Get.find<ReportsController>().attendanceResponseModel.value.history![index].id}");
                   return Card(
                     elevation: 4,
                     shape: RoundedRectangleBorder(

@@ -16,6 +16,7 @@ class ListEmployeesAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<DashboardControllerAdmin>().clearFilter());
+
     return CustomAdminScaffold(
       title: title,
       child: Padding(

@@ -50,7 +50,8 @@ class CalendarMeeting extends StatelessWidget {
                       kSizedBoxW10,
                       Center(
                         child: Text(
-                          "${Get.find<CalendarController>().getTime(meeting?.meetings?.startTime.toString() ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().getTime(meeting?.meetings?.endTime.toString() ?? '0000-00-00 00:00:00')}",
+                          "${Get.find<CalendarController>().timeChange(meeting?.meetings?.startTime.toString() ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().timeChange(meeting?.meetings?.endTime.toString() ?? '0000-00-00 00:00:00')}",
+                          // "${meeting?.meetings?.startTime?.toString()} - ${meeting?.meetings?.endTime?.toString()}",
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: kTextStyleS13W600CustomGrey,
@@ -131,6 +132,28 @@ class CalendarMeeting extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: kTextStyleS13W600CustomGrey,
                       ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          meeting?.meetings?.agenda ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style: kTextStyleS13W600CustomGrey,
+                        ),
+                      ),
+                      // Text(
+                      //   DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                      //       meeting?.meetings?.date.toString() ??
+                      //           '0000-00-00')),
+                      //   overflow: TextOverflow.ellipsis,
+                      //   style: kTextStyleS13W600CustomGrey,
+                      // ),
                     ],
                   ),
                 ),
