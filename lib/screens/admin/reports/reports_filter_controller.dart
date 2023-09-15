@@ -87,6 +87,7 @@ class ReportsFilterController {
   }
 
   List<History>? getFilteredAttendanceList() {
+    print("getFilteredAttendanceList called");
     List<History>? attendanceList;
     if (Get.find<DashboardControllerAdmin>()
             .selectedDropdownDepartments
@@ -107,6 +108,7 @@ class ReportsFilterController {
                       ?.id ??
                   0))
           .toList();
+      print("getFilteredAttendanceList size ${attendanceList!.length}");
     }
     if (attendanceList != null &&
         Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
@@ -236,6 +238,7 @@ class ReportsFilterController {
 
   List<EmployeeList>? getFilteredOvertimeList() {
     List<EmployeeList>? overtimeList;
+    print("getFilteredOvertimeList called");
     if (Get.find<DashboardControllerAdmin>()
             .selectedDropdownDepartments
             .value !=
@@ -255,6 +258,15 @@ class ReportsFilterController {
                       ?.id ??
                   0))
           .toList();
+    } else {
+      print("deprtmnt not selected");
+      // overtimeList = Get.find<ReportsControllerAdmin>()
+      //     .overtimeResponseModel
+      //     .value
+      //     .employeeList
+      //     .where((element) => (element.user?.status ?? 0) > 0)
+      //     .toList();
+      print("overtime list length:${overtimeList?.length.toString()}");
     }
     if (overtimeList != null &&
         Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
@@ -290,10 +302,12 @@ class ReportsFilterController {
                   0))
           .toList();
     }
-    overtimeList ??= Get.find<ReportsControllerAdmin>()
+    // overtimeList?.clear();
+    overtimeList = Get.find<ReportsControllerAdmin>()
         .overtimeResponseModel
         .value
         .employeeList;
+    print("overtime list length:${overtimeList?.length.toString()}");
     overtimeList = overtimeList
         .where(
           (element) =>

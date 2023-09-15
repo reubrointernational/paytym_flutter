@@ -35,18 +35,20 @@ class UploadsTabAdmin extends StatelessWidget {
               ),
               child: ListTile(
                 title: Text(
-                  '${chatList?[index].firstName??''} ${chatList?[index].lastName??''}',
+                  '${chatList?[index].firstName ?? ''} ${chatList?[index].lastName ?? ''}',
                   style: kTextStyleS18W600CBlack,
                 ),
                 subtitle:
-                    Text('#${chatList?[index].id.toString().padLeft(5, '0')}'),
+                    // Text('#${chatList?[index].id.toString().padLeft(5, '0')}'),
+                    Text('#${chatList?[index].branch?.name ?? ''}'),
+                // chatList?[index].branch?.name ?? '',
                 leading: CircleAvatar(
                   radius: 28,
                   backgroundImage: NetworkImage(
                       '$kStorageUrl${chatList?[index].image ?? ''}'),
                 ),
                 trailing: Text(
-                  chatList?[index].branch?.name ?? '',
+                  chatList![index].id.toString().padLeft(5, '0') ?? " ",
                   style: kTextStyleS13W500Cgrey,
                 ),
               ),

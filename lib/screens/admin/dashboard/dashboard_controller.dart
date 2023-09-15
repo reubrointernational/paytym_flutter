@@ -237,16 +237,20 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   }
 
   List<EmployeeList>? getFilteredEmployeeList() {
+    print("getFilteredEmployeeList called 1");
     List<EmployeeList>? chatList;
     if (selectedDropdownDepartments.value != null) {
+      print("getFilteredEmployeeList called 2");
       chatList = deptwiseEmployeeMap[selectedDropdownDepartments.value];
     }
     if (chatList != null && selectedDropdownBranches.value != null) {
+      print("getFilteredEmployeeList called 3");
       chatList = chatList
           .where((element) =>
               element.branch?.name == selectedDropdownBranches.value)
           .toList();
     } else if (chatList == null && selectedDropdownBranches.value != null) {
+      print("getFilteredEmployeeList called 4");
       chatList = branchwiseEmployeeMap[selectedDropdownBranches.value];
     }
 
@@ -261,6 +265,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
               false,
         )
         .toList();
+    print("getFilteredEmployeeList called 1 ${chatList?.length.toString()}");
     return chatList;
   }
 

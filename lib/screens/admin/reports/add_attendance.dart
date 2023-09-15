@@ -21,8 +21,12 @@ class AddAttendance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Get.find<DashboardControllerAdmin>().clearFilter());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
         Get.find<DashboardControllerAdmin>().fetchEmployeeList());
+    // getFilteredEmployeeList
+    // getemploylist
     Get.find<ReportsControllerAdmin>().fetchBusiness();
     return WillPopScope(
       onWillPop: () async {
@@ -41,11 +45,13 @@ class AddAttendance extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Obx(() {
+                    print("Chatlist length1:");
                     List<EmployeeList>? chatList =
                         Get.find<ReportsControllerAdmin>()
                             .employeeList
                             .value
                             .employeeList;
+                    print("Chatlist length2:" + chatList!.length.toString());
                     if (Get.find<DashboardControllerAdmin>()
                             .selectedDropdownBranches
                             .value !=
@@ -63,6 +69,7 @@ class AddAttendance extends StatelessWidget {
                       chatList = chatList
                           ?.where((element) => element.branchId == branchId)
                           .toList();
+                      print("Chatlist length 3:" + chatList!.length.toString());
                     }
                     if (Get.find<DashboardControllerAdmin>()
                             .selectedDropdownDepartments
@@ -81,6 +88,7 @@ class AddAttendance extends StatelessWidget {
                       chatList = chatList
                           ?.where((element) => element.departmentId == deptId)
                           .toList();
+                      print("Chatlist length 4:" + chatList!.length.toString());
                     }
 
                     chatList = chatList
@@ -91,6 +99,11 @@ class AddAttendance extends StatelessWidget {
                                     .value
                                     .toLowerCase())))
                         .toList();
+                    print("Chatlist length 5:" + chatList!.length.toString());
+
+                    print(
+                        "Chatlist length 6:${Get.find<ReportsControllerAdmin>().employeeList.value.employeeList!.length}");
+
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       itemCount: chatList?.length ?? 0,

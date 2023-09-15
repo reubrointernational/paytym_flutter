@@ -6,6 +6,7 @@ import 'package:paytym/screens/admin/widgets/custom_admin_scaffold.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../models/employee_list_model.dart';
 import '../../../core/dialog_helper.dart';
+import '../../admin/reports/reports_controller.dart';
 import '../dashboard/widgets/request_overtime_bottomsheet.dart';
 
 class ListEmployeesAdmin extends StatelessWidget {
@@ -16,7 +17,9 @@ class ListEmployeesAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<DashboardControllerAdmin>().clearFilter());
+    Get.put(ReportsControllerAdmin());
 
+    int tempIndex = 0;
     return CustomAdminScaffold(
       title: title,
       child: Padding(
@@ -48,15 +51,18 @@ class ListEmployeesAdmin extends StatelessWidget {
                       '${chatList?[index].firstName ?? ''} ${chatList?[index].lastName ?? ''}',
                       style: kTextStyleS18W600CBlack,
                     ),
-                    subtitle: Text(
-                        '#${chatList?[index].id.toString().padLeft(5, '0')}'),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(chatList?[index].branch?.name ?? ''),
+                    ),
+                    // '#${chatList?[index].id.toString().padLeft(5, '0')}'),
                     leading: CircleAvatar(
                       radius: 28,
                       backgroundImage: NetworkImage(
                           '$kStorageUrl${chatList?[index].image ?? ''}'),
                     ),
                     trailing: Text(
-                      chatList?[index].branch?.name ?? '',
+                      '#${chatList?[index].id.toString().padLeft(5, '0')}',
                       style: kTextStyleS13W500Cgrey,
                     ),
                   ),

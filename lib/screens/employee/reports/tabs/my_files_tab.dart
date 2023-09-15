@@ -151,7 +151,8 @@ class MyFilesTab extends StatelessWidget {
                                                     .downloading &&
                                             Get.find<ReportsController>()
                                                     .clickedIndex ==
-                                                index
+                                                // index
+                                                index + 1
                                         ? Lottie.asset(IconPath.downloadingJson)
                                         : const Icon(
                                             Icons.download,

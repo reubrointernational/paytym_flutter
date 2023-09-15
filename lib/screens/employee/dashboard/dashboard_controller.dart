@@ -23,6 +23,7 @@ import '../../../network/end_points.dart';
 import '../../../network/shared_preference_helper.dart';
 import '../../../routes/app_routes.dart';
 import '../../admin/dashboard/dashboard_controller.dart';
+import '../../admin/reports/reports_controller.dart';
 
 class DashboardController extends GetxController with BaseController {
   final time = '00:00 AM'.obs;
@@ -130,7 +131,7 @@ class DashboardController extends GetxController with BaseController {
     if ((sliderValue.value - value).abs() < 20) {
       sliderValue.value = value;
       sliderValueChanged = true;
-    } 
+    }
   }
 
   Future<void> selectDateTime(BuildContext context) async {
@@ -149,6 +150,7 @@ class DashboardController extends GetxController with BaseController {
   }
 
   requestOvertime(EmployeeList? employeeList) async {
+    print("request Overtime called");
     if (requestAdvanceFormKey.currentState!.validate()) {
       requestAdvanceFormKey.currentState!.save();
       showLoading();
@@ -162,7 +164,12 @@ class DashboardController extends GetxController with BaseController {
       overtimeApproveEditRequestModel.employeeId = employeeList?.id != null
           ? employeeList!.id.toString()
           : '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
+      print(
+          'request Overtime ID:${overtimeApproveEditRequestModel?.employeeId}');
 
+      print(
+          'request Overtime  status:${overtimeApproveEditRequestModel?.status}');
+      print('request Overtime  employeeList?.id:${employeeList?.id}');
       var responseString = await Get.find<BaseClient>()
           .post(
               employeeList?.id != null
@@ -172,6 +179,8 @@ class DashboardController extends GetxController with BaseController {
                   overtimeApproveEditRequestModel),
               Get.find<LoginController>().getHeader())
           .catchError(handleError);
+
+      print('request Overtime Response:$responseString');
       if (responseString == null) {
         return;
       } else {
@@ -179,6 +188,7 @@ class DashboardController extends GetxController with BaseController {
         Get.back();
         overtimeApproveEditRequestModel =
             OvertimeApproveEditRequestModel(status: '0', id: '0');
+        Get.find<ReportsControllerAdmin>().getOvertime();
         overtimeTextEditingController = TextEditingController();
         DialogHelper.showToast(
             desc:

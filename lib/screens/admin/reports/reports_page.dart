@@ -41,7 +41,7 @@ class ReportsPageAdmin extends StatelessWidget {
             effects: const [FadeEffect()],
             child: const PayrollTab(),
           ),
-          if (reportsTabListAdmin.contains('Deduction'))
+        if (reportsTabListAdmin.contains('Deduction'))
           Animate(
             effects: const [FadeEffect()],
             child: const DeductionTabAdmin(),
@@ -54,8 +54,6 @@ class ReportsPageAdmin extends StatelessWidget {
           effects: const [FadeEffect()],
           child: const UploadsTabAdmin(),
         ),
-        
-        
         if (reportsTabListAdmin.contains('Medical'))
           Animate(
             effects: const [FadeEffect()],

@@ -27,6 +27,33 @@ class PendingAttendanceScreen extends StatelessWidget {
               ?.where((element) => element.approveReject == null)
               .toList();
 
+          if (attendanceList!.isEmpty) {
+            print("No pending attendance");
+            return Padding(
+              padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'No Pending Items ',
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    Column(
+                      children: [],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
           return ListView.builder(
             physics: const BouncingScrollPhysics(),
             itemCount: attendanceList?.length ?? 0,
@@ -45,18 +72,19 @@ class PendingAttendanceScreen extends StatelessWidget {
                               index: index,
                             ),*/
                       Expanded(
-                        child: AttendanceCardColumn(
-                          attendanceElement: attendanceList![index],
-                        ),
+                        child: attendanceList!.isNotEmpty
+                            ? AttendanceCardColumn(
+                                attendanceElement: attendanceList![index],
+                              )
+                            : Text("No Pending Attendance 2"),
                       ),
                       Column(
                         children: [
                           IconButton(
                             onPressed: () {
-                             
                               Get.find<ReportsControllerAdmin>().selectedItem =
                                   attendanceList![index];
-                              
+
                               Get.find<ReportsControllerAdmin>()
                                   .approveOrDeclineAttendance(
                                       ReasonButton.attendanceApprove);

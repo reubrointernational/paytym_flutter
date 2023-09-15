@@ -30,6 +30,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
           .value
           .employeeList
           .indexOf(overtimeDetails?[index!] ?? EmployeeList());
+
       Get.find<DashboardController>().overtimeTextEditingController!.text =
           DateFormat('dd-MM-yyyy').format(Get.find<ReportsControllerAdmin>()
                   .overtimeResponseModel
@@ -156,10 +157,14 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => index != null
-                  ? Get.find<ReportsControllerAdmin>().approveOrDeclineOvertime(
-                      originalIndex!, ReasonButton.overtimeEdit)
-                  : Get.find<DashboardController>().requestOvertime(employeeList),
+              onPressed: () {
+                index != null
+                    ? Get.find<ReportsControllerAdmin>()
+                        .approveOrDeclineOvertime(
+                            originalIndex!, ReasonButton.overtimeEdit)
+                    : Get.find<DashboardController>()
+                        .requestOvertime(employeeList);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColors.blueTextColor,
                 shape: RoundedRectangleBorder(
@@ -179,7 +184,6 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
     );
   }
 }
-
 
 // Get.find<ReportsControllerAdmin>()
 //                                 .approveOrDeclineOvertime(

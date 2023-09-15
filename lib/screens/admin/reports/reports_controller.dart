@@ -20,6 +20,7 @@ import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
+import '../../../core/colors/colors.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
@@ -36,6 +37,7 @@ import '../../../models/report/deduction/deduction_add_request_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/file_upload_request.dart';
 import '../../../models/report/files/files_type_list.dart';
+import '../../../models/report/overtime/overtime_status-model.dart';
 import '../../../models/report/projects/project_details_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -355,6 +357,7 @@ class ReportsControllerAdmin extends GetxController
         return;
       } else {
         Get.back(closeOverlays: true);
+        Get.find<ReportsControllerAdmin>().getAttendance();
         DialogHelper.showToast(
             desc:
                 messageOnlyResponseModelFromJson(responseString).message ?? '');
@@ -627,7 +630,9 @@ class ReportsControllerAdmin extends GetxController
             .requestAdvanceFormKey
             .currentState!
             .save();
+        print("approveOrDeclineOvertime called");
       } else {
+        print("approveOrDeclineOvertime called else ");
         return;
       }
     }
@@ -684,6 +689,7 @@ class ReportsControllerAdmin extends GetxController
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
     hideLoading();
+    print("overtime approve: $responseString");
     if (responseString == null) {
       return;
     } else {
@@ -860,6 +866,7 @@ class ReportsControllerAdmin extends GetxController
   }
 
   getAttendance() async {
+    print("getAttendance called");
     showLoading();
     Get.find<BaseClient>().onError = getAttendance;
     final date = selectedDate.value;
@@ -1014,6 +1021,23 @@ class ReportsControllerAdmin extends GetxController
     return DateFormat('dd-MM-yyyy').format(now);
   }
 
+  OvertimeStatusModel getOvertimeStatusModel(String? status) {
+    switch (status) {
+      case '1':
+        //1 => status - approved
+        return OvertimeStatusModel(
+            'Approved', CustomColors.greenColor, CustomColors.lightGreenColor);
+      case '2':
+        //2 => status - declined
+        return OvertimeStatusModel(
+            'Declined', CustomColors.redColor, CustomColors.lightRedColor);
+      case '0':
+      default:
+        //0 => status - awaiting
+        return OvertimeStatusModel('Awaiting', CustomColors.orangeLabelColor,
+            CustomColors.lightOrangeColor);
+    }
+  }
   //for downloading
 
   // @override
@@ -1110,15 +1134,15 @@ class ReportsControllerAdmin extends GetxController
     }
   }
 
-  // onClickMenuItem(ReportsDropDown value) {
-  //   if (value == ReportsDropDown.payment || value == ReportsDropDown.advance) {
-  //     DialogHelper.showBottomSheet(ReportsBottomsheet(
-  //       isSalary: value == ReportsDropDown.payment,
-  //     ));
-  //   } else if (value == ReportsDropDown.logout) {
-  //     showLogoutDialog();
-  //   } else {
-  //     DialogHelper.showBottomSheet(const QuitCompanyBottomSheet());
-  //   }
-  // }
+// onClickMenuItem(ReportsDropDown value) {
+//   if (value == ReportsDropDown.payment || value == ReportsDropDown.advance) {
+//     DialogHelper.showBottomSheet(ReportsBottomsheet(
+//       isSalary: value == ReportsDropDown.payment,
+//     ));
+//   } else if (value == ReportsDropDown.logout) {
+//     showLogoutDialog();
+//   } else {
+//     DialogHelper.showBottomSheet(const QuitCompanyBottomSheet());
+//   }
+// }
 }

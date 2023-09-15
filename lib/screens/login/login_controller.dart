@@ -35,8 +35,6 @@ class LoginController extends GetxController with BaseController {
     };
   }
 
-  
-
   Future<bool> fetchLoginData() async {
     /// if login data is already present in storage it will not connect to server.
     /// login data is stored in after password reset is complete for the first time
@@ -50,7 +48,7 @@ class LoginController extends GetxController with BaseController {
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.login, loginRequestModelToJson(loginRequestModel))
           .catchError(handleError);
-
+      print("fetchLoginData:${ApiEndPoints.login}");
       if (responseString == null) {
         return false;
       } else {
@@ -218,6 +216,4 @@ class LoginController extends GetxController with BaseController {
       Get.toNamed(Routes.otp);
     }
   }
-
-  
 }

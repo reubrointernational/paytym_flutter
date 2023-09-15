@@ -22,11 +22,12 @@ class LeavesPage extends StatelessWidget {
         builder: (context, snapshot) {
           List<String> tabList = ['All'];
           tabList.addAll(Get.find<LeavesController>()
-                      .leaveTypesModel
-                      .value
-                      .leaveTypes
-                      ?.map((e) => e.leaveType ?? '')??[]);
-             
+                  .leaveTypesModel
+                  .value
+                  .leaveTypes
+                  ?.map((e) => e.leaveType ?? '') ??
+              []);
+
           return DefaultTabController(
             length: tabList.length,
             child: Scaffold(

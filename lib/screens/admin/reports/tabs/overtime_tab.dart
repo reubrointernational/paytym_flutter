@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/models/report/overtime/overtime_status-model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import '../../../../core/colors/colors.dart';
@@ -23,10 +24,10 @@ class OvertimeTabAdmin extends StatelessWidget {
       Get.find<ReportsControllerAdmin>().getOvertime();
     });
     return Obx(() {
-      List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
-          .getFilteredOvertimeList()
-          ?.where((element) => element.status == '0')
-          .toList();
+      List<EmployeeList>? overtimeDetails =
+          Get.find<ReportsControllerAdmin>().getFilteredOvertimeList();
+      // ?.where((element) => element.status == '0')
+      // .toList();
       if (overtimeDetails?.isEmpty ?? true) {
         return Column(
           children: [
@@ -36,7 +37,6 @@ class OvertimeTabAdmin extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    print("testing");
                     Get.to(() => const ListEmployeesAdmin());
                   },
                   child: const Text('Add Overtime'),
@@ -50,7 +50,13 @@ class OvertimeTabAdmin extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemCount: overtimeDetails?.length ?? 0,
         itemBuilder: (context, index) {
+          print("Index:$index");
           final overtimeDetail = overtimeDetails?[index];
+          OvertimeStatusModel overtimeStatusModel =
+              Get.find<ReportsControllerAdmin>()
+                  .getOvertimeStatusModel(overtimeDetail!.status);
+          // print("List Loading:${overtimeDetail.status}");
+          int tempIndex = 0;
           return Column(
             children: [
               if (index == 0)
@@ -101,17 +107,27 @@ class OvertimeTabAdmin extends StatelessWidget {
                                     ),
                                     kSizedBoxH2,
                                     Text(
-                                      overtimeDetail?.branch ?? '',
-                                      style: TextStyle(
-                                          color: Colors.grey.shade600,
-                                          fontSize: 12.5),
-                                    ),
-                                    Text(
                                       '${overtimeDetail?.user?.firstName ?? ''} ${overtimeDetail?.user?.lastName ?? ''}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
+                                    Text(
+                                      'Branch Name',
+                                      // overtimeDetail?.user?.bankBranchName
+                                      //         ?.toString() ??
+                                      //     '',
+
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 12.5),
+                                    ),
+                                    // Text(
+                                    //   '${overtimeDetail?.user?.firstName ?? ''} ${overtimeDetail?.user?.lastName ?? ''}',
+                                    //   style: const TextStyle(
+                                    //     fontWeight: FontWeight.w600,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                                 Column(
@@ -119,8 +135,19 @@ class OvertimeTabAdmin extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      '',
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 3),
+                                      decoration: BoxDecoration(
+                                        color: overtimeStatusModel.boxColor,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        style: TextStyle(
+                                            color:
+                                                overtimeStatusModel.textColor),
+                                        ' ${overtimeStatusModel.text}',
+                                      ),
                                     ),
                                     kSizedBoxH2,
                                     DetailsRow(
@@ -169,31 +196,34 @@ class OvertimeTabAdmin extends StatelessWidget {
                           ),
                         ),
                         const Divider(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            processButton('Decline', CustomColors.redColor, () {
-                              Get.find<ReportsControllerAdmin>()
-                                  .approveOrDeclineOvertime(
-                                      index, ReasonButton.overtimeDecline);
-                            }),
-                            kSizedBoxW10,
-                            processButton('Edit', CustomColors.blueCardColor,
-                                () {
-                              DialogHelper.showBottomSheet(
-                                  RequestOvertimeBottomsheet(
-                                index: index,
-                              ));
-                            }),
-                            kSizedBoxW10,
-                            processButton('Approve', CustomColors.greenColor,
-                                () {
-                              Get.find<ReportsControllerAdmin>()
-                                  .approveOrDeclineOvertime(
-                                      index, ReasonButton.overtimeApprove);
-                            }),
-                          ],
-                        ),
+                        if (int.parse(overtimeDetail.status.toString()) == 0)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              processButton('Decline', CustomColors.redColor,
+                                  () {
+                                Get.find<ReportsControllerAdmin>()
+                                    .approveOrDeclineOvertime(
+                                        index, ReasonButton.overtimeDecline);
+                              }),
+                              kSizedBoxW10,
+                              processButton('Edit', CustomColors.blueCardColor,
+                                  () {
+                                tempIndex = tempIndex + 1;
+                                DialogHelper.showBottomSheet(
+                                    RequestOvertimeBottomsheet(
+                                  index: tempIndex,
+                                ));
+                              }),
+                              kSizedBoxW10,
+                              processButton('Approve', CustomColors.greenColor,
+                                  () {
+                                Get.find<ReportsControllerAdmin>()
+                                    .approveOrDeclineOvertime(
+                                        index, ReasonButton.overtimeApprove);
+                              }),
+                            ],
+                          ),
                         kSizedBoxH10,
                       ],
                     ),
