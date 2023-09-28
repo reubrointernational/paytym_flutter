@@ -1,13 +1,18 @@
+import 'package:avatar_stack/avatar_stack.dart';
+import 'package:avatar_stack/positions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/core/dialog_helper.dart';
+import 'package:paytym/models/calendar/meeting_list_admin_model_new.dart';
 import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../../../core/constants/styles.dart';
+import '../../../../../models/report/projects/projects_list_model.dart';
+import '../../../../../network/end_points.dart';
 
 class CalendarMeetingAdmin extends StatelessWidget {
   const CalendarMeetingAdmin({Key? key}) : super(key: key);
@@ -20,6 +25,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
     return Obx(
       () => ListView.separated(
         physics: const BouncingScrollPhysics(),
+        reverse: true,
         itemCount: Get.find<CalendarControllerAdmin>()
                 .meetingResponseModel
                 .value
@@ -31,8 +37,9 @@ class CalendarMeetingAdmin extends StatelessWidget {
               .meetingResponseModel
               .value
               .meetingsListe?[index];
+
           return SizedBox(
-            height: 153,
+            height: 170,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -67,7 +74,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 25),
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -77,6 +84,11 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                       color: CustomColors.blackTextColor),
                                 ),
                                 kSizedBoxH4,
+                                // Text(
+                                //   meeting?.agenda ?? '',
+                                //   style: kTextStyleS18W600.copyWith(
+                                //       color: Colors.grey),
+                                // ),
                                 Text(
                                   '${meeting?.user?.firstName ?? ''} ${meeting?.user?.lastName ?? ''}',
                                   style: kTextStyleS14W600Cgrey300LS0p2
@@ -118,35 +130,40 @@ class CalendarMeetingAdmin extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Center(
-                          child: IconButton(
-                              onPressed: meeting?.userId ==
-                                      Get.find<LoginController>()
-                                          .loginResponseModel!
-                                          .employee!
-                                          .id
-                                  ? () {
-                                      DialogHelper.showConfirmDialog(
-                                          title: 'Delete Meeting',
-                                          desc:
-                                              'Do you want to delete this meeting?',
-                                          onConfirm: () {
-                                            Get.find<CalendarControllerAdmin>()
-                                                .deleteMeeting(index);
-                                            Get.back();
-                                          });
-                                    }
-                                  : null,
-                              icon: Icon(
-                                Icons.delete_outline_outlined,
-                                color: meeting?.userId ==
-                                        Get.find<LoginController>()
-                                            .loginResponseModel!
-                                            .employee!
-                                            .id
-                                    ? CustomColors.redColor
-                                    : CustomColors.greyTextColor,
-                              )),
+                        Column(
+                          children: [
+                            Center(
+                              child: IconButton(
+                                  onPressed: meeting?.userId ==
+                                          Get.find<LoginController>()
+                                              .loginResponseModel!
+                                              .employee!
+                                              .id
+                                      ? () {
+                                          DialogHelper.showConfirmDialog(
+                                              title: 'Delete Meeting',
+                                              desc:
+                                                  'Do you want to delete this meeting?',
+                                              onConfirm: () {
+                                                Get.find<
+                                                        CalendarControllerAdmin>()
+                                                    .deleteMeeting(index);
+                                                Get.back();
+                                              });
+                                        }
+                                      : null,
+                                  icon: Icon(
+                                    Icons.delete_outline_outlined,
+                                    color: meeting?.userId ==
+                                            Get.find<LoginController>()
+                                                .loginResponseModel!
+                                                .employee!
+                                                .id
+                                        ? CustomColors.redColor
+                                        : CustomColors.greyTextColor,
+                                  )),
+                            ),
+                          ],
                         ),
                       ],
                     ),

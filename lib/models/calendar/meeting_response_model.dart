@@ -12,58 +12,76 @@ String meetingResponseModelToJson(MeetingResponseModel data) =>
 
 class MeetingResponseModel {
   String? message;
-  List<Meeting>? meetings;
+  List<MeetingsList>? meetingsList;
 
-  MeetingResponseModel({
-    this.message,
-    this.meetings,
-  });
+  MeetingResponseModel({this.message, this.meetingsList});
+
+  // MeetingResponseModel.fromJson(Map<String, dynamic> json) {
+  //   message = json['message'];
+  //   if (json['meetings_list'] != null) {
+  //     print("meeting list not null");
+  //     meetingsList = <MeetingsList>[];
+  //     json['meetings_list'].forEach((v) {
+  //       meetingsList!.add(MeetingsList.fromJson(v));
+  //     });
+  //
+  //     print("meeting list not null1 : ${meetingsList?.length.toString()}");
+  //   }
+  // }
 
   factory MeetingResponseModel.fromJson(Map<String, dynamic> json) =>
       MeetingResponseModel(
         message: json["message"],
-        meetings: json["meetings"] == null
+        meetingsList: json["meetings_list"] == null
             ? []
-            : List<Meeting>.from(
-                json["meetings"]!.map((x) => Meeting.fromJson(x))),
+            : List<MeetingsList>.from(
+                json["meetings_list"]!.map((x) => MeetingsList.fromJson(x))),
       );
+
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = <String, dynamic>{};
+  //   data['message'] = message;
+  //   if (meetingsList != null) {
+  //     print("meetinglist:${meetingsList?.length.toString()}");
+  //     data['meetings_list'] = meetingsList!.map((v) => v.toJson()).toList();
+  //   }
+  //   return data;
+  // }
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "meetings": meetings == null
+        "meetings": meetingsList == null
             ? []
-            : List<dynamic>.from(meetings!.map((x) => x.toJson())),
+            : List<dynamic>.from(meetingsList!.map((x) => x.toJson()).toList()),
       };
 }
 
-class Meeting {
+class MeetingsList {
   int? id;
   int? meetingId;
   int? attendeeId;
   Meetings? meetings;
 
-  Meeting({
-    this.id,
-    this.meetingId,
-    this.attendeeId,
-    this.meetings,
-  });
+  MeetingsList({this.id, this.meetingId, this.attendeeId, this.meetings});
 
-  factory Meeting.fromJson(Map<String, dynamic> json) => Meeting(
-        id: json["id"],
-        meetingId: json["meeting_id"],
-        attendeeId: json["attendee_id"],
-        meetings: json["meetings"] == null
-            ? null
-            : Meetings.fromJson(json["meetings"]),
-      );
+  MeetingsList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    meetingId = json['meeting_id'];
+    attendeeId = json['attendee_id'];
+    meetings =
+        json['meetings'] != null ? Meetings.fromJson(json['meetings']) : null;
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "meeting_id": meetingId,
-        "attendee_id": attendeeId,
-        "meetings": meetings?.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['meeting_id'] = this.meetingId;
+    data['attendee_id'] = this.attendeeId;
+    if (this.meetings != null) {
+      data['meetings'] = this.meetings!.toJson();
+    }
+    return data;
+  }
 }
 
 class Meetings {
@@ -71,93 +89,143 @@ class Meetings {
   int? userId;
   int? employerId;
   String? name;
-  String? agenda;
-  DateTime? date;
-  // DateTime? startTime;
-  // DateTime? endTime;
-  // checking by change datetime datatype to time only
+  String? date;
   String? startTime;
   String? endTime;
+  String? agenda;
   String? location;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  String? createdAt;
+  String? updatedAt;
+  List<MeetingAttendeess>? meetingAttendeess;
   User? user;
 
-  Meetings({
-    this.id,
-    this.userId,
-    this.employerId,
-    this.name,
-    this.agenda,
-    this.date,
-    this.startTime,
-    this.endTime,
-    this.location,
-    this.createdAt,
-    this.updatedAt,
-    this.user,
-  });
+  Meetings(
+      {this.id,
+      this.userId,
+      this.employerId,
+      this.name,
+      this.date,
+      this.startTime,
+      this.endTime,
+      this.agenda,
+      this.location,
+      this.createdAt,
+      this.updatedAt,
+      this.meetingAttendeess,
+      this.user});
 
-  factory Meetings.fromJson(Map<String, dynamic> json) => Meetings(
-        id: json["id"],
-        userId: json["user_id"],
-        employerId: json["employer_id"],
-        name: json["name"],
-        agenda: json["agenda"],
-        date: json["date"] == null ? null : DateTime.parse(json["date"]),
-        // startTime: json["start_time"] == null
-        //     ? null
-        //     : DateTime.parse(json["start_time"]),
-        // endTime:
-        //     json["end_time"] == null ? null : DateTime.parse(json["end_time"]),
-        startTime:
-            json["start_time"] == null ? null : json["start_time"].toString(),
-        endTime: json["end_time"] == null ? null : json["end_time"].toString(),
-        location: json["location"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
-      );
+  Meetings.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    employerId = json['employer_id'];
+    name = json['name'];
+    date = json['date'];
+    startTime = json['start_time'];
+    endTime = json['end_time'];
+    agenda = json['agenda'];
+    location = json['location'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "employer_id": employerId,
-        "name": name,
-        "agenda": agenda,
-        "date":
-            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
-        // "start_time": startTime?.toIso8601String(),
-        // "end_time": endTime?.toIso8601String(),
-        "start_time": startTime?.toString(),
-        "end_time": endTime?.toString(),
-        "location": location,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "user": user?.toJson(),
-      };
+    meetingAttendeess = json["meetings_list"] == null
+        ? []
+        : List<MeetingAttendeess>.from(json["meeting_attendeess"]!
+            .map((x) => MeetingAttendeess.fromJson(x)));
+
+    // meetingAttendeess = (json['meeting_attendeess'] != null
+    //     ? MeetingAttendeess.fromJson(json['meeting_attendeess'])
+    //     : null) as List<MeetingAttendeess>?;
+    // if (json['meeting_attendeess'] != null) {
+    //   meetingAttendeess = <MeetingAttendeess>[];
+    //   json['meeting_attendeess'].forEach((v) {
+    //     print("object:${v.toString()}");
+    //     meetingAttendeess!.add(new MeetingAttendeess.fromJson(v));
+    //   });
+    // }
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['employer_id'] = this.employerId;
+    data['name'] = this.name;
+    data['date'] = this.date;
+    data['start_time'] = this.startTime;
+    data['end_time'] = this.endTime;
+    data['agenda'] = this.agenda;
+    data['location'] = this.location;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (meetingAttendeess != null) {
+      data['meeting_attendeess'] =
+          meetingAttendeess!.map((v) => v.toJson()).toList();
+    }
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    return data;
+  }
+}
+
+class MeetingAttendeess {
+  int? id;
+  int? employerId;
+  String? jobTitle;
+  String? firstName;
+  String? lastName;
+  String? image;
+
+  MeetingAttendeess(
+      {this.id,
+      this.employerId,
+      this.jobTitle,
+      this.firstName,
+      this.lastName,
+      this.image});
+
+  MeetingAttendeess.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    employerId = json['employer_id'];
+    jobTitle = json['job_title'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['employer_id'] = this.employerId;
+    data['job_title'] = this.jobTitle;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
+    data['image'] = this.image;
+    return data;
+  }
 }
 
 class User {
   int? id;
   int? employerId;
-  DateTime? employmentStartDate;
-  DateTime? employmentEndDate;
-  DateTime? payedDate;
-  DateTime? payDate;
+  String? jobTitle;
+  String? employmentStartDate;
+  String? employmentEndDate;
+  String? checkInDefault;
+  String? checkOutDefault;
+  String? checkOutRequred;
+  String? payedDate;
+  String? payDate;
   String? bankBranchName;
   int? businessId;
   int? departmentId;
   String? salaryType;
   String? rate;
   String? payPeriod;
-  String? workdaysPerWeek;
-  String? totalHoursPerWeek;
-  String? extraHoursAtBaseRate;
+  Null? workdaysPerWeek;
+  Null? totalHoursPerWeek;
+  Null? extraHoursAtBaseRate;
   String? employeeType;
   String? firstName;
   String? lastName;
@@ -166,204 +234,215 @@ class User {
   int? position;
   String? email;
   String? phone;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String? street;
   String? city;
-  String? town;
+  Null? town;
   String? postcode;
   String? countryId;
   String? tin;
-  String? fnpf;
+  Null? fnpf;
   String? bank;
   String? accountNumber;
+  Null? licenceNo;
+  Null? licenceExpiryDate;
+  Null? passportNo;
+  Null? passportExpiryDate;
   String? image;
   String? isFirst;
   String? otp;
   String? deviceId;
-  dynamic emailVerifiedAt;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  dynamic forgotPassOtp;
+  Null? emailVerifiedAt;
+  String? createdAt;
+  String? updatedAt;
+  Null? forgotPassOtp;
   int? status;
   Role? role;
 
-  User({
-    this.id,
-    this.employerId,
-    this.employmentStartDate,
-    this.employmentEndDate,
-    this.payedDate,
-    this.payDate,
-    this.bankBranchName,
-    this.businessId,
-    this.departmentId,
-    this.salaryType,
-    this.rate,
-    this.payPeriod,
-    this.workdaysPerWeek,
-    this.totalHoursPerWeek,
-    this.extraHoursAtBaseRate,
-    this.employeeType,
-    this.firstName,
-    this.lastName,
-    this.company,
-    this.branchId,
-    this.position,
-    this.email,
-    this.phone,
-    this.dateOfBirth,
-    this.street,
-    this.city,
-    this.town,
-    this.postcode,
-    this.countryId,
-    this.tin,
-    this.fnpf,
-    this.bank,
-    this.accountNumber,
-    this.image,
-    this.isFirst,
-    this.otp,
-    this.deviceId,
-    this.emailVerifiedAt,
-    this.createdAt,
-    this.updatedAt,
-    this.forgotPassOtp,
-    this.status,
-    this.role,
-  });
+  User(
+      {this.id,
+      this.employerId,
+      this.jobTitle,
+      this.employmentStartDate,
+      this.employmentEndDate,
+      this.checkInDefault,
+      this.checkOutDefault,
+      this.checkOutRequred,
+      this.payedDate,
+      this.payDate,
+      this.bankBranchName,
+      this.businessId,
+      this.departmentId,
+      this.salaryType,
+      this.rate,
+      this.payPeriod,
+      this.workdaysPerWeek,
+      this.totalHoursPerWeek,
+      this.extraHoursAtBaseRate,
+      this.employeeType,
+      this.firstName,
+      this.lastName,
+      this.company,
+      this.branchId,
+      this.position,
+      this.email,
+      this.phone,
+      this.dateOfBirth,
+      this.street,
+      this.city,
+      this.town,
+      this.postcode,
+      this.countryId,
+      this.tin,
+      this.fnpf,
+      this.bank,
+      this.accountNumber,
+      this.licenceNo,
+      this.licenceExpiryDate,
+      this.passportNo,
+      this.passportExpiryDate,
+      this.image,
+      this.isFirst,
+      this.otp,
+      this.deviceId,
+      this.emailVerifiedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.forgotPassOtp,
+      this.status,
+      this.role});
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        employerId: json["employer_id"],
-        employmentStartDate: json["employment_start_date"] == null
-            ? null
-            : DateTime.parse(json["employment_start_date"]),
-        employmentEndDate: json["employment_end_date"] == null
-            ? null
-            : DateTime.parse(json["employment_end_date"]),
-        payedDate: json["payed_date"] == null
-            ? null
-            : DateTime.parse(json["payed_date"]),
-        payDate:
-            json["pay_date"] == null ? null : DateTime.parse(json["pay_date"]),
-        bankBranchName: json["bank_branch_name"],
-        businessId: json["business_id"],
-        departmentId: json["department_id"],
-        salaryType: json["salary_type"],
-        rate: json["rate"],
-        payPeriod: json["pay_period"],
-        workdaysPerWeek: json["workdays_per_week"],
-        totalHoursPerWeek: json["total_hours_per_week"],
-        extraHoursAtBaseRate: json["extra_hours_at_base_rate"],
-        employeeType: json["employee_type"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        company: json["company"],
-        branchId: json["branch_id"],
-        position: json["position"],
-        email: json["email"],
-        phone: json["phone"],
-        dateOfBirth: json["date_of_birth"] == null
-            ? null
-            : DateTime.parse(json["date_of_birth"]),
-        street: json["street"],
-        city: json["city"],
-        town: json["town"],
-        postcode: json["postcode"],
-        countryId: json["country_id"],
-        tin: json["tin"],
-        fnpf: json["fnpf"],
-        bank: json["bank"],
-        accountNumber: json["account_number"],
-        image: json["image"],
-        isFirst: json["isFirst"],
-        otp: json["otp"],
-        deviceId: json["device_id"],
-        emailVerifiedAt: json["email_verified_at"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-        forgotPassOtp: json["forgot_pass_otp"],
-        status: json["status"],
-        role: json["role"] == null ? null : Role.fromJson(json["role"]),
-      );
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    employerId = json['employer_id'];
+    jobTitle = json['job_title'];
+    employmentStartDate = json['employment_start_date'];
+    employmentEndDate = json['employment_end_date'];
+    checkInDefault = json['check_in_default'];
+    checkOutDefault = json['check_out_default'];
+    checkOutRequred = json['check_out_requred'];
+    payedDate = json['payed_date'];
+    payDate = json['pay_date'];
+    bankBranchName = json['bank_branch_name'];
+    businessId = json['business_id'];
+    departmentId = json['department_id'];
+    salaryType = json['salary_type'];
+    rate = json['rate'];
+    payPeriod = json['pay_period'];
+    workdaysPerWeek = json['workdays_per_week'];
+    totalHoursPerWeek = json['total_hours_per_week'];
+    extraHoursAtBaseRate = json['extra_hours_at_base_rate'];
+    employeeType = json['employee_type'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    company = json['company'];
+    branchId = json['branch_id'];
+    position = json['position'];
+    email = json['email'];
+    phone = json['phone'];
+    dateOfBirth = json['date_of_birth'];
+    street = json['street'];
+    city = json['city'];
+    town = json['town'];
+    postcode = json['postcode'];
+    countryId = json['country_id'];
+    tin = json['tin'];
+    fnpf = json['fnpf'];
+    bank = json['bank'];
+    accountNumber = json['account_number'];
+    licenceNo = json['licence_no'];
+    licenceExpiryDate = json['licence_expiry_date'];
+    passportNo = json['passport_no'];
+    passportExpiryDate = json['passport_expiry_date'];
+    image = json['image'];
+    isFirst = json['isFirst'];
+    otp = json['otp'];
+    deviceId = json['device_id'];
+    emailVerifiedAt = json['email_verified_at'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    forgotPassOtp = json['forgot_pass_otp'];
+    status = json['status'];
+    role = json['role'] != null ? new Role.fromJson(json['role']) : null;
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "employer_id": employerId,
-        "employment_start_date":
-            "${employmentStartDate!.year.toString().padLeft(4, '0')}-${employmentStartDate!.month.toString().padLeft(2, '0')}-${employmentStartDate!.day.toString().padLeft(2, '0')}",
-        "employment_end_date":
-            "${employmentEndDate!.year.toString().padLeft(4, '0')}-${employmentEndDate!.month.toString().padLeft(2, '0')}-${employmentEndDate!.day.toString().padLeft(2, '0')}",
-        "payed_date":
-            "${payedDate!.year.toString().padLeft(4, '0')}-${payedDate!.month.toString().padLeft(2, '0')}-${payedDate!.day.toString().padLeft(2, '0')}",
-        "pay_date":
-            "${payDate!.year.toString().padLeft(4, '0')}-${payDate!.month.toString().padLeft(2, '0')}-${payDate!.day.toString().padLeft(2, '0')}",
-        "bank_branch_name": bankBranchName,
-        "business_id": businessId,
-        "department_id": departmentId,
-        "salary_type": salaryType,
-        "rate": rate,
-        "pay_period": payPeriod,
-        "workdays_per_week": workdaysPerWeek,
-        "total_hours_per_week": totalHoursPerWeek,
-        "extra_hours_at_base_rate": extraHoursAtBaseRate,
-        "employee_type": employeeType,
-        "first_name": firstName,
-        "last_name": lastName,
-        "company": company,
-        "branch_id": branchId,
-        "position": position,
-        "email": email,
-        "phone": phone,
-        "date_of_birth":
-            "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
-        "street": street,
-        "city": city,
-        "town": town,
-        "postcode": postcode,
-        "country_id": countryId,
-        "tin": tin,
-        "fnpf": fnpf,
-        "bank": bank,
-        "account_number": accountNumber,
-        "image": image,
-        "isFirst": isFirst,
-        "otp": otp,
-        "device_id": deviceId,
-        "email_verified_at": emailVerifiedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "forgot_pass_otp": forgotPassOtp,
-        "status": status,
-        "role": role?.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['employer_id'] = this.employerId;
+    data['job_title'] = this.jobTitle;
+    data['employment_start_date'] = this.employmentStartDate;
+    data['employment_end_date'] = this.employmentEndDate;
+    data['check_in_default'] = this.checkInDefault;
+    data['check_out_default'] = this.checkOutDefault;
+    data['check_out_requred'] = this.checkOutRequred;
+    data['payed_date'] = this.payedDate;
+    data['pay_date'] = this.payDate;
+    data['bank_branch_name'] = this.bankBranchName;
+    data['business_id'] = this.businessId;
+    data['department_id'] = this.departmentId;
+    data['salary_type'] = this.salaryType;
+    data['rate'] = this.rate;
+    data['pay_period'] = this.payPeriod;
+    data['workdays_per_week'] = this.workdaysPerWeek;
+    data['total_hours_per_week'] = this.totalHoursPerWeek;
+    data['extra_hours_at_base_rate'] = this.extraHoursAtBaseRate;
+    data['employee_type'] = this.employeeType;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
+    data['company'] = this.company;
+    data['branch_id'] = this.branchId;
+    data['position'] = this.position;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['date_of_birth'] = this.dateOfBirth;
+    data['street'] = this.street;
+    data['city'] = this.city;
+    data['town'] = this.town;
+    data['postcode'] = this.postcode;
+    data['country_id'] = this.countryId;
+    data['tin'] = this.tin;
+    data['fnpf'] = this.fnpf;
+    data['bank'] = this.bank;
+    data['account_number'] = this.accountNumber;
+    data['licence_no'] = this.licenceNo;
+    data['licence_expiry_date'] = this.licenceExpiryDate;
+    data['passport_no'] = this.passportNo;
+    data['passport_expiry_date'] = this.passportExpiryDate;
+    data['image'] = this.image;
+    data['isFirst'] = this.isFirst;
+    data['otp'] = this.otp;
+    data['device_id'] = this.deviceId;
+    data['email_verified_at'] = this.emailVerifiedAt;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['forgot_pass_otp'] = this.forgotPassOtp;
+    data['status'] = this.status;
+    if (this.role != null) {
+      data['role'] = this.role!.toJson();
+    }
+    return data;
+  }
 }
 
 class Role {
   int? id;
-  dynamic employerId;
+  int? employerId;
   String? roleName;
 
-  Role({
-    this.id,
-    this.employerId,
-    this.roleName,
-  });
+  Role({this.id, this.employerId, this.roleName});
 
-  factory Role.fromJson(Map<String, dynamic> json) => Role(
-        id: json["id"],
-        employerId: json["employer_id"],
-        roleName: json["role_name"],
-      );
+  Role.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    employerId = json['employer_id'];
+    roleName = json['role_name'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "employer_id": employerId,
-        "role_name": roleName,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['employer_id'] = this.employerId;
+    data['role_name'] = this.roleName;
+    return data;
+  }
 }

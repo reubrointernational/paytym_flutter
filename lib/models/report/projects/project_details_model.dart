@@ -14,14 +14,17 @@ class ProjectDetailsModel {
   ProjectDetailsModel({
     this.message,
     this.projectsListe,
+    this.expense,
   });
 
   String? message;
   List<ProjectsListe>? projectsListe;
+  String? expense;
 
   factory ProjectDetailsModel.fromJson(Map<String, dynamic> json) =>
       ProjectDetailsModel(
         message: json["message"],
+        expense: json["expense"],
         projectsListe: json["projects liste"] == null
             ? []
             : List<ProjectsListe>.from(
@@ -30,6 +33,7 @@ class ProjectDetailsModel {
 
   Map<String, dynamic> toJson() => {
         "message": message,
+        "expense": expense,
         "projects liste": projectsListe == null
             ? []
             : List<dynamic>.from(projectsListe!.map((x) => x.toJson())),

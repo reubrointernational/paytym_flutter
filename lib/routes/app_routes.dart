@@ -1,8 +1,7 @@
-
-
 abstract class Routes {
   // Main Menu Route
   static const login = '/login';
+  static const licenceExpired = '/licenceExpired';
   static const bottomNav = '/bottomNav';
   static const bottomNavAdmin = '/bottomNavAdmin';
   static const resetPassword = '/resetPassword';
@@ -21,6 +20,4 @@ abstract class Routes {
   static const selectChatUsersPage = '/selectChatUsers';
   static const uploadFilesPage = '/uploadFilesPage';
   static const employeeUploadFilesPage = '/employeeUploadFilesPage';
-
-
 }

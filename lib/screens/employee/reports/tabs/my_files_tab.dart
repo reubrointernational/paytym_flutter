@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:paytym/network/end_points.dart';
@@ -17,6 +18,7 @@ class MyFilesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<ReportsController>().fetchFiles());
+    WidgetsFlutterBinding.ensureInitialized();
     return Stack(
       children: [
         SingleChildScrollView(
@@ -138,6 +140,7 @@ class MyFilesTab extends StatelessWidget {
                                   backgroundColor: CustomColors.blueCardColor,
                                   child: GestureDetector(
                                     onTap: () {
+                                      print("Print Index:$index");
                                       Get.find<ReportsController>().downloadPdf(
                                           '$kStorageUrl${files?[index].file}');
                                       Get.find<ReportsController>()

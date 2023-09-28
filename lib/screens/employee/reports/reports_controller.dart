@@ -153,6 +153,7 @@ class ReportsController extends GetxController
     request.headers.addAll(Get.find<LoginController>().getHeader()!);
     var multipartFile =
         await http.MultipartFile.fromPath('file', filePath.value);
+    print("multipartfile:${filePath.value.toString()}");
     request.files.add(multipartFile);
     var streamResponse = await request.send();
     await http.Response.fromStream(streamResponse);
@@ -306,6 +307,7 @@ class ReportsController extends GetxController
   // }
 
   fetchFiles([int? employeeId]) async {
+    print("fetchFiles called");
     // Get.find<BaseClient>().onError = () {
     //   fetchFiles(fileTypes);
     // };
@@ -325,6 +327,7 @@ class ReportsController extends GetxController
     if (responseString == null) {
       return;
     } else {
+      print("fetchFiles Response: $responseString");
       fileListResponseModel.value =
           employeeFilesListModelFromJson(responseString);
       fileListResponseModel.refresh();
@@ -471,22 +474,58 @@ class ReportsController extends GetxController
     return formatNum.format(int.parse(value));
   }
 
-  downloadPdf(String? url) async {
+  Future<void> downloadPdf(String? url) async {
+    print("downloadPdf called");
+
+    // await FlutterDownloader.initialize();
+
     if (url != null && url.isNotEmpty) {
       sharePath = '';
       isSharingOrDownloading.value = SharingOrDownloading.downloading;
-      await FlutterDownloader.enqueue(
+      //
+      // FlutterDownloader.registerCallback((taskId, status, progress) {
+      //   print('Download $taskId is enqueued');
+      //   if (status == DownloadTaskStatus.enqueued) {
+      //     // Download is enqueued and waiting to start
+      //     print('Download $taskId is enqueued');
+      //   } else if (status == DownloadTaskStatus.running) {
+      //     // Download is in progress
+      //     print('Download $taskId is in progress. Progress: $progress');
+      //   } else if (status == DownloadTaskStatus.complete) {
+      //     // Download is complete
+      //     print('Download $taskId is complete!');
+      //   } else if (status == DownloadTaskStatus.failed) {
+      //     // Download failed
+      //     print('Download $taskId has failed');
+      //   } else if (status == DownloadTaskStatus.canceled) {
+      //     // Download was canceled
+      //     print('Download $taskId was canceled');
+      //   }
+      // });
+
+      final taskId = await FlutterDownloader.enqueue(
         url: url,
         saveInPublicStorage: true,
         savedDir: await DownloadPath().getDownloadPath(),
         showNotification: true,
-        openFileFromNotification: false,
-        // fileName: 'paytym_doc_.pdf',
+        openFileFromNotification: true,
+        fileName: 'paytym_doc_.pdf',
       );
+
+      print("Downloadpdf: Task id:${taskId.toString()}");
+
+      FlutterDownloader.registerCallback((id, status, progress) {
+        print("registerCallback: Task id:${id.toString()}");
+        // Handle download progress or completion here
+        if (status == DownloadTaskStatus.complete) {
+          print('Download task $id is complete.');
+        }
+      });
     }
   }
 
   sharePdf(String? url, String? type) async {
+    print("sharePdf called");
     if (type == 'pdf' || type == 'png') {
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
       Directory tempDir = await getTemporaryDirectory();
@@ -524,7 +563,7 @@ class ReportsController extends GetxController
   @override
   void onInit() {
     super.onInit();
-
+    FlutterDownloader.initialize();
     controller = TabController(length: 4, vsync: this);
     subTabController = TabController(length: 12, vsync: this);
 
@@ -532,7 +571,7 @@ class ReportsController extends GetxController
         _port.sendPort, 'downloader_send_port');
     _port.listen((dynamic data) {
       // String id = data[0];
-
+      print('port.listen test');
       DownloadTaskStatus status = data[1];
       // int progress = data[2];
 
@@ -549,6 +588,8 @@ class ReportsController extends GetxController
           DialogHelper.showToast(desc: 'Download completed');
         }
         isSharingOrDownloading.value = SharingOrDownloading.idle;
+        print(
+            'Download completed from Share button 2 :${isSharingOrDownloading.value.toString()}');
       } else if (status == DownloadTaskStatus.failed) {
         sharePath = '';
         isSharingOrDownloading.value = SharingOrDownloading.idle;

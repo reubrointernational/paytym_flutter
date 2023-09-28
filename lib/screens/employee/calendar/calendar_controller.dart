@@ -36,12 +36,15 @@ class CalendarController extends GetxController with BaseController {
         .post(ApiEndPoints.meetings, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    print("getMeeting() URL:" + ApiEndPoints.meetings);
+    print("getMeeting() URL:${ApiEndPoints.meetings}");
     if (responseString == null) {
       return;
     } else {
+      print(" getMeetingresponseString:" + responseString);
       hideLoading();
       meetingResponseModel.value = meetingResponseModelFromJson(responseString);
+      print(
+          "meetingResponseModel: ${meetingResponseModel.value.meetingsList?.length.toString()}");
       meetingResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
@@ -91,7 +94,7 @@ class CalendarController extends GetxController with BaseController {
   }
 
   getTime(String time) {
-    print("Gettime called:" + time);
+    print("Gettime called:$time");
     try {
       final DateTime now = DateTime.parse(time);
       return DateFormat('hh:mm a').format(now).toString();

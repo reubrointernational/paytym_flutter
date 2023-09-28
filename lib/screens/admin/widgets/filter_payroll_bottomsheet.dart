@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/models/employee_list_model.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 
 import '../../../core/colors/colors.dart';
@@ -303,6 +304,7 @@ showFilterBottomSheet(context, controller) {
                                       .value
                                       .toLowerCase())))
                           .toList();
+                      print("");
                       return ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         itemCount: Get.find<ReportsControllerAdmin>()
@@ -355,18 +357,28 @@ showFilterBottomSheet(context, controller) {
                   width: double.infinity,
                   child: ElevatedButton(
                       onPressed: () {
-                        if (Get.find<ReportsControllerAdmin>()
-                                .filteredEmployeeList
-                                ?.isNotEmpty ??
-                            false) {
-                          List<String>? ids = Get.find<ReportsControllerAdmin>()
-                              .filteredEmployeeList
-                              ?.where((element) => element.isSelected)
-                              .map((e) => e.id.toString())
-                              .toList();
-                          Get.find<ReportsControllerAdmin>()
-                              .processPayroll('employee', ids);
-                        }
+                        print(
+                            "Selected Employee List:${Get.find<ReportsControllerAdmin>().filteredEmployeeList?.length.toString()}");
+                        // if (Get.find<ReportsControllerAdmin>()
+                        //         .filteredEmployeeList
+                        //         ?.isNotEmpty ??
+                        //     false) {
+                        //   Get.find<ReportsControllerAdmin>()
+                        //           .selectedEmployeeIDs =
+                        //       Get.find<ReportsControllerAdmin>()
+                        //           .filteredEmployeeList
+                        //           ?.where((element) => element.isSelected)
+                        //           .map((e) => e.id.toString())
+                        //           .cast<EmployeeList>()
+                        //           .toList();
+                        //   print(
+                        //       "Selected Employee List:${Get.find<ReportsControllerAdmin>().filteredEmployeeList?.length.toString()}");
+                        //   Navigator.of(context).pop();
+                        //   // Get.find<ReportsControllerAdmin>()
+                        //   //     .processPayroll('employee', ids);
+                        // }
+
+                        // Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: CustomColors.lightBlueColor,
@@ -376,7 +388,8 @@ showFilterBottomSheet(context, controller) {
                           right: Radius.circular(50),
                         )),
                       ),
-                      child: const Text('Process Payroll')),
+                      child: const Text('Select Employees')),
+                  // child: const Text('Process Payroll')),
                 )
               ],
             ),

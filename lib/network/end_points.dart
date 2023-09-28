@@ -86,5 +86,6 @@ class ApiEndPoints {
   static const fetchEmployeesBranchWise = '$kBaseUrl/list_employees_branchwise';
 
   static const attendanceByHr = '$kBaseUrl/attendance_by_hr';
-  static const fetchEmployeesBusinessWise = '$kBaseUrl/list_employees_businesswise';
+  static const fetchEmployeesBusinessWise =
+      '$kBaseUrl/list_employees_businesswise';
 }

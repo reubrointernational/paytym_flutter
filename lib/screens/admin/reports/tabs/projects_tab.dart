@@ -84,8 +84,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                             projects[index].name ?? '';
                                         var project = projects[index];
                                         Get.to(ProjectEmployeeListPage(
-                                          project: project,
-                                        ));
+                                            project: project));
                                       },
                                       child: AvatarStack(
                                         height: 50,
@@ -329,7 +328,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                         ),
                         kSizedBoxH12,
                         Text(
-                          "Spent: \$ ${projects[index].spentAmount ?? 0}",
+                          "Spent: \$ ${projects[index].expense?.toString() ?? 0}",
                           textAlign: TextAlign.right,
                           style: const TextStyle(
                             color: CustomColors.grey156x3TextColor,

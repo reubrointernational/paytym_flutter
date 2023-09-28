@@ -16,6 +16,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       EmployeeListAdminModel(employeeList: [], message: '').obs;
   // final branchDeptList =
   //     BranchDeptListModel(branches: [], departments: [], message: '').obs;
+  Map<String, List<EmployeeList>> businesswiseEmployeeMap = {};
   Map<String, List<EmployeeList>> branchwiseEmployeeMap = {};
   Map<String, List<EmployeeList>> deptwiseEmployeeMap = {};
   final selectMemberTab = SelectChatMemberTab.all.obs;
@@ -176,6 +177,10 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       } else {
         deptwiseEmployeeMap[element.department?.depName ?? '']!.add(element);
       }
+      if (!businesswiseEmployeeMap.keys
+          .contains(element.business?.depName ?? '')) {
+        deptwiseEmployeeMap[element.department?.depName ?? ''] = [element];
+      }
     }
   }
 
@@ -239,6 +244,11 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   List<EmployeeList>? getFilteredEmployeeList() {
     print("getFilteredEmployeeList called 1");
     List<EmployeeList>? chatList;
+    if (selectedDropdownBusiness.value != null) {
+      print("getFilteredEmployeeList called 2");
+      chatList = businesswiseEmployeeMap[selectedDropdownBusiness.value];
+      print("getFilteredEmployeeList called 2.1:${chatList?.length}");
+    }
     if (selectedDropdownDepartments.value != null) {
       print("getFilteredEmployeeList called 2");
       chatList = deptwiseEmployeeMap[selectedDropdownDepartments.value];
@@ -273,5 +283,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     selectedDropdownDepartments.value = null;
     selectedDropdownBranches.value = null;
     searchKeyword.value = '';
+    // updation 28 sep 2023
+    // selectedDropdownBusiness.value = null;
   }
 }

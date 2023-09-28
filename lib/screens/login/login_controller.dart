@@ -10,6 +10,7 @@ import 'package:paytym/models/login/otp_request_model.dart';
 import 'package:paytym/models/login/password_reset_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paytym/screens/login/license_expired_page.dart';
 
 import '../../network/base_client.dart';
 import '../../network/base_controller.dart';
@@ -27,6 +28,8 @@ class LoginController extends GetxController with BaseController {
   RxList<String> otpList = ['', '', '', ''].obs;
   final bottomNavigationAdminIndex = 0.obs;
   String initialTab = '';
+
+  get key => null;
 
   Map<String, String>? getHeader() {
     return {
@@ -49,15 +52,20 @@ class LoginController extends GetxController with BaseController {
           .post(ApiEndPoints.login, loginRequestModelToJson(loginRequestModel))
           .catchError(handleError);
       print("fetchLoginData:${ApiEndPoints.login}");
+      print("fetchLoginData Email:${loginRequestModel.email}");
+      print("fetchLoginData Password:${loginRequestModel.password}");
+      print("fetchLoginData Response :${responseString.toString()}");
       if (responseString == null) {
         return false;
       } else {
         hideLoading();
         loginResponseModel = loginResponseModelFromJson(responseString);
+
+        print(
+            "fetchLoginData User Status :${loginResponseModel?.message.toString()}");
         return true;
       }
     }
-
     return true;
   }
 
@@ -172,7 +180,13 @@ class LoginController extends GetxController with BaseController {
     bool isSuccess = await fetchLoginData();
     if (isSuccess) {
       //isFirst = 1 => first time login
-      if (loginResponseModel?.employee?.isFirst == '1') {
+
+      if (loginResponseModel?.message == 'Inactive Person') {
+        // Employer license expired ,  Go to licence expired page
+        print("Inacive person");
+
+        Get.toNamed(Routes.licenceExpired);
+      } else if (loginResponseModel?.employee?.isFirst == '1') {
         await Get.find<LoginController>().sendOtp();
         Get.toNamed(Routes.otp);
       } else if (loginResponseModel?.employee?.isFirst == '0') {

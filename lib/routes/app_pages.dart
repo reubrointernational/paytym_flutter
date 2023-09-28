@@ -1,6 +1,7 @@
 import 'package:paytym/models/chat/chat_response_model.dart';
 import 'package:paytym/screens/admin/bottom_nav/bottom_nav_page.dart';
 import 'package:paytym/screens/employee/chats/chats_page.dart';
+import 'package:paytym/screens/login/license_expired_page.dart';
 import 'package:paytym/screens/login/login_page.dart';
 import 'package:paytym/screens/login/otp_page.dart';
 import 'package:paytym/screens/employee/reports/reports_page.dart';
@@ -59,6 +60,10 @@ class AppPages {
       page: () => const OTPPage(),
     ),
     GetPage(
+      name: Routes.licenceExpired,
+      page: () => const LicenseExpired(),
+    ),
+    GetPage(
       name: Routes.reports,
       page: () => const ReportsPage(),
     ),
@@ -102,6 +107,5 @@ class AppPages {
       name: Routes.employeeUploadFilesPage,
       page: () => const EmployeeUploadFilesPage(),
     ),
-    
   ];
 }

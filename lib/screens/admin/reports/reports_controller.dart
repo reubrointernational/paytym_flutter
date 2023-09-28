@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -74,7 +75,7 @@ class ReportsControllerAdmin extends GetxController
   final employeeList =
       employeelist.EmployeeListAdminModel(employeeList: [], message: '').obs;
   List<employeelist.EmployeeList>? filteredEmployeeList;
-
+  List<employeelist.EmployeeList>? selectedEmployeeIDs = [];
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
@@ -90,6 +91,7 @@ class ReportsControllerAdmin extends GetxController
     // 'Contract period'
   ];
   final isAllEmployeesSelected = true.obs;
+  final isEmployeesSelectedForPayroll = false.obs;
   final checkedEmployees = [].obs;
 
   final attendanceHrDateController = TextEditingController();
@@ -202,7 +204,11 @@ class ReportsControllerAdmin extends GetxController
   fillReportTab() {
     final capabilityList =
         Get.find<LoginController>().loginResponseModel?.capabilities;
-    if (capabilityList?.first.viewPayroll == 1 &&
+    print(
+        "capabilityList?.first.viewPayroll : ${capabilityList?.first.viewPayroll.toString()}");
+    // For payrollchecking now given as 0...need to recheck with the API
+    // if (capabilityList?.first.viewPayroll == 1 &&
+    if (capabilityList?.first.viewPayroll == 0 &&
         !reportsTabListAdmin.contains('Payroll')) {
       reportsTabListAdmin.insert(2, 'Payroll');
     }
@@ -266,7 +272,10 @@ class ReportsControllerAdmin extends GetxController
           ? 'Are you sure to process payroll?'
           : 'Are you sure to reverse payroll?',
       onConfirm: () {
-        processPayroll('all');
+        Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == true
+            ? processPayroll('all')
+            : processPayroll('employee');
+        // processPayroll('all');
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
       },
       onCancel: () {
@@ -307,7 +316,7 @@ class ReportsControllerAdmin extends GetxController
   History selectedItem = History();
   String projectName = '';
   final projectDetailsResponseModel =
-      ProjectDetailsModel(message: '', projectsListe: []).obs;
+      ProjectDetailsModel(message: '', projectsListe: [], expense: '').obs;
 
   TextEditingController checkInTimeController = TextEditingController();
   TextEditingController checkOutTimeController = TextEditingController();
@@ -401,6 +410,7 @@ class ReportsControllerAdmin extends GetxController
   }
 
   fetchBusiness() async {
+    // showLoading();
     var responseString = await Get.find<BaseClient>().post(
         ApiEndPoints.fetchBusiness,
         null,
@@ -413,7 +423,7 @@ class ReportsControllerAdmin extends GetxController
   }
 
   fetchDepartments(int branchId) async {
-    print('fetchDepartment');
+    print('fetchDepartment with branchId:${branchId.toString()}');
     var responseString = await Get.find<BaseClient>().post(
         ApiEndPoints.fetchDepartment,
         jsonEncode({'branch_id': branchId.toString()}),
@@ -427,6 +437,7 @@ class ReportsControllerAdmin extends GetxController
   }
 
   fetchBranches(int businessId) async {
+    print('fetchDepartment with Business ID:${businessId.toString()}');
     var responseString = await Get.find<BaseClient>().post(
         ApiEndPoints.fetchBranch,
         jsonEncode({'business_id': businessId.toString()}),
@@ -439,6 +450,7 @@ class ReportsControllerAdmin extends GetxController
   }
 
   fetchEmployees(int businessId) async {
+    print("fetchEmployees with business ID:${businessId.toString()}");
     var responseString = await Get.find<BaseClient>().post(
         ApiEndPoints.fetchEmployeesBusinessWise,
         jsonEncode({
@@ -450,6 +462,7 @@ class ReportsControllerAdmin extends GetxController
               .toString()
         }),
         Get.find<LoginController>().getHeader());
+
     if (responseString == null) {
       return;
     } else {
@@ -1111,26 +1124,80 @@ class ReportsControllerAdmin extends GetxController
   // }
 
   void processPayroll(String payrollFlag, [List<String>? ids]) async {
-    showLoading();
-    var requestModel = {
-      'flag': payrollFlag,
-      'id': ids,
-      'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
-    };
-    var responseString = await Get.find<BaseClient>()
-        .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-            Get.find<LoginController>().getHeader())
-        .catchError(handleError);
-    if (responseString == null) {
-      sliderValue.value = 0;
-      Get.back();
-      return;
+    print("called ProcessPayroll with Flag:${payrollFlag.toString()}");
+    List<String>? empList = [];
+
+    if (payrollFlag.toString() != "all") {
+      print(
+          "called :processPayroll not all selected employee count:${filteredEmployeeList?.length.toString()} ");
+      for (var element in filteredEmployeeList!) {
+        if (element.isSelected == true) {
+          print(
+              "Selected Id:${element?.id?.toString()} status : ${element.isSelected}");
+          empList?.add(element.id.toString());
+        }
+      }
+      empList?.toList();
+      // empList?.asMap().cast<int, String>()
+      print("Selected Ids: ${empList?.length.toString()}");
+
+      var requestModel = {
+        'flag': payrollFlag,
+        'id': empList,
+        'employer_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      };
+
+      // commenting payroll operation
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      // var responseString;
+      print("Payroll: ${responseString.toString()}");
+
+      if (responseString == null) {
+        sliderValue.value = 0;
+        Get.back();
+        return;
+      } else {
+        hideLoading();
+        Get.back();
+        DialogHelper.showToast(
+            desc:
+                messageOnlyResponseModelFromJson(responseString).message ?? '');
+      }
     } else {
-      hideLoading();
-      Get.back();
-      DialogHelper.showToast(
-          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+      // Flag: Employee
+      print("Flag: $payrollFlag");
+      showLoading();
+
+      var requestModel = {
+        'flag': payrollFlag,
+        'id': ids,
+        'employer_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      };
+
+      // commenting payroll operation
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      // var responseString;
+      print("Payroll: ${responseString.toString()}");
+
+      if (responseString == null) {
+        sliderValue.value = 0;
+        Get.back();
+        return;
+      } else {
+        hideLoading();
+        Get.back();
+        DialogHelper.showToast(
+            desc:
+                messageOnlyResponseModelFromJson(responseString).message ?? '');
+      }
     }
   }
 

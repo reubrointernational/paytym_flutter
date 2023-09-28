@@ -16,8 +16,11 @@ class PendingPayrollListview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<DashboardControllerAdmin>().clearFilter());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => Get.find<DashboardControllerAdmin>().clearFilter());
+    });
+
     bool payrollOpen = true;
     return Expanded(
       child: SizedBox(
@@ -89,6 +92,9 @@ class PendingPayrollListview extends StatelessWidget {
                                     Get.find<ReportsControllerAdmin>()
                                         .isAllEmployeesSelected
                                         .value = true;
+                                    Get.find<ReportsControllerAdmin>()
+                                        .isEmployeesSelectedForPayroll
+                                        .value = false;
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.all(1.0),
@@ -120,6 +126,9 @@ class PendingPayrollListview extends StatelessWidget {
                                     Get.find<ReportsControllerAdmin>()
                                         .isAllEmployeesSelected
                                         .value = false;
+                                    Get.find<ReportsControllerAdmin>()
+                                        .isEmployeesSelectedForPayroll
+                                        .value = true;
                                     showFilterBottomSheet(context,
                                         Get.find<ReportsControllerAdmin>());
                                   },
@@ -229,7 +238,10 @@ class PendingPayrollListview extends StatelessWidget {
                                                 ),
                                               ),
                                               Text(
-                                                'ID: #${employees?.id.toString().padLeft(5, '0')}',
+                                                // 'ID: #${employees?.id.toString().padLeft(5, '0')}',
+                                                employees?.branch?.name
+                                                        .toString() ??
+                                                    '',
                                                 style: TextStyle(
                                                   color: Colors.grey.shade600,
                                                   fontSize: 13,
@@ -259,9 +271,10 @@ class PendingPayrollListview extends StatelessWidget {
                                               ),
                                             ),*/
                                               Text(
-                                                employees?.branch?.name
-                                                        .toString() ??
-                                                    '',
+                                                // employees?.branch?.name
+                                                //         .toString() ??
+                                                //     '',
+                                                'ID: #${employees?.id.toString().padLeft(5, '0')}',
                                                 style: TextStyle(
                                                     color: Colors.grey.shade600,
                                                     fontSize: 12.5),

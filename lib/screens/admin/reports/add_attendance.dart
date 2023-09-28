@@ -24,7 +24,14 @@ class AddAttendance extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<DashboardControllerAdmin>().clearFilter());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
-        Get.find<DashboardControllerAdmin>().fetchEmployeeList());
+        Get.find<DashboardControllerAdmin>().getFilteredEmployeeList());
+    Get.put(DashboardControllerAdmin());
+
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (_) => Get.find<DashboardControllerAdmin>().clearFilter());
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
+    //     Get.find<DashboardControllerAdmin>().getFilteredEmployeeList());
+    // fetchEmployeeList
     // getFilteredEmployeeList
     // getemploylist
     Get.find<ReportsControllerAdmin>().fetchBusiness();
@@ -46,12 +53,37 @@ class AddAttendance extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Obx(() {
                     print("Chatlist length1:");
+                    // List<EmployeeList>? chatList =
+                    //     Get.find<ReportsControllerAdmin>()
+                    //         .employeeList
+                    //         .value
+                    //         .employeeList;
+
                     List<EmployeeList>? chatList =
-                        Get.find<ReportsControllerAdmin>()
-                            .employeeList
-                            .value
-                            .employeeList;
-                    print("Chatlist length2:" + chatList!.length.toString());
+                        Get.find<DashboardControllerAdmin>()
+                            .getFilteredEmployeeList();
+
+                    print("Chat list length2:${chatList!.length}");
+                    if (Get.find<DashboardControllerAdmin>()
+                            .selectedDropdownBranches
+                            .value !=
+                        null) {
+                      final branchId = Get.find<ReportsControllerAdmin>()
+                          .branchModel
+                          .value
+                          .branches
+                          .firstWhere((element) =>
+                              element.name ==
+                              Get.find<DashboardControllerAdmin>()
+                                  .selectedDropdownBranches
+                                  .value)
+                          .id;
+                      chatList = chatList
+                          ?.where((element) => element.branchId == branchId)
+                          .toList();
+                      print("Chatlist length 3:" + chatList!.length.toString());
+                    }
+
                     if (Get.find<DashboardControllerAdmin>()
                             .selectedDropdownBranches
                             .value !=
@@ -124,15 +156,16 @@ class AddAttendance extends StatelessWidget {
                                 '${chatList?[index].firstName ?? ''} ${chatList?[index].lastName ?? ''}',
                                 style: kTextStyleS18W600CBlack,
                               ),
-                              subtitle: Text(
-                                  '#${chatList?[index].id.toString().padLeft(5, '0')}'),
+                              subtitle:
+                                  Text(chatList?[index].branch?.name ?? ''),
                               leading: CircleAvatar(
                                 radius: 28,
                                 backgroundImage: NetworkImage(
                                     '$kStorageUrl${chatList?[index].image ?? ''}'),
                               ),
                               trailing: Text(
-                                chatList?[index].branch?.name ?? '',
+                                '$index#${chatList?[index].id.toString().padLeft(5, '0')}',
+                                // chatList?[index].branch?.name ?? '',
                                 style: kTextStyleS13W500Cgrey,
                               ),
                             ),
@@ -159,13 +192,12 @@ class AttendanceFilterBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final dept =
-          Get.find<ReportsControllerAdmin>().departmentModel.value.departments;
-      final branch =
-          Get.find<ReportsControllerAdmin>().branchModel.value.branches;
-
       final business =
           Get.find<ReportsControllerAdmin>().businessModel.value.businesses;
+      final branch =
+          Get.find<ReportsControllerAdmin>().branchModel.value.branches;
+      final dept =
+          Get.find<ReportsControllerAdmin>().departmentModel.value.departments;
 
       return ListView(
           physics: const BouncingScrollPhysics(),
@@ -219,16 +251,23 @@ class AttendanceFilterBox extends StatelessWidget {
                   Get.find<DashboardControllerAdmin>()
                       .selectedDropdownBusiness
                       .value = value;
-
+                  print("business changed");
                   try {
                     final businessId = business
                         .firstWhere((element) => element.name == value)
                         .id;
+                    print("Selected business id:${businessId.toString()}");
 
                     Get.find<ReportsControllerAdmin>()
                         .fetchBranches(businessId);
                     Get.find<ReportsControllerAdmin>()
                         .fetchEmployees(businessId);
+                    // add
+                    Get.find<DashboardControllerAdmin>()
+                        .resetTabs(SelectChatMemberTab.business);
+                    Get.find<DashboardControllerAdmin>()
+                        .selectedDropdownBusiness
+                        .value = value;
                   } on Exception {
                     // TODO
                   }

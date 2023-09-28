@@ -1,9 +1,13 @@
+import 'package:avatar_stack/avatar_stack.dart';
+import 'package:avatar_stack/positions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/models/calendar/meeting_list_admin_model.dart';
+import 'package:paytym/models/calendar/meeting_response_model.dart';
 import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 
@@ -19,11 +23,15 @@ class CalendarMeeting extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<CalendarController>().getMeeting();
     });
+
+    List<String> networkImages = [];
     return Obx(() {
+      print(
+          "Meeting List: ${Get.find<CalendarController>().meetingResponseModel.value.meetingsList?.length.toString()}");
       final meetingList = Get.find<CalendarController>()
           .meetingResponseModel
           .value
-          .meetings
+          .meetingsList
           ?.where((element) => element.meetings != null)
           .toList();
       return ListView.builder(
@@ -40,7 +48,7 @@ class CalendarMeeting extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 12, 18, 10),
+                  padding: const EdgeInsets.fromLTRB(18, 12, 18, 4),
                   child: Row(
                     children: [
                       const CustomSVG(
@@ -75,6 +83,82 @@ class CalendarMeeting extends StatelessWidget {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 0, 5, 8.0),
+                  child: Row(
+                    children: [
+                      const CustomSVG(
+                        IconPath.scheduleSvg,
+                        size: 22,
+                      ),
+                      kSizedBoxW10,
+                      Center(
+                        child: Text(
+                          // "${Get.find<CalendarController>().timeChange(meeting?.meetings?.startTime.toString() ?? '0000-00-00 00:00:00')} - ${Get.find<CalendarController>().timeChange(meeting?.meetings?.endTime.toString() ?? '0000-00-00 00:00:00')}",
+                          // "${meeting?.meetings?.startTime?.toString()} - ${meeting?.meetings?.endTime?.toString()}",
+                          DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                              meeting?.meetings?.date.toString() ??
+                                  '0000-00-00')),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: kTextStyleS13W600CustomGrey,
+                        ),
+                      ),
+                      kSizedBoxW10,
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            // reportController.projectName =
+                            //     projects[index].name ?? '';
+                            // var project = projects[index];
+                            // Get.to(ProjectEmployeeListPage(
+                            //     project: project));
+                          },
+                          child: AvatarStack(
+                            height: 30,
+                            width: 30,
+                            settings: RestrictedAmountPositions(
+                                maxAmountItems: 3, minCoverage: 0.5),
+                            infoWidgetBuilder: (surplus) {
+                              return CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: CircleAvatar(
+                                    radius: 23,
+                                    child: Text(
+                                      '+$surplus',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    )),
+                              );
+                            },
+                            avatars: [
+                              // Meetings item  in meeting?.meetings{
+                              //
+                              // }
+                              // if (meeting?.meetings?.meetingAttendeess?.isNotEmpty ?? false) {
+                              // print("not null");
+                              // }
+                              // for (var item in meeting?.meetings!.meetingAttendeess!! )
+
+                              //   if (meeting?.meetings?.meetingAttendeess?.isNotEmpty ?? false) {
+                              //
+                              // for (var item in meeting!.meetings!.meetingAttendeess!) {
+                              // NetworkImage('$kStorageUrl$item?.image?);
+                              // }
+                              // }
+
+// Now you have a list of Image.network widgets in the networkImages list.
+
+                              for (var n = 0; n < 15; n++)
+                                NetworkImage(
+                                    '$kStorageUrl${meeting?.meetings?.user?.image}')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                   child: Row(
@@ -99,6 +183,7 @@ class CalendarMeeting extends StatelessWidget {
                             ),
                             kSizedBoxH4,
                             Text(
+                              // "testing",
                               meeting?.meetings?.user?.role?.roleName ?? '',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -125,13 +210,13 @@ class CalendarMeeting extends StatelessWidget {
                           style: kTextStyleS13W600CustomGrey,
                         ),
                       ),
-                      Text(
-                        DateFormat('dd-MM-yyyy').format(DateTime.parse(
-                            meeting?.meetings?.date.toString() ??
-                                '0000-00-00')),
-                        overflow: TextOverflow.ellipsis,
-                        style: kTextStyleS13W600CustomGrey,
-                      ),
+                      // Text(
+                      //   DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                      //       meeting?.meetings?.date.toString() ??
+                      //           '0000-00-00')),
+                      //   overflow: TextOverflow.ellipsis,
+                      //   style: kTextStyleS13W600CustomGrey,
+                      // ),
                     ],
                   ),
                 ),

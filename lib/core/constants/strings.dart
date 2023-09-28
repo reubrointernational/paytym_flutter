@@ -213,7 +213,10 @@ List<Map<String, dynamic>> financeDetails = [
 List<String> selectMembersTabs = ['Departments ', 'Branches ', 'Business '];
 
 List<String> selectMembersTabsAttendance = [
-  'Business ', 'Branches ', 'Departments ', 'Bank '
+  'Business ',
+  'Branches ',
+  'Departments ',
+  'Bank '
 ];
 
 List<Map<String, dynamic>> payrollList = [
@@ -450,6 +453,8 @@ const kResetPasswordString = 'Reset Password';
 const kNewPasswordString = 'New Password';
 
 const kConfirmPasswordString = 'Confirm Password';
+
+const kLicenseExpiredString = 'License Expired';
 
 //Reports
 const kHistoryString = 'History';

@@ -161,15 +161,21 @@ class DashboardController extends GetxController with BaseController {
       overtimeApproveEditRequestModel.status = '0';
       overtimeApproveEditRequestModel.employerId =
           '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+      print(
+          "overtimeApproveEditRequestModel.employerId:${overtimeApproveEditRequestModel.employerId.toString()}");
+      print("employeeList?.id:${employeeList?.id.toString()}");
       overtimeApproveEditRequestModel.employeeId = employeeList?.id != null
           ? employeeList!.id.toString()
           : '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
       print(
-          'request Overtime ID:${overtimeApproveEditRequestModel?.employeeId}');
+          'request Overtime ID:${Get.find<LoginController>().loginResponseModel?.employee?.id}');
+      print(
+          'request Overtime ID er:${overtimeApproveEditRequestModel?.employeeId}');
 
       print(
           'request Overtime  status:${overtimeApproveEditRequestModel?.status}');
       print('request Overtime  employeeList?.id:${employeeList?.id}');
+
       var responseString = await Get.find<BaseClient>()
           .post(
               employeeList?.id != null
@@ -184,6 +190,7 @@ class DashboardController extends GetxController with BaseController {
       if (responseString == null) {
         return;
       } else {
+        print('request Overtime Response not null :$responseString');
         hideLoading();
         Get.back();
         overtimeApproveEditRequestModel =
@@ -273,6 +280,7 @@ class DashboardController extends GetxController with BaseController {
     } else if (value == DashboardDropDown.workProfile) {
       Get.toNamed(Routes.bottomNavAdmin);
     } else if (value == DashboardDropDown.overTime) {
+      print('DashboardDropDown.overTime');
       DialogHelper.showBottomSheet(const RequestOvertimeBottomsheet());
     } else if (value == DashboardDropDown.payroll) {
       if (!isFromAdmin) {

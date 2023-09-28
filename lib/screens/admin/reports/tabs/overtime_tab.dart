@@ -12,6 +12,7 @@ import '../../../employee/dashboard/widgets/request_overtime_bottomsheet.dart';
 import '../../../employee/reports/list_employees.dart';
 import '../../dashboard/dashboard_controller.dart';
 import '../widgets/payment_history.dart';
+import '../add_attendance.dart';
 
 class OvertimeTabAdmin extends StatelessWidget {
   const OvertimeTabAdmin({super.key});
@@ -24,10 +25,10 @@ class OvertimeTabAdmin extends StatelessWidget {
       Get.find<ReportsControllerAdmin>().getOvertime();
     });
     return Obx(() {
-      List<EmployeeList>? overtimeDetails =
-          Get.find<ReportsControllerAdmin>().getFilteredOvertimeList();
-      // ?.where((element) => element.status == '0')
-      // .toList();
+      List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
+          .getFilteredOvertimeList()
+          ?.where((element) => element.status == '0')
+          .toList();
       if (overtimeDetails?.isEmpty ?? true) {
         return Column(
           children: [
@@ -39,6 +40,9 @@ class OvertimeTabAdmin extends StatelessWidget {
                   onPressed: () {
                     Get.to(() => const ListEmployeesAdmin());
                   },
+                  // onPressed: () {
+                  //   Get.to(() => const AddAttendance());
+                  // },
                   child: const Text('Add Overtime'),
                 ),
               ),
@@ -204,23 +208,30 @@ class OvertimeTabAdmin extends StatelessWidget {
                                   () {
                                 Get.find<ReportsControllerAdmin>()
                                     .approveOrDeclineOvertime(
-                                        index, ReasonButton.overtimeDecline);
+                                        // index, ReasonButton.overtimeDecline);
+                                        tempIndex,
+                                        ReasonButton.overtimeDecline);
                               }),
                               kSizedBoxW10,
                               processButton('Edit', CustomColors.blueCardColor,
                                   () {
+                                print("Got tempIndex:");
                                 tempIndex = tempIndex + 1;
+                                print("Got tempIndex:${tempIndex?.toString()}");
                                 DialogHelper.showBottomSheet(
                                     RequestOvertimeBottomsheet(
-                                  index: tempIndex,
+                                  index: index,
                                 ));
                               }),
                               kSizedBoxW10,
                               processButton('Approve', CustomColors.greenColor,
                                   () {
+                                print("Got tempIndex:${tempIndex?.toString()}");
                                 Get.find<ReportsControllerAdmin>()
                                     .approveOrDeclineOvertime(
-                                        index, ReasonButton.overtimeApprove);
+                                        // index, ReasonButton.overtimeApprove);
+                                        tempIndex,
+                                        ReasonButton.overtimeApprove);
                               }),
                             ],
                           ),

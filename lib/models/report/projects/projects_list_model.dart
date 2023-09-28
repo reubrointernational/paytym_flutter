@@ -60,6 +60,7 @@ class ProjectsList {
   DateTime? createdAt;
   DateTime? updatedAt;
   Branch? branch;
+  String? expense;
   List<ProjectsListEmployeeproject>? employeeproject;
 
   ProjectsList({
@@ -78,6 +79,7 @@ class ProjectsList {
     this.updatedAt,
     this.branch,
     this.employeeproject,
+    this.expense,
   });
 
   factory ProjectsList.fromJson(Map<String, dynamic> json) => ProjectsList(
@@ -94,6 +96,7 @@ class ProjectsList {
         description: json["description"],
         budget: json["budget"],
         spentAmount: json["spent_amount"],
+        expense: json["project_expenses_sum_expense_amount"],
         status: json["status"],
         createdAt: json["created_at"] == null
             ? null
@@ -113,6 +116,7 @@ class ProjectsList {
         "employer_id": employerId,
         "branch_id": branchId,
         "business_id": businessId,
+        "project_expenses_sum_expense_amount": expense,
         "start_date":
             "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
         "end_date":

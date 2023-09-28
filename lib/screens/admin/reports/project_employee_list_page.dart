@@ -44,7 +44,7 @@ class ProjectEmployeeListPage extends StatelessWidget {
                           NetworkImage('$kStorageUrl${members.user?.image}'),
                     ),
                     trailing: Text(
-                      project!.branch!.name??"",
+                      project!.branch!.name ?? "",
                       style: kTextStyleS13W500Cgrey,
                     ),
                   ),
