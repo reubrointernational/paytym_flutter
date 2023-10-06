@@ -156,7 +156,7 @@ class MyFilesTab extends StatelessWidget {
                                           .fileListResponseModel
                                           .refresh();
                                       Get.find<ReportsControllerAdmin>()
-                                          .downloadFile(
+                                          .downloadFile("emp_records",
                                               '$kStorageUrl${files?[index].file}',
                                               ((progress, total) {
                                         if (progress == total) {

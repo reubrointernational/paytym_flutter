@@ -979,12 +979,16 @@ class ReportsControllerAdmin extends GetxController
   //   }
   // }
 
-  downloadFile(String? url, void Function(int, int)? onReceiveProgress) async {
+  downloadFile(String fileFrom, String? url,
+      void Function(int, int)? onReceiveProgress) async {
     showLoading();
-    // String fileFrom="paytym";
-    // if(fileFrom=="emp_office"){
-    //   fileFrom
-    // }
+    String fileFrom = "paytym_";
+    if (fileFrom == "emp_records") {
+      fileFrom = fileFrom + "emp record_";
+    }
+    if (fileFrom == "hr_rec") {
+      fileFrom = fileFrom + "hr record_";
+    }
     if (url != null) {
       var dio = Dio();
       final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());

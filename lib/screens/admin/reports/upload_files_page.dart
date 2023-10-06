@@ -119,7 +119,7 @@ class UploadFilesPage extends StatelessWidget {
                                           .fileListResponseModel
                                           .refresh();
                                       Get.find<ReportsControllerAdmin>()
-                                          .downloadFile(
+                                          .downloadFile("hr_rec",
                                               '$kStorageUrl${files?[index].file}',
                                               ((progress, total) {
                                         if (progress == total) {
@@ -208,7 +208,7 @@ class UploadFilesPage extends StatelessWidget {
                                           .fileListResponseModel
                                           .refresh();
                                       Get.find<ReportsControllerAdmin>()
-                                          .downloadFile(
+                                          .downloadFile("hr_rec",
                                               '$kStorageUrl${files?[index].file}',
                                               ((progress, total) {
                                         if (progress == total) {
