@@ -25,7 +25,7 @@ class UploadFilesPage extends StatelessWidget {
             .fetchFiles(Get.find<ReportsControllerAdmin>().selectedEmployeeId));
     Get.put(ReportsController());
 
-    var file = Get.find<ReportsControllerAdmin>().filePath.value;
+    var file = Get.find<ReportsController>().filePath.value;
     return CustomAdminScaffold(
       title: 'Upload Files',
       child: Padding(

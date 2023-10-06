@@ -980,11 +980,17 @@ class ReportsControllerAdmin extends GetxController
   // }
 
   downloadFile(String? url, void Function(int, int)? onReceiveProgress) async {
+    showLoading();
+    // String fileFrom="paytym";
+    // if(fileFrom=="emp_office"){
+    //   fileFrom
+    // }
     if (url != null) {
       var dio = Dio();
       final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
       await dio.download(url, '/storage/emulated/0/Download/paytym_$date',
           onReceiveProgress: onReceiveProgress);
+      hideLoading();
     }
   }
 

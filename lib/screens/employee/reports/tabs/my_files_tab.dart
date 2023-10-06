@@ -9,7 +9,9 @@ import '../../../../core/colors/colors.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/widgets.dart';
+import '../../../../core/dialog_helper.dart';
 import '../../../../routes/app_routes.dart';
+import '../../../admin/reports/reports_controller.dart';
 
 class MyFilesTab extends StatelessWidget {
   const MyFilesTab({super.key});
@@ -19,6 +21,10 @@ class MyFilesTab extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Get.find<ReportsController>().fetchFiles());
     WidgetsFlutterBinding.ensureInitialized();
+    var file = Get.find<ReportsController>().filePath.value;
+    Get.put(ReportsController());
+
+    Get.put(ReportsControllerAdmin());
     return Stack(
       children: [
         SingleChildScrollView(
@@ -141,26 +147,34 @@ class MyFilesTab extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: () {
                                       print("Print Index:$index");
-                                      Get.find<ReportsController>().downloadPdf(
-                                          '$kStorageUrl${files?[index].file}');
+                                      // Get.find<ReportsController>().downloadPdf(
+                                      //     '$kStorageUrl${files?[index].file}');
+                                      // Get.find<ReportsController>()
+                                      //     .clickedIndex = index;
+                                      files?[index].isDownloading = true;
                                       Get.find<ReportsController>()
-                                          .clickedIndex = index;
+                                          .fileListResponseModel
+                                          .refresh();
+                                      Get.find<ReportsControllerAdmin>()
+                                          .downloadFile(
+                                              '$kStorageUrl${files?[index].file}',
+                                              ((progress, total) {
+                                        if (progress == total) {
+                                          files?[index].isDownloading = false;
+                                          Get.find<ReportsController>()
+                                              .fileListResponseModel
+                                              .refresh();
+                                          DialogHelper.showToast(
+                                              desc: 'Download completed');
+                                        }
+                                      }));
                                     },
-                                    child: Obx(() => Get.find<
-                                                        ReportsController>()
-                                                    .isSharingOrDownloading
-                                                    .value ==
-                                                SharingOrDownloading
-                                                    .downloading &&
-                                            Get.find<ReportsController>()
-                                                    .clickedIndex ==
-                                                // index
-                                                index + 1
+                                    child: files?[index].isDownloading ?? false
                                         ? Lottie.asset(IconPath.downloadingJson)
                                         : const Icon(
                                             Icons.download,
                                             color: CustomColors.whiteCardColor,
-                                          )),
+                                          ),
                                   ),
                                 ),
                                 kSizedBoxW10,
