@@ -173,7 +173,8 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                 ),
               ),
               child: Text(
-                index != null ? kEditOvertimeString : kRequestOvertimeString,
+                index != null ? "Add Overtime" : kRequestOvertimeString,
+                // index != null ? kEditOvertimeString : kRequestOvertimeString,
                 style: const TextStyle(
                   color: CustomColors.whiteTextColor,
                 ),

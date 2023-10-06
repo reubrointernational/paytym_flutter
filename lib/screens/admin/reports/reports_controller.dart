@@ -450,7 +450,7 @@ class ReportsControllerAdmin extends GetxController
   }
 
   fetchEmployees(int businessId) async {
-    print("fetchEmployees with business ID:${businessId.toString()}");
+    print("fetchEmployees called with business ID:${businessId.toString()}");
     var responseString = await Get.find<BaseClient>().post(
         ApiEndPoints.fetchEmployeesBusinessWise,
         jsonEncode({
@@ -462,6 +462,8 @@ class ReportsControllerAdmin extends GetxController
               .toString()
         }),
         Get.find<LoginController>().getHeader());
+    print(
+        "fetchEmployees with bus ID:${businessId.toString()}   Response: ${responseString.toString()}");
 
     if (responseString == null) {
       return;

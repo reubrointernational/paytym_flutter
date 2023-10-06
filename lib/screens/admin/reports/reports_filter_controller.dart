@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
+import 'package:paytym/screens/admin/reports/tabs/attendance_tab.dart';
 
 import '../../../models/leaves/leaves_admin_response_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
@@ -238,11 +239,10 @@ class ReportsFilterController {
 
   List<EmployeeList>? getFilteredOvertimeList() {
     List<EmployeeList>? overtimeList;
-    print("getFilteredOvertimeList called");
-    if (Get.find<DashboardControllerAdmin>()
-            .selectedDropdownDepartments
-            .value !=
-        null) {
+    print("getFilteredOvertimeList called report");
+    if (AttendanceTabAdmin != null) {
+      print("getFilteredOvertimeList called 00");
+
       overtimeList = Get.find<ReportsControllerAdmin>()
           .overtimeResponseModel
           .value

@@ -14,6 +14,7 @@ import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:share_plus/share_plus.dart';
+import '../../../core/colors/colors.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
@@ -25,6 +26,7 @@ import '../../../models/report/file_upload_request.dart';
 import '../../../models/report/files/employee_files_list_model.dart';
 import '../../../models/report/files/files_type_list.dart';
 import '../../../models/report/medical_list_admin_model.dart';
+import '../../../models/report/overtime/overtime_status-model.dart';
 import '../../../models/report/overtime_list_response_model.dart';
 import '../../../models/split_payment/split_payment_response.dart';
 import '../../../network/base_client.dart';
@@ -100,9 +102,11 @@ class ReportsController extends GetxController
         .post(ApiEndPoints.getOvertime, jsonEncode(model),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print("Get Overtime URL: ${ApiEndPoints.getOvertime.toString()}");
     if (responseString == null) {
       return;
     } else {
+      print("Get Overtime Respons: ${responseString.toString()}");
       hideLoading();
       overtimeResponseModel.value =
           overtimeListResponseModelFromJson(responseString);
@@ -521,6 +525,24 @@ class ReportsController extends GetxController
           print('Download task $id is complete.');
         }
       });
+    }
+  }
+
+  OvertimeStatusModel getOvertimeStatusModel(String? status) {
+    switch (status) {
+      case '1':
+        //1 => status - approved
+        return OvertimeStatusModel(
+            'Approved', CustomColors.greenColor, CustomColors.lightGreenColor);
+      case '2':
+        //2 => status - declined
+        return OvertimeStatusModel(
+            'Declined', CustomColors.redColor, CustomColors.lightRedColor);
+      case '0':
+      default:
+        //0 => status - awaiting
+        return OvertimeStatusModel('Awaiting', CustomColors.orangeLabelColor,
+            CustomColors.lightOrangeColor);
     }
   }
 

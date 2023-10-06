@@ -18,6 +18,7 @@ class AttendanceTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("AttendanceTabAdmin called");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<ReportsControllerAdmin>().getAttendance();
       Get.find<DashboardControllerAdmin>().clearFilter();

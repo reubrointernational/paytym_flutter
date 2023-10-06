@@ -5,6 +5,8 @@ import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
+import '../../../../models/report/overtime/overtime_status-model.dart';
+
 class OvertimeTab extends StatelessWidget {
   const OvertimeTab({super.key});
 
@@ -24,6 +26,9 @@ class OvertimeTab extends StatelessWidget {
         itemCount: overtimeDetails.length,
         itemBuilder: (context, index) {
           final overtimeDetail = overtimeDetails[index];
+          OvertimeStatusModel overtimeStatusModel =
+              Get.find<ReportsController>()
+                  .getOvertimeStatusModel(overtimeDetail?.status.toString());
           return Column(
             children: [
               Padding(
@@ -35,6 +40,7 @@ class OvertimeTab extends StatelessWidget {
                       side: BorderSide(width: 1, color: Colors.grey.shade300),
                       borderRadius: BorderRadius.circular(8),
                     ),
+                    // OT request status 0: Applied, 1:Approved,2:Rejected
                     child: Column(
                       children: [
                         kSizedBoxH4,
@@ -59,13 +65,19 @@ class OvertimeTab extends StatelessWidget {
                                         fontSize: 13,
                                       ),
                                     ),
-                                    kSizedBoxH2,
-                                    Text(
-                                      overtimeDetail.branch ?? '',
-                                      style: TextStyle(
-                                          color: Colors.grey.shade600,
-                                          fontSize: 12.5),
+                                    // kSizedBoxH2,
+                                    DetailsRow(
+                                      title: "Date: ",
+                                      value: DateFormat('dd-MM-yyyy').format(
+                                          overtimeDetail.date ??
+                                              DateTime(0000, 00, 00)),
                                     ),
+                                    // Text(
+                                    //   overtimeDetail.branch ?? '',
+                                    //   style: TextStyle(
+                                    //       color: Colors.grey.shade600,
+                                    //       fontSize: 12.5),
+                                    // ),
                                     Text(
                                       '${overtimeDetail.user?.firstName ?? ''} ${overtimeDetail.user?.lastName ?? ''}',
                                       style: const TextStyle(
@@ -79,21 +91,32 @@ class OvertimeTab extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      '',
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: overtimeStatusModel.textColor,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        overtimeStatusModel.text,
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: overtimeStatusModel.boxColor,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                                     ),
                                     kSizedBoxH2,
-                                    DetailsRow(
-                                      title: "Date: ",
-                                      value: DateFormat('dd-MM-yyyy').format(
-                                          overtimeDetail.date ??
-                                              DateTime(0000, 00, 00)),
-                                    ),
-                                    kSizedBoxH4,
                                     DetailsRow(
                                       title: "Total Hours: ",
                                       value: overtimeDetail.totalHours ?? '',
                                     ),
+                                    kSizedBoxH4,
+                                    // DetailsRow(
+                                    //   title: "Total Hours: ",
+                                    //   value: overtimeDetail.totalHours ?? '',
+                                    // ),
                                   ],
                                 ),
                               ],

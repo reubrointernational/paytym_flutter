@@ -10,6 +10,7 @@ import '../../../models/employee_list_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../login/login_controller.dart';
+import '../reports/reports_controller.dart';
 
 class DashboardControllerAdmin extends GetxController with BaseController {
   final employeeList =
@@ -165,21 +166,37 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   }
 
   classifyEmployeeListByBranchAndDept() {
+    print("classifyEmployeeListByBranchAndDept called");
+
     for (var element in employeeList.value.employeeList ?? []) {
+      print("Element:");
       if (!branchwiseEmployeeMap.keys.contains(element.branch?.name ?? '')) {
+        print(
+            "classifyEmployeeListByBranchAndDept branchwiseEmployeeMap element.branch?.name ");
         branchwiseEmployeeMap[element.branch?.name ?? ''] = [element];
       } else {
+        print(
+            "null classifyEmployeeListByBranchAndDept branchwiseEmployeeMap element.branch?.name ");
         branchwiseEmployeeMap[element.branch?.name ?? '']!.add(element);
       }
       if (!deptwiseEmployeeMap.keys
           .contains(element.department?.depName ?? '')) {
+        print(
+            "  classifyEmployeeListByBranchAndDept deptwiseEmployeeMap element.depName?.name ");
         deptwiseEmployeeMap[element.department?.depName ?? ''] = [element];
       } else {
+        print(
+            "null classifyEmployeeListByBranchAndDept deptwiseEmployeeMap element.depName?.name ");
         deptwiseEmployeeMap[element.department?.depName ?? '']!.add(element);
-      }
-      if (!businesswiseEmployeeMap.keys
-          .contains(element.business?.depName ?? '')) {
-        deptwiseEmployeeMap[element.department?.depName ?? ''] = [element];
+      } //
+      if (!businesswiseEmployeeMap.keys.contains(element.business.name ?? '')) {
+        print(
+            "classifyEmployeeListByBranchAndDept businesswiseEmployeeMap element.depName?.name ");
+        businesswiseEmployeeMap[element.business.name ?? ''] = [element];
+      } else {
+        print(
+            "null classifyEmployeeListByBranchAndDept businesswiseEmployeeMap element.depName?.name ");
+        businesswiseEmployeeMap[element.business.name ?? '']!.add(element);
       }
     }
   }
@@ -242,10 +259,10 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   }
 
   List<EmployeeList>? getFilteredEmployeeList() {
-    print("getFilteredEmployeeList called 1");
+    print("getFilteredEmployeeList called 10");
     List<EmployeeList>? chatList;
     if (selectedDropdownBusiness.value != null) {
-      print("getFilteredEmployeeList called 2");
+      print("getFilteredEmployeeList called 2 businesswiseEmployeeMap");
       chatList = businesswiseEmployeeMap[selectedDropdownBusiness.value];
       print("getFilteredEmployeeList called 2.1:${chatList?.length}");
     }
@@ -279,11 +296,61 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     return chatList;
   }
 
+  List<EmployeeList>? getOverTimeEmployeeList() {
+    print("getOverTimeEmployeeList called");
+    List<EmployeeList>? chatList;
+    if (selectedDropdownBusiness.value != null) {
+      print(
+          "getOverTimeEmployeeList called 2 businesswiseEmployeeMap with ${selectedDropdownBusiness.value.toString()}");
+      chatList = businesswiseEmployeeMap[selectedDropdownBusiness.value];
+      print("getOverTimeEmployeeList called 2.1:${chatList?.length}");
+    }
+    if (selectedDropdownDepartments.value != null) {
+      print("getOverTimeEmployeeList called 2");
+      chatList = deptwiseEmployeeMap[selectedDropdownDepartments.value];
+    }
+    if (chatList != null && selectedDropdownBranches.value != null) {
+      print("getOverTimeEmployeeList called 3");
+      chatList = chatList
+          .where((element) =>
+              element.branch?.name == selectedDropdownBranches.value)
+          .toList();
+    } else if (chatList == null && selectedDropdownBranches.value != null) {
+      print("getOverTimeEmployeeList called 4");
+      chatList = branchwiseEmployeeMap[selectedDropdownBranches.value];
+    }
+    // Updating below
+    if (selectedDropdownBusiness.value == null) {
+      chatList ??= employeeList.value.employeeList;
+    } else {
+      print("getOverTimeEmployeeList called 2 businesswiseEmployeeMap");
+      chatList = businesswiseEmployeeMap[selectedDropdownBusiness.value];
+      print("getOverTimeEmployeeList called 2.1:${chatList?.length}");
+    }
+    chatList ??= employeeList.value.employeeList;
+
+    chatList = chatList
+        ?.where(
+          (element) =>
+              element.firstName
+                  ?.toLowerCase()
+                  .contains(searchKeyword.value.toLowerCase()) ??
+              false,
+        )
+        .toList();
+    print("getFilteredEmployeeList called 1 ${chatList?.length.toString()}");
+    return chatList;
+  }
+
   clearFilter() {
+    selectedDropdownBusiness.value = null;
     selectedDropdownDepartments.value = null;
     selectedDropdownBranches.value = null;
     searchKeyword.value = '';
     // updation 28 sep 2023
-    // selectedDropdownBusiness.value = null;
+    Get.find<DashboardControllerAdmin>().selectedDropdownBusiness.value = null;
+    Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value = null;
+    Get.find<DashboardControllerAdmin>().selectedDropdownDepartments.value =
+        null;
   }
 }

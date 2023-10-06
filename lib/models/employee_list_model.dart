@@ -18,7 +18,6 @@ class EmployeeListAdminModel {
 
   String? message;
   List<EmployeeList>? employeeList;
-  
 
   factory EmployeeListAdminModel.fromJson(Map<String, dynamic> json) =>
       EmployeeListAdminModel(
@@ -84,6 +83,7 @@ class EmployeeList {
     this.payroll,
     this.department,
     this.branch,
+    this.business,
     this.isExpanded = false,
     this.isSelected = true,
   });
@@ -134,6 +134,7 @@ class EmployeeList {
   Payroll? payroll;
   Department? department;
   Branch? branch;
+  Business? business;
   bool isSelected;
 
   factory EmployeeList.fromJson(Map<String, dynamic> json) => EmployeeList(
@@ -365,6 +366,50 @@ class Department {
         "status": status,
         "created_at": createdAt,
         "updated_at": updatedAt,
+      };
+}
+
+class Business {
+  Business({
+    this.id,
+    this.employerId,
+    this.name,
+    this.description,
+    this.qrCode,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? employerId;
+  String? name;
+  String? description;
+  String? qrCode;
+  int? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory Business.fromJson(Map<String, dynamic> json) => Business(
+        id: json["id"],
+        employerId: json["employer_id"],
+        name: json["name"],
+        description: json["description"],
+        qrCode: json["qr_code"],
+        status: json["status"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "employer_id": employerId,
+        "name": name,
+        "description": description,
+        "qr_code": qrCode == null ? null : qrCode,
+        "status": status,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }
 

@@ -19,10 +19,17 @@ class OvertimeTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("OvertimeTabAdmin called");
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ReportsControllerAdmin>().getOvertime();
       WidgetsBinding.instance.addPostFrameCallback(
           (_) => Get.find<DashboardControllerAdmin>().clearFilter());
-      Get.find<ReportsControllerAdmin>().getOvertime();
+      // Get.find<ReportsControllerAdmin>().getOvertime();
+      //addotional adding below 5 oct 2023
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => Get.find<ReportsControllerAdmin>().getFilteredOvertimeList);
+      // Get.find<ReportsControllerAdmin>().getOvertime();
+      Get.find<ReportsControllerAdmin>().fetchBusiness();
     });
     return Obx(() {
       List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
@@ -38,7 +45,7 @@ class OvertimeTabAdmin extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.to(() => const ListEmployeesAdmin());
+                    Get.to(() => const ListOverTimeRequests());
                   },
                   // onPressed: () {
                   //   Get.to(() => const AddAttendance());
@@ -70,7 +77,7 @@ class OvertimeTabAdmin extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.to(() => const ListEmployeesAdmin());
+                        Get.to(() => const ListOverTimeRequests());
                       },
                       child: const Text('Add Overtime'),
                     ),
