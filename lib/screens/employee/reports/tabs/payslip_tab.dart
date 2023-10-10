@@ -95,7 +95,10 @@ class PayslipTab extends StatelessWidget {
                   false) {
                 url =
                     '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
+
+                print("pdf url:$url");
               } else {
+                print("no payslip 1");
                 return const SizedBox();
               }
             } on Exception {
@@ -103,6 +106,7 @@ class PayslipTab extends StatelessWidget {
             }
 
             if (url?.getType() == 'pdf') {
+              print(" payslip pdf url:${url.toString()}");
               return PdfViewer(
                 url: url!,
               );
