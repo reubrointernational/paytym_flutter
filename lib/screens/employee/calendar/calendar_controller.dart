@@ -40,7 +40,7 @@ class CalendarController extends GetxController with BaseController {
     if (responseString == null) {
       return;
     } else {
-      print(" getMeetingresponseString:" + responseString);
+      print("getMeeting() responseString:" + responseString);
       hideLoading();
       meetingResponseModel.value = meetingResponseModelFromJson(responseString);
       print(

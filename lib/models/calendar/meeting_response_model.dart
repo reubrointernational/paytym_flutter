@@ -73,7 +73,7 @@ class MeetingsList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['meeting_id'] = this.meetingId;
     data['attendee_id'] = this.attendeeId;
@@ -127,11 +127,20 @@ class Meetings {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
 
-    meetingAttendeess = json["meetings_list"] == null
-        ? []
-        : List<MeetingAttendeess>.from(json["meeting_attendeess"]!
-            .map((x) => MeetingAttendeess.fromJson(x)));
-
+    // meetingAttendeess = json["meetings_list"] == null
+    //     ? []
+    //     : List<MeetingAttendeess>.from(json["meeting_attendeess"]!
+    //         .map((x) => MeetingAttendeess.fromJson(x)));
+    if (json['meeting_attendeess'] != null) {
+      meetingAttendeess = <MeetingAttendeess>[];
+      json['meeting_attendeess'] != null
+          ? json['meeting_attendeess'].forEach((v) {
+              if (MeetingAttendeess.fromJson(v) != null) {
+                meetingAttendeess!.add(MeetingAttendeess.fromJson(v));
+              }
+            })
+          : null;
+    }
     // meetingAttendeess = (json['meeting_attendeess'] != null
     //     ? MeetingAttendeess.fromJson(json['meeting_attendeess'])
     //     : null) as List<MeetingAttendeess>?;
@@ -142,7 +151,7 @@ class Meetings {
     //     meetingAttendeess!.add(new MeetingAttendeess.fromJson(v));
     //   });
     // }
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -158,6 +167,7 @@ class Meetings {
     data['location'] = this.location;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+
     if (meetingAttendeess != null) {
       data['meeting_attendeess'] =
           meetingAttendeess!.map((v) => v.toJson()).toList();
@@ -186,14 +196,17 @@ class MeetingAttendeess {
       this.image});
 
   MeetingAttendeess.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    employerId = json['employer_id'];
-    jobTitle = json['job_title'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    image = json['image'];
+    if (json != null) {
+      id = json['id'];
+      employerId = json['employer_id'];
+      jobTitle = json['job_title'];
+      firstName = json['first_name'];
+      lastName = json['last_name'];
+      image = json['image'];
+    } else {
+      print("MeetingAttendeess.fromJson Json Null");
+    }
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;

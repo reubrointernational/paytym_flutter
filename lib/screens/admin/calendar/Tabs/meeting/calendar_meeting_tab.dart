@@ -6,12 +6,12 @@ import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/core/dialog_helper.dart';
-import 'package:paytym/models/calendar/meeting_list_admin_model_new.dart';
 import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../../../core/constants/styles.dart';
-import '../../../../../models/report/projects/projects_list_model.dart';
+import '../../../../../models/calendar/meeting_attendees.dart';
+import '../../../../../models/calendar/meeting_list_admin_model_new.dart';
 import '../../../../../network/end_points.dart';
 
 class CalendarMeetingAdmin extends StatelessWidget {
@@ -22,6 +22,9 @@ class CalendarMeetingAdmin extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.find<CalendarControllerAdmin>().getMeeting();
     });
+    print(
+        "Meeting List 1: ${Get.find<CalendarControllerAdmin>().meetingResponseModel.value.meetingsListe?.length.toString()}");
+
     return Obx(
       () => ListView.separated(
         physics: const BouncingScrollPhysics(),
@@ -37,7 +40,10 @@ class CalendarMeetingAdmin extends StatelessWidget {
               .meetingResponseModel
               .value
               .meetingsListe?[index];
-
+          List<MeetingAttendeess>? meetingAttendees =
+              meeting?.meetingAttendeess;
+          print(
+              "Meeting attendees count: ${meetingAttendees!.length.toString()}");
           return SizedBox(
             height: 170,
             child: Row(
@@ -48,17 +54,32 @@ class CalendarMeetingAdmin extends StatelessWidget {
                   child: Column(
                     children: [
                       kSizedBoxH10,
-                      Text(
-                        DateFormat('EEE')
-                            .format(meeting?.date ?? DateTime(0000, 00, 00)),
-                        style: kTextStyleS18W600.copyWith(
-                            color: CustomColors.grey156x3TextColor),
-                      ),
-                      Text(
-                        meeting?.date?.day.toString() ?? '',
-                        style: kTextStyleS18W600.copyWith(
-                            color: CustomColors.lightBlueColor),
-                      ),
+                      // 2023-10-11 Date format in API,We need to format it
+                      Text("From-To Date"),
+                      // Text(
+                      //
+                      //   DateFormat('EEE').format(meeting?.date!.isEmpty
+                      //       ? meeting?.date
+                      //       : DateTime(0000, 00, 00)),
+                      //   style: kTextStyleS18W600.copyWith(
+                      //       color: CustomColors.grey156x3TextColor),
+                      // ),
+                      //
+                      //             int day = int.parse(dateParts[0]);
+                      //       int month = int.parse(dateParts[1]);
+                      //     int year = int.parse(dateParts[2]);
+                      //
+                      // // Create a DateTime object
+                      // DateTime dateTime = DateTime(year, month, day);
+                      //
+                      // // Format the DateTime object to the desired format
+                      // String formattedDate = DateFormat('EEE d').format(dateTime);
+
+                      // Text(
+                      //   meeting?.date?.toString() ?? '',
+                      //   style: kTextStyleS18W600.copyWith(
+                      //       color: CustomColors.lightBlueColor),
+                      // ),
                     ],
                   ),
                 ),
@@ -84,22 +105,71 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                       color: CustomColors.blackTextColor),
                                 ),
                                 kSizedBoxH4,
-                                // Text(
-                                //   meeting?.agenda ?? '',
-                                //   style: kTextStyleS18W600.copyWith(
-                                //       color: Colors.grey),
-                                // ),
+                                Text(
+                                  meeting?.agenda ?? '',
+                                  style: kTextStyleS18W600.copyWith(
+                                      color: Colors.grey),
+                                ),
                                 Text(
                                   '${meeting?.user?.firstName ?? ''} ${meeting?.user?.lastName ?? ''}',
                                   style: kTextStyleS14W600Cgrey300LS0p2
                                       .copyWith(color: Colors.grey),
                                 ),
-                                Text(
-                                  meeting?.user?.position?.roleName ?? '',
-                                  style: kTextStyleS14W600Cgrey300LS0p2
-                                      .copyWith(color: Colors.grey),
+                                kSizedBoxH6,
+                                // Text(
+                                //   meeting?.user?.position?.roleName ?? '',
+                                //   style: kTextStyleS14W600Cgrey300LS0p2
+                                //       .copyWith(color: Colors.grey),
+                                // ),
+                                // const Spacer(),
+                                kSizedBoxH6,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          // reportController.projectName =
+                                          //     projects[index].name ?? '';
+                                          // var project = projects[index];
+                                          // Get.to(MeetingAttendessListPage(
+                                          //     listOfAttendees:
+                                          //         meetingAttendees));
+                                        },
+                                        child: AvatarStack(
+                                          height: 30,
+                                          width: 30,
+                                          settings: RestrictedAmountPositions(
+                                              maxAmountItems: 3,
+                                              minCoverage: 0.5),
+                                          infoWidgetBuilder: (surplus) {
+                                            return CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              child: CircleAvatar(
+                                                  radius: 23,
+                                                  child: Text(
+                                                    '+$surplus',
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  )),
+                                            );
+                                          },
+                                          avatars: [
+// Now you have a list of Image.network widgets in the networkImages list.
+                                            for (var n = 0;
+                                                n < meetingAttendees!.length;
+                                                n++)
+                                              NetworkImage(
+                                                  '$kStorageUrl${meetingAttendees[n]?.image}')
+//                               for (var n = 0; n < 5; n++)
+//                                 NetworkImage(
+//                                     '$kStorageUrl${meeting?.meetings?.user?.image}')
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const Spacer(),
+                                kSizedBoxH6,
                                 Row(
                                   children: [
                                     const Icon(
@@ -107,6 +177,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                       size: 15,
                                       color: Colors.grey,
                                     ),
+
                                     kSizedBoxW4,
                                     //Commented below text for testing 1sep2023
                                     // Text(
@@ -114,6 +185,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                     //   style: kTextStyleS14W600Cgrey300LS0p2
                                     //       .copyWith(color: Colors.grey),
                                     // ),
+
                                     Text(
                                       '${meeting?.startTime} - ${meeting?.endTime}',
                                       style: kTextStyleS14W600Cgrey300LS0p2
@@ -121,6 +193,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+                                kSizedBoxH6,
                                 Text(
                                   meeting?.location ?? '',
                                   style: kTextStyleS14W600Cgrey300LS0p2

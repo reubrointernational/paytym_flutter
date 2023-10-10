@@ -6,8 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/icons.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/models/calendar/meeting_list_admin_model.dart';
-import 'package:paytym/models/calendar/meeting_response_model.dart';
+import 'package:paytym/models/calendar/meeting_attendees.dart';
 import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 import 'package:paytym/screens/employee/calendar/widgets/custom_svg.dart';
 
@@ -27,7 +26,7 @@ class CalendarMeeting extends StatelessWidget {
     List<String> networkImages = [];
     return Obx(() {
       print(
-          "Meeting List: ${Get.find<CalendarController>().meetingResponseModel.value.meetingsList?.length.toString()}");
+          "Meeting List 1: ${Get.find<CalendarController>().meetingResponseModel.value.meetingsList?.length.toString()}");
       final meetingList = Get.find<CalendarController>()
           .meetingResponseModel
           .value
@@ -39,6 +38,10 @@ class CalendarMeeting extends StatelessWidget {
         itemCount: meetingList?.length ?? 0,
         itemBuilder: (context, index) {
           final meeting = meetingList?[index];
+
+          final meetingAttendees = meeting?.meetings?.meetingAttendeess;
+          print(
+              "Meeting attendees count: ${meetingAttendees!.length.toString()}");
           return Card(
             color: CustomColors.whiteTabColor,
             elevation: 10,
@@ -110,8 +113,8 @@ class CalendarMeeting extends StatelessWidget {
                             // reportController.projectName =
                             //     projects[index].name ?? '';
                             // var project = projects[index];
-                            // Get.to(ProjectEmployeeListPage(
-                            //     project: project));
+                            Get.to(MeetingAttendessListPage(
+                                listOfAttendees: meetingAttendees));
                           },
                           child: AvatarStack(
                             height: 30,
@@ -131,26 +134,13 @@ class CalendarMeeting extends StatelessWidget {
                               );
                             },
                             avatars: [
-                              // Meetings item  in meeting?.meetings{
-                              //
-                              // }
-                              // if (meeting?.meetings?.meetingAttendeess?.isNotEmpty ?? false) {
-                              // print("not null");
-                              // }
-                              // for (var item in meeting?.meetings!.meetingAttendeess!! )
-
-                              //   if (meeting?.meetings?.meetingAttendeess?.isNotEmpty ?? false) {
-                              //
-                              // for (var item in meeting!.meetings!.meetingAttendeess!) {
-                              // NetworkImage('$kStorageUrl$item?.image?);
-                              // }
-                              // }
-
 // Now you have a list of Image.network widgets in the networkImages list.
-
-                              for (var n = 0; n < 15; n++)
+                              for (var n = 0; n < meetingAttendees!.length; n++)
                                 NetworkImage(
-                                    '$kStorageUrl${meeting?.meetings?.user?.image}')
+                                    '$kStorageUrl${meetingAttendees[n]?.image}')
+//                               for (var n = 0; n < 5; n++)
+//                                 NetworkImage(
+//                                     '$kStorageUrl${meeting?.meetings?.user?.image}')
                             ],
                           ),
                         ),
