@@ -45,6 +45,7 @@ class EmployeeList {
     this.totalHours,
     this.status,
     this.reason,
+    this.declineReason,
     this.createdAt,
     this.updatedAt,
     this.user,
@@ -58,6 +59,7 @@ class EmployeeList {
   String? totalHours;
   String? status;
   String? reason;
+  String? declineReason;
   DateTime? createdAt;
   DateTime? updatedAt;
   User? user;
@@ -71,6 +73,7 @@ class EmployeeList {
         totalHours: json["total_hours"],
         status: json["status"],
         reason: json["reason"],
+        declineReason: json["decline_reason"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),

@@ -80,6 +80,7 @@ class ReportsControllerAdmin extends GetxController
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
   final attendanceRequestModel = AttendanceRequestModel();
+  final selectedOvertimeID = 0.obs;
   final List<String> reportsTabListAdmin = [
     'Attendance',
     'Overtime',
@@ -651,20 +652,25 @@ class ReportsControllerAdmin extends GetxController
         return;
       }
     }
+    if (reasonButton == ReasonButton.overtimeDecline) {
+      print("approveOrDeclineOvertime  ReasonButton.overtimeDecline called");
+    }
     int? originalIndex;
     if (reasonButton != ReasonButton.overtimeEdit) {
-      List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
-          .getFilteredOvertimeList()
-          ?.where((element) => element.status == '0')
-          .toList();
+      if (reasonButton != ReasonButton.overtimeDecline) {
+        List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
+            .getFilteredOvertimeList()
+            ?.where((element) => element.status == '0')
+            .toList();
 
-      originalIndex = Get.find<ReportsControllerAdmin>()
-          .overtimeResponseModel
-          .value
-          .employeeList
-          .indexOf(overtimeDetails?[index] ?? EmployeeList());
+        originalIndex = Get.find<ReportsControllerAdmin>()
+            .overtimeResponseModel
+            .value
+            .employeeList
+            .indexOf(overtimeDetails?[index] ?? EmployeeList());
+        print("Original index while Edit:${originalIndex.toString()}");
+      }
     }
-
     showLoading();
     if (reasonButton == ReasonButton.overtimeApprove) {
       //approve
@@ -692,6 +698,7 @@ class ReportsControllerAdmin extends GetxController
               .overtimeApproveEditRequestModel
               .totalHours;
     }
+    print("Overtime Delete model ID:${overtimeApproveEditRequestModel.id}");
     overtimeApproveEditRequestModel.id = overtimeResponseModel
         .value.employeeList[originalIndex ?? index].id
         .toString();
@@ -708,8 +715,9 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      //close bottomsheet if editing
+      //close bottomsheet if editing/Decline
       if (reasonButton == ReasonButton.overtimeEdit) Get.back();
+      if (reasonButton == ReasonButton.overtimeDecline) Get.back();
       //reset bottomsheet values
       Get.find<DashboardController>().overtimeApproveEditRequestModel =
           OvertimeApproveEditRequestModel(status: '0', id: '0');

@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-
 String overtimeApproveEditRequestModelToJson(
         OvertimeApproveEditRequestModel data) =>
     json.encode(data.toJson());
@@ -18,6 +17,7 @@ class OvertimeApproveEditRequestModel {
     this.date,
     this.totalHours,
     this.reason,
+    this.declineReason,
   });
 
   String status;
@@ -27,8 +27,7 @@ class OvertimeApproveEditRequestModel {
   String? date;
   String? totalHours;
   String? reason;
-
- 
+  String? declineReason;
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -38,5 +37,6 @@ class OvertimeApproveEditRequestModel {
         "date": date,
         "total_hours": totalHours,
         "reason": reason,
+        "decline_reason": declineReason,
       };
 }

@@ -497,6 +497,8 @@ const kRequestOvertimeString = 'Request Overtime';
 
 const kEditOvertimeString = 'Edit Overtime';
 
+const kDeclineOvertimeString = 'Decline Overtime';
+
 const kLogoutString = 'Logout';
 
 const kAmountString = 'Amount';

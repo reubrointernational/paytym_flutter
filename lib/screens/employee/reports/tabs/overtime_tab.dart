@@ -140,7 +140,8 @@ class OvertimeTab extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Text(
-                                  overtimeDetail.reason ?? '',
+                                  // overtimeDetail.reason ?? '',
+                                  overtimeDetail.declineReason ?? '',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -153,6 +154,30 @@ class OvertimeTab extends StatelessWidget {
                         ),
                         const Divider(),
                         kSizedBoxH10,
+                        // Row(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     const Text(
+                        //       'Reason: ',
+                        //       style: TextStyle(
+                        //         fontSize: 12,
+                        //         fontWeight: FontWeight.w400,
+                        //         color: Colors.black,
+                        //       ),
+                        //     ),
+                        //     Expanded(
+                        //       child: Text(
+                        //         overtimeDetail.reason ?? '',
+                        //         style: const TextStyle(
+                        //           fontSize: 12,
+                        //           fontWeight: FontWeight.w400,
+                        //           color: Colors.blue,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),

@@ -86,7 +86,10 @@ class OvertimeTabAdmin extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    print("Overtime Index: ${index.toString()}");
+                    print("Overtime ID: ${overtimeDetail.id.toString()}");
+                  },
                   child: Card(
                     shape: RoundedRectangleBorder(
                       side: BorderSide(width: 1, color: Colors.grey.shade300),
@@ -213,18 +216,27 @@ class OvertimeTabAdmin extends StatelessWidget {
                             children: [
                               processButton('Decline', CustomColors.redColor,
                                   () {
-                                Get.find<ReportsControllerAdmin>()
-                                    .approveOrDeclineOvertime(
-                                        // index, ReasonButton.overtimeDecline);
-                                        tempIndex,
-                                        ReasonButton.overtimeDecline);
+                                // Get.find<ReportsControllerAdmin>.selectedOvertimeID = overtimeDetail.id.toString();
+                                // Get.find<ReportsControllerAdmin>()
+                                //     .showBottomSheetForReason(
+                                //         ReasonButton.overtimeDecline);
+                                DialogHelper.showBottomSheet(
+                                    RequestOvertimeBottomsheet(
+                                  index: index,
+                                  delete: true.toString(),
+                                ));
+                                //original code
+                                // Get.find<ReportsControllerAdmin>()
+                                //     .approveOrDeclineOvertime(
+                                //         // index, ReasonButton.overtimeDecline);
+                                //         tempIndex,
+                                //         ReasonButton.overtimeDecline);
                               }),
                               kSizedBoxW10,
                               processButton('Edit', CustomColors.blueCardColor,
                                   () {
-                                print("Got tempIndex:");
                                 tempIndex = tempIndex + 1;
-                                print("Got tempIndex:${tempIndex?.toString()}");
+                                // print("Got tempIndex:${tempIndex?.toString()}");
                                 DialogHelper.showBottomSheet(
                                     RequestOvertimeBottomsheet(
                                   index: index,
