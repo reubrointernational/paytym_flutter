@@ -50,7 +50,7 @@ class OvertimeTab extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 6),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
@@ -69,8 +69,9 @@ class OvertimeTab extends StatelessWidget {
                                     DetailsRow(
                                       title: "Date: ",
                                       value: DateFormat('dd-MM-yyyy').format(
-                                          overtimeDetail.date ??
-                                              DateTime(0000, 00, 00)),
+                                        overtimeDetail.date ??
+                                            DateTime(0000, 00, 00),
+                                      ),
                                     ),
                                     // Text(
                                     //   overtimeDetail.branch ?? '',
@@ -89,7 +90,7 @@ class OvertimeTab extends StatelessWidget {
                                 Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.symmetric(
@@ -141,7 +142,7 @@ class OvertimeTab extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   // overtimeDetail.reason ?? '',
-                                  overtimeDetail.declineReason ?? '',
+                                  overtimeDetail.reason ?? '',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -153,7 +154,39 @@ class OvertimeTab extends StatelessWidget {
                           ),
                         ),
                         const Divider(),
-                        kSizedBoxH10,
+                        // For Declined Overtime only
+                        overtimeDetail.status == '2'
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Decline Reason: ',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        // overtimeDetail.reason ?? '',
+                                        overtimeDetail.declineReason ?? '',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : kSizedBoxH4,
+
                         // Row(
                         //   crossAxisAlignment: CrossAxisAlignment.start,
                         //   mainAxisAlignment: MainAxisAlignment.center,

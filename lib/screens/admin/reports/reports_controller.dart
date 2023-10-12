@@ -636,8 +636,14 @@ class ReportsControllerAdmin extends GetxController
     }
   }
 
+  String? reasonValidator(String value) {
+    return GetUtils.isLengthLessThan(value, 5) ? "Enter a valid reason" : null;
+  }
+
   approveOrDeclineOvertime(int index, ReasonButton reasonButton) async {
-    if (reasonButton == ReasonButton.overtimeEdit) {
+    // if (reasonButton == ReasonButton.overtimeEdit) {
+    if (reasonButton != ReasonButton.overtimeApprove) {
+      print("approveOrDeclineOvertime Report build (7) Edit/Delete ");
       if (Get.find<DashboardController>()
           .requestAdvanceFormKey
           .currentState!
@@ -652,9 +658,7 @@ class ReportsControllerAdmin extends GetxController
         return;
       }
     }
-    if (reasonButton == ReasonButton.overtimeDecline) {
-      print("approveOrDeclineOvertime  ReasonButton.overtimeDecline called");
-    }
+
     int? originalIndex;
     if (reasonButton != ReasonButton.overtimeEdit) {
       if (reasonButton != ReasonButton.overtimeDecline) {
@@ -671,15 +675,47 @@ class ReportsControllerAdmin extends GetxController
         print("Original index while Edit:${originalIndex.toString()}");
       }
     }
+
     showLoading();
     if (reasonButton == ReasonButton.overtimeApprove) {
       //approve
       overtimeApproveEditRequestModel.status = '1';
     } else if (reasonButton == ReasonButton.overtimeDecline) {
       //decline
+      print("Test decline reason (10): ");
+      print(
+          "Overtime decline section entered :${overtimeApproveEditRequestModel.id}");
+      // 3 for Edit ,2 for decline
       overtimeApproveEditRequestModel.status = '2';
+      overtimeApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+
+      //date is obtained from dashboard controller as bottomsheet fills dashboard controller
+      // overtimeApproveEditRequestModel.date =
+      //     Get.find<DashboardController>().overtimeApproveEditRequestModel.date;
+
+      //reason is obtained from dashboard controller as bottomsheet fills dashboard controller
+      // overtimeApproveEditRequestModel.reason = Get.find<DashboardController>()
+      //     .overtimeApproveEditRequestModel
+      //     .reason;
+
+      //Setting Decline reason from Bottom sheet from Reason textbox treated as decline reaseon textbox
+      //only Decline reason will taken
+      overtimeApproveEditRequestModel.declineReason =
+          Get.find<DashboardController>()
+              .overtimeApproveEditRequestModel
+              .declineReason;
+
+      //totalHours is obtained from dashboard controller as bottomsheet fills dashboard controller
+      // overtimeApproveEditRequestModel.totalHours =
+      //     Get.find<DashboardController>()
+      //         .overtimeApproveEditRequestModel
+      //         .totalHours;
     } else {
       //edit
+      print(
+          "Overtime edit section entered :${overtimeApproveEditRequestModel.id}");
+      // 3 for Edit ,2 for decline
       overtimeApproveEditRequestModel.status = '3';
       overtimeApproveEditRequestModel.employerId =
           '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
@@ -691,6 +727,11 @@ class ReportsControllerAdmin extends GetxController
       overtimeApproveEditRequestModel.reason = Get.find<DashboardController>()
           .overtimeApproveEditRequestModel
           .reason;
+      //Setting Decline reason from Bottom sheet from Reason textbox treated as decline reaseon textbox
+      overtimeApproveEditRequestModel.declineReason =
+          Get.find<DashboardController>()
+              .overtimeApproveEditRequestModel
+              .reason;
 
       //totalHours is obtained from dashboard controller as bottomsheet fills dashboard controller
       overtimeApproveEditRequestModel.totalHours =
@@ -698,12 +739,13 @@ class ReportsControllerAdmin extends GetxController
               .overtimeApproveEditRequestModel
               .totalHours;
     }
-    print("Overtime Delete model ID:${overtimeApproveEditRequestModel.id}");
     overtimeApproveEditRequestModel.id = overtimeResponseModel
         .value.employeeList[originalIndex ?? index].id
         .toString();
 
-    var responseString = await Get.find<BaseClient>()
+    print("overtime Request status: ${overtimeApproveEditRequestModel.status}");
+    var responseString = "";
+    responseString = await Get.find<BaseClient>()
         .post(
             ApiEndPoints.approveOvertime,
             overtimeApproveEditRequestModelToJson(
@@ -715,10 +757,10 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      //close bottomsheet if editing/Decline
+      //close bottom sheet if editing/Decline
       if (reasonButton == ReasonButton.overtimeEdit) Get.back();
       if (reasonButton == ReasonButton.overtimeDecline) Get.back();
-      //reset bottomsheet values
+      //reset bottom sheet values
       Get.find<DashboardController>().overtimeApproveEditRequestModel =
           OvertimeApproveEditRequestModel(status: '0', id: '0');
       Get.find<DashboardController>().overtimeTextEditingController =

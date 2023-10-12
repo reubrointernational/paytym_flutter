@@ -61,7 +61,7 @@ class OvertimeTabAdmin extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemCount: overtimeDetails?.length ?? 0,
         itemBuilder: (context, index) {
-          print("Index:$index");
+          // print("Index:$index");
           final overtimeDetail = overtimeDetails?[index];
           OvertimeStatusModel overtimeStatusModel =
               Get.find<ReportsControllerAdmin>()
@@ -87,8 +87,8 @@ class OvertimeTabAdmin extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 2),
                 child: GestureDetector(
                   onTap: () {
-                    print("Overtime Index: ${index.toString()}");
-                    print("Overtime ID: ${overtimeDetail.id.toString()}");
+                    // print("Overtime Index: ${index.toString()}");
+                    // print("Overtime ID: ${overtimeDetail.id.toString()}");
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -225,6 +225,7 @@ class OvertimeTabAdmin extends StatelessWidget {
                                   index: index,
                                   delete: true.toString(),
                                 ));
+
                                 //original code
                                 // Get.find<ReportsControllerAdmin>()
                                 //     .approveOrDeclineOvertime(
@@ -240,6 +241,7 @@ class OvertimeTabAdmin extends StatelessWidget {
                                 DialogHelper.showBottomSheet(
                                     RequestOvertimeBottomsheet(
                                   index: index,
+                                  delete: "false",
                                 ));
                               }),
                               kSizedBoxW10,

@@ -22,10 +22,12 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int? originalIndex;
-    print("Got Index for Delete :${delete?.toString()}");
+    print(
+        "RequestOvertimeBottomsheet build (1) Got Index :${index?.toString()}  Delete: ${delete?.toString()}");
 
     if (delete != "true") {
       if (index != null) {
+        print("RequestOvertimeBottomsheet build (2) ");
         List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
             .getFilteredOvertimeList()
             ?.where((element) => element.status == '0')
@@ -138,22 +140,24 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                       }),
                   kSizedBoxH10,
                   BottomsheetTextField(
-                    text: index != null
-                        ? Get.find<ReportsControllerAdmin>()
-                            .overtimeResponseModel
-                            .value
-                            .employeeList[originalIndex ?? index!]
-                            .reason
-                        : null,
-                    maxLines: 3,
-                    maxLength: 80,
-                    hintText: kReasonString,
-                    validator: (value) =>
-                        Get.find<DashboardController>().reasonValidator(value!),
-                    onSaved: ((value) => Get.find<DashboardController>()
-                        .overtimeApproveEditRequestModel
-                        .reason = value),
-                  ),
+                      text: index != null
+                          ? Get.find<ReportsControllerAdmin>()
+                              .overtimeResponseModel
+                              .value
+                              .employeeList[originalIndex ?? index!]
+                              .reason
+                          : null,
+                      maxLines: 3,
+                      maxLength: 80,
+                      hintText: kReasonString,
+                      validator: (value) => Get.find<DashboardController>()
+                          .reasonValidator(value!),
+                      onSaved: ((value) {
+                        print("Onsaved Edit  button:" + value.toString());
+                        Get.find<DashboardController>()
+                            .overtimeApproveEditRequestModel
+                            .reason = value;
+                      })),
                 ],
               ),
             ),
@@ -163,6 +167,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+                  print("RequestOvertimeBottomsheet build (6) Button pressed");
                   index != null
                       ? Get.find<ReportsControllerAdmin>()
                           .approveOrDeclineOvertime(
@@ -177,7 +182,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  index != null ? "Add Overtime" : kRequestOvertimeString,
+                  index != null ? "Approve Overtime" : kRequestOvertimeString,
                   // index != null ? kEditOvertimeString : kRequestOvertimeString,
                   style: const TextStyle(
                     color: CustomColors.whiteTextColor,
@@ -190,7 +195,10 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
       );
     } else {
       // Delete - true
+      print("RequestOvertimeBottomsheet build (3) ");
       if (index != null) {
+        print("Delete - true coding starts :${delete?.toString()}");
+
         List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
             .getFilteredOvertimeList()
             ?.where((element) => element.status == '0')
@@ -200,6 +208,21 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
             .value
             .employeeList
             .indexOf(overtimeDetails?[index!] ?? EmployeeList());
+
+        Get.find<DashboardController>().overtimeTextEditingController!.text =
+            DateFormat('dd-MM-yyyy').format(Get.find<ReportsControllerAdmin>()
+                    .overtimeResponseModel
+                    .value
+                    .employeeList[originalIndex]
+                    .date ??
+                DateTime(0000, 00, 00));
+        Get.find<DashboardController>().overtimeApproveEditRequestModel.date =
+            DateFormat('yyyy-MM-dd').format(Get.find<ReportsControllerAdmin>()
+                    .overtimeResponseModel
+                    .value
+                    .employeeList[originalIndex]
+                    .date ??
+                DateTime(0000, 00, 00));
       }
       return Container(
         margin:
@@ -217,6 +240,7 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
           children: [
             Text(
               "Reason for Decline Overtime",
+              // index != null ? kEditOvertimeString : kRequestOvertimeString,
               style:
                   kTextStyleS18W600.copyWith(color: CustomColors.blueTextColor),
             ),
@@ -227,32 +251,87 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (employeeList != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        '${employeeList?.firstName ?? ''} ${employeeList?.lastName ?? ''}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(bottom: 10),
+                    //   child: Text(
+                    //     '${employeeList?.firstName ?? ''} ${employeeList?.lastName ?? ''}',
+                    //     style: const TextStyle(
+                    //         fontSize: 18, fontWeight: FontWeight.bold),
+                    //   ),
+                    // ),
+                    kSizedBoxH10,
+                  // BottomsheetTextField(
+                  //   controller: Get.find<DashboardController>()
+                  //       .overtimeTextEditingController,
+                  //   inputFormatters: [
+                  //     FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
+                  //   ],
+                  //   hintText: kDateString.substring(0, 4),
+                  //   keyboardType: TextInputType.datetime,
+                  //   suffixIcon: InkWell(
+                  //     onTap: () => Get.find<DashboardController>()
+                  //         .selectDateTime(context),
+                  //     child: const Padding(
+                  //       padding: EdgeInsets.all(8.0),
+                  //       child: Icon(Icons.calendar_month, size: 18),
+                  //     ),
+                  //   ),
+                  //   validator: (value) =>
+                  //       Get.find<DashboardController>().dateValidator(value!),
+                  // ),
+                  kSizedBoxH10,
+                  // BottomsheetTextField(
+                  //     text: index != null
+                  //         ? Get.find<ReportsControllerAdmin>()
+                  //         .overtimeResponseModel
+                  //         .value
+                  //         .employeeList[originalIndex ?? index!]
+                  //         .totalHours
+                  //         : null,
+                  //     onSaved: ((value) => Get.find<DashboardController>()
+                  //         .overtimeApproveEditRequestModel
+                  //         .totalHours = value),
+                  //     hintText: kTotalHoursString,
+                  //     keyboardType: TextInputType.number,
+                  //     inputFormatters: [
+                  //       FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                  //       TextInputFormatter.withFunction((oldValue, newValue) {
+                  //         try {
+                  //           final text = newValue.text;
+                  //           if (text.isNotEmpty) double.parse(text);
+                  //           return newValue;
+                  //         } catch (e) {}
+                  //         return oldValue;
+                  //       }),
+                  //     ],
+                  //     validator: (value) {
+                  //       try {
+                  //         double.parse(value!);
+                  //         return null;
+                  //       } catch (e) {}
+                  //       return 'Enter a valid number';
+                  //     }),
                   kSizedBoxH10,
                   BottomsheetTextField(
-                    text: index != null
-                        ? Get.find<ReportsControllerAdmin>()
-                            .overtimeResponseModel
-                            .value
-                            .employeeList[originalIndex ?? index!]
-                            .reason
-                        : null,
-                    maxLines: 7,
-                    maxLength: 80,
-                    hintText: kReasonString,
-                    validator: (value) =>
-                        Get.find<DashboardController>().reasonValidator(value!),
-                    onSaved: ((value) => Get.find<DashboardController>()
-                        .overtimeApproveEditRequestModel
-                        .declineReason = value),
-                  ),
+                      // text: " ",
+                      text: index != null
+                          ? Get.find<ReportsControllerAdmin>()
+                              .overtimeResponseModel
+                              .value
+                              .employeeList[originalIndex ?? index!]
+                              .declineReason
+                          : null,
+                      maxLines: 3,
+                      maxLength: 80,
+                      hintText: kReasonString,
+                      validator: (value) => Get.find<DashboardController>()
+                          .reasonValidator(value!),
+                      onSaved: ((value) {
+                        print("Onsaved Edit  button:$value");
+                        Get.find<DashboardController>()
+                            .overtimeApproveEditRequestModel
+                            .declineReason = value;
+                      })),
                 ],
               ),
             ),
@@ -262,8 +341,14 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Get.find<ReportsControllerAdmin>().approveOrDeclineOvertime(
-                      originalIndex!, ReasonButton.overtimeDecline);
+                  print(
+                      "RequestOvertimeBottomsheet build  decline (6) Button pressed");
+                  index != null
+                      ? Get.find<ReportsControllerAdmin>()
+                          .approveOrDeclineOvertime(
+                              originalIndex!, ReasonButton.overtimeDecline)
+                      : Get.find<DashboardController>()
+                          .requestOvertime(employeeList);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: CustomColors.blueTextColor,
@@ -271,11 +356,10 @@ class RequestOvertimeBottomsheet extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
-                  // kDeclineOvertimeString,
-                  "Submit",
+                child: Text(
+                  index != null ? "Submit " : kRequestOvertimeString,
                   // index != null ? kEditOvertimeString : kRequestOvertimeString,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: CustomColors.whiteTextColor,
                   ),
                 ),
