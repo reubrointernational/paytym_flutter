@@ -245,7 +245,7 @@ class ReportsController extends GetxController
       'year': selectedDropdownYear.value,
       'month': (monthsList.indexOf(selectedDropdownMonth.value) + 1).toString()
     };
-
+    print("Payslip of ${map.values.first}");
     Get.find<BaseClient>().onError = fetchPayslip;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.payslip, jsonEncode(map),
@@ -255,6 +255,7 @@ class ReportsController extends GetxController
       return;
     } else {
       hideLoading();
+      print("Payslip Response:" + responseString);
       payslipResponseModel.value = payslipResponseModelFromJson(responseString);
       payslipResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
@@ -559,8 +560,8 @@ class ReportsController extends GetxController
       await FlutterDownloader.enqueue(
         url: url!,
         savedDir: tempPath,
-        showNotification: false,
-        openFileFromNotification: false,
+        showNotification: true,
+        openFileFromNotification: true,
         fileName: 'payslip.$type',
       );
     }

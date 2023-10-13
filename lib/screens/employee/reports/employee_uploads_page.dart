@@ -10,6 +10,7 @@ import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../../models/report/files/files_type_list.dart';
+import 'package:path/path.dart' as path;
 
 class EmployeeUploadFilesPage extends StatefulWidget {
   const EmployeeUploadFilesPage({super.key});
@@ -42,7 +43,7 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
             children: [
               RichText(
                   text: const TextSpan(
-                      text: 'File Name',
+                      text: 'File Type',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.black,
@@ -158,7 +159,12 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                           File(Get.find<ReportsController>().filePath.value)),
                 );
               }),
-              kSizedBoxH35,
+              kSizedBoxH6,
+              Center(
+                child: Text(getExactFilenameFromFilefullpath(
+                    Get.find<ReportsController>().filePath.value.toString())),
+              ),
+              kSizedBoxH12,
               Center(
                 child: SizedBox(
                   width: w * 0.6,
@@ -175,5 +181,11 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
         ),
       ),
     );
+  }
+
+  String getExactFilenameFromFilefullpath(String fullname) {
+    String filePath = fullname;
+    String fileName = path.basename(filePath);
+    return fileName;
   }
 }

@@ -33,6 +33,7 @@ class CalendarMeeting extends StatelessWidget {
           .meetingsList
           ?.where((element) => element.meetings != null)
           .toList();
+
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: meetingList?.length ?? 0,

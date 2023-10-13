@@ -21,7 +21,9 @@ class MeetingListAdminModel {
     if (json['meetings liste'] != null) {
       meetingsListe = <MeetingsListe>[];
       json['meetings liste'].forEach((v) {
-        meetingsListe!.add(MeetingsListe.fromJson(v));
+        if (MeetingsListe.fromJson(v) != null) {
+          meetingsListe!.add(MeetingsListe.fromJson(v));
+        }
       });
     }
   }
@@ -74,19 +76,31 @@ class MeetingsListe {
     name = json['name'];
     // date = json['date'];
     date:
-    json["date"] == null ? null : DateTime.parse(json["date"]);
+    json["date"] != null ? DateTime.parse(json["date"]) : null;
     startTime = json['start_time'];
     endTime = json['end_time'];
     agenda = json['agenda'];
     location = json['location'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    // if (json['meeting_attendeess'] != null) {
+    //   meetingAttendeess = <MeetingAttendeess>[];
+    //   json['meeting_attendeess'].forEach((v) {
+    //     meetingAttendeess!.add(MeetingAttendeess.fromJson(v));
+    //   });
+    // }
+
     if (json['meeting_attendeess'] != null) {
       meetingAttendeess = <MeetingAttendeess>[];
-      json['meeting_attendeess'].forEach((v) {
-        meetingAttendeess!.add(MeetingAttendeess.fromJson(v));
-      });
+      json['meeting_attendeess'] != null
+          ? json['meeting_attendeess'].forEach((v) {
+              if (MeetingAttendeess.fromJson(v) != null) {
+                meetingAttendeess!.add(MeetingAttendeess.fromJson(v));
+              }
+            })
+          : [null];
     }
+
     user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
@@ -103,10 +117,18 @@ class MeetingsListe {
     data['location'] = this.location;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    if (this.meetingAttendeess != null) {
-      data['meeting_attendeess'] =
-          this.meetingAttendeess!.map((v) => v.toJson()).toList();
+    if (data['meeting_attendeess'] != null) {
+      meetingAttendeess = <MeetingAttendeess>[];
+      data['meeting_attendeess'] != null
+          ? data['meeting_attendeess'].forEach((v) {
+              if (MeetingAttendeess.fromJson(v) != null) {
+                meetingAttendeess!.add(MeetingAttendeess.fromJson(v));
+              }
+            })
+          : null;
     }
+    ;
+
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
@@ -131,12 +153,14 @@ class MeetingAttendeess {
       this.image});
 
   MeetingAttendeess.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    employerId = json['employer_id'];
-    jobTitle = json['job_title'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    image = json['image'];
+    if (json != null) {
+      id = json['id'];
+      employerId = json['employer_id'];
+      jobTitle = json['job_title'];
+      firstName = json['first_name'];
+      lastName = json['last_name'];
+      image = json['image'];
+    }
   }
 
   Map<String, dynamic> toJson() {

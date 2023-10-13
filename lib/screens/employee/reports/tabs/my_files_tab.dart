@@ -12,6 +12,7 @@ import '../../../../core/constants/widgets.dart';
 import '../../../../core/dialog_helper.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../admin/reports/reports_controller.dart';
+import 'package:path/path.dart' as path;
 
 class MyFilesTab extends StatelessWidget {
   const MyFilesTab({super.key});
@@ -69,11 +70,14 @@ class MyFilesTab extends StatelessWidget {
                           ),
                         ),
                         child: ListTile(
-                          title: Text(files?[index].filetype?.fileType ?? ''),
+                          title:
+                              Text(path.basename(files?[index].file ?? 'file')),
+                          // title: Text(files?[index].filetype?.fileType ?? ''),
                           trailing: CircleAvatar(
                             backgroundColor: CustomColors.blueCardColor,
                             child: GestureDetector(
                               onTap: () {
+                                //Download file
                                 Get.find<ReportsController>().downloadPdf(
                                     '$kStorageUrl${files?[index].file}');
                                 Get.find<ReportsController>().clickedIndex =
@@ -136,7 +140,9 @@ class MyFilesTab extends StatelessWidget {
                           ),
                         ),
                         child: ListTile(
-                          title: Text(files?[index].filetype?.fileType ?? ''),
+                          title:
+                              Text(path.basename(files?[index].file ?? 'file')),
+                          // title: Text(files?[index].filetype?.fileType ?? ''),
                           trailing: SizedBox(
                             width: 100,
                             child: Row(
@@ -159,6 +165,8 @@ class MyFilesTab extends StatelessWidget {
                                           .downloadFile("emp_records",
                                               '$kStorageUrl${files?[index].file}',
                                               ((progress, total) {
+                                        print(
+                                            "Downloading File From URL:${kStorageUrl}${files?[index].file.toString()}");
                                         if (progress == total) {
                                           files?[index].isDownloading = false;
                                           Get.find<ReportsController>()

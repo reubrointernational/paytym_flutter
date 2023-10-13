@@ -14,6 +14,7 @@ import '../../../core/constants/icons.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../network/end_points.dart';
 import '../widgets/custom_admin_scaffold.dart';
+import 'package:path/path.dart' as path;
 
 class UploadFilesPage extends StatelessWidget {
   const UploadFilesPage({super.key});
@@ -37,30 +38,49 @@ class UploadFilesPage extends StatelessWidget {
             children: [
               kSizedBoxH10,
               FileUploadWidget(
-                title: 'File Name',
+                title: 'File Type',
                 subtitle: 'Upload files upto 4MB',
                 onTap: () => Get.find<ReportsControllerAdmin>().fetchFiles(),
               ),
               kSizedBoxH10,
-              Obx(() {
-                return Container(
-                  height:
-                      Get.find<ReportsControllerAdmin>().filePath.value.isEmpty
-                          ? 0
-                          : h * 0.3,
-                  width: double.infinity,
-                  color: Colors.transparent,
-                  //child: Container(),
-                  child: Get.find<ReportsControllerAdmin>()
-                          .filePath
-                          .value
-                          .isEmpty
-                      ? const SizedBox()
-                      : Image.file(File(
-                          Get.find<ReportsControllerAdmin>().filePath.value)),
-                );
-              }),
-              kSizedBoxH35,
+              Obx(
+                () {
+                  return Column(
+                    children: [
+                      Container(
+                        height: Get.find<ReportsControllerAdmin>()
+                                .filePath
+                                .value
+                                .isEmpty
+                            ? 0
+                            : h * 0.3,
+                        width: double.infinity,
+                        color: Colors.transparent,
+                        //child: Container(),
+                        child: Get.find<ReportsControllerAdmin>()
+                                .filePath
+                                .value
+                                .isEmpty
+                            ? const SizedBox()
+                            : Image.file(File(Get.find<ReportsControllerAdmin>()
+                                .filePath
+                                .value)),
+                      ),
+                      // Text(Get.find<ReportsControllerAdmin>()
+                      //     .filePath
+                      //     .value
+                      //     .toString()),
+                      kSizedBoxH10,
+                      Text(getExactFilenameFromFilefullpath(
+                          Get.find<ReportsControllerAdmin>()
+                              .filePath
+                              .value
+                              .toString())),
+                    ],
+                  );
+                },
+              ),
+              kSizedBoxH20,
               Center(
                 child: SizedBox(
                   width: w * 0.6,
@@ -104,7 +124,9 @@ class UploadFilesPage extends StatelessWidget {
                           ),
                         ),
                         child: ListTile(
-                          title: Text(files?[index].filetype?.fileType ?? ''),
+                          title:
+                              Text(path.basename(files?[index].file ?? 'file')),
+                          // title: Text(files?[index].filetype?.fileType ?? ''),
                           trailing: SizedBox(
                             width: 100,
                             child: Row(
@@ -193,7 +215,9 @@ class UploadFilesPage extends StatelessWidget {
                           ),
                         ),
                         child: ListTile(
-                          title: Text(files?[index].filetype?.fileType ?? ''),
+                          title:
+                              Text(path.basename(files?[index].file ?? 'file')),
+                          // title: Text(files?[index].filetype?.fileType ?? ''),
                           trailing: SizedBox(
                             width: 100,
                             child: Row(
@@ -256,5 +280,11 @@ class UploadFilesPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String getExactFilenameFromFilefullpath(String fullname) {
+    String filePath = fullname;
+    String fileName = path.basename(filePath);
+    return fileName;
   }
 }

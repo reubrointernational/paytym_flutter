@@ -3,6 +3,7 @@
 
 const kBaseUrl = 'https://paytym.net/api';
 const kStorageUrl = 'https://paytym.net/storage/';
+// const kStorageUrl = 'https://paytym.net/file/';
 
 // const kBaseUrl = 'http://192.168.1.35:8000/api';
 // const kStorageUrl = 'http://192.168.1.35:8000/storage/';

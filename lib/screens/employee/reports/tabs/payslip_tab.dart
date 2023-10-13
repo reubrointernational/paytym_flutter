@@ -12,7 +12,9 @@ import 'package:paytym/screens/employee/reports/widgets/cached_image.dart';
 import 'package:paytym/screens/employee/reports/widgets/pdf_viewer.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/dialog_helper.dart';
 import '../../../../network/end_points.dart';
+import '../../../admin/reports/reports_controller.dart';
 import '../widgets/year_dropdown.dart';
 
 class PayslipTab extends StatelessWidget {
@@ -55,7 +57,7 @@ class PayslipTab extends StatelessWidget {
               if (reportsController.selectedDropdownDay.value == null ||
                   reportsController.dateList.isEmpty) {
                 return const SizedBox(
-                  width: 50,
+                  width: 0,
                 );
               }
               return CustomDropdownYearButton(
@@ -93,9 +95,15 @@ class PayslipTab extends StatelessWidget {
                       .payroll
                       ?.isNotEmpty ??
                   false) {
+                // kStorageUrl = 'https://paytym.net/storage/';
                 url =
                     '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
 
+                print(Get.find<ReportsController>()
+                    .payslipResponseModel
+                    .value
+                    .payroll
+                    .toString());
                 print("pdf url:$url");
               } else {
                 print("no payslip 1");
@@ -108,7 +116,9 @@ class PayslipTab extends StatelessWidget {
             if (url?.getType() == 'pdf') {
               print(" payslip pdf url:${url.toString()}");
               return PdfViewer(
-                url: url!,
+                url:
+                    "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"!,
+                // url: url!,
               );
             } else if (url?.getType() == 'png') {
               return CachedImage(
@@ -120,6 +130,7 @@ class PayslipTab extends StatelessWidget {
           }),
         ),
         kSizedBoxH8,
+        // Share button
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
@@ -145,7 +156,23 @@ class PayslipTab extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () => Get.find<ReportsController>().downloadPdf(url),
+                onPressed: () {
+                  // files?[index].isDownloading = true;
+                  Get.find<ReportsController>().fileListResponseModel.refresh();
+                  Get.find<ReportsControllerAdmin>().downloadFile("hr_rec",
+                      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+                      ((progress, total) {
+                    if (progress == total) {
+                      // files?[index].isDownloading = false;
+                      Get.find<ReportsController>()
+                          .fileListResponseModel
+                          .refresh();
+                      DialogHelper.showToast(desc: 'Download completed');
+                    }
+                  }));
+                  // original code
+                  // Get.find<ReportsController>().downloadPdf(url);
+                },
                 icon: CircleAvatar(
                   backgroundColor: CustomColors.fabColor,
                   child: Obx(

@@ -47,6 +47,7 @@ import '../../employee/reports/reports_controller.dart';
 import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 import 'reports_filter_controller.dart';
 
@@ -479,6 +480,7 @@ class ReportsControllerAdmin extends GetxController
     if (result != null) {
       PlatformFile file = result.files.first;
       filePath.value = file.path!;
+      print("Upload File:${filePath.value.toString()} ");
     }
   }
 
@@ -1032,17 +1034,24 @@ class ReportsControllerAdmin extends GetxController
   downloadFile(String fileFrom, String? url,
       void Function(int, int)? onReceiveProgress) async {
     showLoading();
-    String fileFrom = "paytym_";
+    print("File name when time of download :+${fileFrom.toString()}");
+    print("URL when time of download :+${url}");
+
     if (fileFrom == "emp_records") {
       fileFrom = fileFrom + "emp record_";
     }
     if (fileFrom == "hr_rec") {
       fileFrom = fileFrom + "hr record_";
     }
+
     if (url != null) {
       var dio = Dio();
       final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
-      await dio.download(url, '/storage/emulated/0/Download/paytym_$date',
+      //Now i am giving the extension as PDF, If the payslip file from API is correct,ie,paytym/storage/filename.pdf is correct no need to given the last pdf extension
+      // If the File name from API is correct no need to update the file name as pdf_emp_record
+      // just give the exact name from the API.
+      await dio.download(
+          url, '/storage/emulated/0/Download/${path.basename(url)}',
           onReceiveProgress: onReceiveProgress);
       hideLoading();
     }

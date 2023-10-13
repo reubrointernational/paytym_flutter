@@ -42,6 +42,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
               .meetingsListe?[index];
           List<MeetingAttendeess>? meetingAttendees =
               meeting?.meetingAttendeess;
+          print("Meeting date:${meeting?.date.toString()} ");
           print(
               "Meeting attendees count: ${meetingAttendees!.length.toString()}");
           return SizedBox(
@@ -55,7 +56,17 @@ class CalendarMeetingAdmin extends StatelessWidget {
                     children: [
                       kSizedBoxH10,
                       // 2023-10-11 Date format in API,We need to format it
-                      Text("From-To Date"),
+                      Text(
+                        "Oct",
+                        style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
+                            color: Colors.grey),
+                      ),
+                      Text(
+                        "16",
+                        style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
+                            color: Colors.grey),
+                      ),
+                      // Text(meeting!.date.toString()),
                       // Text(
                       //
                       //   DateFormat('EEE').format(meeting?.date!.isEmpty

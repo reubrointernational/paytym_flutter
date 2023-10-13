@@ -134,11 +134,11 @@ class SelectChatMembersPage extends StatelessWidget {
                             ?.indexOf(element)))
                     .toList();
                 return SizedBox(
-                    height: (chatList?.isEmpty??true) ? 0 : 60,
+                    height: (chatList?.isEmpty ?? true) ? 0 : 60,
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: chatList?.length??0,
+                      itemCount: chatList?.length ?? 0,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 10),
@@ -183,7 +183,7 @@ class SelectChatMembersPage extends StatelessWidget {
                   final chatList =
                       Get.find<DashboardControllerAdmin>().getEmployees();
                   return ListView.builder(
-                    itemCount: chatList?.length??0,
+                    itemCount: chatList?.length ?? 0,
                     itemBuilder: (context, index) {
                       return Obx(() => InkWell(
                             onTap: () => Get.find<DashboardControllerAdmin>()
@@ -204,11 +204,14 @@ class SelectChatMembersPage extends StatelessWidget {
                               ),
                               child: ListTile(
                                 title: Text(
-                                  '${chatList?[index].firstName??''} ${chatList?[index].lastName ?? ''}',
+                                  '${chatList?[index].firstName ?? ''} ${chatList?[index].lastName ?? ''}',
                                   style: kTextStyleS18W600CBlack,
                                 ),
                                 subtitle: Text(
-                                    '#${chatList?[index].id.toString().padLeft(5, '0')}'),
+                                  chatList?[index].branch?.name ?? '',
+                                  style: kTextStyleS13W500Cgrey,
+                                ),
+                                // Text('#${chatList?[index].id.toString().padLeft(5, '0')}'),
                                 leading: Stack(
                                   children: [
                                     CircleAvatar(
@@ -238,9 +241,11 @@ class SelectChatMembersPage extends StatelessWidget {
                                   ],
                                 ),
                                 trailing: Text(
-                                  chatList?[index].branch?.name??'',
-                                  style: kTextStyleS13W500Cgrey,
-                                ),
+                                    '#${chatList?[index].id.toString().padLeft(5, '0')}'),
+                                // Text(
+                                //   chatList?[index].branch?.name??'',
+                                //   style: kTextStyleS13W500Cgrey,
+                                // ),
                               ),
                             ),
                           ));

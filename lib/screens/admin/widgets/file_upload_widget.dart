@@ -48,7 +48,7 @@ class FileUploadWidget extends StatelessWidget {
             ])),
         kSizedBoxH10,
         Visibility(
-          visible: title != 'File Name',
+          visible: title != 'File Type',
           child: TextFormField(
             controller: textController,
             decoration: InputDecoration(
@@ -65,7 +65,7 @@ class FileUploadWidget extends StatelessWidget {
           ),
         ),
         Visibility(
-          visible: title == 'File Name',
+          visible: title == 'File Type',
           child: DecoratedBox(
             decoration: BoxDecoration(
                 border: Border.all(
@@ -126,7 +126,7 @@ class FileUploadWidget extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        kSizedBoxH10,
+        kSizedBoxH4,
         GestureDetector(
           // onTap: () =>
           // createChatController.uploadProfileImage(),
@@ -156,6 +156,15 @@ class FileUploadWidget extends StatelessWidget {
             ),
           ),
         ),
+        // kSizedBoxH6,
+        // File name above the upload Image
+        // const Text(
+        //   'Filename :',
+        //   style: TextStyle(
+        //     fontSize: 16,
+        //     color: Colors.black,
+        //   ),
+        // ),
         kSizedBoxH20,
       ],
     );
