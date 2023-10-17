@@ -2,7 +2,6 @@ import 'package:avatar_stack/avatar_stack.dart';
 import 'package:avatar_stack/positions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/core/dialog_helper.dart';
@@ -11,6 +10,7 @@ import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../../../core/constants/styles.dart';
 import '../../../../../models/calendar/meeting_attendees.dart';
+import '../../../../../models/calendar/meeting_hr_attendees.dart';
 import '../../../../../models/calendar/meeting_list_admin_model_new.dart';
 import '../../../../../network/end_points.dart';
 
@@ -142,9 +142,10 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                           // reportController.projectName =
                                           //     projects[index].name ?? '';
                                           // var project = projects[index];
-                                          // Get.to(MeetingAttendessListPage(
-                                          //     listOfAttendees:
-                                          //         meetingAttendees));
+
+                                          Get.to(MeetingHRAttendessListPage(
+                                              listOfAttendees:
+                                                  meetingAttendees));
                                         },
                                         child: AvatarStack(
                                           height: 30,
