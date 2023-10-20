@@ -6,6 +6,7 @@ import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/screens/admin/calendar/calendar_controller.dart';
+import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../../../core/constants/styles.dart';
@@ -57,40 +58,17 @@ class CalendarMeetingAdmin extends StatelessWidget {
                       kSizedBoxH10,
                       // 2023-10-11 Date format in API,We need to format it
                       Text(
-                        "Oct",
+                        Get.find<CalendarControllerAdmin>().getDDMMMYYYYString(
+                            DateTime.parse(meeting!.date.toString()), 'dd'),
                         style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
                             color: Colors.grey),
                       ),
                       Text(
-                        "16",
+                        Get.find<CalendarControllerAdmin>().getDDMMMYYYYString(
+                            DateTime.parse(meeting!.date.toString()), 'MMM'),
                         style: kTextStyleS14W600Cgrey300LS0p2.copyWith(
                             color: Colors.grey),
                       ),
-                      // Text(meeting!.date.toString()),
-                      // Text(
-                      //
-                      //   DateFormat('EEE').format(meeting?.date!.isEmpty
-                      //       ? meeting?.date
-                      //       : DateTime(0000, 00, 00)),
-                      //   style: kTextStyleS18W600.copyWith(
-                      //       color: CustomColors.grey156x3TextColor),
-                      // ),
-                      //
-                      //             int day = int.parse(dateParts[0]);
-                      //       int month = int.parse(dateParts[1]);
-                      //     int year = int.parse(dateParts[2]);
-                      //
-                      // // Create a DateTime object
-                      // DateTime dateTime = DateTime(year, month, day);
-                      //
-                      // // Format the DateTime object to the desired format
-                      // String formattedDate = DateFormat('EEE d').format(dateTime);
-
-                      // Text(
-                      //   meeting?.date?.toString() ?? '',
-                      //   style: kTextStyleS18W600.copyWith(
-                      //       color: CustomColors.lightBlueColor),
-                      // ),
                     ],
                   ),
                 ),

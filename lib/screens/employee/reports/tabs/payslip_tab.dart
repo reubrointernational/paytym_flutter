@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:open_file/open_file.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/icons.dart';
@@ -25,11 +26,12 @@ class PayslipTab extends StatelessWidget {
     final ReportsController reportsController = Get.put(ReportsController());
     WidgetsBinding.instance
         .addPostFrameCallback((_) => reportsController.fetchPayslip());
-
+    Get.put(ReportsControllerAdmin());
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Obx(() {
               return CustomDropdownYearButton(
@@ -84,6 +86,8 @@ class PayslipTab extends StatelessWidget {
 
   Widget payslipContainer() {
     String? url;
+    // String? url =
+    //     "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
     return Column(
       children: [
         Expanded(
@@ -95,7 +99,6 @@ class PayslipTab extends StatelessWidget {
                       .payroll
                       ?.isNotEmpty ??
                   false) {
-                // kStorageUrl = 'https://paytym.net/storage/';
                 url =
                     '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
 
@@ -104,21 +107,22 @@ class PayslipTab extends StatelessWidget {
                     .value
                     .payroll
                     .toString());
-                print("pdf url:$url");
               } else {
-                print("no payslip 1");
-                return const SizedBox();
+                // url =
+                //     "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+                // return const SizedBox();
+                return const Text("No Payroll Present");
               }
             } on Exception {
               return const SizedBox();
             }
 
             if (url?.getType() == 'pdf') {
-              print(" payslip pdf url:${url.toString()}");
+              //for testing given an outside file name
               return PdfViewer(
-                url:
-                    "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"!,
-                // url: url!,
+                // url:
+                //     "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"!,
+                url: url!,
               );
             } else if (url?.getType() == 'png') {
               return CachedImage(
@@ -139,6 +143,7 @@ class PayslipTab extends StatelessWidget {
               IconButton(
                 onPressed: () =>
                     Get.find<ReportsController>().sharePdf(url, url?.getType()),
+                // Get.find<ReportsController>().sharePdf(url, url?.getType()),
                 icon: CircleAvatar(
                   backgroundColor: CustomColors.fabColor,
                   child: Obx(
@@ -157,19 +162,26 @@ class PayslipTab extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  // files?[index].isDownloading = true;
-                  Get.find<ReportsController>().fileListResponseModel.refresh();
-                  Get.find<ReportsControllerAdmin>().downloadFile("hr_rec",
-                      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-                      ((progress, total) {
-                    if (progress == total) {
-                      // files?[index].isDownloading = false;
-                      Get.find<ReportsController>()
-                          .fileListResponseModel
-                          .refresh();
-                      DialogHelper.showToast(desc: 'Download completed');
-                    }
-                  }));
+                  if (Get.find<ReportsController>().selectedDropdownDay.value ==
+                      null) {
+                    DialogHelper.showToast(desc: 'No Payslip found');
+                  } else {
+                    // files?[index].isDownloading = true;
+                    Get.find<ReportsController>()
+                        .fileListResponseModel
+                        .refresh();
+                    Get.find<ReportsControllerAdmin>().downloadFile("hr_rec",
+                        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+                        ((progress, total) {
+                      if (progress == total) {
+                        // files?[index].isDownloading = false;
+                        Get.find<ReportsController>()
+                            .fileListResponseModel
+                            .refresh();
+                        DialogHelper.showToast(desc: 'Download completed');
+                      }
+                    }));
+                  }
                   // original code
                   // Get.find<ReportsController>().downloadPdf(url);
                 },

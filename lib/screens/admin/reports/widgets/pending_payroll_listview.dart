@@ -157,10 +157,15 @@ class PendingPayrollListview extends StatelessWidget {
                         //     color: CustomColors.blackTextColor,
                         //   ),
                         // ),
-                        const SliderColumn(
+                        SliderColumn(
                           // title: 'ALL',
                           title: '',
-                          processPayrollTypes: ProcessPayrollTypes.all,
+                          processPayrollTypes:
+                              Get.find<ReportsControllerAdmin>()
+                                      .isAllEmployeesSelected
+                                      .value
+                                  ? ProcessPayrollTypes.all
+                                  : ProcessPayrollTypes.all,
                         ),
                         // const SliderColumn(
                         //   title: 'DEPARTMENT',
@@ -169,6 +174,89 @@ class PendingPayrollListview extends StatelessWidget {
                         // const SliderColumn(
                         //   title: 'BRANCH',
                         //   processPayrollTypes: ProcessPayrollTypes.branch,
+                        // ),
+                        // Revert Payroll Section
+                        // ExpansionTile(
+                        //   title: Text("Revert Payroll"),
+                        //   children: [
+                        //     Row(
+                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //       children: [
+                        //         Obx(() => OutlinedButton(
+                        //               style: OutlinedButton.styleFrom(
+                        //                 backgroundColor:
+                        //                     Get.find<ReportsControllerAdmin>()
+                        //                             .isAllEmployeesSelected
+                        //                             .value
+                        //                         ? Colors.blue
+                        //                         : Colors.white,
+                        //                 side: const BorderSide(
+                        //                     color: Colors.blue),
+                        //               ),
+                        //               onPressed: () {
+                        //                 Get.find<ReportsControllerAdmin>()
+                        //                     .isAllEmployeesSelected
+                        //                     .value = true;
+                        //                 Get.find<ReportsControllerAdmin>()
+                        //                     .isEmployeesSelectedForPayroll
+                        //                     .value = false;
+                        //               },
+                        //               child: Padding(
+                        //                 padding: const EdgeInsets.all(1.0),
+                        //                 child: Text(
+                        //                   'All Employees',
+                        //                   style: TextStyle(
+                        //                       color: Get.find<
+                        //                                   ReportsControllerAdmin>()
+                        //                               .isAllEmployeesSelected
+                        //                               .value
+                        //                           ? Colors.white
+                        //                           : Colors.blue,
+                        //                       fontSize: 16,
+                        //                       fontWeight: FontWeight.w500),
+                        //                 ),
+                        //               ),
+                        //             )),
+                        //         Obx(() => OutlinedButton(
+                        //               style: OutlinedButton.styleFrom(
+                        //                 backgroundColor:
+                        //                     Get.find<ReportsControllerAdmin>()
+                        //                             .isAllEmployeesSelected
+                        //                             .value
+                        //                         ? Colors.white
+                        //                         : Colors.blue,
+                        //                 side: const BorderSide(
+                        //                     color: Colors.blue),
+                        //               ),
+                        //               onPressed: () {
+                        //                 Get.find<ReportsControllerAdmin>()
+                        //                     .isAllEmployeesSelected
+                        //                     .value = false;
+                        //                 Get.find<ReportsControllerAdmin>()
+                        //                     .isEmployeesSelectedForPayroll
+                        //                     .value = true;
+                        //                 showFilterBottomSheet(context,
+                        //                     Get.find<ReportsControllerAdmin>());
+                        //               },
+                        //               child: Padding(
+                        //                 padding: const EdgeInsets.all(1.0),
+                        //                 child: Text(
+                        //                   'Choose Employee',
+                        //                   style: TextStyle(
+                        //                       color: Get.find<
+                        //                                   ReportsControllerAdmin>()
+                        //                               .isAllEmployeesSelected
+                        //                               .value
+                        //                           ? Colors.blue
+                        //                           : Colors.white,
+                        //                       fontSize: 16,
+                        //                       fontWeight: FontWeight.w500),
+                        //                 ),
+                        //               ),
+                        //             )),
+                        //       ],
+                        //     ),
+                        //   ],
                         // ),
                       ],
                     ),

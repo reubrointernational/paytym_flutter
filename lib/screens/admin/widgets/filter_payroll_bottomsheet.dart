@@ -359,6 +359,7 @@ showFilterBottomSheet(context, controller) {
                       onPressed: () {
                         print(
                             "Selected Employee List:${Get.find<ReportsControllerAdmin>().filteredEmployeeList?.length.toString()}");
+                        Navigator.pop(context);
                         // if (Get.find<ReportsControllerAdmin>()
                         //         .filteredEmployeeList
                         //         ?.isNotEmpty ??

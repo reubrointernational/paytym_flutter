@@ -278,6 +278,8 @@ class ReportsControllerAdmin extends GetxController
             ? processPayroll('all')
             : processPayroll('employee');
         // processPayroll('all');
+        print(
+            "Process payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
       },
       onCancel: () {
@@ -503,18 +505,24 @@ class ReportsControllerAdmin extends GetxController
       status: '0',
       id: '',
     );
-    request.fields.addAll(fileUploadRequestModel.toJson());
-    request.headers.addAll(Get.find<LoginController>().getHeader()!);
-    var multipartFile =
-        await http.MultipartFile.fromPath('file', filePath.value);
-    request.files.add(multipartFile);
-    var streamResponse = await request.send();
-    await http.Response.fromStream(streamResponse);
-    fileNameDropdownIndex.value = 0;
-    filePath.value = '';
-    hideLoading();
-    DialogHelper.showToast(desc: 'File uploaded');
-    Get.find<ReportsController>().fetchFiles(selectedEmployeeId);
+
+    if (filePath.value.toString() == "") {
+      hideLoading();
+      DialogHelper.showToast(desc: 'File upload Failed. Please try again');
+    } else {
+      request.fields.addAll(fileUploadRequestModel.toJson());
+      request.headers.addAll(Get.find<LoginController>().getHeader()!);
+      var multipartFile =
+          await http.MultipartFile.fromPath('file', filePath.value);
+      request.files.add(multipartFile);
+      var streamResponse = await request.send();
+      await http.Response.fromStream(streamResponse);
+      fileNameDropdownIndex.value = 0;
+      filePath.value = '';
+      hideLoading();
+      DialogHelper.showToast(desc: 'File uploaded');
+      Get.find<ReportsController>().fetchFiles(selectedEmployeeId);
+    }
   }
 
   deleteFiles(int id) async {
@@ -1199,8 +1207,9 @@ class ReportsControllerAdmin extends GetxController
     List<String>? empList = [];
 
     if (payrollFlag.toString() != "all") {
+      // For Selected Employees Payroll
       print(
-          "called :processPayroll not all selected employee count:${filteredEmployeeList?.length.toString()} ");
+          "called :processPayroll NOT ALL selected employee count:${filteredEmployeeList?.length.toString()} ");
       for (var element in filteredEmployeeList!) {
         if (element.isSelected == true) {
           print(
@@ -1225,11 +1234,14 @@ class ReportsControllerAdmin extends GetxController
               Get.find<LoginController>().getHeader())
           .catchError(handleError);
       // var responseString;
-      print("Payroll: ${responseString.toString()}");
+      print("Payroll API: ${ApiEndPoints.processPayroll}");
+      print("Payroll API Response: ${responseString.toString()}");
 
       if (responseString == null) {
         sliderValue.value = 0;
         Get.back();
+        DialogHelper.showToast(
+            desc: " Payroll Not Processed for the Selected Employees");
         return;
       } else {
         hideLoading();
@@ -1237,10 +1249,12 @@ class ReportsControllerAdmin extends GetxController
         DialogHelper.showToast(
             desc:
                 messageOnlyResponseModelFromJson(responseString).message ?? '');
+        DialogHelper.showToast(
+            desc: "Payroll Generated for the Selected Employees");
       }
     } else {
-      // Flag: Employee
-      print("Flag: $payrollFlag");
+      // Flag: All Employees
+      print("Flag for ALL : $payrollFlag");
       showLoading();
 
       var requestModel = {
@@ -1251,6 +1265,7 @@ class ReportsControllerAdmin extends GetxController
       };
 
       // commenting payroll operation
+      print("Payroll for All APi: ${ApiEndPoints.processPayroll.toString()}");
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
               Get.find<LoginController>().getHeader())
@@ -1258,16 +1273,17 @@ class ReportsControllerAdmin extends GetxController
       // var responseString;
       print("Payroll: ${responseString.toString()}");
 
-      if (responseString == null) {
-        sliderValue.value = 0;
-        Get.back();
+      if (responseString != null) {
+        // sliderValue.value = 0;
+        // Get.back();
+        DialogHelper.showToast(desc: "Payroll Generated for All the Employees");
         return;
       } else {
         hideLoading();
-        Get.back();
+        // Get.back();
+
         DialogHelper.showToast(
-            desc:
-                messageOnlyResponseModelFromJson(responseString).message ?? '');
+            desc: "Payroll Not Generated for All the Employees");
       }
     }
   }

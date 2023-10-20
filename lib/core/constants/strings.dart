@@ -493,6 +493,8 @@ const kTypeTheReasonString = 'Type The Reason';
 
 const kRequestAdvanceString = 'Request Advance';
 
+const kRequestLoanString = 'Request Loan';
+
 const kRequestOvertimeString = 'Request Overtime';
 
 const kEditOvertimeString = 'Edit Overtime';

@@ -12,8 +12,6 @@ class MeetingHRAttendessListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<CalendarController>();
-    var empList = listOfAttendees;
     return CustomAdminScaffold(
         title: "Meeting Attendees",
         child: Padding(
@@ -35,7 +33,8 @@ class MeetingHRAttendessListPage extends StatelessWidget {
                       '${members?.firstName ?? ''} ${members?.lastName ?? ''}',
                       style: kTextStyleS15W600CBlack,
                     ),
-                    subtitle: Text('ID: ${members?.id}'),
+                    subtitle: Text('ID: ${members?.jobTitle}',
+                        style: kTextStyleS13W500Cgrey),
                     // subtitle: Text('ID: ${members?.jobTitle}'),
                     leading: CircleAvatar(
                       radius: 25,
@@ -43,8 +42,8 @@ class MeetingHRAttendessListPage extends StatelessWidget {
                       backgroundImage:
                           NetworkImage('$kStorageUrl${members?.image}'),
                     ),
-                    trailing: const Text(
-                      "Brach name",
+                    trailing: Text(
+                      'ID: ${members?.id}',
                       style: kTextStyleS13W500Cgrey,
                     ),
                   ),

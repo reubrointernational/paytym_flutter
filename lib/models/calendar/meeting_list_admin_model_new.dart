@@ -74,9 +74,7 @@ class MeetingsListe {
     userId = json['user_id'];
     employerId = json['employer_id'];
     name = json['name'];
-    // date = json['date'];
-    date:
-    json["date"] != null ? DateTime.parse(json["date"]) : null;
+    date = json["date"];
     startTime = json['start_time'];
     endTime = json['end_time'];
     agenda = json['agenda'];

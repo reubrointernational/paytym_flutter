@@ -86,8 +86,17 @@ class UploadFilesPage extends StatelessWidget {
                   width: w * 0.6,
                   height: h * 0.06,
                   child: ElevatedButton(
-                    onPressed: () =>
-                        Get.find<ReportsControllerAdmin>().uploadFiles(),
+                    onPressed: () {
+                      if (Get.find<ReportsControllerAdmin>()
+                          .filePath
+                          .value
+                          .isNotEmpty) {
+                        Get.find<ReportsControllerAdmin>().uploadFiles();
+                      } else {
+                        DialogHelper.showToast(
+                            desc: "Please Select a file to Upload!");
+                      }
+                    },
                     child: const Text('Upload'),
                   ),
                 ),

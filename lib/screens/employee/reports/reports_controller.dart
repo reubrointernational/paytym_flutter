@@ -73,7 +73,15 @@ class ReportsController extends GetxController
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
   final overtimeResponseModel =
       OvertimeListResponseModel(message: '', employeeList: []).obs;
-
+  final List<String> StatusArray = [
+    "undefined",
+    "enqueued",
+    "running",
+    "complete",
+    "failed",
+    "canceled",
+    "paused"
+  ];
   String getMedicalDetails(int index) {
     switch (index) {
       case 0:
@@ -245,7 +253,7 @@ class ReportsController extends GetxController
       'year': selectedDropdownYear.value,
       'month': (monthsList.indexOf(selectedDropdownMonth.value) + 1).toString()
     };
-    print("Payslip of ${map.values.first}");
+
     Get.find<BaseClient>().onError = fetchPayslip;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.payslip, jsonEncode(map),
@@ -255,7 +263,6 @@ class ReportsController extends GetxController
       return;
     } else {
       hideLoading();
-      print("Payslip Response:" + responseString);
       payslipResponseModel.value = payslipResponseModelFromJson(responseString);
       payslipResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
@@ -560,8 +567,8 @@ class ReportsController extends GetxController
       await FlutterDownloader.enqueue(
         url: url!,
         savedDir: tempPath,
-        showNotification: true,
-        openFileFromNotification: true,
+        showNotification: false,
+        openFileFromNotification: false,
         fileName: 'payslip.$type',
       );
     }
@@ -579,6 +586,28 @@ class ReportsController extends GetxController
   String getTime(String date) {
     final DateTime now = DateTime.parse(date);
     return DateFormat('hh:mm a').format(now);
+  }
+
+  /// Creates a new [DownloadTaskStatus] from an [int].
+  int getDownloadTaskIntegerValueFromStatus(DownloadTaskStatus status) {
+    switch (status) {
+      case DownloadTaskStatus.undefined:
+        return 0;
+      case DownloadTaskStatus.enqueued:
+        return 1;
+      case DownloadTaskStatus.running:
+        return 2;
+      case DownloadTaskStatus.complete:
+        return 3;
+      case DownloadTaskStatus.failed:
+        return 4;
+      case DownloadTaskStatus.canceled:
+        return 5;
+      case DownloadTaskStatus.paused:
+        return 6;
+      default:
+        throw ArgumentError('Invalid value: $status');
+    }
   }
 
   //for downloading
@@ -618,8 +647,16 @@ class ReportsController extends GetxController
         isSharingOrDownloading.value = SharingOrDownloading.idle;
       }
     });
+    String check = "loop";
+    int statusCode = StatusArray.indexWhere((element) => element == check);
+    FlutterDownloader.registerCallback(downloadCallbackTest);
+    // FlutterDownloader.registerCallback(downloadCallback);
+  }
 
-    FlutterDownloader.registerCallback(downloadCallback);
+  @pragma('vm:entry-point')
+  static void downloadCallbackTest(String id, int status, int progress) {
+    IsolateNameServer.lookupPortByName('downloader_send_port')
+        ?.send([id, status, progress]);
   }
 
   @pragma('vm:entry-point')

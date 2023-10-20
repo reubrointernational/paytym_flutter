@@ -376,6 +376,25 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     return DateFormat('dd-MM-yyyy').format(dateTime).toString();
   }
 
+  // String getDateTimeFromString(String DateAsString) {
+  //   if (dateTime == null) {
+  //     return '';
+  //   }
+  //
+  //   return DateFormat('dd-MM-yyyy').format(dateTime).toString();
+  // }
+
+  String getDDMMMYYYYString(DateTime? dateTime, String format) {
+    if (format.isEmpty) {
+      format = 'dd-MMM-yyyy';
+    }
+    if (dateTime == null) {
+      return '';
+    }
+    // 'dd-MMM-yyyy'
+    return DateFormat(format).format(dateTime).toString();
+  }
+
   String getDateReverseString(String? date) {
     if (date == null) {
       return '';
