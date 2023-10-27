@@ -268,19 +268,29 @@ class ReportsControllerAdmin extends GetxController
   }
 
   showDialogue() {
+    String payrollString =
+        Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == true
+            ? "Are you sure to process payroll for All Employees ?"
+            : "Are you sure to process payroll for the Selected  Employees ?";
     DialogHelper.showConfirmDialog(
       title: sliderValue.value == 100 ? 'Process Payroll' : 'Reverse Payroll',
-      desc: sliderValue.value == 100
-          ? 'Are you sure to process payroll?'
-          : 'Are you sure to reverse payroll?',
+      desc: sliderValue.value == 100 ? payrollString : payrollString,
       onConfirm: () {
+        showLoading();
         Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == true
             ? processPayroll('all')
-            : processPayroll('employee');
+            : processPayroll('others');
         // processPayroll('all');
         print(
             "Process payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
+
+        showLoading();
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
+
+        Get.back(); // will go to the employee homepage
+
+        // hideLoading();
+        sliderValue.value = 0;
       },
       onCancel: () {
         sliderValue.value = 0;
@@ -1239,6 +1249,7 @@ class ReportsControllerAdmin extends GetxController
 
       if (responseString == null) {
         sliderValue.value = 0;
+        hideLoading();
         Get.back();
         DialogHelper.showToast(
             desc: " Payroll Not Processed for the Selected Employees");
@@ -1251,6 +1262,7 @@ class ReportsControllerAdmin extends GetxController
                 messageOnlyResponseModelFromJson(responseString).message ?? '');
         DialogHelper.showToast(
             desc: "Payroll Generated for the Selected Employees");
+        hideLoading();
       }
     } else {
       // Flag: All Employees
@@ -1276,11 +1288,14 @@ class ReportsControllerAdmin extends GetxController
       if (responseString != null) {
         // sliderValue.value = 0;
         // Get.back();
+        hideLoading();
         DialogHelper.showToast(desc: "Payroll Generated for All the Employees");
+        hideLoading();
+        Get.back();
         return;
       } else {
         hideLoading();
-        // Get.back();
+        Get.back();
 
         DialogHelper.showToast(
             desc: "Payroll Not Generated for All the Employees");

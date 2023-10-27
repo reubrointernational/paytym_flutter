@@ -245,7 +245,8 @@ class ReportsController extends GetxController
     return formatNumber(result.toString());
   }
 
-  fetchPayslip() async {
+  fetchPayslip(String selPayslipDate) async {
+    print("fetchPayslipCopy Called with date:$selPayslipDate");
     dateList.value = [];
     showLoading();
 
@@ -254,7 +255,7 @@ class ReportsController extends GetxController
       'month': (monthsList.indexOf(selectedDropdownMonth.value) + 1).toString()
     };
 
-    Get.find<BaseClient>().onError = fetchPayslip;
+    Get.find<BaseClient>().onError = fetchPayslip(selPayslipDate);
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.payslip, jsonEncode(map),
             Get.find<LoginController>().getHeader())
@@ -268,11 +269,73 @@ class ReportsController extends GetxController
       Get.find<BaseClient>().onError = null;
       for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
         dateList.add(DateFormat('dd-MM-yyyy').format(payroll.createdAt!));
+        print(
+            "Dates added to Payslip date list:${DateFormat('dd-MM-yyyy').format(payroll.createdAt!)}");
       }
       dateList.value = dateList.toSet().toList();
       selectedDropdownDay.value = dateList.first;
+      // if (selPayslipDate == null) {
+      //   selectedDropdownDay.value = dateList.first;
+      // } else {
+      //   selectedDropdownDay.value = selPayslipDate;
+      // }
       dateList.refresh();
     }
+  }
+
+  fetchPayslipCopy() async {
+    dateList.value = [];
+    showLoading();
+
+    final map = {
+      'year': selectedDropdownYear.value,
+      'month': (monthsList.indexOf(selectedDropdownMonth.value) + 1).toString()
+    };
+
+    Get.find<BaseClient>().onError = fetchPayslipCopy;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.payslip, jsonEncode(map),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      hideLoading();
+
+      return;
+    } else {
+      hideLoading();
+      payslipResponseModel.value = payslipResponseModelFromJson(responseString);
+      payslipResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+      for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
+        // dateList.add(DateFormat('dd-MM-yyyy').format(payroll.startDate!));
+        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.createdAt!));
+      }
+      dateList.value = dateList.toSet().toList();
+      print(
+          "Controller selected date drop down value:${selectedDropdownDay.value}");
+      if (selectedDropdownDay.value == null) {
+        selectedDropdownDay.value = dateList.first;
+        dateList.refresh();
+        hideLoading();
+      }
+
+      // selectedDropdownDay.value = dateList.first;
+      // dateList.refresh();
+    }
+  }
+
+  fetchPayslipForDateChange(String selectedDate) async {
+    showLoading();
+
+    hideLoading();
+
+    for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
+      dateList.add(DateFormat('dd-MM-yyyy').format(payroll.createdAt!));
+    }
+    dateList.value = dateList.toSet().toList();
+    selectedDropdownDay.value = selectedDate;
+    // dateList.refresh();
+    hideLoading();
   }
 
   getMedical() async {

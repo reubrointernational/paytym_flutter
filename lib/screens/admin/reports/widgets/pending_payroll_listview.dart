@@ -8,6 +8,7 @@ import '../../../../core/constants/enums.dart';
 import '../../../../core/constants/icons.dart';
 import '../../../../core/constants/widgets.dart';
 import '../../../../core/custom_slider_thumb.dart';
+import '../../../../core/dialog_helper.dart';
 import '../../../../models/employee_list_model.dart';
 import '../../widgets/filter_payroll_bottomsheet.dart';
 
@@ -40,8 +41,6 @@ class PendingPayrollListview extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,6 +68,8 @@ class PendingPayrollListview extends StatelessWidget {
                                             (element) => element.status == 1)
                                         .toList();
                                 if (employeeList != null) {
+                                  DialogHelper.showToast(
+                                      desc: 'Payslip Downloading');
                                   CsvDownloader().downloadCsv(employeeList);
                                 }
                               },
@@ -275,8 +276,10 @@ class PendingPayrollListview extends StatelessWidget {
               ),
               Obx(() {
                 List<EmployeeList>? employeesList =
-                    Get.find<DashboardControllerAdmin>()
-                        .getFilteredEmployeeList();
+                    Get.find<DashboardControllerAdmin>().getEmployees();
+                // List<EmployeeList>? employeesList =
+                // Get.find<DashboardControllerAdmin>()
+                //     .getFilteredEmployeeList();
                 employeesList = employeesList
                     ?.where((element) => element.status == 1)
                     .toList();
