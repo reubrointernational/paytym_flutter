@@ -35,10 +35,13 @@ class DashboardController extends GetxController with BaseController {
   bool sliderValueChanged = false;
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
+
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
+  TextEditingController? dateofrequiredcontroller = TextEditingController();
   TextEditingController? overtimeTextEditingController =
       TextEditingController();
+
   final employerIdModel = {
     'employer_id':
         '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'

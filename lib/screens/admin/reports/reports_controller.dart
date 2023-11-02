@@ -85,8 +85,10 @@ class ReportsControllerAdmin extends GetxController
   final List<String> reportsTabListAdmin = [
     'Attendance',
     'Overtime',
+    'Loan',
     //payroll
     //deduction
+
     'Projects',
     'Uploads',
     // 'Medical',
@@ -211,8 +213,12 @@ class ReportsControllerAdmin extends GetxController
     // For payrollchecking now given as 0...need to recheck with the API
     // if (capabilityList?.first.viewPayroll == 1 &&
     if (capabilityList?.first.viewPayroll == 0 &&
+        !reportsTabListAdmin.contains('Loan')) {
+      reportsTabListAdmin.insert(2, 'Loan');
+    }
+    if (capabilityList?.first.viewPayroll == 0 &&
         !reportsTabListAdmin.contains('Payroll')) {
-      reportsTabListAdmin.insert(2, 'Payroll');
+      reportsTabListAdmin.insert(3, 'Payroll');
     }
     if (capabilityList?.first.deductions == 1 &&
         !reportsTabListAdmin.contains('Deduction')) {

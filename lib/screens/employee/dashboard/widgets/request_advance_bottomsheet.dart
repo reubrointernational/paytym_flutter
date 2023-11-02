@@ -43,7 +43,6 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                   hintText: kAmountString,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  
                   validator: (value) =>
                       Get.find<DashboardController>().amountValidator(value!),
                   onSaved: (value) => Get.find<DashboardController>()
@@ -59,6 +58,26 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                   onSaved: (value) => Get.find<DashboardController>()
                       .requestAdvanceModel
                       .description = value!,
+                ),
+                kSizedBoxH10,
+                BottomsheetTextField(
+                  controller: Get.find<DashboardController>()
+                      .overtimeTextEditingController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
+                  ],
+                  hintText: kDateofRequirement,
+                  keyboardType: TextInputType.datetime,
+                  suffixIcon: InkWell(
+                    onTap: () =>
+                        Get.find<DashboardController>().selectDateTime(context),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.calendar_month, size: 18),
+                    ),
+                  ),
+                  validator: (value) =>
+                      Get.find<DashboardController>().dateValidator(value!),
                 ),
               ],
             ),
