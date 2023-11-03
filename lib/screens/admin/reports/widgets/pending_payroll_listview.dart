@@ -79,76 +79,125 @@ class PendingPayrollListview extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Obx(() => OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor:
-                                        Get.find<ReportsControllerAdmin>()
-                                                .isAllEmployeesSelected
-                                                .value
-                                            ? Colors.blue
-                                            : Colors.white,
-                                    side: const BorderSide(color: Colors.blue),
+                            Obx(
+                              () => OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor:
+                                      Get.find<ReportsControllerAdmin>()
+                                              .isAllEmployeesSelected
+                                              .value
+                                          ? Colors.blue
+                                          : Colors.white,
+                                  side: const BorderSide(color: Colors.blue),
+                                ),
+                                onPressed: () {
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isAllEmployeesSelected
+                                      .value = true;
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isEmployeesSelectedForPayroll
+                                      .value = false;
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isRevertPayrollSelected
+                                      .value = false;
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Text(
+                                    'All Employees',
+                                    style: TextStyle(
+                                        color:
+                                            Get.find<ReportsControllerAdmin>()
+                                                    .isAllEmployeesSelected
+                                                    .value
+                                                ? Colors.white
+                                                : Colors.blue,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500),
                                   ),
-                                  onPressed: () {
-                                    Get.find<ReportsControllerAdmin>()
-                                        .isAllEmployeesSelected
-                                        .value = true;
-                                    Get.find<ReportsControllerAdmin>()
-                                        .isEmployeesSelectedForPayroll
-                                        .value = false;
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(1.0),
-                                    child: Text(
-                                      'All Employees',
-                                      style: TextStyle(
-                                          color:
-                                              Get.find<ReportsControllerAdmin>()
-                                                      .isAllEmployeesSelected
-                                                      .value
-                                                  ? Colors.white
-                                                  : Colors.blue,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                )),
-                            Obx(() => OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor:
-                                        Get.find<ReportsControllerAdmin>()
-                                                .isAllEmployeesSelected
+                                ),
+                              ),
+                            ),
+                            Obx(
+                              () => OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor:
+                                      Get.find<ReportsControllerAdmin>()
+                                              .isEmployeesSelectedForPayroll
+                                              .value
+                                          ? Colors.blue
+                                          : Colors.white,
+                                  side: const BorderSide(color: Colors.blue),
+                                ),
+                                onPressed: () {
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isAllEmployeesSelected
+                                      .value = false;
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isEmployeesSelectedForPayroll
+                                      .value = true;
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isRevertPayrollSelected
+                                      .value = false;
+                                  showFilterBottomSheet(context,
+                                      Get.find<ReportsControllerAdmin>());
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Text(
+                                    'Choose Employee',
+                                    style: TextStyle(
+                                        color: Get.find<
+                                                    ReportsControllerAdmin>()
+                                                .isEmployeesSelectedForPayroll
                                                 .value
                                             ? Colors.white
                                             : Colors.blue,
-                                    side: const BorderSide(color: Colors.blue),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500),
                                   ),
-                                  onPressed: () {
-                                    Get.find<ReportsControllerAdmin>()
-                                        .isAllEmployeesSelected
-                                        .value = false;
-                                    Get.find<ReportsControllerAdmin>()
-                                        .isEmployeesSelectedForPayroll
-                                        .value = true;
-                                    showFilterBottomSheet(context,
-                                        Get.find<ReportsControllerAdmin>());
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(1.0),
-                                    child: Text(
-                                      'Choose Employee',
-                                      style: TextStyle(
-                                          color:
-                                              Get.find<ReportsControllerAdmin>()
-                                                      .isAllEmployeesSelected
-                                                      .value
-                                                  ? Colors.blue
-                                                  : Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
+                                ),
+                              ),
+                            ),
+                            Obx(
+                              () => OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor:
+                                      Get.find<ReportsControllerAdmin>()
+                                              .isRevertPayrollSelected
+                                              .value
+                                          ? Colors.blue
+                                          : Colors.white,
+                                  side: const BorderSide(color: Colors.blue),
+                                ),
+                                onPressed: () {
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isAllEmployeesSelected
+                                      .value = false;
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isEmployeesSelectedForPayroll
+                                      .value = false;
+                                  Get.find<ReportsControllerAdmin>()
+                                      .isRevertPayrollSelected
+                                      .value = true;
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Text(
+                                    'Revert Payroll',
+                                    style: TextStyle(
+                                        color:
+                                            Get.find<ReportsControllerAdmin>()
+                                                    .isRevertPayrollSelected
+                                                    .value
+                                                ? Colors.white
+                                                : Colors.blue,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500),
                                   ),
-                                )),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         // const Text(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/models/report/overtime_list_response_model.dart';
+import 'package:paytym/models/report/advance_response_model.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
 import '../../../../models/report/overtime/overtime_status-model.dart';
@@ -13,22 +13,20 @@ class LoanTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<ReportsController>().getOvertime();
+      Get.find<ReportsController>().getAdvance();
     });
     return Obx(() {
-      List<EmployeeList>? overtimeDetails = Get.find<ReportsController>()
-          .overtimeResponseModel
-          .value
-          .employeeList;
+      List<EmployeesList> advaceDetails =
+          Get.find<ReportsController>().advanceResponseModel.value.employeeList;
 
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: overtimeDetails.length,
+        itemCount: advaceDetails.length,
         itemBuilder: (context, index) {
-          final overtimeDetail = overtimeDetails[index];
+          final advaceDetail = advaceDetails[index];
           OvertimeStatusModel overtimeStatusModel =
               Get.find<ReportsController>()
-                  .getOvertimeStatusModel(overtimeDetail?.status.toString());
+                  .getOvertimeStatusModel(advaceDetail?.status.toString());
           return Column(
             children: [
               Padding(
@@ -59,7 +57,7 @@ class LoanTab extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'ID: #${overtimeDetail.employeeId.toString().padLeft(5, '0')}',
+                                      'ID: #${advaceDetail.userid.toString().padLeft(5, '0')}',
                                       style: TextStyle(
                                         color: Colors.grey.shade600,
                                         fontSize: 13,
@@ -69,7 +67,7 @@ class LoanTab extends StatelessWidget {
                                     DetailsRow(
                                       title: "Date of Requirement: ",
                                       value: DateFormat('dd-MM-yyyy').format(
-                                        overtimeDetail.date ??
+                                        advaceDetail.date ??
                                             DateTime(0000, 00, 00),
                                       ),
                                     ),
@@ -80,7 +78,7 @@ class LoanTab extends StatelessWidget {
                                     //       fontSize: 12.5),
                                     // ),
                                     Text(
-                                      '${overtimeDetail.user?.firstName ?? ''} ${overtimeDetail.user?.lastName ?? ''}',
+                                      '${advaceDetail.user?.firstName ?? ''} ${advaceDetail.user?.lastName ?? ''}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -131,7 +129,7 @@ class LoanTab extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   // overtimeDetail.reason ?? '',
-                                  overtimeDetail.reason ?? '',
+                                  advaceDetail.reason ?? '',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -144,7 +142,7 @@ class LoanTab extends StatelessWidget {
                         ),
                         const Divider(),
                         // For Declined Overtime only
-                        overtimeDetail.status == '2'
+                        advaceDetail.status == '2'
                             ? Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 0, 20, 8),
@@ -163,7 +161,7 @@ class LoanTab extends StatelessWidget {
                                     Expanded(
                                       child: Text(
                                         // overtimeDetail.reason ?? '',
-                                        overtimeDetail.declineReason ?? '',
+                                        advaceDetail.declineReason ?? '',
                                         style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400,

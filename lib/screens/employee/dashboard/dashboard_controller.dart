@@ -38,7 +38,8 @@ class DashboardController extends GetxController with BaseController {
 
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
-  TextEditingController? dateofrequiredcontroller = TextEditingController();
+  TextEditingController? dateofrequiredTextEditingcontroller =
+      TextEditingController();
   TextEditingController? overtimeTextEditingController =
       TextEditingController();
 
@@ -148,6 +149,21 @@ class DashboardController extends GetxController with BaseController {
       overtimeApproveEditRequestModel.date =
           DateFormat('yyyy-MM-dd').format(dateTime!);
       overtimeTextEditingController?.text =
+          DateFormat('dd-MM-yyyy').format(dateTime);
+    } on Exception {}
+  }
+
+  Future<void> dateofrequirement(BuildContext context) async {
+    final DateTime? dateTime = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1990),
+      lastDate: DateTime(2030),
+    );
+    try {
+      overtimeApproveEditRequestModel.date =
+          DateFormat('yyyy-MM-dd').format(dateTime!);
+      dateofrequiredTextEditingcontroller?.text =
           DateFormat('dd-MM-yyyy').format(dateTime);
     } on Exception {}
   }
@@ -312,6 +328,13 @@ class DashboardController extends GetxController with BaseController {
     return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
         ? null
         : "Enter a valid date";
+  }
+
+  String? dateValidatorloan(String value) {
+    final regExp = RegExp(r'^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$');
+    return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
+        ? null
+        : "Enter a valid date in YYYY-MM-DD format";
   }
 
   logout() async {

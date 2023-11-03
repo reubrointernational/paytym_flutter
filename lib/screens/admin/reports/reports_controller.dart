@@ -96,6 +96,7 @@ class ReportsControllerAdmin extends GetxController
   ];
   final isAllEmployeesSelected = true.obs;
   final isEmployeesSelectedForPayroll = false.obs;
+  final isRevertPayrollSelected = false.obs;
   final checkedEmployees = [].obs;
 
   final attendanceHrDateController = TextEditingController();
@@ -261,7 +262,17 @@ class ReportsControllerAdmin extends GetxController
     if ((sliderValue.value - sliderStartValue).abs() > 95) {
       if (sliderValue.value > 95) {
         sliderValue.value = 100;
-        showDialogue();
+        if (Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value ==
+            true) {
+          showDialogue();
+        } else if (Get.find<ReportsControllerAdmin>()
+                .isEmployeesSelectedForPayroll
+                .value ==
+            true) {
+          showDialogue();
+        } else {
+          showDialogueRevert();
+        }
       } else if (sliderValue.value < 5) {
         sliderValue.value = 0;
         // showDialogue();
@@ -280,6 +291,36 @@ class ReportsControllerAdmin extends GetxController
             : "Are you sure to process payroll for the Selected  Employees ?";
     DialogHelper.showConfirmDialog(
       title: sliderValue.value == 100 ? 'Process Payroll' : 'Reverse Payroll',
+      desc: sliderValue.value == 100 ? payrollString : payrollString,
+      onConfirm: () {
+        showLoading();
+        Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == true
+            ? processPayroll('all')
+            : processPayroll('others');
+        // processPayroll('all');
+        print(
+            "Process payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
+
+        showLoading();
+        Get.find<DashboardControllerAdmin>().fetchEmployeeList();
+
+        Get.back(); // will go to the employee homepage
+
+        // hideLoading();
+        sliderValue.value = 0;
+      },
+      onCancel: () {
+        sliderValue.value = 0;
+      },
+    );
+  }
+
+  showDialogueRevert() {
+    String payrollString =
+        "Are you sure to process revert payroll for All Employees ?";
+
+    DialogHelper.showConfirmDialog(
+      title: sliderValue.value == 100 ? 'Revert Payroll' : 'Reverse Payroll',
       desc: sliderValue.value == 100 ? payrollString : payrollString,
       onConfirm: () {
         showLoading();

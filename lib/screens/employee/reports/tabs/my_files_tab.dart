@@ -162,20 +162,22 @@ class MyFilesTab extends StatelessWidget {
                                           .fileListResponseModel
                                           .refresh();
                                       Get.find<ReportsControllerAdmin>()
-                                          .downloadFile("emp_records",
-                                              '$kStorageUrl${files?[index].file}',
-                                              ((progress, total) {
-                                        print(
-                                            "Downloading File From URL:${kStorageUrl}${files?[index].file.toString()}");
-                                        if (progress == total) {
-                                          files?[index].isDownloading = false;
-                                          Get.find<ReportsController>()
-                                              .fileListResponseModel
-                                              .refresh();
-                                          DialogHelper.showToast(
-                                              desc: 'Download completed');
-                                        }
-                                      }));
+                                          .downloadFile(
+                                        "emp_records",
+                                        '$kStorageUrl${files?[index].file}',
+                                        ((progress, total) {
+                                          print(
+                                              "Downloading File From URL:${kStorageUrl}${files?[index].file.toString()}");
+                                          if (progress == total) {
+                                            files?[index].isDownloading = false;
+                                            Get.find<ReportsController>()
+                                                .fileListResponseModel
+                                                .refresh();
+                                            DialogHelper.showToast(
+                                                desc: 'Download completed');
+                                          }
+                                        }),
+                                      );
                                     },
                                     child: files?[index].isDownloading ?? false
                                         ? Lottie.asset(IconPath.downloadingJson)

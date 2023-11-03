@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/message_only_response_model.dart';
+import 'package:paytym/models/report/advance_response_model.dart';
+
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
@@ -71,6 +73,10 @@ class ReportsController extends GetxController
   final dateList = <String>[].obs;
 
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
+
+  final advanceResponseModel =
+      AdvanceResponseModel(message: "", employeeList: []).obs;
+
   final overtimeResponseModel =
       OvertimeListResponseModel(message: '', employeeList: []).obs;
   final List<String> StatusArray = [
@@ -119,6 +125,29 @@ class ReportsController extends GetxController
       overtimeResponseModel.value =
           overtimeListResponseModelFromJson(responseString);
       overtimeResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  getAdvance() async {
+    showLoading();
+    var model = {
+      'employee_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+    };
+    Get.find<BaseClient>().onError = getAdvance;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.getAdvance, jsonEncode(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    print("Get Overtime URL: ${ApiEndPoints.getAdvance.toString()}");
+    if (responseString == null) {
+      return;
+    } else {
+      print("Get Overtime Respons: ${responseString.toString()}");
+      hideLoading();
+      advanceResponseModel.value = advanceResponseModelFromJson(responseString);
+      advanceResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
   }
