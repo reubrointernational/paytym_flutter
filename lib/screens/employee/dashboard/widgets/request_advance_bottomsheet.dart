@@ -61,27 +61,30 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                 ),
                 kSizedBoxH10,
                 BottomsheetTextField(
-                  controller: Get.find<DashboardController>()
-                      .dateofrequiredTextEditingcontroller,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
-                  ],
-                  hintText: kDateofRequirement,
-                  keyboardType: TextInputType.datetime,
-                  suffixIcon: InkWell(
-                    onTap: () => Get.find<DashboardController>()
-                        .dateofrequirement(context),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.calendar_month, size: 18),
+                    controller: Get.find<DashboardController>()
+                        .dateofrequiredTextEditingcontroller,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
+                    ],
+                    hintText: kDateofRequirement,
+                    keyboardType: TextInputType.datetime,
+                    suffixIcon: InkWell(
+                      onTap: () => Get.find<DashboardController>()
+                          .dateofrequirement(context),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.calendar_month, size: 18),
+                      ),
                     ),
-                  ),
-                  validator: (value) =>
-                      Get.find<DashboardController>().dateValidatorloan(value!),
-                  onSaved: (value) => Get.find<DashboardController>()
-                      .requestAdvanceModel
-                      .dateofrequirement = value!,
-                ),
+                    validator: (value) => Get.find<DashboardController>()
+                        .dateValidatorloan(value!),
+                    onSaved: (value) {
+                      String formatedDate = Get.find<DashboardController>()
+                          .convertDateFormat(value);
+                      Get.find<DashboardController>()
+                          .requestAdvanceModel
+                          .dateofrequirement = formatedDate;
+                    }),
               ],
             ),
           ),

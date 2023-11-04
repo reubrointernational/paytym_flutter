@@ -66,6 +66,20 @@ class DashboardController extends GetxController with BaseController {
     return '';
   }
 
+  convertDateFormat(String? inputDate) {
+    List<String> dateParts = inputDate!.split('-');
+    int day = int.parse(dateParts[0]);
+    int month = int.parse(dateParts[1]);
+    int year = int.parse(dateParts[2]);
+
+    DateTime dateTime = DateTime(year, month, day);
+
+    String formattedDate =
+        '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
+
+    return formattedDate;
+  }
+
   getNextShift() {
     if (dashboardModel.value.nextShift?.startTime == null ||
         dashboardModel.value.nextShift?.endDate == null) {
@@ -331,10 +345,11 @@ class DashboardController extends GetxController with BaseController {
   }
 
   String? dateValidatorloan(String value) {
-    final regExp = RegExp(r'^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$');
+    final regExp =
+        RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
     return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
         ? null
-        : "Enter a valid date in YYYY-MM-DD format";
+        : "Enter a valid date in DD-MM-YYYY format";
   }
 
   logout() async {
