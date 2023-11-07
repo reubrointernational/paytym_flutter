@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/models/report/advance/advance_status_model.dart';
 import 'package:paytym/models/report/advance_response_model.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
@@ -16,17 +17,16 @@ class LoanTab extends StatelessWidget {
       Get.find<ReportsController>().getAdvance();
     });
     return Obx(() {
-      List<EmployeesList> advaceDetails =
+      List<EmployeesList> advanceDetails =
           Get.find<ReportsController>().advanceResponseModel.value.employeeList;
 
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: advaceDetails.length,
+        itemCount: advanceDetails.length,
         itemBuilder: (context, index) {
-          final advaceDetail = advaceDetails[index];
-          OvertimeStatusModel overtimeStatusModel =
-              Get.find<ReportsController>()
-                  .getOvertimeStatusModel(advaceDetail?.status.toString());
+          final advaceDetail = advanceDetails[index];
+          AdvanceStatusModel advanceStatusModel = Get.find<ReportsController>()
+              .getAdvanceStatusModel(advaceDetail?.status.toString());
           return Column(
             children: [
               Padding(
@@ -93,18 +93,22 @@ class LoanTab extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 5),
                                       decoration: BoxDecoration(
-                                        color: overtimeStatusModel.textColor,
+                                        color: advanceStatusModel.textColor,
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                       child: Text(
-                                        overtimeStatusModel.text,
+                                        advanceStatusModel.text,
                                         style: TextStyle(
                                           fontSize: 11,
-                                          color: overtimeStatusModel.boxColor,
+                                          color: advanceStatusModel.boxColor,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                     ),
+                                    kSizedBoxH6,
+                                    DetailsRow(
+                                        title: 'Amount :',
+                                        value: advaceDetail.advanceAmount ?? '')
                                   ],
                                 ),
                               ],
@@ -160,7 +164,6 @@ class LoanTab extends StatelessWidget {
                                     ),
                                     Expanded(
                                       child: Text(
-                                        // overtimeDetail.reason ?? '',
                                         advaceDetail.declineReason ?? '',
                                         style: const TextStyle(
                                           fontSize: 12,

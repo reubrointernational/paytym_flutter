@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/message_only_response_model.dart';
+import 'package:paytym/models/report/advance/advance_status_model.dart';
 import 'package:paytym/models/report/advance_response_model.dart';
 
 import 'package:paytym/models/report/payslip_response_model.dart';
@@ -642,6 +643,24 @@ class ReportsController extends GetxController
       default:
         //0 => status - awaiting
         return OvertimeStatusModel('Awaiting', CustomColors.orangeLabelColor,
+            CustomColors.lightOrangeColor);
+    }
+  }
+
+  AdvanceStatusModel getAdvanceStatusModel(String? status) {
+    switch (status) {
+      case '1':
+        //1 => status - approved
+        return AdvanceStatusModel(
+            'Approved', CustomColors.greenColor, CustomColors.lightGreenColor);
+      case '2':
+        //2 => status - declined
+        return AdvanceStatusModel(
+            'Declined', CustomColors.redColor, CustomColors.lightRedColor);
+      case '0':
+      default:
+        //0 => status - awaiting
+        return AdvanceStatusModel('Awaiting', CustomColors.orangeLabelColor,
             CustomColors.lightOrangeColor);
     }
   }

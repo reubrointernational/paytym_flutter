@@ -41,6 +41,7 @@ class EmployeesList {
     this.id,
     this.employerId,
     this.userid,
+    this.advanceAmount,
     this.date,
     this.totalHours,
     this.status,
@@ -56,6 +57,7 @@ class EmployeesList {
   int? employerId;
   int? userid;
   DateTime? date;
+  String? advanceAmount;
   String? totalHours;
   String? status;
   String? reason;
@@ -73,6 +75,7 @@ class EmployeesList {
             ? null
             : DateTime.parse(json["requested_date"]),
         totalHours: json["total_hours"],
+        advanceAmount: json["advance_amount"],
         status: json["status"],
         reason: json["description"],
         declineReason: json["decline_reason"],

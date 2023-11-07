@@ -502,6 +502,8 @@ const kRequestOvertimeString = 'Request Overtime';
 
 const kEditOvertimeString = 'Edit Overtime';
 
+const kEditAdvanceString = 'Edit Loan';
+
 const kDeclineOvertimeString = 'Decline Overtime';
 
 const kLogoutString = 'Logout';

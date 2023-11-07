@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/logout_controller.dart';
 import 'package:paytym/models/message_only_response_model.dart';
+import 'package:paytym/models/report/advance_approve_edit_request.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/employee/dashboard/widgets/request_advance_bottomsheet.dart';
 import 'package:paytym/screens/employee/dashboard/widgets/request_overtime_bottomsheet.dart';
@@ -38,10 +39,13 @@ class DashboardController extends GetxController with BaseController {
 
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
+  AdvanceApproveEditRequestModel advanceApproveEditRequestModel =
+      AdvanceApproveEditRequestModel(status: '0', id: '0');
   TextEditingController? dateofrequiredTextEditingcontroller =
       TextEditingController();
   TextEditingController? overtimeTextEditingController =
       TextEditingController();
+  TextEditingController? advanceTextEditingcontroller = TextEditingController();
 
   final employerIdModel = {
     'employer_id':
@@ -175,7 +179,7 @@ class DashboardController extends GetxController with BaseController {
       lastDate: DateTime(2030),
     );
     try {
-      overtimeApproveEditRequestModel.date =
+      advanceApproveEditRequestModel.date =
           DateFormat('yyyy-MM-dd').format(dateTime!);
       dateofrequiredTextEditingcontroller?.text =
           DateFormat('dd-MM-yyyy').format(dateTime);
@@ -230,6 +234,61 @@ class DashboardController extends GetxController with BaseController {
             OvertimeApproveEditRequestModel(status: '0', id: '0');
         Get.find<ReportsControllerAdmin>().getOvertime();
         overtimeTextEditingController = TextEditingController();
+        DialogHelper.showToast(
+            desc:
+                messageOnlyResponseModelFromJson(responseString).message ?? '');
+      }
+    }
+  }
+
+  requestAdvanceLoan(EmployeeList? employeeList) async {
+    print("request Overtime called");
+    if (requestAdvanceFormKey.currentState!.validate()) {
+      requestAdvanceFormKey.currentState!.save();
+      showLoading();
+      //status 0 for creating overtime
+      //status 1 for approving overtime
+      //status 2 for declining overtime
+      //status 3 for editing overtime
+      advanceApproveEditRequestModel.status = '0';
+      advanceApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+      print(
+          "AdvanceApproveEditRequestModel.employerId:${advanceApproveEditRequestModel.employerId.toString()}");
+      print("employeeList?.id:${employeeList?.id.toString()}");
+      advanceApproveEditRequestModel.employeeId = employeeList?.id != null
+          ? employeeList!.id.toString()
+          : '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
+      print(
+          'request Advance ID:${Get.find<LoginController>().loginResponseModel?.employee?.id}');
+      print(
+          'request Advance ID er:${advanceApproveEditRequestModel?.employeeId}');
+
+      print(
+          'request Advance  status:${advanceApproveEditRequestModel?.status}');
+      print('request Advance  employeeList?.id:${employeeList?.id}');
+
+      var responseString = await Get.find<BaseClient>()
+          .post(
+              employeeList?.id != null
+                  ? ApiEndPoints.approveOvertimeHR
+                  : ApiEndPoints.approveAdvance,
+              advanceApproveEditRequestModelToJson(
+                  advanceApproveEditRequestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+
+      print('request Advance Response:$responseString');
+      if (responseString == null) {
+        return;
+      } else {
+        print('request Advance Response not null :$responseString');
+        hideLoading();
+        Get.back();
+        advanceApproveEditRequestModel =
+            AdvanceApproveEditRequestModel(status: '0', id: '0');
+        Get.find<ReportsControllerAdmin>().getAdvance();
+        advanceTextEditingcontroller = TextEditingController();
         DialogHelper.showToast(
             desc:
                 messageOnlyResponseModelFromJson(responseString).message ?? '');

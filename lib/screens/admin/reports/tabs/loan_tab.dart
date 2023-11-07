@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/enums.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/models/report/advance/advance_status_model.dart';
+import 'package:paytym/models/report/advance_response_model.dart';
 import 'package:paytym/models/report/overtime/overtime_status-model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
+import 'package:paytym/screens/employee/dashboard/widgets/advance_bottomsheet.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/dialog_helper.dart';
 import '../../../employee/dashboard/widgets/request_overtime_bottomsheet.dart';
@@ -19,33 +22,33 @@ class LoanTabAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("OvertimeTabAdmin called");
+    print("LoanTabAdmin called");
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<ReportsControllerAdmin>().getOvertime();
+      Get.find<ReportsControllerAdmin>().getAdvance();
       WidgetsBinding.instance.addPostFrameCallback(
           (_) => Get.find<DashboardControllerAdmin>().clearFilter());
       // Get.find<ReportsControllerAdmin>().getOvertime();
       //addotional adding below 5 oct 2023
       WidgetsBinding.instance.addPostFrameCallback(
-          (_) => Get.find<ReportsControllerAdmin>().getFilteredOvertimeList);
+          (_) => Get.find<ReportsControllerAdmin>().getFilteredAdvanceList());
       // Get.find<ReportsControllerAdmin>().getOvertime();
       Get.find<ReportsControllerAdmin>().fetchBusiness();
     });
     return Obx(() {
-      List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
-          .getFilteredOvertimeList()
+      List<EmployeesList>? advanceDetails = Get.find<ReportsControllerAdmin>()
+          .getFilteredAdvanceList()
           ?.where((element) => element.status == '0')
           .toList();
 
       return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: overtimeDetails?.length ?? 0,
+        itemCount: advanceDetails?.length ?? 0,
         itemBuilder: (context, index) {
           // print("Index:$index");
-          final overtimeDetail = overtimeDetails?[index];
-          OvertimeStatusModel overtimeStatusModel =
+          final advanceDetail = advanceDetails?[index];
+          AdvanceStatusModel advanceStatusModel =
               Get.find<ReportsControllerAdmin>()
-                  .getOvertimeStatusModel(overtimeDetail!.status);
+                  .getAdvanceStatusModel(advanceDetail!.status);
           // print("List Loading:${overtimeDetail.status}");
           int tempIndex = 0;
           return Column(
@@ -83,7 +86,7 @@ class LoanTabAdmin extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'ID: #${overtimeDetail?.employeeId.toString().padLeft(5, '0')}',
+                                        'ID: #${advanceDetail.userid.toString().padLeft(5, '0')}',
                                         style: TextStyle(
                                           color: Colors.grey.shade600,
                                           fontSize: 13,
@@ -91,17 +94,13 @@ class LoanTabAdmin extends StatelessWidget {
                                       ),
                                       kSizedBoxH2,
                                       Text(
-                                        '${overtimeDetail?.user?.firstName ?? ''} ${overtimeDetail?.user?.lastName ?? ''}',
+                                        '${advanceDetail.user?.firstName ?? ''} ${advanceDetail.user?.lastName ?? ''}',
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                       Text(
-                                        'Branch Name',
-                                        // overtimeDetail?.user?.bankBranchName
-                                        //         ?.toString() ??
-                                        //     '',
-
+                                        '${advanceDetail.user?.bankBranchName}',
                                         style: TextStyle(
                                             color: Colors.grey.shade600,
                                             fontSize: 12.5),
@@ -124,24 +123,29 @@ class LoanTabAdmin extends StatelessWidget {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 5, horizontal: 3),
                                         decoration: BoxDecoration(
-                                          color: overtimeStatusModel.boxColor,
+                                          color: advanceStatusModel.boxColor,
                                           borderRadius:
                                               BorderRadius.circular(4),
                                         ),
                                         child: Text(
                                           style: TextStyle(
-                                              color: overtimeStatusModel
-                                                  .textColor),
-                                          ' ${overtimeStatusModel.text}',
+                                              color:
+                                                  advanceStatusModel.textColor),
+                                          ' ${advanceStatusModel.text}',
                                         ),
                                       ),
                                       kSizedBoxH2,
                                       DetailsRow(
                                         title: "Date of Requirement: ",
                                         value: DateFormat('dd-MM-yyyy').format(
-                                            overtimeDetail?.date ??
+                                            advanceDetail.date ??
                                                 DateTime(0000, 00, 00)),
                                       ),
+                                      kSizedBoxH2,
+                                      DetailsRow(
+                                          title: "Amount: ",
+                                          value: advanceDetail.advanceAmount
+                                              .toString()),
                                     ],
                                   ),
                                 ],
@@ -165,7 +169,7 @@ class LoanTabAdmin extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    overtimeDetail?.reason ?? '',
+                                    advanceDetail.reason ?? '',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
@@ -177,7 +181,7 @@ class LoanTabAdmin extends StatelessWidget {
                             ),
                           ),
                           const Divider(),
-                          if (int.parse(overtimeDetail.status.toString()) == 0)
+                          if (int.parse(advanceDetail.status.toString()) == 0)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -188,7 +192,7 @@ class LoanTabAdmin extends StatelessWidget {
                                   //     .showBottomSheetForReason(
                                   //         ReasonButton.overtimeDecline);
                                   DialogHelper.showBottomSheet(
-                                      RequestOvertimeBottomsheet(
+                                      RequestAdvanceBottomsheet(
                                     index: index,
                                     delete: true.toString(),
                                   ));
@@ -206,7 +210,7 @@ class LoanTabAdmin extends StatelessWidget {
                                   tempIndex = tempIndex + 1;
                                   // print("Got tempIndex:${tempIndex?.toString()}");
                                   DialogHelper.showBottomSheet(
-                                      RequestOvertimeBottomsheet(
+                                      RequestAdvanceBottomsheet(
                                     index: index,
                                     delete: "false",
                                   ));
@@ -217,10 +221,10 @@ class LoanTabAdmin extends StatelessWidget {
                                   print(
                                       "Got tempIndex:${tempIndex?.toString()}");
                                   Get.find<ReportsControllerAdmin>()
-                                      .approveOrDeclineOvertime(
+                                      .approveOrDeclineAdvance(
                                           // index, ReasonButton.overtimeApprove);
                                           tempIndex,
-                                          ReasonButton.overtimeApprove);
+                                          ReasonButton.advanceApprove);
                                 }),
                               ],
                             ),

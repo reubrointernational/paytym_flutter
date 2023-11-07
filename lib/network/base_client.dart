@@ -63,6 +63,7 @@ class BaseClient extends GetxService {
         return response.body;
       } else {
         //throw exception
+
         print('handle error');
         _handleResponse(response);
       }
