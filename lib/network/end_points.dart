@@ -3,6 +3,13 @@
 
 const kBaseUrl = 'https://paytym.net/api';
 const kStorageUrl = 'https://paytym.net/storage/pdfs/';
+
+const kBaseUrls = 'https://paytym.net/api';
+const kStorageUrlForPDF = 'https://paytym.net/storage/pdfs/';
+
+const kBaseUrl1 = 'https://paytym.net/api';
+const kStorageUrlForProfileImage = 'https://paytym.net/storage/';
+
 // const kStorageUrl = 'https://paytym.net/storage/';
 // const kStorageUrl = 'https://paytym.net/file/';
 
@@ -58,10 +65,13 @@ class ApiEndPoints {
   static const getOvertime = '$kBaseUrl/list_overtime';
   static const approveOvertime =
       '$kBaseUrl/overtime_request_approve_decline_edit';
+  static const approveAdvance =
+      '$kBaseUrl/advance_request_approve_decline_edit';
   static const approveOvertimeHR = '$kBaseUrl/hr_store_overtime';
   static const deductionDelete = '$kBaseUrl/deductions_delete';
   static const deductionAdd = '$kBaseUrl/deductions_add';
   static const employeeList = '$kBaseUrl/list_employees';
+  static const getAdvance = '$kBaseUrl/list_advance_request';
   static const chatGroupList = '$kBaseUrl/chat_group';
   static const createChatGroup = '$kBaseUrl/create_chat_groups';
   static const projectsList = '$kBaseUrl/list_projects';
@@ -71,6 +81,7 @@ class ApiEndPoints {
   static const fileTypeListEmployee = '$kBaseUrl/list_employee_file_types';
 
   static const processPayroll = '$kBaseUrl/payroll-calculation';
+  static const revertPayroll = '$kBaseUrl/revert_payroll';
   static const adminDashboard = '$kBaseUrl/admin_dashboard';
   static const dashboard = '$kBaseUrl/dashboard';
   static const uploadFiles = '$kBaseUrl/upload_files';

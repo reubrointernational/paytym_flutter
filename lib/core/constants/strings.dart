@@ -358,10 +358,12 @@ List<String> leaveTabListAdmin = [
 List<String> reportsTabList = [
   'Attendance',
   'Overtime',
+  'Loan',
   'Split Payment',
   'Deduction',
   'Payslip',
   'My Files',
+  'Projects',
   'Medical'
 ];
 
@@ -491,13 +493,17 @@ const kReasonString = 'Reason';
 
 const kTypeTheReasonString = 'Type The Reason';
 
-const kRequestAdvanceString = 'Request Advance';
+const kRequestAdvanceString = 'Request Loan';
 
 const kRequestLoanString = 'Request Loan';
+
+const kDateofRequirement = 'Date of Requirement';
 
 const kRequestOvertimeString = 'Request Overtime';
 
 const kEditOvertimeString = 'Edit Overtime';
+
+const kEditAdvanceString = 'Edit Loan';
 
 const kDeclineOvertimeString = 'Decline Overtime';
 

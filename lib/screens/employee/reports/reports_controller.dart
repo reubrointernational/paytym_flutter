@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/message_only_response_model.dart';
+import 'package:paytym/models/report/advance_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
@@ -20,6 +21,7 @@ import '../../../core/constants/icons.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../core/download_path.dart';
+import '../../../models/report/advance/advance_status_model.dart';
 import '../../../models/report/attendance/attendance_employee_response.dart';
 import '../../../models/report/deduction/deduction_response_model.dart';
 import '../../../models/report/file_upload_request.dart';
@@ -28,6 +30,7 @@ import '../../../models/report/files/files_type_list.dart';
 import '../../../models/report/medical_list_admin_model.dart';
 import '../../../models/report/overtime/overtime_status-model.dart';
 import '../../../models/report/overtime_list_response_model.dart';
+import '../../../models/report/projects/projects_list_model.dart';
 import '../../../models/split_payment/split_payment_response.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -53,11 +56,13 @@ class ReportsController extends GetxController
   final payslipResponseModel = PayslipResponseModel().obs;
   final fileListResponseModel =
       EmployeeFilesListModel(files: [], message: '').obs;
-
+  final projectlistResponseModel =
+      ProjectListModel(message: '', projectsLists: []).obs;
   final splitAmount = [0, 0, 0].obs;
   final splitPaymentResponseModel = SplitPaymentResponseModel().obs;
   final deductionResponseModel = DeductionResponseModel().obs;
   final attendanceResponseModel = AttendanceEmployeeResponseModel().obs;
+
   Map<String, double> pieChartData = {
     'OnTime': 0.0,
     'Leaves': 0.0,
@@ -71,6 +76,9 @@ class ReportsController extends GetxController
   final dateList = <String>[].obs;
 
   final RxList<int> splitPaymentAmountList = <int>[1, 0, 0].obs;
+  final advanceResponseModel =
+      AdvanceResponseModel(message: "", employeeList: []).obs;
+
   final overtimeResponseModel =
       OvertimeListResponseModel(message: '', employeeList: []).obs;
   final List<String> StatusArray = [
@@ -119,6 +127,29 @@ class ReportsController extends GetxController
       overtimeResponseModel.value =
           overtimeListResponseModelFromJson(responseString);
       overtimeResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  getAdvance() async {
+    showLoading();
+    var model = {
+      'employee_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+    };
+    Get.find<BaseClient>().onError = getAdvance;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.getAdvance, jsonEncode(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    print("Get Overtime URL: ${ApiEndPoints.getAdvance.toString()}");
+    if (responseString == null) {
+      return;
+    } else {
+      print("Get Overtime Respons: ${responseString.toString()}");
+      hideLoading();
+      advanceResponseModel.value = advanceResponseModelFromJson(responseString);
+      advanceResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
   }
@@ -260,6 +291,8 @@ class ReportsController extends GetxController
         .post(ApiEndPoints.payslip, jsonEncode(map),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print("Fetch Payslip Response string:${responseString}");
+
     if (responseString == null) {
       return;
     } else {
@@ -297,6 +330,7 @@ class ReportsController extends GetxController
         .post(ApiEndPoints.payslip, jsonEncode(map),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print("fetchPayslipCopy Response String:${responseString}");
     if (responseString == null) {
       hideLoading();
 
@@ -308,16 +342,28 @@ class ReportsController extends GetxController
       Get.find<BaseClient>().onError = null;
       for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
         // dateList.add(DateFormat('dd-MM-yyyy').format(payroll.startDate!));
-        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.createdAt!));
+        // Here simply adding all the dates under the API response ,
+        // we have to add the exact dates under the selected Year and Month
+        //not depends on the date which payroll processed.
+        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.startDate!));
+        // dateList.add(DateFormat('dd-MM-yyyy').format(payroll.createdAt!));
+        //Here adding  the exact dates under the selected Year and Month
+        //For that checking selected month value with the payroll created at month value.
+        // print(
+        //     "selected month :${(DateFormat('MMM').format(payroll.createdAt!)).toLowerCase()}");
+        // if ((DateFormat('MMM').format(payroll.createdAt!)).toLowerCase() ==
+        //     (selectedDropdownMonth.value.toLowerCase())) {
+        //   print("selected month Payslip found ");
+        // }
       }
       dateList.value = dateList.toSet().toList();
-      print(
-          "Controller selected date drop down value:${selectedDropdownDay.value}");
-      if (selectedDropdownDay.value == null) {
-        selectedDropdownDay.value = dateList.first;
-        dateList.refresh();
-        hideLoading();
-      }
+      // print(
+      //     "Controller selected date drop down value:${selectedDropdownDay.value}");
+      // if (selectedDropdownDay.value == null) {
+      selectedDropdownDay.value = dateList.first;
+      dateList.refresh();
+      hideLoading();
+      // }
 
       // selectedDropdownDay.value = dateList.first;
       // dateList.refresh();
@@ -544,6 +590,109 @@ class ReportsController extends GetxController
     }
   }
 
+  List<ProjectsList>? getProjects() {
+    print("fetchProjects called");
+    showLoading();
+
+    List<ProjectsList>? allProjects = [];
+    allProjects ??= projectlistResponseModel.value.projectsLists;
+    // List<ProjectsListEmployee-project>? allProjectList;
+    // List<ProjectsListEmployeeproject>? listProjects = [];
+    // print("Project list length:${allProjects?.length}");
+    // if (allProjects!.isNotEmpty) {
+    //   for (var prjOne in allProjects ?? []) {
+    //     print("Project list length:${allProjects.length}");
+    //   }
+    // }
+    // print("Project list length:${projectList?.length}");
+    Get.find<BaseClient>().onError = null;
+    return allProjects;
+  }
+
+  fetchProjects() async {
+    print("fetchProjects called");
+    showLoading();
+    Get.find<BaseClient>().onError = getProjects;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.projectsList, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      projectlistResponseModel.value = projectListModelFromJson(responseString);
+      projectlistResponseModel.refresh();
+
+      List<ProjectsList>? allProjects;
+      // List<ProjectsListEmployee-project>? allProjectList;
+      // List<ProjectsListEmployeeproject>? listProjects = [];
+      allProjects ??= projectlistResponseModel.value.projectsLists;
+      // print("Project list length:${allProjects?.length}");
+      // if (allProjects!.isNotEmpty) {
+      //   for (var prjOne in allProjects ?? []) {
+      //     print("Project list length:${allProjects.length}");
+      //   }
+      // }
+      // print("Project list length:${projectList?.length}");
+      getEmployeeProjectsList();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  getStatus(int status) {
+    if (status == 0) {
+      return 'ongoing';
+    } else if (status == 1) {
+      return 'onhold';
+    }
+    return 'Completed';
+  }
+
+  getEmployeeProjectsList() {
+    print("getEmployeeProjectsList called");
+    List<ProjectsList>? projectList;
+
+    projectList ??= projectlistResponseModel.value.projectsLists;
+
+    // for (ProjectsListEmployeeproject item
+    // in projects[index].employeeproject ?? [])
+    //   Column(
+    //       children: [
+    //   if (item!.employeeId.toString() ==
+    //       // '15')
+    //       '${Get.find<LoginController>().loginResponseModel?.employee?.id}')
+
+    for (int i = 0; i < projectList!.length; i++) {
+      final projectDetails = projectList[i];
+      print("Project Name ${projectDetails.name.toString()}");
+
+      for (ProjectsListEmployeeproject item
+          in projectList[i].employeeproject ?? []) {
+        if (item.employeeId.toString() !=
+            '${Get.find<LoginController>().loginResponseModel?.employee?.id}') {
+          print(item.employeeId.toString());
+          print("Project present");
+        }
+      }
+    }
+    // projectList = projectList
+    //     ?.where(
+    //       (element) =>
+    //   element.name?.toLowerCase().contains(
+    //       Get.find<DashboardControllerAdmin>()
+    //           .searchKeyword
+    //           .value
+    //           .toLowerCase()) ??
+    //       false,
+    // )
+    //     .toList();
+  }
+
   String formatNumber(String value) {
     final formatNum = NumberFormat('#.00');
     return formatNum.format(int.parse(value));
@@ -617,12 +766,31 @@ class ReportsController extends GetxController
     }
   }
 
+  AdvanceStatusModel getAdvanceStatusModel(String? status) {
+    switch (status) {
+      case '1':
+        //1 => status - approved
+        return AdvanceStatusModel(
+            'Approved', CustomColors.greenColor, CustomColors.lightGreenColor);
+      case '2':
+        //2 => status - declined
+        return AdvanceStatusModel(
+            'Declined', CustomColors.redColor, CustomColors.lightRedColor);
+      case '0':
+      default:
+        //0 => status - awaiting
+        return AdvanceStatusModel('Awaiting', CustomColors.orangeLabelColor,
+            CustomColors.lightOrangeColor);
+    }
+  }
+
   sharePdf(String? url, String? type) async {
-    print("sharePdf called");
+    print("sharePdf called with url: ${url} :type:${type}");
     if (type == 'pdf' || type == 'png') {
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path;
+      print("sharePdf tempPath: ${tempPath} :tempDir:${tempDir}");
       if (File('$tempPath/payslip.$type').existsSync()) {
         File('$tempPath/payslip.$type').deleteSync();
       }

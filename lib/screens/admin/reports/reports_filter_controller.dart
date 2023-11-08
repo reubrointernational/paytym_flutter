@@ -5,6 +5,7 @@ import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/screens/admin/reports/tabs/attendance_tab.dart';
 
 import '../../../models/leaves/leaves_admin_response_model.dart';
+import '../../../models/report/advance_response_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/medical_list_admin_model.dart';
 import '../../../models/report/projects/projects_list_model.dart';
@@ -235,6 +236,91 @@ class ReportsFilterController {
         )
         .toList();
     return deductionList;
+  }
+
+  List<EmployeesList>? getFilteredAdvanceList() {
+    List<EmployeesList>? advanceList;
+    // print("getFilteredOvertimeList called report");
+    if (AttendanceTabAdmin != null) {
+      // print("getFilteredOvertimeList called 00");
+
+      advanceList = Get.find<ReportsControllerAdmin>()
+          .advanceResponseModel
+          .value
+          .employeeList
+          .where((element) =>
+              (element.user?.departmentId ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                          .selectedDropdownDepartments
+                          .value]
+                      ?.first
+                      .department
+                      ?.id ??
+                  0))
+          .toList();
+    } else {
+      print("deprtmnt not selected");
+      // overtimeList = Get.find<ReportsControllerAdmin>()
+      //     .overtimeResponseModel
+      //     .value
+      //     .employeeList
+      //     .where((element) => (element.user?.status ?? 0) > 0)
+      //     .toList();
+      // print("overtime list length:${overtimeList?.length.toString()}");
+    }
+    if (advanceList != null &&
+        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
+            null) {
+      advanceList = advanceList.where((element) {
+        return (element.branch?.id ?? 0) ==
+            (Get.find<DashboardControllerAdmin>()
+                    .branchwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                        .selectedDropdownBranches
+                        .value]
+                    ?.first
+                    .branch
+                    ?.id ??
+                1);
+      }).toList();
+    } else if (advanceList == null &&
+        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
+            null) {
+      advanceList = Get.find<ReportsControllerAdmin>()
+          .advanceResponseModel
+          .value
+          .employeeList
+          .where((element) =>
+              (element.branch?.id ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .branchwiseEmployeeMap[
+                          Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownBranches
+                              .value]
+                      ?.first
+                      .branch
+                      ?.id ??
+                  0))
+          .toList();
+    }
+    // overtimeList?.clear();
+    advanceList = Get.find<ReportsControllerAdmin>()
+        .advanceResponseModel
+        .value
+        .employeeList;
+    // print("overtime list length:${overtimeList?.length.toString()}");
+    advanceList = advanceList
+        .where(
+          (element) =>
+              element.user?.firstName?.toLowerCase().contains(
+                  Get.find<DashboardControllerAdmin>()
+                      .searchKeyword
+                      .value
+                      .toLowerCase()) ??
+              false,
+        )
+        .toList();
+    return advanceList;
   }
 
   List<EmployeeList>? getFilteredOvertimeList() {

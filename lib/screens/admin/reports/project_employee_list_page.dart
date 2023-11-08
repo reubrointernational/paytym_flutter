@@ -13,6 +13,7 @@ class ProjectEmployeeListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("ProjectEmployeeListPage called");
     final controller = Get.find<ReportsControllerAdmin>();
     var team = project!.employeeproject;
     return CustomAdminScaffold(
@@ -23,6 +24,7 @@ class ProjectEmployeeListPage extends StatelessWidget {
             itemCount: team!.length,
             itemBuilder: (BuildContext context, int index) {
               final members = team[index];
+
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -31,23 +33,56 @@ class ProjectEmployeeListPage extends StatelessWidget {
                     border: Border.all(color: Colors.grey.shade300),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: ListTile(
-                    title: Text(
-                      '${members.user?.firstName ?? ''} ${members.user?.lastName ?? ''}',
-                      style: kTextStyleS15W600CBlack,
-                    ),
-                    subtitle: Text('ID: ${members.user?.id}'),
-                    leading: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Colors.grey,
-                      backgroundImage:
-                          NetworkImage('$kStorageUrl${members.user?.image}'),
-                    ),
-                    trailing: Text(
-                      project!.branch!.name ?? "",
-                      style: kTextStyleS13W500Cgrey,
-                    ),
-                  ),
+                  child: members != null
+                      ? ListTile(
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${members.user?.firstName ?? ''} ${members.user?.lastName ?? ''}',
+                                style: kTextStyleS15W600CBlack,
+                              ),
+                              Text(
+                                members!.user!.id.toString() ?? " ",
+                                style: kTextStyleS13W500Cgrey,
+                              ),
+                            ],
+                          ),
+
+                          // subtitle: Column(
+                          //   children: [
+                          //     Text(
+                          //       // "test",
+                          //       members!.user!.branch!.name ?? " ",
+                          //       style: kTextStyleS13W500Cgrey,
+                          //     ),
+                          //   ],
+                          // ),
+                          leading: CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors.grey,
+                            backgroundImage: NetworkImage(
+                                '$kStorageUrlForProfileImage${members.user?.image}'),
+                          ),
+                          // Text('ID: ${members.user?.id ?? ''}')
+                          trailing: members.user != null
+                              ? Text(
+                                  // "test",
+                                  members!.user!.branch!.name ?? " ",
+                                  style: kTextStyleS13W500Cgrey,
+                                )
+                              // : Text("Anonymous branch  "),
+                              : Text("  "),
+                          // Trailing original
+                          //       trailing: project!.branch != null
+                          //           ? Text(
+                          //               // "test",
+                          //               project!.branch!.name ?? " ",
+                          //               style: kTextStyleS13W500Cgrey,
+                          //             )
+                          //           : Text("Anonymous branch  "),
+                        )
+                      : Text("Anonymous Member "),
                 ),
               );
             },

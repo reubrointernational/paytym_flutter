@@ -121,6 +121,7 @@ class PayslipTab extends StatelessWidget {
                     '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
                 print(
                     "Payslip Date Selection Index:${Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value)}");
+
                 if (url?.getType() == 'pdf') {
                   //for testing given an outside file name
                   return PdfViewer(

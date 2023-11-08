@@ -31,5 +31,8 @@ enum ReasonButton {
   attendanceEdit,
   overtimeApprove,
   overtimeDecline,
-  overtimeEdit
+  overtimeEdit,
+  advanceApprove,
+  advanceDecline,
+  advanceEdit
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -19,7 +18,6 @@ import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/models/report/projects/projects_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
-import 'package:paytym/screens/login/login_controller.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/enums.dart';
@@ -27,6 +25,9 @@ import '../../../core/constants/strings.dart';
 import '../../../core/dialog_helper.dart';
 import '../../../models/employee_list_model.dart' as employeelist;
 import '../../../models/message_only_response_model.dart';
+import '../../../models/report/advance/advance_status_model.dart';
+import '../../../models/report/advance_approve_edit_request.dart';
+import '../../../models/report/advance_response_model.dart';
 import '../../../models/report/attendance/attendance_accept_decline_request_model.dart';
 import '../../../models/report/attendance/attendance_by_hr_request_model.dart';
 import '../../../models/report/attendance/attendance_edit_request.dart';
@@ -44,6 +45,7 @@ import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import '../../employee/dashboard/dashboard_controller.dart';
 import '../../employee/reports/reports_controller.dart';
+import '../../login/login_controller.dart';
 import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
@@ -62,6 +64,7 @@ class ReportsControllerAdmin extends GetxController
       DateFormat('dd-MM-yyyy').format(DateTime.now()).toString().obs;
   final formKey = GlobalKey<FormState>();
   final attendanceformKey = GlobalKey<FormState>();
+
   DeductionAddRequestModel deductionAddRequestModel = DeductionAddRequestModel(
     employerId: '',
     name: '',
@@ -85,6 +88,7 @@ class ReportsControllerAdmin extends GetxController
   final List<String> reportsTabListAdmin = [
     'Attendance',
     'Overtime',
+    'Loan',
     //payroll
     //deduction
     'Projects',
@@ -94,6 +98,7 @@ class ReportsControllerAdmin extends GetxController
   ];
   final isAllEmployeesSelected = true.obs;
   final isEmployeesSelectedForPayroll = false.obs;
+  final isRevertPayrollSelected = false.obs;
   final checkedEmployees = [].obs;
 
   final attendanceHrDateController = TextEditingController();
@@ -210,14 +215,19 @@ class ReportsControllerAdmin extends GetxController
         "capabilityList?.first.viewPayroll : ${capabilityList?.first.viewPayroll.toString()}");
     // For payrollchecking now given as 0...need to recheck with the API
     // if (capabilityList?.first.viewPayroll == 1 &&
+
+    if (capabilityList?.first.viewPayroll == 0 &&
+        !reportsTabListAdmin.contains('Loan')) {
+      reportsTabListAdmin.insert(2, 'Loan');
+    }
     if (capabilityList?.first.viewPayroll == 0 &&
         !reportsTabListAdmin.contains('Payroll')) {
-      reportsTabListAdmin.insert(2, 'Payroll');
+      reportsTabListAdmin.insert(3, 'Payroll');
     }
     if (capabilityList?.first.deductions == 1 &&
         !reportsTabListAdmin.contains('Deduction')) {
       bool payrollPresent = reportsTabListAdmin.contains('Payroll');
-      reportsTabListAdmin.insert(payrollPresent ? 3 : 2, 'Deduction');
+      reportsTabListAdmin.insert(payrollPresent ? 4 : 2, 'Deduction');
     }
     if (capabilityList?.first.medical == 1 &&
         !reportsTabListAdmin.contains('Medical')) {
@@ -241,7 +251,6 @@ class ReportsControllerAdmin extends GetxController
         return medicalResponseModel.value.extraDetails?.first.bloodGrp ?? '';
       case 3:
         return medicalResponseModel.value.extraDetails?.first.measurement ?? '';
-
       default:
         return '';
     }
@@ -255,7 +264,18 @@ class ReportsControllerAdmin extends GetxController
     if ((sliderValue.value - sliderStartValue).abs() > 95) {
       if (sliderValue.value > 95) {
         sliderValue.value = 100;
-        showDialogue();
+
+        if (Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value ==
+            true) {
+          showDialogue();
+        } else if (Get.find<ReportsControllerAdmin>()
+                .isEmployeesSelectedForPayroll
+                .value ==
+            true) {
+          showDialogue();
+        } else {
+          showDialogueRevert();
+        }
       } else if (sliderValue.value < 5) {
         sliderValue.value = 0;
         // showDialogue();
@@ -298,6 +318,36 @@ class ReportsControllerAdmin extends GetxController
     );
   }
 
+  showDialogueRevert() {
+    String payrollString =
+        "Are you sure to process revert payroll for All Employees ?";
+
+    DialogHelper.showConfirmDialog(
+      title: sliderValue.value == 100 ? 'Revert Payroll' : 'Reverse Payroll',
+      desc: sliderValue.value == 100 ? payrollString : payrollString,
+      onConfirm: () {
+        showLoading();
+        Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == true
+            ? processPayroll('all')
+            : processPayroll('others');
+        // processPayroll('all');
+        print(
+            "Process payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
+
+        showLoading();
+        Get.find<DashboardControllerAdmin>().fetchEmployeeList();
+
+        Get.back(); // will go to the employee homepage
+
+        // hideLoading();
+        sliderValue.value = 0;
+      },
+      onCancel: () {
+        sliderValue.value = 0;
+      },
+    );
+  }
+
   final filePath = ''.obs;
 
   //Sharing or downloading enum will be idle at the start
@@ -312,6 +362,8 @@ class ReportsControllerAdmin extends GetxController
   final deductionResponseModel = DeductionListAdminModel().obs;
   final overtimeResponseModel =
       OvertimeListResponseModel(message: '', employeeList: []).obs;
+  final advanceResponseModel =
+      AdvanceResponseModel(message: '', employeeList: []).obs;
   final medicalResponseModel =
       MedicalListAdminModel(message: '', extraDetails: []).obs;
   final attendanceResponseModel =
@@ -319,7 +371,8 @@ class ReportsControllerAdmin extends GetxController
   String quitCompanyReason = '';
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
-
+  AdvanceApproveEditRequestModel advanceApproveEditRequestModel =
+      AdvanceApproveEditRequestModel(status: '0', id: '0');
   final selectedDepartment = departments.first.obs;
   final selectedBranch = branches.first.obs;
 
@@ -580,7 +633,6 @@ class ReportsControllerAdmin extends GetxController
     } else {
       projectlistResponseModel.value = projectListModelFromJson(responseString);
       projectlistResponseModel.refresh();
-
       Get.find<BaseClient>().onError = null;
     }
   }
@@ -652,6 +704,27 @@ class ReportsControllerAdmin extends GetxController
       overtimeResponseModel.value =
           overtimeListResponseModelFromJson(responseString);
       overtimeResponseModel.refresh();
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  getAdvance() async {
+    showLoading();
+    var model = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    Get.find<BaseClient>().onError = getAdvance;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.getAdvance, jsonEncode(model),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    if (responseString == null) {
+      return;
+    } else {
+      hideLoading();
+      advanceResponseModel.value = advanceResponseModelFromJson(responseString);
+      advanceResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
     }
   }
@@ -788,6 +861,134 @@ class ReportsControllerAdmin extends GetxController
       DialogHelper.showToast(
           desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
       getOvertime();
+    }
+  }
+
+  approveOrDeclineAdvance(int index, ReasonButton reasonButton) async {
+    // if (reasonButton == ReasonButton.overtimeEdit) {
+    if (reasonButton != ReasonButton.advanceApprove) {
+      print("approveOrDeclineAdvance Report build (7) Edit/Delete ");
+      if (Get.find<DashboardController>()
+          .requestAdvanceFormKey
+          .currentState!
+          .validate()) {
+        Get.find<DashboardController>()
+            .requestAdvanceFormKey
+            .currentState!
+            .save();
+        print("approveOrDeclineAdvance called");
+      } else {
+        print("approveOrDeclineAdvance called else ");
+        return;
+      }
+    }
+
+    int? originalIndex;
+    if (reasonButton != ReasonButton.advanceEdit) {
+      if (reasonButton != ReasonButton.advanceDecline) {
+        List<EmployeesList>? advanceDetails = Get.find<ReportsControllerAdmin>()
+            .getFilteredAdvanceList()
+            ?.where((element) => element.status == '0')
+            .toList();
+
+        originalIndex = Get.find<ReportsControllerAdmin>()
+            .advanceResponseModel
+            .value
+            .employeeList
+            .indexOf(advanceDetails?[index] ?? EmployeesList());
+        print("Original index while Edit:${originalIndex.toString()}");
+      }
+    }
+
+    showLoading();
+    if (reasonButton == ReasonButton.advanceApprove) {
+      //approve
+      advanceApproveEditRequestModel.status = '1';
+    } else if (reasonButton == ReasonButton.advanceDecline) {
+      //decline
+      print("Test decline reason (10): ");
+      print(
+          "Advance decline section entered :${advanceApproveEditRequestModel.id}");
+      // 3 for Edit ,2 for decline
+      advanceApproveEditRequestModel.status = '2';
+      advanceApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+
+      //date is obtained from dashboard controller as bottomsheet fills dashboard controller
+      // overtimeApproveEditRequestModel.date =
+      //     Get.find<DashboardController>().overtimeApproveEditRequestModel.date;
+
+      //reason is obtained from dashboard controller as bottomsheet fills dashboard controller
+      // overtimeApproveEditRequestModel.reason = Get.find<DashboardController>()
+      //     .overtimeApproveEditRequestModel
+      //     .reason;
+
+      //Setting Decline reason from Bottom sheet from Reason textbox treated as decline reaseon textbox
+      //only Decline reason will taken
+      advanceApproveEditRequestModel.declineReason =
+          Get.find<DashboardController>()
+              .advanceApproveEditRequestModel
+              .declineReason;
+
+      //totalHours is obtained from dashboard controller as bottomsheet fills dashboard controller
+      // overtimeApproveEditRequestModel.totalHours =
+      //     Get.find<DashboardController>()
+      //         .overtimeApproveEditRequestModel
+      //         .totalHours;
+    } else {
+      //edit
+      print(
+          "Advance edit section entered :${advanceApproveEditRequestModel.id}");
+      // 3 for Edit ,2 for decline
+      advanceApproveEditRequestModel.status = '3';
+      advanceApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+      //date is obtained from dashboard controller as bottomsheet fills dashboard controller
+      advanceApproveEditRequestModel.date =
+          Get.find<DashboardController>().advanceApproveEditRequestModel.date;
+
+      //reason is obtained from dashboard controller as bottomsheet fills dashboard controller
+      advanceApproveEditRequestModel.reason =
+          Get.find<DashboardController>().advanceApproveEditRequestModel.reason;
+      //Setting Decline reason from Bottom sheet from Reason textbox treated as decline reaseon textbox
+      advanceApproveEditRequestModel.declineReason =
+          Get.find<DashboardController>().advanceApproveEditRequestModel.reason;
+
+      //totalHours is obtained from dashboard controller as bottomsheet fills dashboard controller
+      advanceApproveEditRequestModel.totalHours =
+          Get.find<DashboardController>()
+              .advanceApproveEditRequestModel
+              .totalHours;
+    }
+    advanceApproveEditRequestModel.id = advanceResponseModel
+        .value.employeeList[originalIndex ?? index].id
+        .toString();
+
+    print("advance Request status: ${advanceApproveEditRequestModel.status}");
+    var responseString = "";
+    responseString = await Get.find<BaseClient>()
+        .post(
+            ApiEndPoints.approveAdvance,
+            advanceApproveEditRequestModelToJson(
+                advanceApproveEditRequestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    hideLoading();
+    print("advance approve: $responseString");
+    if (responseString == null) {
+      return;
+    } else {
+      //close bottom sheet if editing/Decline
+      if (reasonButton == ReasonButton.advanceEdit) Get.back();
+      if (reasonButton == ReasonButton.advanceDecline) Get.back();
+      //reset bottom sheet values
+      Get.find<DashboardController>().advanceApproveEditRequestModel =
+          AdvanceApproveEditRequestModel(status: '0', id: '0');
+      Get.find<DashboardController>().advanceTextEditingcontroller =
+          TextEditingController();
+      DialogHelper.showToast(
+          desc: messageOnlyResponseModelFromJson(responseString).message ?? '');
+      getAdvance();
     }
   }
 
@@ -1140,6 +1341,25 @@ class ReportsControllerAdmin extends GetxController
             CustomColors.lightOrangeColor);
     }
   }
+
+  AdvanceStatusModel getAdvanceStatusModel(String? status) {
+    switch (status) {
+      case '1':
+        //1 => status - approved
+        return AdvanceStatusModel(
+            'Approved', CustomColors.greenColor, CustomColors.lightGreenColor);
+      case '2':
+        //2 => status - declined
+        return AdvanceStatusModel(
+            'Declined', CustomColors.redColor, CustomColors.lightRedColor);
+      case '0':
+      default:
+        //0 => status - awaiting
+        return AdvanceStatusModel('Awaiting', CustomColors.orangeLabelColor,
+            CustomColors.lightOrangeColor);
+    }
+  }
+
   //for downloading
 
   // @override
@@ -1228,7 +1448,7 @@ class ReportsControllerAdmin extends GetxController
         }
       }
       empList?.toList();
-      // empList?.asMap().cast<int, String>()
+      // empList?.asMap().cast<int, String>();
       print("Selected Ids: ${empList?.length.toString()}");
 
       var requestModel = {
@@ -1251,8 +1471,10 @@ class ReportsControllerAdmin extends GetxController
         sliderValue.value = 0;
         hideLoading();
         Get.back();
+        // DialogHelper.showToast(
+        //     desc: " Payroll Not Processed for the Selected Employees");
         DialogHelper.showToast(
-            desc: " Payroll Not Processed for the Selected Employees");
+            desc: " Payroll Generated for the Selected Employees");
         return;
       } else {
         hideLoading();
@@ -1271,13 +1493,22 @@ class ReportsControllerAdmin extends GetxController
 
       var requestModel = {
         'flag': payrollFlag,
-        'id': ids,
+        // 'id': ids,
         'employer_id':
             '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
 
+      try {
+        var baseClient = Get.find<BaseClient>();
+        // Use baseClient for your operations
+      } catch (e) {
+        print("Error while finding BaseClient: $e");
+        // Handle the error here
+      }
+
       // commenting payroll operation
-      print("Payroll for All APi: ${ApiEndPoints.processPayroll.toString()}");
+      print("Payroll for All APi: ${ApiEndPoints.processPayroll.toString()} "
+          "with Employer ID:${Get.find<LoginController>().loginResponseModel?.employee?.employerId}");
       var responseString = await Get.find<BaseClient>()
           .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
               Get.find<LoginController>().getHeader())
@@ -1300,6 +1531,47 @@ class ReportsControllerAdmin extends GetxController
         DialogHelper.showToast(
             desc: "Payroll Not Generated for All the Employees");
       }
+    }
+  }
+
+  void revertPayroll() async {
+    print("called revertPayroll");
+
+    // {{baseUrl}}/revert_payroll?employer_id=19
+
+    // Only employer id needed for Revert payroll
+
+    // Flag: All Employees
+
+    showLoading();
+
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+
+    print("revertPayroll for All API: ${ApiEndPoints.revertPayroll.toString()}"
+        " Employer ID:${Get.find<LoginController>().loginResponseModel?.employee?.employerId}");
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.revertPayroll, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    // var responseString;
+    print("revertPayroll Response: ${responseString.toString()}");
+
+    if (responseString != null) {
+      // sliderValue.value = 0;
+      // Get.back();
+      hideLoading();
+      DialogHelper.showToast(desc: "Payroll Revert Successfully Done");
+      hideLoading();
+      Get.back();
+      return;
+    } else {
+      hideLoading();
+      // Get.back();
+
+      DialogHelper.showToast(desc: "Payroll Revert Can't Done");
     }
   }
 

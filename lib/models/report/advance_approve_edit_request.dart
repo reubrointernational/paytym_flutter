@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-String overtimeApproveEditRequestModelToJson(
-        OvertimeApproveEditRequestModel data) =>
+String advanceApproveEditRequestModelToJson(
+        AdvanceApproveEditRequestModel data) =>
     json.encode(data.toJson());
 
-class OvertimeApproveEditRequestModel {
-  OvertimeApproveEditRequestModel({
+class AdvanceApproveEditRequestModel {
+  AdvanceApproveEditRequestModel({
     required this.status,
     required this.id,
     this.employerId,
@@ -17,6 +17,7 @@ class OvertimeApproveEditRequestModel {
     this.date,
     this.totalHours,
     this.reason,
+    this.amount,
     this.declineReason,
   });
 
@@ -25,6 +26,7 @@ class OvertimeApproveEditRequestModel {
   String? employerId;
   String? employeeId;
   String? date;
+  String? amount;
   String? totalHours;
   String? reason;
   String? declineReason;
@@ -35,6 +37,7 @@ class OvertimeApproveEditRequestModel {
         "employer_id": employerId,
         "employee_id": employeeId,
         "date": date,
+        "amount": amount,
         "total_hours": totalHours,
         "reason": reason,
         "decline_reason": declineReason,
@@ -50,6 +53,7 @@ class DateofRequired {
     this.date,
     this.totalHours,
     this.reason,
+    this.amount,
     this.declineReason,
   });
 
@@ -60,6 +64,7 @@ class DateofRequired {
   String? date;
   String? totalHours;
   String? reason;
+  String? amount;
   String? declineReason;
 
   Map<String, dynamic> toJson() => {
@@ -68,6 +73,7 @@ class DateofRequired {
         "employer_id": employerId,
         "employee_id": employeeId,
         "date": date,
+        "amount": amount,
         "total_hours": totalHours,
         "reason": reason,
         "decline_reason": declineReason,

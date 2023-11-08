@@ -17,6 +17,7 @@ import '../../../models/dashboard/dashboard_response_model.dart';
 import '../../../models/employee_list_model.dart';
 import '../../../models/login/user_model.dart';
 import '../../../models/dashboard/request_advance_model.dart';
+import '../../../models/report/advance_approve_edit_request.dart';
 import '../../../models/report/overtime_approve_edit_request_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -37,12 +38,20 @@ class DashboardController extends GetxController with BaseController {
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
+  AdvanceApproveEditRequestModel advanceApproveEditRequestModel =
+      AdvanceApproveEditRequestModel(status: '0', id: '0');
+
+  TextEditingController? advanceTextEditingcontroller = TextEditingController();
+  TextEditingController? dateofrequiredTextEditingcontroller =
+      TextEditingController();
+
   TextEditingController? overtimeTextEditingController =
       TextEditingController();
   final employerIdModel = {
     'employer_id':
         '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
   };
+
   String? qr;
   bool isCheckedInWithQR = false;
   final dashboardModel = DashboardResponseModel().obs;
@@ -60,6 +69,20 @@ class DashboardController extends GetxController with BaseController {
       return "Good Night";
     }
     return '';
+  }
+
+  convertDateFormat(String? inputDate) {
+    List<String> dateParts = inputDate!.split('-');
+    int day = int.parse(dateParts[0]);
+    int month = int.parse(dateParts[1]);
+    int year = int.parse(dateParts[2]);
+
+    DateTime dateTime = DateTime(year, month, day);
+
+    String formattedDate =
+        '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
+
+    return formattedDate;
   }
 
   getNextShift() {
@@ -149,6 +172,21 @@ class DashboardController extends GetxController with BaseController {
     } on Exception {}
   }
 
+  Future<void> dateofrequirement(BuildContext context) async {
+    final DateTime? dateTime = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1990),
+      lastDate: DateTime(2030),
+    );
+    try {
+      advanceApproveEditRequestModel.date =
+          DateFormat('yyyy-MM-dd').format(dateTime!);
+      dateofrequiredTextEditingcontroller?.text =
+          DateFormat('dd-MM-yyyy').format(dateTime);
+    } on Exception {}
+  }
+
   requestOvertime(EmployeeList? employeeList) async {
     print("request Overtime called");
     if (requestAdvanceFormKey.currentState!.validate()) {
@@ -197,6 +235,61 @@ class DashboardController extends GetxController with BaseController {
             OvertimeApproveEditRequestModel(status: '0', id: '0');
         Get.find<ReportsControllerAdmin>().getOvertime();
         overtimeTextEditingController = TextEditingController();
+        DialogHelper.showToast(
+            desc:
+                messageOnlyResponseModelFromJson(responseString).message ?? '');
+      }
+    }
+  }
+
+  requestAdvanceLoan(EmployeeList? employeeList) async {
+    print("request Overtime called");
+    if (requestAdvanceFormKey.currentState!.validate()) {
+      requestAdvanceFormKey.currentState!.save();
+      showLoading();
+      //status 0 for creating overtime
+      //status 1 for approving overtime
+      //status 2 for declining overtime
+      //status 3 for editing overtime
+      advanceApproveEditRequestModel.status = '0';
+      advanceApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+      print(
+          "AdvanceApproveEditRequestModel.employerId:${advanceApproveEditRequestModel.employerId.toString()}");
+      print("employeeList?.id:${employeeList?.id.toString()}");
+      advanceApproveEditRequestModel.employeeId = employeeList?.id != null
+          ? employeeList!.id.toString()
+          : '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
+      print(
+          'request Advance ID:${Get.find<LoginController>().loginResponseModel?.employee?.id}');
+      print(
+          'request Advance ID er:${advanceApproveEditRequestModel?.employeeId}');
+
+      print(
+          'request Advance  status:${advanceApproveEditRequestModel?.status}');
+      print('request Advance  employeeList?.id:${employeeList?.id}');
+
+      var responseString = await Get.find<BaseClient>()
+          .post(
+              employeeList?.id != null
+                  ? ApiEndPoints.approveOvertimeHR
+                  : ApiEndPoints.approveAdvance,
+              advanceApproveEditRequestModelToJson(
+                  advanceApproveEditRequestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+
+      print('request Advance Response:$responseString');
+      if (responseString == null) {
+        return;
+      } else {
+        print('request Advance Response not null :$responseString');
+        hideLoading();
+        Get.back();
+        advanceApproveEditRequestModel =
+            AdvanceApproveEditRequestModel(status: '0', id: '0');
+        Get.find<ReportsControllerAdmin>().getAdvance();
+        advanceTextEditingcontroller = TextEditingController();
         DialogHelper.showToast(
             desc:
                 messageOnlyResponseModelFromJson(responseString).message ?? '');
@@ -309,6 +402,14 @@ class DashboardController extends GetxController with BaseController {
     return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
         ? null
         : "Enter a valid date";
+  }
+
+  String? dateValidatorloan(String value) {
+    final regExp =
+        RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
+    return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
+        ? null
+        : "Enter a valid date in DD-MM-YYYY format";
   }
 
   logout() async {
