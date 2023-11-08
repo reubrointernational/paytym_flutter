@@ -36,9 +36,9 @@ class DashboardController extends GetxController with BaseController {
   bool sliderValueChanged = false;
   final requestAdvanceFormKey = GlobalKey<FormState>();
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
-
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
+<<<<<<< HEAD
   AdvanceApproveEditRequestModel advanceApproveEditRequestModel =
       AdvanceApproveEditRequestModel(status: '0', id: '0');
   TextEditingController? dateofrequiredTextEditingcontroller =
@@ -47,6 +47,10 @@ class DashboardController extends GetxController with BaseController {
       TextEditingController();
   TextEditingController? advanceTextEditingcontroller = TextEditingController();
 
+=======
+  TextEditingController? overtimeTextEditingController =
+      TextEditingController();
+>>>>>>> parent of f7ab48f (changes in the dashboard in employee profile request advance changed to request loan and created two tabs for loan section)
   final employerIdModel = {
     'employer_id':
         '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'

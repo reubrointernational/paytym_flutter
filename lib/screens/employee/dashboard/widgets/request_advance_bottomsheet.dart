@@ -43,6 +43,7 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                   hintText: kAmountString,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  
                   validator: (value) =>
                       Get.find<DashboardController>().amountValidator(value!),
                   onSaved: (value) => Get.find<DashboardController>()
@@ -59,6 +60,7 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                       .requestAdvanceModel
                       .description = value!,
                 ),
+<<<<<<< HEAD
                 kSizedBoxH10,
                 BottomsheetTextField(
                     controller: Get.find<DashboardController>()
@@ -85,6 +87,8 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                           .requestAdvanceModel
                           .dateofrequirement = formatedDate;
                     }),
+=======
+>>>>>>> parent of f7ab48f (changes in the dashboard in employee profile request advance changed to request loan and created two tabs for loan section)
               ],
             ),
           ),

@@ -1,7 +1,6 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:paytym/screens/admin/reports/tabs/deduction_tab.dart';
-import 'package:paytym/screens/admin/reports/tabs/loan_tab.dart';
 import 'package:paytym/screens/admin/reports/tabs/projects_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +36,6 @@ class ReportsPageAdmin extends StatelessWidget {
           effects: const [FadeEffect()],
           child: const OvertimeTabAdmin(),
         ),
-        if (reportsTabListAdmin.contains('Loan'))
-          Animate(
-            effects: const [FadeEffect()],
-            child: const LoanTabAdmin(),
-          ),
         if (reportsTabListAdmin.contains('Payroll'))
           Animate(
             effects: const [FadeEffect()],
