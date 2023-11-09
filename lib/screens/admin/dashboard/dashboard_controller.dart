@@ -268,16 +268,19 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     print("getFilteredEmployeeList called 10");
     List<EmployeeList>? chatList;
     if (selectedDropdownBusiness.value != null) {
-      print("getFilteredEmployeeList called 2 businesswiseEmployeeMap");
+      print(
+          "getFilteredEmployeeList called 2 businesswiseEmployeeMap :${selectedDropdownBusiness.value.toString()}");
       chatList = businesswiseEmployeeMap[selectedDropdownBusiness.value];
       print("getFilteredEmployeeList called 2.1:${chatList?.length}");
     }
     if (selectedDropdownDepartments.value != null) {
-      print("getFilteredEmployeeList called 2");
+      print(
+          "getFilteredEmployeeList called 2: ${selectedDropdownDepartments.value.toString()}");
       chatList = deptwiseEmployeeMap[selectedDropdownDepartments.value];
     }
     if (chatList != null && selectedDropdownBranches.value != null) {
-      print("getFilteredEmployeeList called 3");
+      print(
+          "getFilteredEmployeeList called 3:${selectedDropdownBranches.value.toString()}");
       chatList = chatList
           .where((element) =>
               element.branch?.name == selectedDropdownBranches.value)

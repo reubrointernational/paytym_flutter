@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 import 'package:paytym/models/report/medical_list_admin_model.dart';
@@ -1253,7 +1254,7 @@ class ReportsControllerAdmin extends GetxController
   downloadFile(String fileFrom, String? url,
       void Function(int, int)? onReceiveProgress) async {
     showLoading();
-    print("File name when time of download :+${fileFrom.toString()}");
+    print("File name when time of download :${path.basename(url!)}");
     print("URL when time of download :+${url}");
 
     if (fileFrom == "emp_records") {
@@ -1263,21 +1264,36 @@ class ReportsControllerAdmin extends GetxController
       fileFrom = fileFrom + "hr record_";
     }
 
+    final dir = await getTemporaryDirectory();
+
     if (url != null) {
       var dio = Dio();
       final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
       //Now i am giving the extension as PDF, If the payslip file from API is correct,ie,paytym/storage/filename.pdf is correct no need to given the last pdf extension
       // If the File name from API is correct no need to update the file name as pdf_emp_record
       // just give the exact name from the API.
+      print(
+          "Dio going to download dirpath: ${dir.path}/${path.basename(url)}'");
+      String encodedUrl = Uri.encodeFull(url);
+      // url.replaceAll(' ', '_');
       await dio.download(
-          url, '/storage/emulated/0/Download/${path.basename(url)}',
+          encodedUrl,
+          // "${dir.path}/${path.basename(url)}'",
+          '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
           onReceiveProgress: onReceiveProgress);
       hideLoading();
+      OpenFile.open(
+          '/storage/emulated/0/Download/${path.basename(encodedUrl)}');
     }
   }
 
   sharePdf(String? url, String? type) async {
-    if (type == 'pdf' || type == 'png') {
+    if (type == 'pdf' ||
+        type == 'pdf' ||
+        type == 'png' ||
+        type == 'csv' ||
+        type == 'docx' ||
+        type == 'jpeg') {
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path;

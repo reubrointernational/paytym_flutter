@@ -41,6 +41,7 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              //Filetype
               RichText(
                   text: const TextSpan(
                       text: 'File Type',
@@ -58,6 +59,7 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                     ),
                   ])),
               kSizedBoxH10,
+              //File type drop down
               DecoratedBox(
                 decoration: BoxDecoration(
                     border: Border.all(
@@ -107,6 +109,7 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                 ),
               ),
               kSizedBoxH20,
+              //Attachments
               const Text(
                 'Attachments',
                 style: TextStyle(
@@ -115,6 +118,7 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                 ),
               ),
               kSizedBoxH10,
+              // Upload file button
               GestureDetector(
                 // onTap: () =>
                 // createChatController.uploadProfileImage(),
@@ -144,32 +148,55 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                   ),
                 ),
               ),
+
               kSizedBoxH10,
+              // Attach file showing box
               Obx(() {
-                return Container(
-                  height: Get.find<ReportsController>().filePath.value.isEmpty
-                      ? 0
-                      : h * 0.3,
-                  width: double.infinity,
-                  color: Colors.transparent,
-                  //child: Container(),
-                  child: Get.find<ReportsController>().filePath.value.isEmpty
-                      ? const SizedBox()
-                      : Image.file(
-                          File(Get.find<ReportsController>().filePath.value)),
+                return Column(
+                  children: [
+                    Container(
+                      height:
+                          Get.find<ReportsController>().filePath.value.isEmpty
+                              ? 0
+                              : h * 0.3,
+                      width: double.infinity,
+                      color: Colors.transparent,
+                      //child: Container(),
+                      child: Get.find<ReportsController>()
+                              .filePath
+                              .value
+                              .isEmpty
+                          ? const SizedBox()
+                          : Image.file(File(
+                              Get.find<ReportsController>().filePath.value)),
+                    ),
+                    kSizedBoxH6,
+                    // Attach file Name
+                    Center(
+                        child: Text(path.basename(Get.find<ReportsController>()
+                                .filePath
+                                .value
+                                .toString()) ??
+                            "prasanth")
+                        // Text(getExactFilenameFromFilefullpath(
+                        //     Get.find<ReportsController>().filePath.value.toString())),
+                        ),
+                  ],
                 );
               }),
-              kSizedBoxH6,
-              Center(
-                  child: Text(path.basename(Get.find<ReportsController>()
-                          .filePath
-                          .value
-                          .toString()) ??
-                      "prasanth")
-                  // Text(getExactFilenameFromFilefullpath(
-                  //     Get.find<ReportsController>().filePath.value.toString())),
-                  ),
+              // kSizedBoxH6,
+              // // Attach file Name
+              // Center(
+              //     child: Text(path.basename(Get.find<ReportsController>()
+              //             .filePath
+              //             .value
+              //             .toString()) ??
+              //         "prasanth")
+              //     // Text(getExactFilenameFromFilefullpath(
+              //     //     Get.find<ReportsController>().filePath.value.toString())),
+              //     ),
               kSizedBoxH12,
+              // Upload button
               Center(
                 child: SizedBox(
                   width: w * 0.6,
