@@ -2,12 +2,12 @@
 // const kStorageUrl = 'http://52.40.210.26:2000/storage/';
 
 const kBaseUrl = 'https://paytym.net/api';
-const kStorageUrl = 'https://paytym.net/storage/pdfs/';
+const kStorageUrl = 'https://paytym.net/storage/';
 
 const kBaseUrls = 'https://paytym.net/api';
 const kStorageUrlForPDF = 'https://paytym.net/storage/pdfs/';
 
-const kBaseUrl1 = 'https://paytym.net/api';
+const kBaseUrlForEmployeeUploadImages = 'https://paytym.net/storage/';
 const kStorageUrlForProfileImage = 'https://paytym.net/storage/';
 
 // const kStorageUrl = 'https://paytym.net/storage/';

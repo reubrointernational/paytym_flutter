@@ -171,7 +171,9 @@ class PendingPayrollListview extends StatelessWidget {
                                                     .value
                                                 ? Colors.white
                                                 : Colors.blue,
-                                        fontSize: size.width * 0.026,
+                                        fontSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.025,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -212,7 +214,9 @@ class PendingPayrollListview extends StatelessWidget {
                                                 .value
                                             ? Colors.white
                                             : Colors.blue,
-                                        fontSize: size.width * 0.026,
+                                        fontSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.025,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -251,7 +255,9 @@ class PendingPayrollListview extends StatelessWidget {
                                                     .value
                                                 ? Colors.white
                                                 : Colors.blue,
-                                        fontSize: size.width * 0.026,
+                                        fontSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.025,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),

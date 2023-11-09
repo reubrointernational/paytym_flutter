@@ -331,7 +331,7 @@ class ReportsController extends GetxController
         .post(ApiEndPoints.payslip, jsonEncode(map),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    print("fetchPayslipCopy Response String:${responseString}");
+    print("fetchPayslipCopy Response String:$responseString");
     if (responseString == null) {
       hideLoading();
 
@@ -360,10 +360,15 @@ class ReportsController extends GetxController
       dateList.value = dateList.toSet().toList();
       // print(
       //     "Controller selected date drop down value:${selectedDropdownDay.value}");
+
       if (selectedDropdownDay.value == null) {
+        print("No date selcted yet");
+
         selectedDropdownDay.value = dateList.first;
         dateList.refresh();
         hideLoading();
+      } else {
+        print("Date selected id :${selectedDropdownDay.value}");
       }
 
       // selectedDropdownDay.value = dateList.first;
@@ -462,6 +467,19 @@ class ReportsController extends GetxController
       return IconPath.mPesaPng;
     } else {
       return IconPath.myCashPng;
+    }
+  }
+
+  String removingPublicFilePath(String path) {
+    String input = path;
+    int startIndex = input.indexOf('public/');
+    if (startIndex != -1) {
+      String substring =
+          input.substring(startIndex + 7); // +7 to skip "public/"
+      return substring;
+    } else {
+      // Handle the case where "public/" is not found in the input string.
+      return path;
     }
   }
 

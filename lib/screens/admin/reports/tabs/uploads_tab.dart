@@ -18,6 +18,7 @@ class UploadsTabAdmin extends StatelessWidget {
     return Obx(() {
       List<EmployeeList>? chatList =
           Get.find<DashboardControllerAdmin>().getFilteredEmployeeList();
+      print("Uploads Tab Item List count:${chatList!.length} ");
       return ListView.builder(
         itemCount: chatList?.length ?? 0,
         itemBuilder: (context, index) {

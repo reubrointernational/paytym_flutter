@@ -151,7 +151,7 @@ class UploadFilesPage extends StatelessWidget {
                                           .refresh();
                                       Get.find<ReportsControllerAdmin>()
                                           .downloadFile("hr_rec",
-                                              '$kStorageUrl${files?[index].file}',
+                                              '$kStorageUrlForProfileImage${files?[index].file}',
                                               ((progress, total) {
                                         if (progress == total) {
                                           files?[index].isDownloading = false;
@@ -242,7 +242,7 @@ class UploadFilesPage extends StatelessWidget {
                                           .refresh();
                                       Get.find<ReportsControllerAdmin>()
                                           .downloadFile("hr_rec",
-                                              '$kStorageUrl${files?[index].file}',
+                                              '$kStorageUrlForProfileImage${Get.find<ReportsController>().removingPublicFilePath(files![index].file.toString())}',
                                               ((progress, total) {
                                         if (progress == total) {
                                           files?[index].isDownloading = false;

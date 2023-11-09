@@ -81,14 +81,20 @@ class PayslipTab extends StatelessWidget {
                 value: reportsController.dateList.firstWhere((element) =>
                     element == reportsController.selectedDropdownDay.value),
                 onChanged: (value) {
-                  print("Payslip Date dropdown selected value:$value");
-                  reportsController.selectedDropdownDay.value = value!;
-                  reportsController.fetchPayslipCopy();
+                  try {
+                    print("Payslip Date dropdown selected value: $value");
+                    reportsController.selectedDropdownDay.value = value!;
+                    reportsController.fetchPayslipCopy();
 
-                  print(
-                      "reportsController.selectedDropdownDay.value:${reportsController.selectedDropdownDay.value}value");
+                    print(
+                        "reportsController.selectedDropdownDay.value:${reportsController.selectedDropdownDay.value}");
+                  } catch (e) {
+                    print("Error: $e");
+
+                    // Handle the range error here, such as showing an error message to the user or taking appropriate action.
+                  }
                 },
-                hint: '08-02-2023 ',
+                hint: '08-02-2023',
               );
             }),
           ],
@@ -119,7 +125,7 @@ class PayslipTab extends StatelessWidget {
                       ?.isNotEmpty ??
                   false) {
                 url =
-                    '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
+                    '$kStorageUrlForPDF${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
                 print(
                     "Payslip Date Selection Index:${Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value)}");
 
@@ -141,7 +147,7 @@ class PayslipTab extends StatelessWidget {
                 // url =
                 //     "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
                 // return const SizedBox();
-                return const Text("No Payslip Present for this month");
+                return const Text("No Payslip Generated during this month");
               }
             } on Exception {
               return const SizedBox();
