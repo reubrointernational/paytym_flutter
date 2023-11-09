@@ -14,7 +14,8 @@ class CustomDropdownYearButton extends StatelessWidget {
       this.onChanged,
       required this.lists,
       this.hint,
-      this.isIconPresent = true, this.alignment = AlignmentDirectional.center});
+      this.isIconPresent = true,
+      this.alignment = AlignmentDirectional.center});
 
   @override
   Widget build(BuildContext context) {

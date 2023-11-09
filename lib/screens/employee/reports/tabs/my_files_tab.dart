@@ -163,10 +163,10 @@ class MyFilesTab extends StatelessWidget {
                                           .refresh();
                                       Get.find<ReportsControllerAdmin>()
                                           .downloadFile("emp_records",
-                                              '$kStorageUrl${files?[index].file}',
+                                              '$kBaseUrlForEmployeeUploadImages${Get.find<ReportsController>().removingPublicFilePath(files![index].file.toString())}',
                                               ((progress, total) {
                                         print(
-                                            "Downloading File From URL:${kStorageUrl}${files?[index].file.toString()}");
+                                            "Downloading File From URL:$kBaseUrlForEmployeeUploadImages${Get.find<ReportsController>().removingPublicFilePath(files![index].file.toString())}");
                                         if (progress == total) {
                                           files?[index].isDownloading = false;
                                           Get.find<ReportsController>()

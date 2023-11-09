@@ -7,7 +7,7 @@ const kStorageUrl = 'https://paytym.net/storage/pdfs/';
 const kBaseUrls = 'https://paytym.net/api';
 const kStorageUrlForPDF = 'https://paytym.net/storage/pdfs/';
 
-const kBaseUrl1 = 'https://paytym.net/api';
+const kBaseUrlForEmployeeUploadImages = 'https://paytym.net/storage/';
 const kStorageUrlForProfileImage = 'https://paytym.net/storage/';
 
 // const kStorageUrl = 'https://paytym.net/storage/';

@@ -161,9 +161,11 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
               }),
               kSizedBoxH6,
               Center(
-                  child: Text(path.basename(
-                      Get.find<ReportsController>().filePath.value.toString() ??
-                          'file'))
+                  child: Text(path.basename(Get.find<ReportsController>()
+                          .filePath
+                          .value
+                          .toString()) ??
+                      "prasanth")
                   // Text(getExactFilenameFromFilefullpath(
                   //     Get.find<ReportsController>().filePath.value.toString())),
                   ),
