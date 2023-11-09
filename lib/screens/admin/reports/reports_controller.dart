@@ -10,6 +10,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:paytym/models/report/advance/advance_status_model.dart';
+import 'package:paytym/models/report/advance_approve_edit_request.dart';
+import 'package:paytym/models/report/advance_response_model.dart';
 import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 import 'package:paytym/models/report/medical_list_admin_model.dart';
 import 'package:paytym/models/report/overtime_approve_edit_request_model.dart';
@@ -900,11 +903,20 @@ class ReportsControllerAdmin extends GetxController
         print("Original index while Edit:${originalIndex.toString()}");
       }
     }
-
     showLoading();
     if (reasonButton == ReasonButton.advanceApprove) {
       //approve
       advanceApproveEditRequestModel.status = '1';
+      advanceApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
+      advanceApproveEditRequestModel.amount = advanceResponseModel
+          .value.employeeList[index].advanceAmount
+          .toString();
+      advanceApproveEditRequestModel.id = advanceResponseModel
+          .value.employeeList[originalIndex ?? index].id
+          .toString();
+      advanceApproveEditRequestModel.employeeId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
     } else if (reasonButton == ReasonButton.advanceDecline) {
       //decline
       print("Test decline reason (10): ");
@@ -912,8 +924,9 @@ class ReportsControllerAdmin extends GetxController
           "Advance decline section entered :${advanceApproveEditRequestModel.id}");
       // 3 for Edit ,2 for decline
       advanceApproveEditRequestModel.status = '2';
-      advanceApproveEditRequestModel.employerId =
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+      advanceApproveEditRequestModel.id = advanceResponseModel
+          .value.employeeList[originalIndex ?? index].id
+          .toString();
 
       //date is obtained from dashboard controller as bottomsheet fills dashboard controller
       // overtimeApproveEditRequestModel.date =
@@ -938,32 +951,21 @@ class ReportsControllerAdmin extends GetxController
       //         .totalHours;
     } else {
       //edit
-      print(
-          "Advance edit section entered :${advanceApproveEditRequestModel.id}");
-      // 3 for Edit ,2 for decline
       advanceApproveEditRequestModel.status = '3';
-      advanceApproveEditRequestModel.employerId =
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
-      //date is obtained from dashboard controller as bottomsheet fills dashboard controller
-      advanceApproveEditRequestModel.date =
-          Get.find<DashboardController>().advanceApproveEditRequestModel.date;
-
-      //reason is obtained from dashboard controller as bottomsheet fills dashboard controller
       advanceApproveEditRequestModel.reason =
-          Get.find<DashboardController>().advanceApproveEditRequestModel.reason;
-      //Setting Decline reason from Bottom sheet from Reason textbox treated as decline reaseon textbox
-      advanceApproveEditRequestModel.declineReason =
-          Get.find<DashboardController>().advanceApproveEditRequestModel.reason;
-
-      //totalHours is obtained from dashboard controller as bottomsheet fills dashboard controller
-      advanceApproveEditRequestModel.totalHours =
-          Get.find<DashboardController>()
-              .advanceApproveEditRequestModel
-              .totalHours;
+          advanceResponseModel.value.employeeList[index].reason.toString();
+      advanceApproveEditRequestModel.date =
+          advanceResponseModel.value.employeeList[index].date.toString();
+      advanceApproveEditRequestModel.amount = advanceResponseModel
+          .value.employeeList[originalIndex ?? index].advanceAmount
+          .toString();
+      advanceApproveEditRequestModel.id = advanceResponseModel
+          .value.employeeList[originalIndex ?? index].id
+          .toString();
     }
-    advanceApproveEditRequestModel.id = advanceResponseModel
-        .value.employeeList[originalIndex ?? index].id
-        .toString();
+    // advanceApproveEditRequestModel.id = advanceResponseModel
+    //     .value.employeeList[originalIndex ?? index].id
+    //     .toString();
 
     print("advance Request status: ${advanceApproveEditRequestModel.status}");
     var responseString = "";
@@ -1236,20 +1238,20 @@ class ReportsControllerAdmin extends GetxController
     return formatNum.format(int.parse(value));
   }
 
-  // downloadPdf(String? url) async {
-  //   if (url != null && url.isNotEmpty) {
-  //     sharePath = '';
-  //     isSharingOrDownloading.value = SharingOrDownloading.downloading;
-  //     await FlutterDownloader.enqueue(
-  //       url: url,
-  //       saveInPublicStorage: true,
-  //       savedDir: '/storage/emulated/0/Download',
-  //       showNotification: true,
-  //       openFileFromNotification: false,
-  //       // fileName: 'payslip.pdf',
-  //     );
-  //   }
-  // }
+  downloadPdf(String? url) async {
+    if (url != null && url.isNotEmpty) {
+      sharePath = '';
+      isSharingOrDownloading.value = SharingOrDownloading.downloading;
+      await FlutterDownloader.enqueue(
+        url: url,
+        saveInPublicStorage: true,
+        savedDir: '/storage/emulated/0/Download',
+        showNotification: true,
+        openFileFromNotification: false,
+        // fileName: 'payslip.pdf',
+      );
+    }
+  }
 
   downloadFile(String fileFrom, String? url,
       void Function(int, int)? onReceiveProgress) async {
@@ -1454,13 +1456,13 @@ class ReportsControllerAdmin extends GetxController
 
     if (payrollFlag.toString() != "all") {
       // For Selected Employees Payroll
-      print(
+      debugPrint(
           "called :processPayroll NOT ALL selected employee count:${filteredEmployeeList?.length.toString()} ");
       for (var element in filteredEmployeeList!) {
         if (element.isSelected == true) {
           print(
-              "Selected Id:${element?.id?.toString()} status : ${element.isSelected}");
-          empList?.add(element.id.toString());
+              "Selected Id:${element.id?.toString()} status : ${element.isSelected}");
+          empList.add(element.id.toString());
         }
       }
       empList?.toList();
