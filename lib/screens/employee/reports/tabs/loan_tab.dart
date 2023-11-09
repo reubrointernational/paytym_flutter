@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/constants/widgets.dart';
-import 'package:paytym/models/report/advance/advance_status_model.dart';
 import 'package:paytym/models/report/advance_response_model.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
-
-import '../../../../models/report/overtime/overtime_status-model.dart';
+import '../../../../models/report/advance/advance_status_model.dart';
 
 class LoanTab extends StatelessWidget {
   const LoanTab({super.key});

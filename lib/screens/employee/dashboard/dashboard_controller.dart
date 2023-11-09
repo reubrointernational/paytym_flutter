@@ -18,6 +18,7 @@ import '../../../models/dashboard/dashboard_response_model.dart';
 import '../../../models/employee_list_model.dart';
 import '../../../models/login/user_model.dart';
 import '../../../models/dashboard/request_advance_model.dart';
+import '../../../models/report/advance_approve_edit_request.dart';
 import '../../../models/report/overtime_approve_edit_request_model.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
@@ -35,26 +36,24 @@ class DashboardController extends GetxController with BaseController {
   bool checkInStatus = false;
   bool sliderValueChanged = false;
   final requestAdvanceFormKey = GlobalKey<FormState>();
+
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
-<<<<<<< HEAD
   AdvanceApproveEditRequestModel advanceApproveEditRequestModel =
       AdvanceApproveEditRequestModel(status: '0', id: '0');
+
+  TextEditingController? advanceTextEditingcontroller = TextEditingController();
   TextEditingController? dateofrequiredTextEditingcontroller =
       TextEditingController();
-  TextEditingController? overtimeTextEditingController =
-      TextEditingController();
-  TextEditingController? advanceTextEditingcontroller = TextEditingController();
 
-=======
   TextEditingController? overtimeTextEditingController =
       TextEditingController();
->>>>>>> parent of f7ab48f (changes in the dashboard in employee profile request advance changed to request loan and created two tabs for loan section)
   final employerIdModel = {
     'employer_id':
         '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
   };
+
   String? qr;
   bool isCheckedInWithQR = false;
   final dashboardModel = DashboardResponseModel().obs;
@@ -166,7 +165,10 @@ class DashboardController extends GetxController with BaseController {
       initialDate: DateTime.now(),
       firstDate: DateTime(1990),
       lastDate: DateTime(2030),
+      selectableDayPredicate: (DateTime date) =>
+          date.isAfter(DateTime.now().subtract(const Duration(days: 1))),
     );
+
     try {
       overtimeApproveEditRequestModel.date =
           DateFormat('yyyy-MM-dd').format(dateTime!);

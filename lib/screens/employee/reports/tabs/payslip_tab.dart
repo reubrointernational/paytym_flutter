@@ -13,6 +13,7 @@ import 'package:paytym/screens/employee/reports/widgets/cached_image.dart';
 import 'package:paytym/screens/employee/reports/widgets/pdf_viewer.dart';
 import 'package:paytym/core/extensions/camelcase.dart';
 import 'package:share_plus/share_plus.dart';
+// import 'package:share_plus/share_plus.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/dialog_helper.dart';
 import '../../../../network/end_points.dart';
@@ -109,9 +110,43 @@ class PayslipTab extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: url.endsWith('.pdf')
-              ? PdfViewer(url: url)
-              : CachedImage(url: url),
+          child: Obx(() {
+            try {
+              if (Get.find<ReportsController>()
+                      .payslipResponseModel
+                      .value
+                      .payroll
+                      ?.isNotEmpty ??
+                  false) {
+                url =
+                    '$kStorageUrl${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
+                print(
+                    "Payslip Date Selection Index:${Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value)}");
+
+                if (url?.getType() == 'pdf') {
+                  //for testing given an outside file name
+                  return PdfViewer(
+                    // url:
+                    //     "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"!,
+                    url: url!,
+                  );
+                } else if (url?.getType() == 'png') {
+                  return CachedImage(
+                    url: url!,
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              } else {
+                // url =
+                //     "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+                // return const SizedBox();
+                return const Text("No Payslip Present for this month");
+              }
+            } on Exception {
+              return const SizedBox();
+            }
+          }),
         ),
         kSizedBoxH8,
         Container(
@@ -121,7 +156,7 @@ class PayslipTab extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  Share.share(url);
+                  Share.share(url!);
                   // Get.find<ReportsController>().sharePdf(url, url.getType());
                 },
                 icon: CircleAvatar(

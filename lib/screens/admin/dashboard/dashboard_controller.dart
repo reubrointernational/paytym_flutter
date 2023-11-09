@@ -258,6 +258,12 @@ class DashboardControllerAdmin extends GetxController with BaseController {
     }
   }
 
+  List<EmployeeList>? getAllEmployees() {
+    print(
+        "getAllEmployees called size:${Get.find<DashboardControllerAdmin>().employeeList.value.employeeList?.length}");
+    return Get.find<DashboardControllerAdmin>().employeeList.value.employeeList;
+  }
+
   List<EmployeeList>? getFilteredEmployeeList() {
     print("getFilteredEmployeeList called 10");
     List<EmployeeList>? chatList;

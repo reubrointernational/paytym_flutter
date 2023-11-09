@@ -109,7 +109,7 @@ class ProjectsTabAdmin extends StatelessWidget {
                                                       .employeeproject ??
                                                   [])
                                             NetworkImage(
-                                                '$kStorageUrl${item.user?.image}')
+                                                '$kStorageUrlForProfileImage${item.user?.image}')
                                         ],
                                       ),
                                       // child: SizedBox(

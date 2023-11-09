@@ -6,6 +6,7 @@ import 'package:paytym/screens/admin/reports/reports_controller.dart';
 import 'package:paytym/screens/admin/reports/tabs/attendance_tab.dart';
 
 import '../../../models/leaves/leaves_admin_response_model.dart';
+import '../../../models/report/advance_response_model.dart';
 import '../../../models/report/deduction/deduction_list_admin_model.dart';
 import '../../../models/report/medical_list_admin_model.dart';
 import '../../../models/report/projects/projects_list_model.dart';

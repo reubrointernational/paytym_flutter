@@ -1,7 +1,9 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:paytym/core/constants/widgets.dart';
+import 'package:paytym/screens/employee/reports/tabs/loan_tab.dart';
 import 'package:paytym/screens/employee/reports/tabs/my_files_tab.dart';
+import 'package:paytym/screens/employee/reports/tabs/projects_tab.dart';
 import 'package:paytym/screens/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
@@ -133,6 +135,10 @@ class ReportsPage extends StatelessWidget {
                               ),
                               Animate(
                                 effects: const [FadeEffect()],
+                                child: const LoanTab(),
+                              ),
+                              Animate(
+                                effects: const [FadeEffect()],
                                 child: const SplitPaymentTab(),
                               ),
                               Animate(
@@ -146,6 +152,9 @@ class ReportsPage extends StatelessWidget {
                               Animate(
                                   effects: const [FadeEffect()],
                                   child: const MyFilesTab()),
+                              Animate(
+                                  effects: const [FadeEffect()],
+                                  child: const ProjectsTab()),
                               Animate(
                                 effects: const [FadeEffect()],
                                 child: const MedicalTab(),

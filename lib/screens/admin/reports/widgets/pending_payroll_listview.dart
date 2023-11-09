@@ -23,6 +23,7 @@ class PendingPayrollListview extends StatelessWidget {
     });
 
     bool payrollOpen = true;
+    Size size = MediaQuery.of(context).size;
     return Expanded(
       child: SizedBox(
         child: SingleChildScrollView(
@@ -42,6 +43,63 @@ class PendingPayrollListview extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     const Text(
+                        //       '                     ',
+                        //       style: TextStyle(
+                        //         fontWeight: FontWeight.w700,
+                        //         color: CustomColors.blackTextColor,
+                        //       ),
+                        //     ),
+                        //     IconButton(
+                        //       icon: const Icon(
+                        //         Icons.download,
+                        //         size: 18,
+                        //         color: CustomColors.orangeColor,
+                        //       ),
+                        //       onPressed: () {
+                        //         final employeeList =
+                        //             Get.find<DashboardControllerAdmin>()
+                        //                 .employeeList
+                        //                 .value
+                        //                 .employeeList
+                        //                 ?.where(
+                        //                     (element) => element.status == 1)
+                        //                 .toList();
+                        //         if (employeeList != null) {
+                        //           DialogHelper.showToast(
+                        //               desc: 'Payslip Downloading');
+                        //           CsvDownloader().downloadCsv(employeeList);
+                        //         }
+                        //       },
+                        //     ),
+                        //     IconButton(
+                        //       icon: const Icon(
+                        //         Icons.refresh,
+                        //         size: 18,
+                        //         color: CustomColors.orangeColor,
+                        //       ),
+
+                        //       onPressed: () {
+                        //         final employeeList =
+                        //             Get.find<DashboardControllerAdmin>()
+                        //                 .employeeList
+                        //                 .value
+                        //                 .employeeList
+                        //                 ?.where(
+                        //                     (element) => element.status == 1)
+                        //                 .toList();
+                        //         if (employeeList != null) {
+                        //           DialogHelper.showToast(
+                        //               desc: 'Payslip Reverting');
+                        //           // CsvDownloader().downloadCsv(employeeList);
+                        //         }
+                        //       },
+                        //     ),
+                        //   ],
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -76,6 +134,7 @@ class PendingPayrollListview extends StatelessWidget {
                             ),
                           ],
                         ),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -112,9 +171,7 @@ class PendingPayrollListview extends StatelessWidget {
                                                     .value
                                                 ? Colors.white
                                                 : Colors.blue,
-                                        fontSize:
-                                            MediaQuery.of(context).size.width *
-                                                0.03,
+                                        fontSize: size.width * 0.026,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -155,9 +212,7 @@ class PendingPayrollListview extends StatelessWidget {
                                                 .value
                                             ? Colors.white
                                             : Colors.blue,
-                                        fontSize:
-                                            MediaQuery.of(context).size.width *
-                                                0.03,
+                                        fontSize: size.width * 0.026,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -196,9 +251,7 @@ class PendingPayrollListview extends StatelessWidget {
                                                     .value
                                                 ? Colors.white
                                                 : Colors.blue,
-                                        fontSize:
-                                            MediaQuery.of(context).size.width *
-                                                0.03,
+                                        fontSize: size.width * 0.026,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -206,13 +259,6 @@ class PendingPayrollListview extends StatelessWidget {
                             ),
                           ],
                         ),
-                        // const Text(
-                        //   'Selected Employee',
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.w700,
-                        //     color: CustomColors.blackTextColor,
-                        //   ),
-                        // ),
                         SliderColumn(
                           // title: 'ALL',
                           title: '',
@@ -331,13 +377,17 @@ class PendingPayrollListview extends StatelessWidget {
               ),
               Obx(() {
                 List<EmployeeList>? employeesList =
-                    Get.find<DashboardControllerAdmin>().getEmployees();
+                    Get.find<DashboardControllerAdmin>().getAllEmployees();
+                // List<EmployeeList>? employeesList =
+                //     Get.find<DashboardControllerAdmin>().getEmployees();
                 // List<EmployeeList>? employeesList =
                 // Get.find<DashboardControllerAdmin>()
                 //     .getFilteredEmployeeList();
-                employeesList = employeesList
-                    ?.where((element) => element.status == 1)
-                    .toList();
+
+                //Filtering non active Employees by checking status of the employees
+                // employeesList = employeesList
+                //     ?.where((element) => element.status == 1)
+                //     .toList();
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

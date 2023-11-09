@@ -184,7 +184,6 @@ class LoginController extends GetxController with BaseController {
       if (loginResponseModel?.message == 'Inactive Person') {
         // Employer license expired ,  Go to licence expired page
         print("Inactive person");
-
         Get.toNamed(Routes.licenceExpired);
       } else if (loginResponseModel?.employee?.isFirst == '1') {
         await Get.find<LoginController>().sendOtp();
