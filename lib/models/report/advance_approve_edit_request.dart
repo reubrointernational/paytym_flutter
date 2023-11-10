@@ -23,7 +23,6 @@ class AdvanceApproveEditRequestModel {
 
   String status;
   String id;
-
   String? employerId;
   String? employeeId;
   String? date;
@@ -36,11 +35,11 @@ class AdvanceApproveEditRequestModel {
         "status": status,
         "id": id,
         "employer_id": employerId,
-        "user_id": employeeId,
-        "date_of_requirement": date,
+        "employee_id": employeeId,
+        "date": date,
         "amount": amount,
         "total_hours": totalHours,
-        "description": reason,
+        "reason": reason,
         "decline_reason": declineReason,
       };
 }
@@ -73,7 +72,7 @@ class DateofRequired {
         "id": id,
         "employer_id": employerId,
         "employee_id": employeeId,
-        "date_of_requirement": date,
+        "date": date,
         "amount": amount,
         "total_hours": totalHours,
         "reason": reason,

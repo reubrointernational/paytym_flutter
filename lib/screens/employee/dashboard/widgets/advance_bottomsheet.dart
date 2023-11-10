@@ -33,7 +33,6 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
             .getFilteredAdvanceList()
             ?.where((element) => element.status == '0')
             .toList();
-
         originalIndex = Get.find<ReportsControllerAdmin>()
             .advanceResponseModel
             .value
@@ -90,30 +89,24 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                       ),
                     ),
                   BottomsheetTextField(
-                      controller: Get.find<DashboardController>()
-                          .advanceTextEditingcontroller,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
-                      ],
-                      hintText: kDateString.substring(0, 4),
-                      keyboardType: TextInputType.datetime,
-                      suffixIcon: InkWell(
-                        onTap: () => Get.find<DashboardController>()
-                            .selectDateTime(context),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.calendar_month, size: 18),
-                        ),
+                    controller: Get.find<DashboardController>()
+                        .advanceTextEditingcontroller,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
+                    ],
+                    hintText: kDateString.substring(0, 4),
+                    keyboardType: TextInputType.datetime,
+                    suffixIcon: InkWell(
+                      onTap: () => Get.find<DashboardController>()
+                          .selectDateTime(context),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.calendar_month, size: 18),
                       ),
-                      validator: (value) =>
-                          Get.find<DashboardController>().dateValidator(value!),
-                      onSaved: (value) {
-                        String formatedDate = Get.find<DashboardController>()
-                            .convertDateFormat(value);
-                        Get.find<DashboardController>()
-                            .advanceApproveEditRequestModel
-                            .date = formatedDate;
-                      }),
+                    ),
+                    validator: (value) =>
+                        Get.find<DashboardController>().dateValidator(value!),
+                  ),
                   kSizedBoxH10,
                   BottomsheetTextField(
                       text: index != null
@@ -125,7 +118,7 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                           : null,
                       onSaved: ((value) => Get.find<DashboardController>()
                           .advanceApproveEditRequestModel
-                          .amount = value),
+                          .totalHours = value),
                       hintText: kAmountString,
                       keyboardType: TextInputType.number,
                       inputFormatters: [

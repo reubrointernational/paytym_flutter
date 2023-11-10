@@ -32,9 +32,7 @@ class ApiEndPoints {
   static const checkOut = '$kBaseUrl/check_out';
   static const checkInByScan = '$kBaseUrl/check_in_by_scan';
   static const checkOutByScan = '$kBaseUrl/check_out_by_scan';
-  static const requestAdvance =
-      '$kBaseUrl/advance_request_approve_decline_edit';
-
+  static const requestAdvance = '$kBaseUrl/request_advance';
   static const requestPayment = '$kBaseUrl/request_payment';
   static const deductions = '$kBaseUrl/deductions';
   static const employeeAttendance = '$kBaseUrl/attendance';
@@ -88,14 +86,18 @@ class ApiEndPoints {
   static const dashboard = '$kBaseUrl/dashboard';
   static const uploadFiles = '$kBaseUrl/upload_files';
   static const uploadFilesEmployee = '$kBaseUrl/employee_upload_files';
+
   static const leaveTypes = '$kBaseUrl/get-leave-types';
   static const updateFCMToken = '$kBaseUrl/apply_device_id';
+
   static const fetchBusiness = '$kBaseUrl/get_business';
   static const fetchDepartment = '$kBaseUrl/get_department';
   static const fetchBranch = '$kBaseUrl/get_branch';
+
   static const fetchEmployeesDepartmentWise =
       '$kBaseUrl/list_employees_departmentwise';
   static const fetchEmployeesBranchWise = '$kBaseUrl/list_employees_branchwise';
+
   static const attendanceByHr = '$kBaseUrl/attendance_by_hr';
   static const fetchEmployeesBusinessWise =
       '$kBaseUrl/list_employees_businesswise';
