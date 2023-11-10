@@ -93,12 +93,11 @@ class LoanTabAdmin extends StatelessWidget {
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    Text(
-                                      '${advanceDetail.user?.bankBranchName}',
-                                      style: TextStyle(
-                                          color: Colors.grey.shade600,
-                                          fontSize: 12.5),
-                                    ),
+                                    DetailsRow(
+                                        title: "Amount: ",
+                                        value: advanceDetail.advanceAmount
+                                            .toString()),
+
                                     // Text(
                                     //   '${overtimeDetail?.user?.firstName ?? ''} ${overtimeDetail?.user?.lastName ?? ''}',
                                     //   style: const TextStyle(
@@ -128,16 +127,15 @@ class LoanTabAdmin extends StatelessWidget {
                                     ),
                                     kSizedBoxH2,
                                     DetailsRow(
-                                      title: "Date of Requirement: ",
+                                        title: "Date of Requirement",
+                                        value: ""),
+                                    kSizedBoxH2,
+                                    DetailsRow(
+                                      title: "",
                                       value: DateFormat('dd-MM-yyyy').format(
                                           advanceDetail.date ??
                                               DateTime(0000, 00, 00)),
                                     ),
-                                    kSizedBoxH2,
-                                    DetailsRow(
-                                        title: "Amount: ",
-                                        value: advanceDetail.advanceAmount
-                                            .toString()),
                                   ],
                                 ),
                               ],
