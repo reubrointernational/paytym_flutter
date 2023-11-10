@@ -68,7 +68,7 @@ class CalendarControllerAdmin extends GetxController with BaseController {
       hideLoading();
       meetingResponseModel.value =
           meetingListAdminModelFromJson(responseString);
-      meetingResponseModel.refresh();
+      // meetingResponseModel.refresh();
 
       Get.find<BaseClient>().onError = null;
     }
