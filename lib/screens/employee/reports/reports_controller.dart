@@ -483,6 +483,20 @@ class ReportsController extends GetxController
     }
   }
 
+  String removingAnyStringFromStringFilePath(
+      String stringToRemove, String baseString) {
+    String input = baseString;
+    int startIndex = input.indexOf(stringToRemove);
+    if (startIndex != -1) {
+      String substring = input.substring(
+          startIndex + stringToRemove.length); // +7 to skip "public/"
+      return substring;
+    } else {
+      // Handle the case where "public/" is not found in the input string.
+      return baseString;
+    }
+  }
+
   setSplitPayment(BuildContext context) async {
     if (splitAmount
             .reduce((previousValue, element) => previousValue + element) ==
@@ -805,6 +819,8 @@ class ReportsController extends GetxController
 
   sharePdf(String? url, String? type) async {
     print("sharePdf called with url: ${url} :type:${type}");
+
+    String urlnew = Uri.encodeFull(url!);
     if (type == 'pdf' || type == 'png') {
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
       Directory tempDir = await getTemporaryDirectory();
@@ -815,7 +831,7 @@ class ReportsController extends GetxController
       }
       sharePath = '$tempPath/payslip.$type';
       await FlutterDownloader.enqueue(
-        url: url!,
+        url: urlnew!,
         savedDir: tempPath,
         showNotification: false,
         openFileFromNotification: false,
@@ -887,7 +903,7 @@ class ReportsController extends GetxController
           //Download completed from download button
         } else if (isSharingOrDownloading.value ==
             SharingOrDownloading.downloading) {
-          DialogHelper.showToast(desc: 'Download completed');
+          DialogHelper.showToast(desc: 'Download completed.');
         }
         isSharingOrDownloading.value = SharingOrDownloading.idle;
         print(

@@ -1256,36 +1256,29 @@ class ReportsControllerAdmin extends GetxController
   downloadFile(String fileFrom, String? url,
       void Function(int, int)? onReceiveProgress) async {
     showLoading();
-    print("File name when time of download :${path.basename(url!)}");
     print("URL when time of download :+${url}");
-
-    if (fileFrom == "emp_records") {
-      fileFrom = fileFrom + "emp record_";
-    }
-    if (fileFrom == "hr_rec") {
-      fileFrom = fileFrom + "hr record_";
-    }
 
     final dir = await getTemporaryDirectory();
 
     if (url != null) {
       var dio = Dio();
-      final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
+      // final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
       //Now i am giving the extension as PDF, If the payslip file from API is correct,ie,paytym/storage/filename.pdf is correct no need to given the last pdf extension
       // If the File name from API is correct no need to update the file name as pdf_emp_record
       // just give the exact name from the API.
-      print(
-          "Dio going to download dirpath: ${dir.path}/${path.basename(url)}'");
-      String encodedUrl = Uri.encodeFull(url);
+
+      // String encodedUrl = Uri.encodeFull(url);
+
+      // print("Dio going to download : $encodedUrl");
       // url.replaceAll(' ', '_');
       await dio.download(
-          encodedUrl,
+          url,
+          // encodedUrl,
           // "${dir.path}/${path.basename(url)}'",
-          '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
+          '/storage/emulated/0/Download/${path.basename(url)}',
           onReceiveProgress: onReceiveProgress);
       hideLoading();
-      OpenFile.open(
-          '/storage/emulated/0/Download/${path.basename(encodedUrl)}');
+      OpenFile.open('/storage/emulated/0/Download/${path.basename(url)}');
     }
   }
 
@@ -1294,6 +1287,7 @@ class ReportsControllerAdmin extends GetxController
         type == 'pdf' ||
         type == 'png' ||
         type == 'csv' ||
+        type == 'doc' ||
         type == 'docx' ||
         type == 'jpeg') {
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
