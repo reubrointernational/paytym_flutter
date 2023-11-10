@@ -201,8 +201,8 @@ class PayslipTab extends StatelessWidget {
                       Get.find<ReportsControllerAdmin>().downloadFile(
                         "emp_records",
                         // "https://paytym.net/storage/employee_uploaded_file/Remote%20Jobs.pdf",
-                        "https://paytym.net/storage/pdfs/EMP18_PS2023-08-08 00:00:00_19.pdf",
-                        // url,
+                        // "https://paytym.net/storage/pdfs/EMP18_PS2023-08-08 00:00:00_19.pdf",
+                        url,
                         ((progress, total) {
                           if (progress == total) {
                             Get.find<ReportsController>()

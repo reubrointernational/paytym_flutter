@@ -1267,15 +1267,15 @@ class ReportsControllerAdmin extends GetxController
       // If the File name from API is correct no need to update the file name as pdf_emp_record
       // just give the exact name from the API.
 
-      // String encodedUrl = Uri.encodeFull(url);
+      String encodedUrl = Uri.encodeFull(url);
 
-      // print("Dio going to download : $encodedUrl");
-      // url.replaceAll(' ', '_');
+      print("Dio going to download : $encodedUrl");
+
       await dio.download(
-          url,
-          // encodedUrl,
-          // "${dir.path}/${path.basename(url)}'",
-          '/storage/emulated/0/Download/${path.basename(url)}',
+          // url,
+          encodedUrl,
+          // "${dir.path}/${path.basename(encodedUrl)}'",
+          '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
           onReceiveProgress: onReceiveProgress);
       hideLoading();
       OpenFile.open('/storage/emulated/0/Download/${path.basename(url)}');

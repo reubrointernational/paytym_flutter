@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paytym/core/constants/styles.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';
 
+import '../../../core/constants/widgets.dart';
 import '../../../models/report/projects/projects_list_model.dart';
 import '../../../network/end_points.dart';
 import '../widgets/custom_admin_scaffold.dart';
@@ -34,53 +35,32 @@ class ProjectEmployeeListPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: members != null
+
+                      //     '${members.user?.firstName ?? ''} ${members.user?.lastName ?? ''}',
+                      //       members!.user!.id.toString() ?? " ",
+                      // members!.user!.branch!.name ?? " ",
+                      //     backgroundImage: NetworkImage(
+                      // '$kStorageUrlForProfileImage${members.user?.image}'),
+
                       ? ListTile(
-                          title: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${members.user?.firstName ?? ''} ${members.user?.lastName ?? ''}',
-                                style: kTextStyleS15W600CBlack,
-                              ),
-                              Text(
-                                members!.user!.id.toString() ?? " ",
-                                style: kTextStyleS13W500Cgrey,
-                              ),
-                            ],
+                          title: Text(
+                            '${members.user?.firstName ?? ''} ${members.user?.lastName ?? ''}',
+                            style: kTextStyleS18W600CBlack,
                           ),
 
-                          // subtitle: Column(
-                          //   children: [
-                          //     Text(
-                          //       // "test",
-                          //       members!.user!.branch!.name ?? " ",
-                          //       style: kTextStyleS13W500Cgrey,
-                          //     ),
-                          //   ],
-                          // ),
+                          subtitle:
+                              // Text('#${chatList?[index].id.toString().padLeft(5, '0')}'),
+                              Text('#${members!.user!.branch!.name ?? " "}'),
+                          // chatList?[index].branch?.name ?? '',
                           leading: CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Colors.grey,
+                            radius: 28,
                             backgroundImage: NetworkImage(
                                 '$kStorageUrlForProfileImage${members.user?.image}'),
                           ),
-                          // Text('ID: ${members.user?.id ?? ''}')
-                          trailing: members.user != null
-                              ? Text(
-                                  // "test",
-                                  members!.user!.branch!.name ?? " ",
-                                  style: kTextStyleS13W500Cgrey,
-                                )
-                              // : Text("Anonymous branch  "),
-                              : Text("  "),
-                          // Trailing original
-                          //       trailing: project!.branch != null
-                          //           ? Text(
-                          //               // "test",
-                          //               project!.branch!.name ?? " ",
-                          //               style: kTextStyleS13W500Cgrey,
-                          //             )
-                          //           : Text("Anonymous branch  "),
+                          trailing: Text(
+                            members.user?.id.toString().padLeft(5, '0') ?? " ",
+                            style: kTextStyleS13W500Cgrey,
+                          ),
                         )
                       : Text("Anonymous Member "),
                 ),
