@@ -93,12 +93,10 @@ class EmployeesList {
         "id": id,
         "employer_id": employerId,
         "employee_id": userid,
-        "date_of_requirement":
+        "requested_date":
             "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
         "total_hours": totalHours,
         "status": status,
-        "user_id": userid,
-        "decline_reason": declineReason,
         "description": reason,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:paytym/models/report/advance_response_model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
 import 'package:paytym/screens/admin/leaves/leaves_controller.dart';
 import 'package:paytym/screens/admin/reports/reports_controller.dart';

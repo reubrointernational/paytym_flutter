@@ -83,9 +83,6 @@ class RequestAdvanceBottomsheet extends StatelessWidget {
                           .convertDateFormat(value);
                       Get.find<DashboardController>()
                           .requestAdvanceModel
-                          .status = '0';
-                      Get.find<DashboardController>()
-                          .requestAdvanceModel
                           .dateofrequirement = formatedDate;
                     }),
               ],
