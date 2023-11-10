@@ -187,28 +187,33 @@ class MeetingAttendeess {
   String? lastName;
   String? image;
 
-  MeetingAttendeess(
-      {this.id,
-      this.employerId,
-      this.jobTitle,
-      this.firstName,
-      this.lastName,
-      this.image});
+  MeetingAttendeess({
+    this.id,
+    this.employerId,
+    this.jobTitle,
+    this.firstName,
+    this.lastName,
+    this.image,
+  });
 
-  MeetingAttendeess.fromJson(Map<String, dynamic> json) {
-    if (json != null) {
-      id = json['id'];
-      employerId = json['employer_id'];
-      jobTitle = json['job_title'];
-      firstName = json['first_name'];
-      lastName = json['last_name'];
-      image = json['image'];
-    } else {
-      print("MeetingAttendeess.fromJson Json Null");
+  factory MeetingAttendeess.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      // Handle the case where json is null (or return a default value)
+      return MeetingAttendeess();
     }
+
+    return MeetingAttendeess(
+      id: json['id'],
+      employerId: json['employer_id'],
+      jobTitle: json['job_title'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      image: json['image'],
+    );
   }
+
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['employer_id'] = this.employerId;
     data['job_title'] = this.jobTitle;
