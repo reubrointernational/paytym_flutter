@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/logout_controller.dart';
 import 'package:paytym/models/message_only_response_model.dart';
-import 'package:paytym/models/report/advance_approve_edit_request.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/employee/dashboard/widgets/request_advance_bottomsheet.dart';
 import 'package:paytym/screens/employee/dashboard/widgets/request_overtime_bottomsheet.dart';
@@ -36,7 +35,6 @@ class DashboardController extends GetxController with BaseController {
   bool checkInStatus = false;
   bool sliderValueChanged = false;
   final requestAdvanceFormKey = GlobalKey<FormState>();
-
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
@@ -165,10 +163,7 @@ class DashboardController extends GetxController with BaseController {
       initialDate: DateTime.now(),
       firstDate: DateTime(1990),
       lastDate: DateTime(2030),
-      selectableDayPredicate: (DateTime date) =>
-          date.isAfter(DateTime.now().subtract(const Duration(days: 1))),
     );
-
     try {
       overtimeApproveEditRequestModel.date =
           DateFormat('yyyy-MM-dd').format(dateTime!);

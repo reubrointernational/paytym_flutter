@@ -23,7 +23,6 @@ class PendingPayrollListview extends StatelessWidget {
     });
 
     bool payrollOpen = true;
-    Size size = MediaQuery.of(context).size;
     return Expanded(
       child: SizedBox(
         child: SingleChildScrollView(
