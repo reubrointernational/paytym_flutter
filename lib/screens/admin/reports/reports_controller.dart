@@ -331,12 +331,12 @@ class ReportsControllerAdmin extends GetxController
       desc: sliderValue.value == 100 ? payrollString : payrollString,
       onConfirm: () {
         showLoading();
-        Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == true
-            ? processPayroll('all')
-            : processPayroll('others');
+        Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == false
+            ? revertPayroll()
+            : processPayroll('all');
         // processPayroll('all');
         print(
-            "Process payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
+            "revert payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
 
         showLoading();
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
@@ -1574,21 +1574,22 @@ class ReportsControllerAdmin extends GetxController
         .post(ApiEndPoints.revertPayroll, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    var jsonResponse = jsonDecode(responseString);
+    var message = jsonResponse['message'];
     // var responseString;
-    print("revertPayroll Response: ${responseString.toString()}");
+    print("revertPayroll Response: $message");
 
     if (responseString != null) {
       // sliderValue.value = 0;
       // Get.back();
       hideLoading();
-      DialogHelper.showToast(desc: "Payroll Revert Successfully Done");
+      DialogHelper.showToast(desc: message);
       hideLoading();
       Get.back();
       return;
     } else {
       hideLoading();
       // Get.back();
-
       DialogHelper.showToast(desc: "Payroll Revert Can't Done");
     }
   }
