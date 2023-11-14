@@ -162,7 +162,10 @@ class MyFilesTab extends StatelessWidget {
                                           .fileListResponseModel
                                           .refresh();
                                       Get.find<ReportsControllerAdmin>()
-                                          .downloadFile("emp_records",
+                                          .downloadFile(
+                                              "emp_records",
+                                              // "https://paytym.net/storage/pdfs/EMP18_PS2023-11-21%2000:00:00_19.pdf",
+                                              // "https://paytym.net/storage/file/flutter.pdf",
                                               '$kBaseUrlForEmployeeUploadImages${Get.find<ReportsController>().removingPublicFilePath(files![index].file.toString())}',
                                               ((progress, total) {
                                         print(

@@ -154,169 +154,83 @@ class PayslipTab extends StatelessWidget {
           }),
         ),
         kSizedBoxH8,
-        // Share button
-        Obx(() {
-          try {
+
+        // Container for Share and Download buttons
+
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Obx(() {
             if (Get.find<ReportsController>()
                     .payslipResponseModel
                     .value
                     .payroll
                     ?.isNotEmpty ??
                 false) {
-              // Share and Download Button Row , It display only a payslip is present based on the year+month selection
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () => Get.find<ReportsControllerAdmin>()
-                          .sharePdf(url, url?.getType()),
-                      // Get.find<ReportsController>().sharePdf(url, url?.getType()),
-                      icon: CircleAvatar(
-                        backgroundColor: CustomColors.fabColor,
-                        child: Obx(
-                          () => Get.find<ReportsController>()
-                                      .isSharingOrDownloading
-                                      .value ==
-                                  SharingOrDownloading.sharing
-                              ? const SpinKitPulse(
-                                  color: Colors.white,
-                                )
-                              : SvgPicture.asset(
-                                  IconPath.shareIconSvg,
-                                ),
-                        ),
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      url =
+                          '$kStorageUrlForPDF${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
+
+                      print("Url for share:${url}");
+
+                      // Share.share(url!);
+                      Get.find<ReportsControllerAdmin>()
+                          .sharePdf(url, url?.getType());
+                    },
+                    icon: CircleAvatar(
+                      backgroundColor: CustomColors.fabColor,
+                      child: Obx(
+                        () => Get.find<ReportsController>()
+                                    .isSharingOrDownloading
+                                    .value ==
+                                SharingOrDownloading.sharing
+                            ? const SpinKitPulse(color: Colors.white)
+                            : SvgPicture.asset(IconPath.shareIconSvg),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        if (Get.find<ReportsController>()
-                                .selectedDropdownDay
-                                .value ==
-                            null) {
-                          DialogHelper.showToast(desc: 'No Payslip found');
-                        } else {
-                          // files?[index].isDownloading = true;
-                          Get.find<ReportsController>()
-                              .fileListResponseModel
-                              .refresh();
-                          Get.find<ReportsControllerAdmin>()
-                              .downloadFile("hr_rec", url, ((progress, total) {
-                            if (progress == total) {
-                              // files?[index].isDownloading = false;
-                              Get.find<ReportsController>()
-                                  .fileListResponseModel
-                                  .refresh();
-                              DialogHelper.showToast(
-                                  desc: 'Download completed');
-                            }
-                          }));
-                        }
-                        // original code
-                        // Get.find<ReportsController>().downloadPdf(url);
-                      },
-                      icon: CircleAvatar(
-                        backgroundColor: CustomColors.fabColor,
-                        child: Obx(
-                          () => Get.find<ReportsController>()
-                                      .isSharingOrDownloading
-                                      .value ==
-                                  SharingOrDownloading.downloading
-                              ? Lottie.asset(IconPath.downloadingJson)
-                              : SvgPicture.asset(
-                                  IconPath.downloadIconSvg,
-                                ),
-                        ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Get.find<ReportsController>()
+                          .fileListResponseModel
+                          .refresh();
+                      Get.find<ReportsControllerAdmin>().downloadFile(
+                        "emp_records",
+                        // "https://paytym.net/storage/employee_uploaded_file/Remote%20Jobs.pdf",
+                        // "https://paytym.net/storage/pdfs/EMP18_PS2023-08-08 00:00:00_19.pdf",
+                        url,
+                        ((progress, total) {
+                          if (progress == total) {
+                            Get.find<ReportsController>()
+                                .fileListResponseModel
+                                .refresh();
+                            DialogHelper.showToast(desc: 'Download completed');
+                          }
+                        }),
+                      );
+                    },
+                    icon: CircleAvatar(
+                      backgroundColor: CustomColors.fabColor,
+                      child: Obx(
+                        () => Get.find<ReportsController>()
+                                    .isSharingOrDownloading
+                                    .value ==
+                                SharingOrDownloading.downloading
+                            ? Lottie.asset(IconPath.downloadingJson)
+                            : SvgPicture.asset(IconPath.downloadIconSvg),
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                ],
               );
             } else {
-              return const SizedBox();
+              return kSizedBoxH2;
             }
-          } on Exception {
-            return const SizedBox();
-          }
-        }),
-        // Get.find<ReportsController>()
-        //         .payslipResponseModel
-        //         .value
-        //         .payroll!
-        //         .isNotEmpty
-        //     ? Container(
-        //         padding: const EdgeInsets.symmetric(horizontal: 10),
-        //         child: Row(
-        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //           children: [
-        //             IconButton(
-        //               onPressed: () => Get.find<ReportsController>()
-        //                   .sharePdf(url, url?.getType()),
-        //               // Get.find<ReportsController>().sharePdf(url, url?.getType()),
-        //               icon: CircleAvatar(
-        //                 backgroundColor: CustomColors.fabColor,
-        //                 child: Obx(
-        //                   () => Get.find<ReportsController>()
-        //                               .isSharingOrDownloading
-        //                               .value ==
-        //                           SharingOrDownloading.sharing
-        //                       ? const SpinKitPulse(
-        //                           color: Colors.white,
-        //                         )
-        //                       : SvgPicture.asset(
-        //                           IconPath.shareIconSvg,
-        //                         ),
-        //                 ),
-        //               ),
-        //             ),
-        //             IconButton(
-        //               onPressed: () {
-        //                 if (Get.find<ReportsController>()
-        //                         .selectedDropdownDay
-        //                         .value ==
-        //                     null) {
-        //                   DialogHelper.showToast(desc: 'No Payslip found');
-        //                 } else {
-        //                   // files?[index].isDownloading = true;
-        //                   Get.find<ReportsController>()
-        //                       .fileListResponseModel
-        //                       .refresh();
-        //                   Get.find<ReportsControllerAdmin>().downloadFile(
-        //                       "hr_rec",
-        //                       'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        //                       ((progress, total) {
-        //                     if (progress == total) {
-        //                       // files?[index].isDownloading = false;
-        //                       Get.find<ReportsController>()
-        //                           .fileListResponseModel
-        //                           .refresh();
-        //                       DialogHelper.showToast(
-        //                           desc: 'Download completed');
-        //                     }
-        //                   }));
-        //                 }
-        //                 // original code
-        //                 // Get.find<ReportsController>().downloadPdf(url);
-        //               },
-        //               icon: CircleAvatar(
-        //                 backgroundColor: CustomColors.fabColor,
-        //                 child: Obx(
-        //                   () => Get.find<ReportsController>()
-        //                               .isSharingOrDownloading
-        //                               .value ==
-        //                           SharingOrDownloading.downloading
-        //                       ? Lottie.asset(IconPath.downloadingJson)
-        //                       : SvgPicture.asset(
-        //                           IconPath.downloadIconSvg,
-        //                         ),
-        //                 ),
-        //               ),
-        //             )
-        //           ],
-        //         ),
-        //       )
-        //     : Text(""),
+          }),
+        )
       ],
     );
   }

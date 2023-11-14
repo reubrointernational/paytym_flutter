@@ -52,6 +52,7 @@ import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:share_plus/share_plus.dart';
 
 import 'reports_filter_controller.dart';
 
@@ -322,16 +323,24 @@ class ReportsControllerAdmin extends GetxController
 
   showDialogueRevert() {
     String payrollString =
-        "Are you sure to process revert payroll for All Employees ?";
+        "Are you sure to process revert payroll for the  Employees ?";
 
     DialogHelper.showConfirmDialog(
       title: sliderValue.value == 100 ? 'Revert Payroll' : 'Reverse Payroll',
       desc: sliderValue.value == 100 ? payrollString : payrollString,
       onConfirm: () {
         showLoading();
+<<<<<<< HEAD
         Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == false
             ? revertPayroll()
             : processPayroll('all');
+=======
+        if (Get.find<ReportsControllerAdmin>().isRevertPayrollSelected.value ==
+            true) {
+          revertPayroll();
+        }
+
+>>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
         // processPayroll('all');
         print(
             "revert payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
@@ -346,6 +355,7 @@ class ReportsControllerAdmin extends GetxController
       },
       onCancel: () {
         sliderValue.value = 0;
+        DialogHelper.showToast(desc: " Revert Payroll Operation Cancelled");
       },
     );
   }
@@ -533,6 +543,28 @@ class ReportsControllerAdmin extends GetxController
         Get.find<LoginController>().getHeader());
     print(
         "fetchEmployees with bus ID:${businessId.toString()}   Response: ${responseString.toString()}");
+
+    if (responseString == null) {
+      return;
+    } else {
+      employeeList.value =
+          employeelist.employeeListAdminModelFromJson(responseString);
+    }
+  }
+
+  fetchAllEmployeesFromDB() async {
+    print("fetchAllEmployeesFromDB called  ");
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.employeeList,
+        jsonEncode({
+          'employer_id': Get.find<LoginController>()
+              .loginResponseModel!
+              .employee!
+              .employerId
+              .toString()
+        }),
+        Get.find<LoginController>().getHeader());
+    print("fetchAllEmployeesFromDB Response: ${responseString.toString()}");
 
     if (responseString == null) {
       return;
@@ -1255,50 +1287,52 @@ class ReportsControllerAdmin extends GetxController
   downloadFile(String fileFrom, String? url,
       void Function(int, int)? onReceiveProgress) async {
     showLoading();
-    print("File name when time of download :${path.basename(url!)}");
     print("URL when time of download :+${url}");
-
-    if (fileFrom == "emp_records") {
-      fileFrom = fileFrom + "emp record_";
-    }
-    if (fileFrom == "hr_rec") {
-      fileFrom = fileFrom + "hr record_";
-    }
 
     final dir = await getTemporaryDirectory();
 
     if (url != null) {
       var dio = Dio();
-      final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
+      // final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
       //Now i am giving the extension as PDF, If the payslip file from API is correct,ie,paytym/storage/filename.pdf is correct no need to given the last pdf extension
       // If the File name from API is correct no need to update the file name as pdf_emp_record
       // just give the exact name from the API.
-      print(
-          "Dio going to download dirpath: ${dir.path}/${path.basename(url)}'");
+
       String encodedUrl = Uri.encodeFull(url);
-      // url.replaceAll(' ', '_');
+
+      print("Dio going to download : $encodedUrl");
+
       await dio.download(
+          // url,
           encodedUrl,
-          // "${dir.path}/${path.basename(url)}'",
+          // "${dir.path}/${path.basename(encodedUrl)}'",
           '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
           onReceiveProgress: onReceiveProgress);
       hideLoading();
-      OpenFile.open(
-          '/storage/emulated/0/Download/${path.basename(encodedUrl)}');
+      OpenFile.open('/storage/emulated/0/Download/${path.basename(url)}');
     }
   }
 
   sharePdf(String? url, String? type) async {
     print('entered sharing or downloading');
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
     if (type == 'pdf' ||
-        type == 'pdf' ||
         type == 'png' ||
         type == 'csv' ||
+        type == 'doc' ||
         type == 'docx' ||
         type == 'jpeg') {
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path;
+<<<<<<< HEAD
+=======
+      // if (File('$tempPath/payslip.$type').existsSync()) {
+      //   File('$tempPath/payslip.$type').deleteSync();
+>>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
       if (File('$tempPath/${path.basename(url!)}').existsSync()) {
         File('$tempPath/${path.basename(url)}').deleteSync();
       }
@@ -1456,7 +1490,7 @@ class ReportsControllerAdmin extends GetxController
   //   }
   // }
 
-  void processPayroll(String payrollFlag, [List<String>? ids]) async {
+  processPayroll(String payrollFlag, [List<String>? ids]) async {
     print("called ProcessPayroll with Flag:${payrollFlag.toString()}");
     List<String>? empList = [];
 
@@ -1481,16 +1515,21 @@ class ReportsControllerAdmin extends GetxController
         'employer_id':
             '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
-
+      var responseString;
       // commenting payroll operation
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      // var responseString;
-      print("Payroll API: ${ApiEndPoints.processPayroll}");
-      print("Payroll API Response: ${responseString.toString()}");
+      try {
+        responseString = await Get.find<BaseClient>()
+            .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+                Get.find<LoginController>().getHeader())
+            .catchError(handleError);
 
+        print("Payroll API: ${ApiEndPoints.processPayroll}");
+        print("Payroll API Response: ${responseString.toString()}");
+      } catch (error) {
+        print("Error occurred: $error");
+        // Handle the error in a way that fits your application
+        // For instance, you might want to set a default value for responseString or perform some recovery action.
+      }
       if (responseString == null) {
         sliderValue.value = 0;
         hideLoading();
@@ -1507,12 +1546,12 @@ class ReportsControllerAdmin extends GetxController
             desc:
                 messageOnlyResponseModelFromJson(responseString).message ?? '');
         DialogHelper.showToast(
-            desc: "Payroll Generated for the Selected Employees");
+            desc: "Payroll Generated for the 2 Selected Employees");
         hideLoading();
       }
     } else {
       // Flag: All Employees
-      print("Flag for ALL : $payrollFlag");
+      print("Flag for All f : $payrollFlag");
       showLoading();
 
       var requestModel = {
@@ -1521,24 +1560,25 @@ class ReportsControllerAdmin extends GetxController
             '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
 
-      try {
-        var baseClient = Get.find<BaseClient>();
-        // Use baseClient for your operations
-      } catch (e) {
-        print("Error while finding BaseClient: $e");
-        // Handle the error here
-      }
-
+      var responseString;
       // commenting payroll operation
       print("Payroll for All APi: ${ApiEndPoints.processPayroll.toString()} "
           "with Employer ID:${Get.find<LoginController>().loginResponseModel?.employee?.employerId}");
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      // var responseString;
-      print("Payroll: ${responseString.toString()}");
 
+      try {
+        responseString = await Get.find<BaseClient>()
+            .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+                Get.find<LoginController>().getHeader())
+            .catchError(handleError);
+
+        print("Payroll response: $responseString");
+        // var responseString;
+        print("Status code:${responseString.statusCode}");
+      } catch (error) {
+        print("Error occurred: $error");
+        // Handle the error in a way that fits your application
+        // For instance, you might want to set a default value for responseString or perform some recovery action.
+      }
       if (responseString != null) {
         // sliderValue.value = 0;
         // Get.back();
@@ -1554,6 +1594,8 @@ class ReportsControllerAdmin extends GetxController
         DialogHelper.showToast(
             desc: "Payroll Not Generated for All the Employees");
       }
+      // Response always null,so we need to take thewhole payslip data fromhttps://paytym.net/api/payslip
+      //and check the list have selected employee ID,If Yes,payroll processed for the employee.
     }
   }
 
@@ -1588,14 +1630,24 @@ class ReportsControllerAdmin extends GetxController
       // sliderValue.value = 0;
       // Get.back();
       hideLoading();
+<<<<<<< HEAD
       DialogHelper.showToast(desc: message);
+=======
+      DialogHelper.showToast(desc: jsonDecode(responseString)['message']);
+>>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
       hideLoading();
       Get.back();
       return;
     } else {
       hideLoading();
+<<<<<<< HEAD
       // Get.back();
       DialogHelper.showToast(desc: "Payroll Revert Can't Done");
+=======
+      Get.back();
+      DialogHelper.showToast(desc: jsonDecode(responseString)['message']);
+      return;
+>>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
     }
   }
 
