@@ -170,7 +170,7 @@ class PayslipTab extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () => Get.find<ReportsController>()
+                      onPressed: () => Get.find<ReportsControllerAdmin>()
                           .sharePdf(url, url?.getType()),
                       // Get.find<ReportsController>().sharePdf(url, url?.getType()),
                       icon: CircleAvatar(

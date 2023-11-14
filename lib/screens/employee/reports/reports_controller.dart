@@ -813,13 +813,13 @@ class ReportsController extends GetxController
         File('$tempPath/payslip.$type').deleteSync();
       }
       sharePath = '$tempPath/payslip.$type';
-      await FlutterDownloader.enqueue(
-        url: url!,
-        savedDir: tempPath,
-        showNotification: false,
-        openFileFromNotification: false,
-        fileName: 'payslip.$type',
-      );
+      // await FlutterDownloader.enqueue(
+      //   url: url!,
+      //   savedDir: tempPath,
+      //   showNotification: false,
+      //   openFileFromNotification: false,
+      //   fileName: 'payslip.$type',
+      // );
     }
   }
 
