@@ -54,6 +54,7 @@ import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:share_plus/share_plus.dart';
 
 import 'reports_filter_controller.dart';
 
@@ -1308,8 +1309,9 @@ class ReportsControllerAdmin extends GetxController
   }
 
   sharePdf(String? url, String? type) async {
+    print('entered sharing or downloading');
+
     if (type == 'pdf' ||
-        type == 'pdf' ||
         type == 'png' ||
         type == 'csv' ||
         type == 'doc' ||
@@ -1318,12 +1320,20 @@ class ReportsControllerAdmin extends GetxController
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path;
-      if (File('$tempPath/payslip.$type').existsSync()) {
-        File('$tempPath/payslip.$type').deleteSync();
+      // if (File('$tempPath/payslip.$type').existsSync()) {
+      //   File('$tempPath/payslip.$type').deleteSync();
+      if (File('$tempPath/${path.basename(url!)}').existsSync()) {
+        File('$tempPath/${path.basename(url)}').deleteSync();
       }
-      sharePath = '$tempPath/payslip.$type';
+      sharePath = '$tempPath/${path.basename(url)}';
+      File('$tempPath/${path.basename(url)}').writeAsBytesSync(
+          File('/storage/emulated/0/Download/${path.basename(url)}')
+              .readAsBytesSync());
+      await Share.shareFiles(['$tempPath/${path.basename(url)}'],
+          text: 'Share Payslip PDF');
+
       await FlutterDownloader.enqueue(
-        url: url!,
+        url: url,
         savedDir: tempPath,
         showNotification: false,
         openFileFromNotification: false,

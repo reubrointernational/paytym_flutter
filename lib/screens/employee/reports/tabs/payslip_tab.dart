@@ -178,7 +178,7 @@ class PayslipTab extends StatelessWidget {
                       print("Url for share:${url}");
 
                       // Share.share(url!);
-                      Get.find<ReportsController>()
+                      Get.find<ReportsControllerAdmin>()
                           .sharePdf(url, url?.getType());
                     },
                     icon: CircleAvatar(
