@@ -324,19 +324,21 @@ class ReportsControllerAdmin extends GetxController
 
   showDialogueRevert() {
     String payrollString =
-        "Are you sure to process revert payroll for All Employees ?";
+        "Are you sure to process revert payroll for the  Employees ?";
 
     DialogHelper.showConfirmDialog(
       title: sliderValue.value == 100 ? 'Revert Payroll' : 'Reverse Payroll',
       desc: sliderValue.value == 100 ? payrollString : payrollString,
       onConfirm: () {
         showLoading();
-        Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == true
-            ? processPayroll('all')
-            : processPayroll('others');
+        if (Get.find<ReportsControllerAdmin>().isRevertPayrollSelected.value ==
+            true) {
+          revertPayroll();
+        }
+
         // processPayroll('all');
         print(
-            "Process payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
+            "revert payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
 
         showLoading();
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
@@ -348,6 +350,7 @@ class ReportsControllerAdmin extends GetxController
       },
       onCancel: () {
         sliderValue.value = 0;
+        DialogHelper.showToast(desc: " Revert Payroll Operation Cancelled");
       },
     );
   }
@@ -535,6 +538,28 @@ class ReportsControllerAdmin extends GetxController
         Get.find<LoginController>().getHeader());
     print(
         "fetchEmployees with bus ID:${businessId.toString()}   Response: ${responseString.toString()}");
+
+    if (responseString == null) {
+      return;
+    } else {
+      employeeList.value =
+          employeelist.employeeListAdminModelFromJson(responseString);
+    }
+  }
+
+  fetchAllEmployeesFromDB() async {
+    print("fetchAllEmployeesFromDB called  ");
+    var responseString = await Get.find<BaseClient>().post(
+        ApiEndPoints.employeeList,
+        jsonEncode({
+          'employer_id': Get.find<LoginController>()
+              .loginResponseModel!
+              .employee!
+              .employerId
+              .toString()
+        }),
+        Get.find<LoginController>().getHeader());
+    print("fetchAllEmployeesFromDB Response: ${responseString.toString()}");
 
     if (responseString == null) {
       return;
@@ -1444,7 +1469,7 @@ class ReportsControllerAdmin extends GetxController
   //   }
   // }
 
-  void processPayroll(String payrollFlag, [List<String>? ids]) async {
+  processPayroll(String payrollFlag, [List<String>? ids]) async {
     print("called ProcessPayroll with Flag:${payrollFlag.toString()}");
     List<String>? empList = [];
 
@@ -1469,16 +1494,21 @@ class ReportsControllerAdmin extends GetxController
         'employer_id':
             '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
-
+      var responseString;
       // commenting payroll operation
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      // var responseString;
-      print("Payroll API: ${ApiEndPoints.processPayroll}");
-      print("Payroll API Response: ${responseString.toString()}");
+      try {
+        responseString = await Get.find<BaseClient>()
+            .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+                Get.find<LoginController>().getHeader())
+            .catchError(handleError);
 
+        print("Payroll API: ${ApiEndPoints.processPayroll}");
+        print("Payroll API Response: ${responseString.toString()}");
+      } catch (error) {
+        print("Error occurred: $error");
+        // Handle the error in a way that fits your application
+        // For instance, you might want to set a default value for responseString or perform some recovery action.
+      }
       if (responseString == null) {
         sliderValue.value = 0;
         hideLoading();
@@ -1495,12 +1525,12 @@ class ReportsControllerAdmin extends GetxController
             desc:
                 messageOnlyResponseModelFromJson(responseString).message ?? '');
         DialogHelper.showToast(
-            desc: "Payroll Generated for the Selected Employees");
+            desc: "Payroll Generated for the 2 Selected Employees");
         hideLoading();
       }
     } else {
       // Flag: All Employees
-      print("Flag for ALL : $payrollFlag");
+      print("Flag for All f : $payrollFlag");
       showLoading();
 
       var requestModel = {
@@ -1510,24 +1540,25 @@ class ReportsControllerAdmin extends GetxController
             '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
 
-      try {
-        var baseClient = Get.find<BaseClient>();
-        // Use baseClient for your operations
-      } catch (e) {
-        print("Error while finding BaseClient: $e");
-        // Handle the error here
-      }
-
+      var responseString;
       // commenting payroll operation
       print("Payroll for All APi: ${ApiEndPoints.processPayroll.toString()} "
           "with Employer ID:${Get.find<LoginController>().loginResponseModel?.employee?.employerId}");
-      var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-              Get.find<LoginController>().getHeader())
-          .catchError(handleError);
-      // var responseString;
-      print("Payroll: ${responseString.toString()}");
 
+      try {
+        responseString = await Get.find<BaseClient>()
+            .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+                Get.find<LoginController>().getHeader())
+            .catchError(handleError);
+
+        print("Payroll response: $responseString");
+        // var responseString;
+        print("Status code:${responseString.statusCode}");
+      } catch (error) {
+        print("Error occurred: $error");
+        // Handle the error in a way that fits your application
+        // For instance, you might want to set a default value for responseString or perform some recovery action.
+      }
       if (responseString != null) {
         // sliderValue.value = 0;
         // Get.back();
@@ -1543,6 +1574,8 @@ class ReportsControllerAdmin extends GetxController
         DialogHelper.showToast(
             desc: "Payroll Not Generated for All the Employees");
       }
+      // Response always null,so we need to take thewhole payslip data fromhttps://paytym.net/api/payslip
+      //and check the list have selected employee ID,If Yes,payroll processed for the employee.
     }
   }
 
@@ -1575,15 +1608,15 @@ class ReportsControllerAdmin extends GetxController
       // sliderValue.value = 0;
       // Get.back();
       hideLoading();
-      DialogHelper.showToast(desc: "Payroll Revert Successfully Done");
+      DialogHelper.showToast(desc: jsonDecode(responseString)['message']);
       hideLoading();
       Get.back();
       return;
     } else {
       hideLoading();
-      // Get.back();
-
-      DialogHelper.showToast(desc: "Payroll Revert Can't Done");
+      Get.back();
+      DialogHelper.showToast(desc: jsonDecode(responseString)['message']);
+      return;
     }
   }
 

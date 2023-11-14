@@ -243,6 +243,9 @@ class PendingPayrollListview extends StatelessWidget {
                                   Get.find<ReportsControllerAdmin>()
                                       .isRevertPayrollSelected
                                       .value = true;
+                                  // Method for Revert Payroll
+                                  // Get.find<ReportsControllerAdmin>()
+                                  //     .revertPayroll();
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(1.0),

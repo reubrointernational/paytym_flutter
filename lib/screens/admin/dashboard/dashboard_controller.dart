@@ -82,9 +82,10 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   //     Get.find<BaseClient>().onError = null;
   //   }
   // }
-
   fetchEmployeeList([bool isFromPayroll = false]) async {
+    print("Calling fetchEmployeeList() first");
     if ((employeeList.value.message?.isEmpty ?? true) || isFromPayroll) {
+      print("Calling fetchEmployeeList() second");
       Get.find<BaseClient>().onError = fetchEmployeeList;
       var requestModel = {
         'employer_id':
