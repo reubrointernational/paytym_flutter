@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -18,7 +19,9 @@ import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/models/report/projects/projects_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
+import 'package:paytym/network/network_exceptions.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/colors/colors.dart';
@@ -330,17 +333,14 @@ class ReportsControllerAdmin extends GetxController
       desc: sliderValue.value == 100 ? payrollString : payrollString,
       onConfirm: () {
         showLoading();
-<<<<<<< HEAD
         Get.find<ReportsControllerAdmin>().isAllEmployeesSelected.value == false
             ? revertPayroll()
             : processPayroll('all');
-=======
         if (Get.find<ReportsControllerAdmin>().isRevertPayrollSelected.value ==
             true) {
           revertPayroll();
         }
 
->>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
         // processPayroll('all');
         print(
             "revert payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
@@ -1283,42 +1283,55 @@ class ReportsControllerAdmin extends GetxController
   //     );
   //   }
   // }
-
-  downloadFile(String fileFrom, String? url,
-      void Function(int, int)? onReceiveProgress) async {
+  Future<void> downloadFile(
+    String fileFrom,
+    String? url,
+    void Function(int, int)? onReceiveProgress,
+  ) async {
     showLoading();
+    print("File name when time of download :${path.basename(url!)}");
     print("URL when time of download :+${url}");
 
-    final dir = await getTemporaryDirectory();
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+
+    if (fileFrom == "emp_records") {
+      fileFrom = fileFrom + "emp record_";
+    }
+    if (fileFrom == "hr_rec") {
+      fileFrom = fileFrom + "hr record_";
+    }
+
+    final dir =
+        await getApplicationDocumentsDirectory(); // Use application cache directory
 
     if (url != null) {
       var dio = Dio();
-      // final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
-      //Now i am giving the extension as PDF, If the payslip file from API is correct,ie,paytym/storage/filename.pdf is correct no need to given the last pdf extension
-      // If the File name from API is correct no need to update the file name as pdf_emp_record
-      // just give the exact name from the API.
-
+      final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
+      print(
+          "Dio going to download dirpath: ${dir.path}/${path.basename(url)}'");
       String encodedUrl = Uri.encodeFull(url);
 
-      print("Dio going to download : $encodedUrl");
+      final filePath = '${dir.path}/${path.basename(encodedUrl)}';
 
+      // File doesn't exist, proceed with the download
       await dio.download(
-          // url,
-          encodedUrl,
-          // "${dir.path}/${path.basename(encodedUrl)}'",
-          '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
-          onReceiveProgress: onReceiveProgress);
+        encodedUrl,
+        filePath,
+        onReceiveProgress: onReceiveProgress,
+      );
+
       hideLoading();
-      OpenFile.open('/storage/emulated/0/Download/${path.basename(url)}');
+      OpenFile.open(filePath);
     }
   }
 
-  sharePdf(String? url, String? type) async {
+  Future<void> sharePdf(String? url, String? type) async {
+    print('Url for share: $url');
     print('entered sharing or downloading');
-<<<<<<< HEAD
-=======
 
->>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
     if (type == 'pdf' ||
         type == 'png' ||
         type == 'csv' ||
@@ -1326,30 +1339,28 @@ class ReportsControllerAdmin extends GetxController
         type == 'docx' ||
         type == 'jpeg') {
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
-      Directory tempDir = await getTemporaryDirectory();
-      String tempPath = tempDir.path;
-<<<<<<< HEAD
-=======
-      // if (File('$tempPath/payslip.$type').existsSync()) {
-      //   File('$tempPath/payslip.$type').deleteSync();
->>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
-      if (File('$tempPath/${path.basename(url!)}').existsSync()) {
-        File('$tempPath/${path.basename(url)}').deleteSync();
-      }
-      sharePath = '$tempPath/${path.basename(url)}';
-      File('$tempPath/${path.basename(url)}').writeAsBytesSync(
-          File('/storage/emulated/0/Download/${path.basename(url)}')
-              .readAsBytesSync());
-      await Share.shareFiles(['$tempPath/${path.basename(url)}'],
-          text: 'Share Payslip PDF');
 
-      await FlutterDownloader.enqueue(
-        url: url,
-        savedDir: tempPath,
-        showNotification: false,
-        openFileFromNotification: false,
-        fileName: 'payslip.$type',
-      );
+      // Check and request permissions
+      if (await Permission.storage.request().isGranted) {
+        print('Storage permission granted');
+
+        Directory tempDir = await getTemporaryDirectory();
+        String tempPath = tempDir.path;
+
+        final response = await Dio().get(
+          url!,
+          options: Options(responseType: ResponseType.bytes),
+        );
+
+        final Uint8List bytes = Uint8List.fromList(response.data);
+        final File file = File('$tempPath/${path.basename(url)}');
+        await file.writeAsBytes(bytes);
+
+        await Share.shareFiles([file.path], text: 'Share Payslip PDF');
+      } else {
+        // Handle the case where permission is not granted
+        print('Permission denied');
+      }
     }
   }
 
@@ -1561,36 +1572,45 @@ class ReportsControllerAdmin extends GetxController
       };
 
       var responseString;
-      // commenting payroll operation
+
+// commenting payroll operation
       print("Payroll for All APi: ${ApiEndPoints.processPayroll.toString()} "
           "with Employer ID:${Get.find<LoginController>().loginResponseModel?.employee?.employerId}");
 
       try {
-        responseString = await Get.find<BaseClient>()
-            .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-                Get.find<LoginController>().getHeader())
-            .catchError(handleError);
+        // Use await without catchError for now to get more information
+        var response = await Get.find<BaseClient>().post(
+          ApiEndPoints.processPayroll,
+          jsonEncode(requestModel),
+          Get.find<LoginController>().getHeader(),
+        );
 
-        print("Payroll response: $responseString");
-        // var responseString;
-        print("Status code:${responseString.statusCode}");
-      } catch (error) {
-        print("Error occurred: $error");
+        // Print the full response here
+        print("Full Response: ${response.body}");
+        print("Status code: ${response.statusCode}");
+
+        responseString = response.body;
+      } catch (error, stackTrace) {
         // Handle the error in a way that fits your application
-        // For instance, you might want to set a default value for responseString or perform some recovery action.
+        // Consider checking the type of error and logging or handling it appropriately
+        print("Error Type: ${error.runtimeType}");
+        print("Error occurred: $error");
+        print("Stack Trace: $stackTrace");
+        if (error is FetchDataException) {
+          // Handle specific logic for FetchDataException
+          // You can access the message or any other properties from the exception
+          print("FetchDataException Message: ${error.message}");
+        }
       }
+
       if (responseString != null) {
-        // sliderValue.value = 0;
-        // Get.back();
         hideLoading();
         DialogHelper.showToast(desc: "Payroll Generated for All the Employees");
         hideLoading();
         Get.back();
-        return;
       } else {
         hideLoading();
         Get.back();
-
         DialogHelper.showToast(
             desc: "Payroll Not Generated for All the Employees");
       }
@@ -1630,24 +1650,14 @@ class ReportsControllerAdmin extends GetxController
       // sliderValue.value = 0;
       // Get.back();
       hideLoading();
-<<<<<<< HEAD
       DialogHelper.showToast(desc: message);
-=======
-      DialogHelper.showToast(desc: jsonDecode(responseString)['message']);
->>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
       hideLoading();
       Get.back();
       return;
     } else {
       hideLoading();
-<<<<<<< HEAD
       // Get.back();
       DialogHelper.showToast(desc: "Payroll Revert Can't Done");
-=======
-      Get.back();
-      DialogHelper.showToast(desc: jsonDecode(responseString)['message']);
-      return;
->>>>>>> 2e1590f638a924416a6a9a141434b546ce411b39
     }
   }
 
