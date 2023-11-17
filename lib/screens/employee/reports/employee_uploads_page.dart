@@ -9,6 +9,7 @@ import 'package:paytym/core/extensions/camelcase.dart';
 import 'package:paytym/screens/employee/reports/reports_controller.dart';
 
 import '../../../core/colors/colors.dart';
+import '../../../core/dialog_helper.dart';
 import '../../../models/report/files/files_type_list.dart';
 import 'package:path/path.dart' as path;
 
@@ -202,8 +203,17 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                   width: w * 0.6,
                   height: h * 0.06,
                   child: ElevatedButton(
-                    onPressed: () =>
-                        Get.find<ReportsController>().uploadFiles(),
+                    onPressed: () {
+                      if (Get.find<ReportsController>()
+                          .filePath
+                          .value
+                          .isEmpty) {
+                        DialogHelper.showToast(
+                            desc: "Please Select a file to Upload!");
+                      } else {
+                        Get.find<ReportsController>().uploadFiles();
+                      }
+                    },
                     child: const Text('Upload'),
                   ),
                 ),

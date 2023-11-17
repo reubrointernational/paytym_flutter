@@ -13,8 +13,8 @@ const kStorageUrlForProfileImage = 'https://paytym.net/storage/';
 // const kStorageUrl = 'https://paytym.net/storage/';
 // const kStorageUrl = 'https://paytym.net/file/';
 
-// const kBaseUrl = 'http://192.168.1.35:8000/api';
-// const kStorageUrl = 'http://192.168.1.35:8000/storage/';
+// const kBaseUrl = 'https://192.168.1.35:8000/api';
+// const kStorageUrl = 'https://192.168.1.35:8000/storage/';
 
 // const kStorageUrl = 'http://192.168.1.13:8000/storage/';
 const kMpaisaBaseUrl = 'pay.mpaisa.vodafone.com.fj';

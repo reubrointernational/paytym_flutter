@@ -181,7 +181,8 @@ class DashboardController extends GetxController with BaseController {
     final DateTime? dateTime = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1990),
+      // firstDate: DateTime(1990),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2030),
     );
     try {
@@ -410,6 +411,7 @@ class DashboardController extends GetxController with BaseController {
   }
 
   String? dateValidatorloan(String value) {
+    print("Loan selected date ${value}");
     final regExp =
         RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
     return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
@@ -422,6 +424,7 @@ class DashboardController extends GetxController with BaseController {
     //cancel inactive timer
     Get.find<LogoutController>().cancelTimer();
     Get.offAllNamed(Routes.login);
+    print("Testing URL:${Routes.login}");
     await Get.find<BaseClient>().post(
         ApiEndPoints.logout, null, Get.find<LoginController>().getHeader());
   }

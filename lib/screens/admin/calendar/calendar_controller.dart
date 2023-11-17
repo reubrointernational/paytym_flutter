@@ -8,7 +8,6 @@ import 'package:paytym/models/calendar/create_calendar_request_model.dart';
 import 'package:paytym/models/calendar/events_respnse_model.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
-import 'package:paytym/screens/employee/calendar/calendar_controller.dart';
 import '../../../core/constants/enums.dart';
 import '../../../core/constants/strings.dart';
 import '../../../models/calendar/holiday_admin_response_model.dart';
@@ -127,8 +126,8 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     } else {
       Get.back();
       await getMeeting();
-      if (Get.find<CalendarController>().initialized) {
-        Get.find<CalendarController>().meetingResponseModel.refresh();
+      if (Get.find<CalendarControllerAdmin>().initialized) {
+        Get.find<CalendarControllerAdmin>().meetingResponseModel.refresh();
       }
 
       startDateController.clear();
@@ -287,8 +286,8 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     } else {
       Get.back();
       await getEvents();
-      if (Get.find<CalendarController>().initialized) {
-        Get.find<CalendarController>().eventsResponseModel.refresh();
+      if (Get.find<CalendarControllerAdmin>().initialized) {
+        Get.find<CalendarControllerAdmin>().eventsResponseModel.refresh();
       }
       startDateController.clear();
       endDateController.clear();
@@ -329,8 +328,8 @@ class CalendarControllerAdmin extends GetxController with BaseController {
     } else {
       Get.back();
       await getHolidays();
-      if (Get.find<CalendarController>().initialized) {
-        Get.find<CalendarController>().leaveAdminResponseModel.refresh();
+      if (Get.find<CalendarControllerAdmin>().initialized) {
+        Get.find<CalendarControllerAdmin>().leaveAdminResponseModel.refresh();
       }
 
       startDateController.clear();

@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -14,6 +16,7 @@ import 'package:paytym/models/report/advance_response_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 // import 'package:share_plus/share_plus.dart';
 import '../../../core/colors/colors.dart';
@@ -36,6 +39,7 @@ import '../../../models/split_payment/split_payment_response.dart';
 import '../../../network/base_client.dart';
 import '../../../network/end_points.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 class ReportsController extends GetxController
     with BaseController, GetTickerProviderStateMixin {
@@ -837,6 +841,41 @@ class ReportsController extends GetxController
         openFileFromNotification: false,
         fileName: 'payslip.$type',
       );
+    }
+  }
+
+  Future<void> shareFilesNew(String? url, String? type) async {
+    print('shareFilesNew Url for share: $url');
+
+    if (type == 'pdf' ||
+        type == 'png' ||
+        type == 'csv' ||
+        type == 'doc' ||
+        type == 'docx' ||
+        type == 'jpeg') {
+      isSharingOrDownloading.value = SharingOrDownloading.sharing;
+
+      // Check and request permissions
+      if (await Permission.storage.request().isGranted) {
+        print('Storage permission granted');
+
+        Directory tempDir = await getTemporaryDirectory();
+        String tempPath = tempDir.path;
+
+        final response = await Dio().get(
+          url!,
+          options: Options(responseType: ResponseType.bytes),
+        );
+
+        final Uint8List bytes = Uint8List.fromList(response.data);
+        final File file = File('$tempPath/${path.basename(url)}');
+        await file.writeAsBytes(bytes);
+
+        await Share.shareFiles([file.path], text: 'Share Payslip PDF');
+      } else {
+        // Handle the case where permission is not granted
+        print('Permission denied');
+      }
     }
   }
 

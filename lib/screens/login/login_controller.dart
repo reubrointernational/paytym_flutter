@@ -43,6 +43,7 @@ class LoginController extends GetxController with BaseController {
     /// login data is stored in after password reset is complete for the first time
     /// loginResponseModel is filled in splash screen from sharedPreferences if available
     if (loginResponseModel == null) {
+      print("fetchLoginData loginResponseModel is null");
       showLoading();
 
       LoginRequestModel loginRequestModel = LoginRequestModel(
@@ -56,6 +57,7 @@ class LoginController extends GetxController with BaseController {
       print("fetchLoginData Password:${loginRequestModel.password}");
       print("fetchLoginData Response :${responseString.toString()}");
       if (responseString == null) {
+        print("fetchLoginData loginResponseModel is null");
         return false;
       } else {
         hideLoading();
@@ -65,6 +67,8 @@ class LoginController extends GetxController with BaseController {
             "fetchLoginData User Status :${loginResponseModel?.message.toString()}");
         return true;
       }
+    } else {
+      print("fetchLoginData loginResponseModel is NOt Null");
     }
     return true;
   }
@@ -177,6 +181,7 @@ class LoginController extends GetxController with BaseController {
   }
 
   goToMainOrOtpPage() async {
+    print("Testing 1");
     bool isSuccess = await fetchLoginData();
     if (isSuccess) {
       //isFirst = 1 => first time login

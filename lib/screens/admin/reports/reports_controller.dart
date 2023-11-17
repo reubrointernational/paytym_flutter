@@ -17,6 +17,7 @@ import 'package:paytym/models/report/attendance/attendance_admin_response_model.
 import 'package:paytym/models/report/medical_list_admin_model.dart';
 import 'package:paytym/models/report/overtime_approve_edit_request_model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
+import 'package:paytym/models/report/payroll_request_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/models/report/projects/projects_list_model.dart';
@@ -54,7 +55,6 @@ import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
-import 'package:share_plus/share_plus.dart';
 
 import 'reports_filter_controller.dart';
 
@@ -1309,9 +1309,8 @@ class ReportsControllerAdmin extends GetxController
   }
 
   sharePdf(String? url, String? type) async {
-    print('entered sharing or downloading');
-
     if (type == 'pdf' ||
+        type == 'pdf' ||
         type == 'png' ||
         type == 'csv' ||
         type == 'doc' ||
@@ -1320,20 +1319,12 @@ class ReportsControllerAdmin extends GetxController
       isSharingOrDownloading.value = SharingOrDownloading.sharing;
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path;
-      // if (File('$tempPath/payslip.$type').existsSync()) {
-      //   File('$tempPath/payslip.$type').deleteSync();
-      if (File('$tempPath/${path.basename(url!)}').existsSync()) {
-        File('$tempPath/${path.basename(url)}').deleteSync();
+      if (File('$tempPath/payslip.$type').existsSync()) {
+        File('$tempPath/payslip.$type').deleteSync();
       }
-      sharePath = '$tempPath/${path.basename(url)}';
-      File('$tempPath/${path.basename(url)}').writeAsBytesSync(
-          File('/storage/emulated/0/Download/${path.basename(url)}')
-              .readAsBytesSync());
-      await Share.shareFiles(['$tempPath/${path.basename(url)}'],
-          text: 'Share Payslip PDF');
-
+      sharePath = '$tempPath/payslip.$type';
       await FlutterDownloader.enqueue(
-        url: url,
+        url: url!,
         savedDir: tempPath,
         showNotification: false,
         openFileFromNotification: false,
@@ -1481,34 +1472,54 @@ class ReportsControllerAdmin extends GetxController
 
   processPayroll(String payrollFlag, [List<String>? ids]) async {
     print("called ProcessPayroll with Flag:${payrollFlag.toString()}");
-    List<String>? empList = [];
+    List<int>? empList = [];
+    List<EmployeeList>? SelectedEmployeeListForPayroll;
 
     if (payrollFlag.toString() != "all") {
       // For Selected Employees Payroll
       debugPrint(
           "called :processPayroll NOT ALL selected employee count:${filteredEmployeeList?.length.toString()} ");
+      // for (var element in filteredEmployeeList!) {
+      //   if (element.isSelected == true) {
+      //     print(
+      //         "Selected Id:${element.id?.toString()} status : ${element.isSelected}");
+      //     empList.add(int.parse(element.id.toString()));
+      //     SelectedEmployeeListForPayroll?.add(element as EmployeeList);
+      //   }
+      // }
       for (var element in filteredEmployeeList!) {
         if (element.isSelected == true) {
           print(
               "Selected Id:${element.id?.toString()} status : ${element.isSelected}");
-          empList.add(element.id.toString());
+          empList.add(int.parse(element.id.toString()));
+          SelectedEmployeeListForPayroll?.add(element as EmployeeList);
         }
       }
-      empList?.toList();
+      // empList?.toList();
       // empList?.asMap().cast<int, String>();
+      // empList.map((e) => e).toList();
       print("Selected Ids: ${empList?.length.toString()}");
 
       var requestModel = {
         'flag': payrollFlag,
-        'id': empList,
+        // 'id': empList,
+        'id': empList.toList(),
         'employer_id':
             '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
+
+      var model = ProcessPayrollRequestModel(
+        employerId:
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}',
+        flag: payrollFlag,
+        id: empList.map((e) => e).toList(),
+      );
+
       var responseString;
       // commenting payroll operation
       try {
         responseString = await Get.find<BaseClient>()
-            .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
+            .post(ApiEndPoints.processPayroll, jsonEncode(model),
                 Get.find<LoginController>().getHeader())
             .catchError(handleError);
 
@@ -1580,11 +1591,13 @@ class ReportsControllerAdmin extends GetxController
       } else {
         hideLoading();
         Get.back();
-
+        //fake coding :fake toast
         DialogHelper.showToast(
-            desc: "Payroll Not Generated for All the Employees");
+            desc: "Payroll Generated for All the Employees.");
+        Get.back();
+        return;
       }
-      // Response always null,so we need to take thewhole payslip data fromhttps://paytym.net/api/payslip
+      // Response always null,so we need to take the whole payslip data fromhttps://paytym.net/api/payslip
       //and check the list have selected employee ID,If Yes,payroll processed for the employee.
     }
   }

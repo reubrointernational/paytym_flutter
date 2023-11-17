@@ -21,8 +21,8 @@ class DashboardAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: const [
+        const Row(
+          children: [
             // CustomSVG(IconPath.menuSvg, size: 20),
             // kSizedBoxW15,
             PaytymLogo(

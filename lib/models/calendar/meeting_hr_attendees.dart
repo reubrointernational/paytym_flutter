@@ -33,7 +33,7 @@ class MeetingHRAttendessListPage extends StatelessWidget {
                       '${members?.firstName ?? ''} ${members?.lastName ?? ''}',
                       style: kTextStyleS15W600CBlack,
                     ),
-                    subtitle: Text('ID: ${members?.jobTitle}',
+                    subtitle: Text('${members?.jobTitle}',
                         style: kTextStyleS13W500Cgrey),
                     // subtitle: Text('ID: ${members?.jobTitle}'),
                     leading: CircleAvatar(
