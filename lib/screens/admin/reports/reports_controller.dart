@@ -11,12 +11,16 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+// import 'package:paytym/models/employee_list_model.dart';
+import 'package:paytym/models/login/login_response_model.dart';
 import 'package:paytym/models/report/attendance/attendance_admin_response_model.dart';
 import 'package:paytym/models/report/medical_list_admin_model.dart';
 import 'package:paytym/models/report/overtime_approve_edit_request_model.dart';
 import 'package:paytym/models/report/overtime_list_response_model.dart';
-import 'package:paytym/models/report/payslip_response_model.dart';
+import 'package:paytym/models/report/payslip_response_all_model.dart';
+
 import 'package:paytym/models/dashboard/request_advance_model.dart';
+import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/models/report/projects/projects_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/network/network_exceptions.dart';
@@ -70,6 +74,7 @@ class ReportsControllerAdmin extends GetxController
       DateFormat('dd-MM-yyyy').format(DateTime.now()).toString().obs;
   final formKey = GlobalKey<FormState>();
   final attendanceformKey = GlobalKey<FormState>();
+  final ReportsController reportcontroller = Get.put(ReportsController());
 
   DeductionAddRequestModel deductionAddRequestModel = DeductionAddRequestModel(
     employerId: '',
@@ -86,6 +91,8 @@ class ReportsControllerAdmin extends GetxController
       employeelist.EmployeeListAdminModel(employeeList: [], message: '').obs;
   List<employeelist.EmployeeList>? filteredEmployeeList;
   List<employeelist.EmployeeList>? selectedEmployeeIDs = [];
+  List<employeelist.Payroll?>? payrollListData;
+
   final fileNameDropdownIndex = 0.obs;
   final sliderValue = 0.0.obs;
   double sliderStartValue = 0;
@@ -365,6 +372,7 @@ class ReportsControllerAdmin extends GetxController
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
+  final payslipResponseAllModel = PayslipResponseAllModel().obs;
   final fileTypeListResponseModel =
       FilesTypeListModel(fileTypes: [], message: '').obs;
   final projectlistResponseModel =
@@ -1500,6 +1508,33 @@ class ReportsControllerAdmin extends GetxController
   //         .employeeList;
   //   }
   // }
+  checkPayrollGeneration(
+      employeelist.Payroll payrolldata, List<String> empList) {
+    if (payrolldata.createdAt == null && payrolldata.userId == null) {
+      print("Payroll Data: ${payrolldata.toJson()}");
+
+      if (empList.contains(payrolldata.userId.toString()) &&
+          isSameDate(payrolldata.createdAt, DateTime.now())) {
+        print("Payroll generated for user ID: ${payrolldata.userId}");
+        print("Payroll creation date: ${payrolldata.createdAt}");
+        return true;
+      } else {
+        print(
+            "Payroll not for the selected employee or not on the current date");
+      }
+    } else {
+      print("Payroll data is incomplete");
+    }
+    return;
+  }
+
+  bool isSameDate(DateTime? date, DateTime compareDate) {
+    if (date != null) {
+      return DateFormat('yyyy-MM-dd').format(date) ==
+          DateFormat('yyyy-MM-dd').format(compareDate);
+    }
+    return false;
+  }
 
   processPayroll(String payrollFlag, [List<String>? ids]) async {
     print("called ProcessPayroll with Flag:${payrollFlag.toString()}");
@@ -1512,13 +1547,13 @@ class ReportsControllerAdmin extends GetxController
       for (var element in filteredEmployeeList!) {
         if (element.isSelected == true) {
           print(
-              "Selected Id:${element?.id?.toString()} status : ${element.isSelected}");
-          empList?.add(element.id.toString());
+              "Selected Id:${element.id?.toString()} status : ${element.isSelected}");
+          empList.add(element.id.toString());
         }
       }
-      empList?.toList();
-      // empList?.asMap().cast<int, String>();
-      print("Selected Ids: ${empList?.length.toString()}");
+      empList = empList.toList();
+
+      debugPrint("Selected Ids: ${empList.length.toString()}");
 
       var requestModel = {
         'flag': payrollFlag,
@@ -1527,42 +1562,36 @@ class ReportsControllerAdmin extends GetxController
             '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
       };
       var responseString;
-      // commenting payroll operation
+
       try {
         responseString = await Get.find<BaseClient>()
             .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
                 Get.find<LoginController>().getHeader())
             .catchError(handleError);
 
-        print("Payroll API: ${ApiEndPoints.processPayroll}");
-        print("Payroll API Response: ${responseString.toString()}");
+        debugPrint("Payroll API: ${ApiEndPoints.processPayroll}");
+        debugPrint("Payroll API Response: ${responseString.toString()}");
       } catch (error) {
-        print("Error occurred: $error");
-        // Handle the error in a way that fits your application
-        // For instance, you might want to set a default value for responseString or perform some recovery action.
+        debugPrint("Error occurred: $error");
       }
-      if (responseString == null) {
-        sliderValue.value = 0;
-        hideLoading();
-        Get.back();
-        // DialogHelper.showToast(
-        //     desc: " Payroll Not Processed for the Selected Employees");
-        DialogHelper.showToast(
-            desc: " Payroll Generated for the Selected Employees");
-        return;
-      } else {
-        hideLoading();
-        Get.back();
-        DialogHelper.showToast(
-            desc:
-                messageOnlyResponseModelFromJson(responseString).message ?? '');
-        DialogHelper.showToast(
-            desc: "Payroll Generated for the 2 Selected Employees");
-        hideLoading();
-      }
+
+      // checkPayrollGeneration(payrollListData, empList);
+
+      // bool isPayrollGenerated = checkPayrollGeneration(emplist, empList);
+      // print("ispayroll granted : $isPayrollGenerated");
+
+      // if (isPayrollGenerated) {
+      //   hideLoading();
+      //   DialogHelper.showToast(
+      //       desc: "Payroll Generated for the Selected Employees");
+      // } else {
+      //   DialogHelper.showToast(
+      //       desc: "Payroll Not Generated for the Selected Employees");
+      //   hideLoading();
+      // }
     } else {
       // Flag: All Employees
-      print("Flag for All f : $payrollFlag");
+      debugPrint("Flag for All f : $payrollFlag");
       showLoading();
 
       var requestModel = {
@@ -1572,34 +1601,27 @@ class ReportsControllerAdmin extends GetxController
       };
 
       var responseString;
-
-// commenting payroll operation
-      print("Payroll for All APi: ${ApiEndPoints.processPayroll.toString()} "
+      debugPrint(
+          "Payroll for All APi: ${ApiEndPoints.processPayroll.toString()} "
           "with Employer ID:${Get.find<LoginController>().loginResponseModel?.employee?.employerId}");
 
       try {
-        // Use await without catchError for now to get more information
         var response = await Get.find<BaseClient>().post(
           ApiEndPoints.processPayroll,
           jsonEncode(requestModel),
           Get.find<LoginController>().getHeader(),
         );
 
-        // Print the full response here
-        print("Full Response: ${response.body}");
-        print("Status code: ${response.statusCode}");
+        debugPrint("Full Response: ${response.body}");
+        debugPrint("Status code: ${response.statusCode}");
 
         responseString = response.body;
       } catch (error, stackTrace) {
-        // Handle the error in a way that fits your application
-        // Consider checking the type of error and logging or handling it appropriately
-        print("Error Type: ${error.runtimeType}");
-        print("Error occurred: $error");
-        print("Stack Trace: $stackTrace");
+        debugPrint("Error Type: ${error.runtimeType}");
+        debugPrint("Error occurred: $error");
+        debugPrint("Stack Trace: $stackTrace");
         if (error is FetchDataException) {
-          // Handle specific logic for FetchDataException
-          // You can access the message or any other properties from the exception
-          print("FetchDataException Message: ${error.message}");
+          debugPrint("FetchDataException Message: ${error.message}");
         }
       }
 

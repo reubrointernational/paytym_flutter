@@ -105,15 +105,18 @@ class CalendarController extends GetxController with BaseController {
   }
 
   timeChange(String inputTime) {
-    // print("Gettime called:" + inputTime);
-    final inputFormat = DateFormat('HH:mm');
-    final outputFormat = DateFormat('hh:mm a');
+    try {
+      final inputFormat = DateFormat('HH:mm');
+      final outputFormat = DateFormat('hh:mm a');
 
-    final dateTime = inputFormat.parse(inputTime);
-    final formattedTime = outputFormat.format(dateTime);
+      final dateTime = inputFormat.parse(inputTime);
+      final formattedTime = outputFormat.format(dateTime);
 
-    // print("Gettime called op:" + formattedTime);
-    return formattedTime;
-    // Output: 05:05 PM
+      return formattedTime;
+    } catch (e) {
+      // Handle the exception, e.g., log it or return a default value
+      print('Error parsing time: $inputTime');
+      return 'Invalid Time';
+    }
   }
 }

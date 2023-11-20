@@ -17,7 +17,6 @@ class PaymentHistory extends StatefulWidget {
 class _PaymentHistoryState extends State<PaymentHistory> {
   @override
   Widget build(BuildContext context) {
-    
     return Expanded(
       child: Obx(
         () {

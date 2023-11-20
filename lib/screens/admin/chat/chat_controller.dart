@@ -145,5 +145,4 @@ class ChatControllerAdmin extends GetxController with BaseController {
       }
     }
   }
-
 }

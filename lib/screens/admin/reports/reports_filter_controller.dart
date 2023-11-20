@@ -124,7 +124,7 @@ class ReportsFilterController {
                     ?.first
                     .branch
                     ?.id ??
-                1);
+                0);
       }).toList();
     } else if (attendanceList == null &&
         Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=

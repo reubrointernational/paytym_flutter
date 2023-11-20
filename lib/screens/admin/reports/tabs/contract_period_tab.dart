@@ -20,8 +20,8 @@ class ContractPeriodTabAdmin extends StatelessWidget {
     return Obx(() {
       List<EmployeeList>? employeesList =
           Get.find<DashboardControllerAdmin>().getFilteredEmployeeList();
-      employeesList
-          ?.sort((a, b) => (a.employmentEndDate??DateTime(0)).compareTo(b.employmentEndDate??DateTime(0)));
+      employeesList?.sort((a, b) => (a.employmentEndDate ?? DateTime(0))
+          .compareTo(b.employmentEndDate ?? DateTime(0)));
       return ListView.separated(
         physics: const BouncingScrollPhysics(),
         itemCount: employeesList?.length ?? 0,

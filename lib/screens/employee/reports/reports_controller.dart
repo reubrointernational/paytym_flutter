@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/models/report/advance_response_model.dart';
+import 'package:paytym/models/report/payslip_response_all_model.dart';
 import 'package:paytym/models/report/payslip_response_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/login/login_controller.dart';
@@ -54,6 +55,7 @@ class ReportsController extends GetxController
   //Sharing or downloading enum will be idle at the start
   final isSharingOrDownloading = SharingOrDownloading.idle.obs;
   final payslipResponseModel = PayslipResponseModel().obs;
+  final payslipResponseAllModel = PayslipResponseAllModel().obs;
   final fileListResponseModel =
       EmployeeFilesListModel(files: [], message: '').obs;
   final projectlistResponseModel =
@@ -341,6 +343,66 @@ class ReportsController extends GetxController
       payslipResponseModel.refresh();
       Get.find<BaseClient>().onError = null;
       for (Payroll payroll in payslipResponseModel.value.payroll ?? []) {
+        // dateList.add(DateFormat('dd-MM-yyyy').format(payroll.startDate!));
+        // Here simply adding all the dates under the API response ,
+        // we have to add the exact dates under the selected Year and Month
+        //not depends on the date which payroll processed.
+        dateList.add(DateFormat('dd-MM-yyyy').format(payroll.startDate!));
+        // dateList.add(DateFormat('dd-MM-yyyy').format(payroll.createdAt!));
+        //Here adding  the exact dates under the selected Year and Month
+        //For that checking selected month value with the payroll created at month value.
+        // print(
+        //     "selected month :${(DateFormat('MMM').format(payroll.createdAt!)).toLowerCase()}");
+        // if ((DateFormat('MMM').format(payroll.createdAt!)).toLowerCase() ==
+        //     (selectedDropdownMonth.value.toLowerCase())) {
+        //   print("selected month Payslip found ");
+        // }
+      }
+      dateList.value = dateList.toSet().toList();
+      // print(
+      //     "Controller selected date drop down value:${selectedDropdownDay.value}");
+
+      if (selectedDropdownDay.value == null) {
+        print("No date selcted yet");
+
+        selectedDropdownDay.value = dateList.first;
+        dateList.refresh();
+        hideLoading();
+      } else {
+        print("Date selected id :${selectedDropdownDay.value}");
+      }
+
+      // selectedDropdownDay.value = dateList.first;
+      // dateList.refresh();
+    }
+  }
+
+  fetchPayslipAllCopy() async {
+    dateList.value = [];
+    showLoading();
+
+    final map = {
+      'year': selectedDropdownYear.value,
+      'month': (monthsList.indexOf(selectedDropdownMonth.value) + 1).toString()
+    };
+
+    Get.find<BaseClient>().onError = fetchPayslipAllCopy;
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.payslipall, jsonEncode(map),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    print("fetchPayslipAllCopy Response String:$responseString");
+    if (responseString == null) {
+      hideLoading();
+
+      return;
+    } else {
+      hideLoading();
+      payslipResponseAllModel.value =
+          payslipResponseAllModelFromJson(responseString);
+      payslipResponseAllModel.refresh();
+      Get.find<BaseClient>().onError = null;
+      for (PayrollAll payroll in payslipResponseAllModel.value.payroll ?? []) {
         // dateList.add(DateFormat('dd-MM-yyyy').format(payroll.startDate!));
         // Here simply adding all the dates under the API response ,
         // we have to add the exact dates under the selected Year and Month

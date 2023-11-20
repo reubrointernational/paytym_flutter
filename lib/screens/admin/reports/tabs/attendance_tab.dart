@@ -160,6 +160,9 @@ class AttendanceTabAdmin extends StatelessWidget {
                   ?.where((element) => element.approveReject == null)
                   .toList();
 
+              print(
+                  "the length of the attendancelist: ${attendanceList?.length}");
+
               return ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemCount: attendanceList?.length ?? 0,

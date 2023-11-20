@@ -19,6 +19,7 @@ showFilterBottomSheet(context, controller) {
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (context) {
+        Get.find<ReportsControllerAdmin>().payrollListData = [];
         Get.find<ReportsControllerAdmin>().fetchBusiness();
         Get.find<ReportsControllerAdmin>().filteredEmployeeList = [];
         return SizedBox(
@@ -243,11 +244,13 @@ showFilterBottomSheet(context, controller) {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Obx(() {
+//
                       Get.find<ReportsControllerAdmin>().filteredEmployeeList =
                           Get.find<ReportsControllerAdmin>()
                               .employeeList
                               .value
                               .employeeList;
+
                       if (Get.find<DashboardControllerAdmin>()
                               .selectedDropdownBranches
                               .value !=

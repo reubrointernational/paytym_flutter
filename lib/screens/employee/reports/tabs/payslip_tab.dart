@@ -30,6 +30,7 @@ class PayslipTab extends StatelessWidget {
     //     .addPostFrameCallback((_) => reportsController.fetchPayslip(""));
     WidgetsBinding.instance
         .addPostFrameCallback((_) => reportsController.fetchPayslipCopy());
+
     Get.put(ReportsControllerAdmin());
 
     return Column(
@@ -123,10 +124,21 @@ class PayslipTab extends StatelessWidget {
                       .payroll
                       ?.isNotEmpty ??
                   false) {
-                url =
-                    '$kStorageUrlForPDF${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
-                print(
-                    "Payslip Date Selection Index:${Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value)}");
+                int index = Get.find<ReportsController>().dateList.indexOf(
+                    Get.find<ReportsController>().selectedDropdownDay.value!);
+                if (index != -1) {
+                  Future.delayed(Duration(milliseconds: 100));
+                  url =
+                      '$kStorageUrlForPDF${Get.find<ReportsController>().payslipResponseModel.value.payroll?[index].paySlip}';
+                  print("Payslip Date Selection Index: $index");
+                } else {
+                  print('Selected day not found in dateList');
+                }
+
+                // url =
+                //     '$kStorageUrlForPDF${Get.find<ReportsController>().payslipResponseModel.value.payroll?[Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value!)].paySlip}';
+                // print(
+                //     "Payslip Date Selection Index:${Get.find<ReportsController>().dateList.indexOf(Get.find<ReportsController>().selectedDropdownDay.value)}");
 
                 if (url?.getType() == 'pdf') {
                   //for testing given an outside file name

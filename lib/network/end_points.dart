@@ -28,6 +28,7 @@ class ApiEndPoints {
   static const updatePassword = '$kBaseUrl/password-update';
   static const leave = '$kBaseUrl/leave-request';
   static const payslip = '$kBaseUrl/payslip';
+  static const payslipall = '$kBaseUrl/payslip_all';
   static const checkIn = '$kBaseUrl/check_in';
   static const checkOut = '$kBaseUrl/check_out';
   static const checkInByScan = '$kBaseUrl/check_in_by_scan';
