@@ -14,6 +14,11 @@ class PendingAttendanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("PendingAttendanceScreen called");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ReportsControllerAdmin>().getFilteredAttendanceList();
+    });
+
     Get.put(LeavesControllerAdmin());
     return CustomAdminScaffold(
       title: 'Pending Attendance',

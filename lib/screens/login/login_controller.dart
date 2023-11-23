@@ -38,6 +38,14 @@ class LoginController extends GetxController with BaseController {
     };
   }
 
+  Map<String, String>? getHeaderforpayroll() {
+    return {
+      'Accept': 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
+      'Authorization': 'Bearer ${loginResponseModel?.token}'
+    };
+  }
+
   Future<bool> fetchLoginData() async {
     /// if login data is already present in storage it will not connect to server.
     /// login data is stored in after password reset is complete for the first time

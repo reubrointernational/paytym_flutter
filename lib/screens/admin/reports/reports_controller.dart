@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -23,6 +24,8 @@ import 'package:paytym/models/dashboard/request_advance_model.dart';
 import 'package:paytym/models/report/projects/projects_list_model.dart';
 import 'package:paytym/network/base_controller.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../core/colors/colors.dart';
 import '../../../core/constants/enums.dart';
@@ -94,8 +97,19 @@ class ReportsControllerAdmin extends GetxController
     'Attendance',
     'Overtime',
     'Loan',
-    //payroll
-    //deduction
+    'Payroll',
+    // 'deduction',
+    'Projects',
+    'Uploads',
+    // 'Medical',
+    // 'Contract period'
+  ];
+  final List<String> reportsTabListAdminOLD = [
+    'Attendance',
+    'Overtime',
+    'Loan',
+    'Payroll',
+    // 'deduction',
     'Projects',
     'Uploads',
     // 'Medical',
@@ -376,6 +390,8 @@ class ReportsControllerAdmin extends GetxController
       MedicalListAdminModel(message: '', extraDetails: []).obs;
   final attendanceResponseModel =
       AttendanceAdminModel(message: '', history: []).obs;
+  final atendacePendingResponseModel =
+      AdvanceResponseModel(message: '', employeeList: []).obs;
   String quitCompanyReason = '';
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
       OvertimeApproveEditRequestModel(status: '0', id: '0');
@@ -1233,21 +1249,31 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
+      print("response string not null");
+      Get.back();
+      DialogHelper.showToast(desc: 'Attendance Request Updated');
+      List<History>? attendanceList = getFilteredAttendanceList();
+      attendanceResponseModel.refresh();
       try {
-        attendanceResponseModel.value.history
-            ?.firstWhere((element) => element.id == selectedItem.id)
-            .approveReject = '1';
+        // Now just randomly updated the very first record in the pending attendance.
+        // WE need to change this feature into update the selected row  attendance without take the order.
+        //commented
+
+        // attendanceResponseModel.value.history
+        //     ?.firstWhere((element) => element.id == selectedItem.id)
+        //     .approveReject = '1';
+        // .approveReject = 'NULL';
       } on Exception {
         // TODO
       }
 
-      try {
-        attendanceResponseModel.value.pending
-            ?.firstWhere((element) => element.id == selectedItem.id)
-            .approveReject = '1';
-      } on Exception {
-        // TODO
-      }
+      // try {
+      //   attendanceResponseModel.value.pending
+      //       ?.firstWhere((element) => element.id == selectedItem.id)
+      //       .approveReject = '1';
+      // } on Exception {
+      //   // TODO
+      // }
 
       Get.back();
 
@@ -1297,18 +1323,70 @@ class ReportsControllerAdmin extends GetxController
 
       print("Dio going to download : $encodedUrl");
 
-      await dio.download(
-          // url,
-          encodedUrl,
-          // "${dir.path}/${path.basename(encodedUrl)}'",
-          '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
-          onReceiveProgress: onReceiveProgress);
+      final status = await Permission.manageExternalStorage.status;
+      if (status.isDenied) {
+        final result = await Permission.manageExternalStorage.request();
+        if (result.isGranted) {
+          await dio.download(
+              // url,
+              encodedUrl,
+              // "${dir.path}/${path.basename(encodedUrl)}'",
+              '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
+              onReceiveProgress: onReceiveProgress);
+        }
+      } else if (status.isRestricted) {
+        await openAppSettings();
+      }
+
+      // await dio.download(
+      //     // url,
+      //     encodedUrl,
+      //     // "${dir.path}/${path.basename(encodedUrl)}'",
+      //     '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
+      //     onReceiveProgress: onReceiveProgress);
       hideLoading();
       OpenFile.open('/storage/emulated/0/Download/${path.basename(url)}');
     }
   }
 
-  sharePdf(String? url, String? type) async {
+  Future<void> sharePdf(String? url, String? type) async {
+    print('Url for share: $url');
+    print('entered sharing or downloading');
+
+    if (type == 'pdf' ||
+        type == 'png' ||
+        type == 'csv' ||
+        type == 'doc' ||
+        type == 'docx' ||
+        type == 'jpeg') {
+      isSharingOrDownloading.value = SharingOrDownloading.sharing;
+
+      // Check and request permissions
+      if (await Permission.mediaLibrary.request().isGranted) {
+        print('Storage permission granted');
+
+        Directory tempDir = await getTemporaryDirectory();
+        String tempPath = tempDir.path;
+
+        final response = await Dio().get(
+          url!,
+          options: Options(responseType: ResponseType.bytes),
+        );
+
+        final Uint8List bytes = Uint8List.fromList(response.data);
+        final File file = File('$tempPath/${path.basename(url)}');
+        await file.writeAsBytes(bytes);
+
+        await Share.shareXFiles([XFile(file.path)], text: 'Share Payslip PDF');
+      } else {
+        // Handle the case where permission is not granted
+        print('Permission denied');
+        await Permission.mediaLibrary.request();
+      }
+    }
+  }
+
+  sharePdf_OLD(String? url, String? type) async {
     if (type == 'pdf' ||
         type == 'pdf' ||
         type == 'png' ||
@@ -1520,7 +1598,7 @@ class ReportsControllerAdmin extends GetxController
       try {
         responseString = await Get.find<BaseClient>()
             .post(ApiEndPoints.processPayroll, jsonEncode(model),
-                Get.find<LoginController>().getHeader())
+                Get.find<LoginController>().getHeaderforpayroll())
             .catchError(handleError);
 
         print("Payroll API: ${ApiEndPoints.processPayroll}");
@@ -1545,8 +1623,8 @@ class ReportsControllerAdmin extends GetxController
         DialogHelper.showToast(
             desc:
                 messageOnlyResponseModelFromJson(responseString).message ?? '');
-        DialogHelper.showToast(
-            desc: "Payroll Generated for the 2 Selected Employees");
+        // DialogHelper.showToast(
+        //     desc: "Payroll Generated for the 2 Selected Employees");
         hideLoading();
       }
     } else {
@@ -1569,7 +1647,7 @@ class ReportsControllerAdmin extends GetxController
       try {
         responseString = await Get.find<BaseClient>()
             .post(ApiEndPoints.processPayroll, jsonEncode(requestModel),
-                Get.find<LoginController>().getHeader())
+                Get.find<LoginController>().getHeaderforpayroll())
             .catchError(handleError);
 
         print("Payroll response: $responseString");
@@ -1590,10 +1668,10 @@ class ReportsControllerAdmin extends GetxController
         return;
       } else {
         hideLoading();
-        Get.back();
+
         //fake coding :fake toast
-        DialogHelper.showToast(
-            desc: "Payroll Generated for All the Employees.");
+        // DialogHelper.showToast(
+        //     desc: "Payroll Generated for All the Employees...");
         Get.back();
         return;
       }

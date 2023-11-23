@@ -95,14 +95,59 @@ class DashboardControllerAdmin extends GetxController with BaseController {
           .post(ApiEndPoints.employeeList, jsonEncode(requestModel),
               Get.find<LoginController>().getHeader())
           .catchError(handleError);
+      print(" fetchEmployeeList() second Response:$responseString");
       if (responseString == null) {
         return;
       } else {
         employeeList.value = employeeListAdminModelFromJson(responseString);
+        employeeList.refresh();
         Get.find<BaseClient>().onError = null;
         classifyEmployeeListByBranchAndDept();
         // fetchBranchDeptList();
       }
+    } else {
+      var requestModel = {
+        'employer_id':
+            '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      };
+      var responseString = await Get.find<BaseClient>()
+          .post(ApiEndPoints.employeeList, jsonEncode(requestModel),
+              Get.find<LoginController>().getHeader())
+          .catchError(handleError);
+      if (responseString == null) {
+        return;
+      } else {
+        employeeList.value = employeeListAdminModelFromJson(responseString);
+        employeeList.refresh();
+        Get.find<BaseClient>().onError = null;
+        // classifyEmployeeListByBranchAndDept();
+        // fetchBranchDeptList();
+      }
+    }
+  }
+
+  fetchPayrollEmployeeList([bool isFromPayroll = false]) async {
+    print("Calling fetchPayrollEmployeeList() first");
+
+    Get.find<BaseClient>().onError = fetchEmployeeList;
+    var requestModel = {
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.employeeList, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    print(" fetchPayrollEmployeeList() second Response:$responseString");
+    if (responseString == null) {
+      print(" fetchPayrollEmployeeList()  Response is null");
+      return;
+    } else {
+      employeeList.value = employeeListAdminModelFromJson(responseString);
+      employeeList.refresh();
+      Get.find<BaseClient>().onError = null;
+      classifyEmployeeListByBranchAndDept();
+      // fetchBranchDeptList();
     }
   }
 

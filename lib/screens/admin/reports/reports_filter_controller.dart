@@ -89,6 +89,82 @@ class ReportsFilterController {
     return medicalList;
   }
 
+  List<History>? getPendingAttendanceList() {
+    print("getPendingAttendanceList called");
+    List<History>? attendanceList;
+    if (Get.find<DashboardControllerAdmin>()
+            .selectedDropdownDepartments
+            .value !=
+        null) {
+      attendanceList = Get.find<ReportsControllerAdmin>()
+          .attendanceResponseModel
+          .value
+          .history
+          ?.where((element) =>
+              (element.user?.departmentId ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .deptwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                          .selectedDropdownDepartments
+                          .value]
+                      ?.first
+                      .department
+                      ?.id ??
+                  0))
+          .toList();
+      print("getFilteredAttendanceList size ${attendanceList!.length}");
+    }
+    if (attendanceList != null &&
+        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
+            null) {
+      attendanceList = attendanceList.where((element) {
+        return (element.user?.branchId ?? 0) ==
+            (Get.find<DashboardControllerAdmin>()
+                    .branchwiseEmployeeMap[Get.find<DashboardControllerAdmin>()
+                        .selectedDropdownBranches
+                        .value]
+                    ?.first
+                    .branch
+                    ?.id ??
+                1);
+      }).toList();
+    } else if (attendanceList == null &&
+        Get.find<DashboardControllerAdmin>().selectedDropdownBranches.value !=
+            null) {
+      attendanceList = Get.find<ReportsControllerAdmin>()
+          .attendanceResponseModel
+          .value
+          .history
+          ?.where((element) =>
+              (element.user?.branchId ?? 0) ==
+              (Get.find<DashboardControllerAdmin>()
+                      .branchwiseEmployeeMap[
+                          Get.find<DashboardControllerAdmin>()
+                              .selectedDropdownBranches
+                              .value]
+                      ?.first
+                      .branch
+                      ?.id ??
+                  0))
+          .toList();
+    }
+    attendanceList ??= Get.find<ReportsControllerAdmin>()
+        .attendanceResponseModel
+        .value
+        .history;
+    attendanceList = attendanceList
+        ?.where(
+          (element) =>
+              element.user?.firstName?.toLowerCase().contains(
+                  Get.find<DashboardControllerAdmin>()
+                      .searchKeyword
+                      .value
+                      .toLowerCase()) ??
+              false,
+        )
+        .toList();
+    return attendanceList;
+  }
+
   List<History>? getFilteredAttendanceList() {
     print("getFilteredAttendanceList called");
     List<History>? attendanceList;

@@ -10,6 +10,7 @@ import '../../../../core/constants/widgets.dart';
 import '../../../../core/custom_slider_thumb.dart';
 import '../../../../core/dialog_helper.dart';
 import '../../../../models/employee_list_model.dart';
+import '../../../login/login_controller.dart';
 import '../../widgets/filter_payroll_bottomsheet.dart';
 
 class PendingPayrollListview extends StatelessWidget {
@@ -17,11 +18,19 @@ class PendingPayrollListview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("PendingPayrollListview called from build()");
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => Get.find<DashboardControllerAdmin>().clearFilter());
-    });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => Get.find<DashboardControllerAdmin>().clearFilter());
 
+        // WidgetsBinding.instance.addPostFrameCallback(
+        //     (_) => Get.find<DashboardControllerAdmin>().fetchEmployeeList());
+        WidgetsBinding.instance.addPostFrameCallback((_) =>
+            Get.find<DashboardControllerAdmin>().fetchPayrollEmployeeList());
+      });
+    });
+    // Get.put(DashboardControllerAdmin());
     bool payrollOpen = true;
     Size size = MediaQuery.of(context).size;
     return Expanded(
@@ -43,63 +52,6 @@ class PendingPayrollListview extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     const Text(
-                        //       '                     ',
-                        //       style: TextStyle(
-                        //         fontWeight: FontWeight.w700,
-                        //         color: CustomColors.blackTextColor,
-                        //       ),
-                        //     ),
-                        //     IconButton(
-                        //       icon: const Icon(
-                        //         Icons.download,
-                        //         size: 18,
-                        //         color: CustomColors.orangeColor,
-                        //       ),
-                        //       onPressed: () {
-                        //         final employeeList =
-                        //             Get.find<DashboardControllerAdmin>()
-                        //                 .employeeList
-                        //                 .value
-                        //                 .employeeList
-                        //                 ?.where(
-                        //                     (element) => element.status == 1)
-                        //                 .toList();
-                        //         if (employeeList != null) {
-                        //           DialogHelper.showToast(
-                        //               desc: 'Payslip Downloading');
-                        //           CsvDownloader().downloadCsv(employeeList);
-                        //         }
-                        //       },
-                        //     ),
-                        //     IconButton(
-                        //       icon: const Icon(
-                        //         Icons.refresh,
-                        //         size: 18,
-                        //         color: CustomColors.orangeColor,
-                        //       ),
-
-                        //       onPressed: () {
-                        //         final employeeList =
-                        //             Get.find<DashboardControllerAdmin>()
-                        //                 .employeeList
-                        //                 .value
-                        //                 .employeeList
-                        //                 ?.where(
-                        //                     (element) => element.status == 1)
-                        //                 .toList();
-                        //         if (employeeList != null) {
-                        //           DialogHelper.showToast(
-                        //               desc: 'Payslip Reverting');
-                        //           // CsvDownloader().downloadCsv(employeeList);
-                        //         }
-                        //       },
-                        //     ),
-                        //   ],
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -134,7 +86,7 @@ class PendingPayrollListview extends StatelessWidget {
                             ),
                           ],
                         ),
-
+                        // Row for All/Select Employees/Revert Payroll
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -278,97 +230,6 @@ class PendingPayrollListview extends StatelessWidget {
                                   ? ProcessPayrollTypes.all
                                   : ProcessPayrollTypes.all,
                         ),
-                        // const SliderColumn(
-                        //   title: 'DEPARTMENT',
-                        //   processPayrollTypes: ProcessPayrollTypes.dept,
-                        // ),
-                        // const SliderColumn(
-                        //   title: 'BRANCH',
-                        //   processPayrollTypes: ProcessPayrollTypes.branch,
-                        // ),
-                        // Revert Payroll Section
-                        // ExpansionTile(
-                        //   title: Text("Revert Payroll"),
-                        //   children: [
-                        //     Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       children: [
-                        //         Obx(() => OutlinedButton(
-                        //               style: OutlinedButton.styleFrom(
-                        //                 backgroundColor:
-                        //                     Get.find<ReportsControllerAdmin>()
-                        //                             .isAllEmployeesSelected
-                        //                             .value
-                        //                         ? Colors.blue
-                        //                         : Colors.white,
-                        //                 side: const BorderSide(
-                        //                     color: Colors.blue),
-                        //               ),
-                        //               onPressed: () {
-                        //                 Get.find<ReportsControllerAdmin>()
-                        //                     .isAllEmployeesSelected
-                        //                     .value = true;
-                        //                 Get.find<ReportsControllerAdmin>()
-                        //                     .isEmployeesSelectedForPayroll
-                        //                     .value = false;
-                        //               },
-                        //               child: Padding(
-                        //                 padding: const EdgeInsets.all(1.0),
-                        //                 child: Text(
-                        //                   'All Employees',
-                        //                   style: TextStyle(
-                        //                       color: Get.find<
-                        //                                   ReportsControllerAdmin>()
-                        //                               .isAllEmployeesSelected
-                        //                               .value
-                        //                           ? Colors.white
-                        //                           : Colors.blue,
-                        //                       fontSize: 16,
-                        //                       fontWeight: FontWeight.w500),
-                        //                 ),
-                        //               ),
-                        //             )),
-                        //         Obx(() => OutlinedButton(
-                        //               style: OutlinedButton.styleFrom(
-                        //                 backgroundColor:
-                        //                     Get.find<ReportsControllerAdmin>()
-                        //                             .isAllEmployeesSelected
-                        //                             .value
-                        //                         ? Colors.white
-                        //                         : Colors.blue,
-                        //                 side: const BorderSide(
-                        //                     color: Colors.blue),
-                        //               ),
-                        //               onPressed: () {
-                        //                 Get.find<ReportsControllerAdmin>()
-                        //                     .isAllEmployeesSelected
-                        //                     .value = false;
-                        //                 Get.find<ReportsControllerAdmin>()
-                        //                     .isEmployeesSelectedForPayroll
-                        //                     .value = true;
-                        //                 showFilterBottomSheet(context,
-                        //                     Get.find<ReportsControllerAdmin>());
-                        //               },
-                        //               child: Padding(
-                        //                 padding: const EdgeInsets.all(1.0),
-                        //                 child: Text(
-                        //                   'Choose Employee',
-                        //                   style: TextStyle(
-                        //                       color: Get.find<
-                        //                                   ReportsControllerAdmin>()
-                        //                               .isAllEmployeesSelected
-                        //                               .value
-                        //                           ? Colors.blue
-                        //                           : Colors.white,
-                        //                       fontSize: 16,
-                        //                       fontWeight: FontWeight.w500),
-                        //                 ),
-                        //               ),
-                        //             )),
-                        //       ],
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
                   ),
@@ -385,10 +246,10 @@ class PendingPayrollListview extends StatelessWidget {
                 ),
               ),
               Obx(() {
-                List<EmployeeList>? employeesList =
-                    Get.find<DashboardControllerAdmin>().getAllEmployees();
                 // List<EmployeeList>? employeesList =
-                //     Get.find<DashboardControllerAdmin>().getEmployees();
+                //     Get.find<DashboardControllerAdmin>().getAllEmployees();
+                List<EmployeeList>? employeesList =
+                    Get.find<DashboardControllerAdmin>().getEmployees();
                 // List<EmployeeList>? employeesList =
                 // Get.find<DashboardControllerAdmin>()
                 //     .getFilteredEmployeeList();
@@ -581,57 +442,6 @@ class PendingPayrollListview extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            // Positioned(
-                            //   bottom: 10,
-                            //   right: 0,
-                            //   left: 0,
-                            //   child: GestureDetector(
-                            //     onTap: () {
-                            //       print(
-                            //           "Sooraj1:${Get.find<DashboardControllerAdmin>().payrollProcessDownArrow}");
-                            //       print("Sooraj 2:${employees!.isExpanded}");
-                            //       // employees!.isExpanded = true;
-                            //
-                            //       if (Get.find<DashboardControllerAdmin>()
-                            //               .payrollProcessDownArrow ==
-                            //           true) {
-                            //         Get.find<DashboardControllerAdmin>()
-                            //             .payrollProcessDownArrow = false;
-                            //       } else {
-                            //         Get.find<DashboardControllerAdmin>()
-                            //             .payrollProcessDownArrow = true;
-                            //       }
-                            //       print("Sooraj 2:${employees!.isExpanded}");
-                            //       print(
-                            //           "Sooraj1:${Get.find<DashboardControllerAdmin>().payrollProcessDownArrow}");
-                            //       if (employees!.isExpanded) {
-                            //         employees!.isExpanded = false;
-                            //       } else {
-                            //         employees!.isExpanded = true;
-                            //       }
-                            //
-                            //       payrollOpen = false;
-                            //       // Get.find<DashboardControllerAdmin>()
-                            //       //     .payrollProcessDownArrow = true;
-                            //
-                            //       // setState(() {r
-                            //       //   employees?.isExpanded =
-                            //       //       !employees.isExpanded;
-                            //       // });
-                            //     },
-                            //     child: Padding(
-                            //       padding:
-                            //           const EdgeInsets.fromLTRB(28, 28, 28, 0),
-                            //       child: Icon(
-                            //         employees?.isExpanded ?? false
-                            //             ? Icons.expand_less
-                            //             : Icons.expand_more,
-                            //         color: Colors.grey,
-                            //         size: 25,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
                             Positioned(
                               right: 20,
                               top: 12,
@@ -759,6 +569,9 @@ class SliderColumn extends StatelessWidget {
                     onChanged: (double value) {
                       Get.find<ReportsControllerAdmin>()
                           .changeSliderPosition(value);
+                      //testing
+
+                      // Get.find<DashboardControllerAdmin>().fetchEmployeeList();
                     },
                     onChangeStart: (value) => Get.find<ReportsControllerAdmin>()
                         .sliderStartValue = value,
