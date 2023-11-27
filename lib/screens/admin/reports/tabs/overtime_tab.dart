@@ -61,7 +61,7 @@ class OvertimeTabAdmin extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemCount: overtimeDetails?.length ?? 0,
         itemBuilder: (context, index) {
-          // print("Index:$index");
+          print("Item Row Index:$index");
           final overtimeDetail = overtimeDetails?[index];
           OvertimeStatusModel overtimeStatusModel =
               Get.find<ReportsControllerAdmin>()
@@ -198,7 +198,7 @@ class OvertimeTabAdmin extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Text(
-                                  overtimeDetail?.reason ?? '',
+                                  overtimeDetail.reason ?? '',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -236,7 +236,7 @@ class OvertimeTabAdmin extends StatelessWidget {
                               kSizedBoxW10,
                               processButton('Edit', CustomColors.blueCardColor,
                                   () {
-                                tempIndex = tempIndex + 1;
+                                tempIndex = index + 1;
                                 // print("Got tempIndex:${tempIndex?.toString()}");
                                 DialogHelper.showBottomSheet(
                                     RequestOvertimeBottomsheet(
@@ -247,11 +247,13 @@ class OvertimeTabAdmin extends StatelessWidget {
                               kSizedBoxW10,
                               processButton('Approve', CustomColors.greenColor,
                                   () {
+                                    tempIndex = index;
                                 print("Got tempIndex:${tempIndex?.toString()}");
                                 Get.find<ReportsControllerAdmin>()
                                     .approveOrDeclineOvertime(
                                         // index, ReasonButton.overtimeApprove);
                                         tempIndex,
+                                        // overtimeDetail.id ?? 0,
                                         ReasonButton.overtimeApprove);
                               }),
                             ],

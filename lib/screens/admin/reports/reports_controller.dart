@@ -780,6 +780,11 @@ class ReportsControllerAdmin extends GetxController
   }
 
   approveOrDeclineOvertime(int index, ReasonButton reasonButton) async {
+     print("approveOrDeclineOvertime called with ID:${index} ");
+       List<EmployeeList>? overtimePendingDetails = Get.find<ReportsControllerAdmin>()
+            .getFilteredOvertimeList()
+            ?.where((element) => element.status == '0')
+            .toList();
     // if (reasonButton == ReasonButton.overtimeEdit) {
     if (reasonButton != ReasonButton.overtimeApprove) {
       print("approveOrDeclineOvertime Report build (7) Edit/Delete ");
@@ -801,24 +806,75 @@ class ReportsControllerAdmin extends GetxController
     int? originalIndex;
     if (reasonButton != ReasonButton.overtimeEdit) {
       if (reasonButton != ReasonButton.overtimeDecline) {
+
+        print("OT Approve Enterec here:");
         List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
             .getFilteredOvertimeList()
             ?.where((element) => element.status == '0')
             .toList();
-
+           
+//and take the reason, date all and save to the existing model
+// remove index based selection, just take the /OT id based model,
         originalIndex = Get.find<ReportsControllerAdmin>()
             .overtimeResponseModel
             .value
             .employeeList
             .indexOf(overtimeDetails?[index] ?? EmployeeList());
+             EmployeeList overTimeSelected = overtimeDetails![index];
+// From this list we have to find the currect Ot model 
         print("Original index while Edit:${originalIndex.toString()}");
+
+    print("overtime  status: ${overTimeSelected.status}");
+     print("overtime  id: ${overTimeSelected.id}");
+      print("overtime  employer id: ${overTimeSelected.employerId}");
+       print("overtime  employee Id: ${overTimeSelected.employeeId}");
+        print("overtime  date: ${overTimeSelected.date}");
+         print("overtime  total hours: ${overTimeSelected.totalHours}");
+        print("overtime  reason: ${overTimeSelected.reason}");
+         print("overtime  decline reason: ${overTimeSelected.declineReason}");
+   
       }
     }
 
     showLoading();
     if (reasonButton == ReasonButton.overtimeApprove) {
       //approve
+       originalIndex = Get.find<ReportsControllerAdmin>()
+            .overtimeResponseModel
+            .value
+            .employeeList
+            .indexOf(overtimePendingDetails?[index] ?? EmployeeList());
+             EmployeeList overTimeSelected = overtimePendingDetails![index];
       overtimeApproveEditRequestModel.status = '1';
+         overtimeApproveEditRequestModel.employerId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+             overtimeApproveEditRequestModel.employeeId=
+          '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
+      //date is obtained from dashboard controller as bottomsheet fills dashboard controller
+      overtimeApproveEditRequestModel.date = 
+      getDate(overTimeSelected.date.toString());
+       
+      // '2023-11-30';
+          // Get.find<DashboardController>().overtimeApproveEditRequestModel.date;
+
+      //reason is obtained from dashboard controller as bottomsheet fills dashboard controller
+      overtimeApproveEditRequestModel.reason = 
+      overTimeSelected.reason;
+      // "good reason";
+      // Get.find<DashboardController>()
+      //     .overtimeApproveEditRequestModel
+      //     .reason;
+      //Setting Decline reason from Bottom sheet from Reason textbox treated as decline reaseon textbox
+      overtimeApproveEditRequestModel.declineReason =
+      overTimeSelected.declineReason;
+          // "";
+           overtimeApproveEditRequestModel.totalHours = 
+           overTimeSelected.totalHours;
+          //  '34';
+          // Get.find<DashboardController>()
+          //     .overtimeApproveEditRequestModel
+          //     .totalHours;
+
     } else if (reasonButton == ReasonButton.overtimeDecline) {
       //decline
       print("Test decline reason (10): ");
@@ -883,6 +939,13 @@ class ReportsControllerAdmin extends GetxController
         .toString();
 
     print("overtime Request status: ${overtimeApproveEditRequestModel.status}");
+     print("overtime Request id: ${overtimeApproveEditRequestModel.id}");
+      print("overtime Request employer id: ${overtimeApproveEditRequestModel.employerId}");
+       print("overtime Request employee Id: ${overtimeApproveEditRequestModel.employeeId}");
+        print("overtime Request date: ${overtimeApproveEditRequestModel.date}");
+         print("overtime Request total hours: ${overtimeApproveEditRequestModel.totalHours}");
+        print("overtime Request reason: ${overtimeApproveEditRequestModel.reason}");
+         print("overtime Request decline reason: ${overtimeApproveEditRequestModel.declineReason}");
     var responseString = "";
     responseString = await Get.find<BaseClient>()
         .post(
@@ -893,7 +956,9 @@ class ReportsControllerAdmin extends GetxController
         .catchError(handleError);
     hideLoading();
     print("overtime approve: $responseString");
+    
     if (responseString == null) {
+      print("Response String Null");
       return;
     } else {
       //close bottom sheet if editing/Decline
@@ -1323,7 +1388,14 @@ class ReportsControllerAdmin extends GetxController
 
       print("Dio going to download : $encodedUrl");
 
+Directory? directory = Platform.isAndroid
+    ? await getExternalStorageDirectory() //FOR ANDROID
+    : await getApplicationSupportDirectory(); //FOR iOS
+
+print("Status: ${directory.toString()}");
       final status = await Permission.manageExternalStorage.status;
+
+      print("Status: ${directory.toString()}");
       if (status.isDenied) {
         final result = await Permission.manageExternalStorage.request();
         if (result.isGranted) {
