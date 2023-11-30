@@ -179,8 +179,10 @@ class PayslipTab extends StatelessWidget {
 
                       // Share.share(url!);
                       Get.find<ReportsControllerAdmin>()
-                          .sharePdf(url, url?.getType());
+                      //  .sharePdf_OLD(url, url?.getType());
+                          .sharePdf_OLD_For_IOS(url, url?.getType());
                       // .sharePdf(url, url?.getType());
+                      //
                     },
                     icon: CircleAvatar(
                       backgroundColor: CustomColors.fabColor,
@@ -213,6 +215,8 @@ class PayslipTab extends StatelessWidget {
                           }
                         }),
                       );
+
+
                     },
                     icon: CircleAvatar(
                       backgroundColor: CustomColors.fabColor,

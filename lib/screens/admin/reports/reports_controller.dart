@@ -57,7 +57,7 @@ import '../../login/login_controller.dart';
 import '../chat/chat_controller.dart';
 import '../widgets/reason_bottomsheet.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as path; 
 
 import 'reports_filter_controller.dart';
 
@@ -807,7 +807,7 @@ class ReportsControllerAdmin extends GetxController
     if (reasonButton != ReasonButton.overtimeEdit) {
       if (reasonButton != ReasonButton.overtimeDecline) {
 
-        print("OT Approve Enterec here:");
+        print("OT Approve Entered here:");
         List<EmployeeList>? overtimeDetails = Get.find<ReportsControllerAdmin>()
             .getFilteredOvertimeList()
             ?.where((element) => element.status == '0')
@@ -885,14 +885,18 @@ class ReportsControllerAdmin extends GetxController
       overtimeApproveEditRequestModel.employerId =
           '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
 
+
+      overtimeApproveEditRequestModel.employeeId =
+          '${Get.find<LoginController>().loginResponseModel?.employee?.id}';
+
       //date is obtained from dashboard controller as bottomsheet fills dashboard controller
-      // overtimeApproveEditRequestModel.date =
-      //     Get.find<DashboardController>().overtimeApproveEditRequestModel.date;
+      overtimeApproveEditRequestModel.date =
+          Get.find<DashboardController>().overtimeApproveEditRequestModel.date;
 
       //reason is obtained from dashboard controller as bottomsheet fills dashboard controller
-      // overtimeApproveEditRequestModel.reason = Get.find<DashboardController>()
-      //     .overtimeApproveEditRequestModel
-      //     .reason;
+      overtimeApproveEditRequestModel.reason = Get.find<DashboardController>()
+          .overtimeApproveEditRequestModel
+          .reason;
 
       //Setting Decline reason from Bottom sheet from Reason textbox treated as decline reaseon textbox
       //only Decline reason will taken
@@ -903,9 +907,9 @@ class ReportsControllerAdmin extends GetxController
 
       //totalHours is obtained from dashboard controller as bottomsheet fills dashboard controller
       // overtimeApproveEditRequestModel.totalHours =
-      //     Get.find<DashboardController>()
-      //         .overtimeApproveEditRequestModel
-      //         .totalHours;
+          Get.find<DashboardController>()
+              .overtimeApproveEditRequestModel
+              .totalHours;
     } else {
       //edit
       print(
@@ -938,14 +942,15 @@ class ReportsControllerAdmin extends GetxController
         .value.employeeList[originalIndex ?? index].id
         .toString();
 
-    // print("overtime Request status: ${overtimeApproveEditRequestModel.status}");
-    //  print("overtime Request id: ${overtimeApproveEditRequestModel.id}");
-    //   print("overtime Request employer id: ${overtimeApproveEditRequestModel.employerId}");
-    //    print("overtime Request employee Id: ${overtimeApproveEditRequestModel.employeeId}");
-    //     print("overtime Request date: ${overtimeApproveEditRequestModel.date}");
-    //      print("overtime Request total hours: ${overtimeApproveEditRequestModel.totalHours}");
-    //     print("overtime Request reason: ${overtimeApproveEditRequestModel.reason}");
-    //      print("overtime Request decline reason: ${overtimeApproveEditRequestModel.declineReason}");
+    print("overtime Request status: ${overtimeApproveEditRequestModel.status}");
+     print("overtime Request id: ${overtimeApproveEditRequestModel.id}");
+      print("overtime Request employer id: ${overtimeApproveEditRequestModel.employerId}");
+       print("overtime Request employee Id: ${overtimeApproveEditRequestModel.employeeId}");
+        print("overtime Request date: ${overtimeApproveEditRequestModel.date}");
+         print("overtime Request total hours: ${overtimeApproveEditRequestModel.totalHours}");
+        print("overtime Request reason: ${overtimeApproveEditRequestModel.reason}");
+         print("overtime Request decline reason: ${overtimeApproveEditRequestModel.declineReason}");
+    
     var responseString = "";
     responseString = await Get.find<BaseClient>()
         .post(
@@ -1457,8 +1462,11 @@ print("Status: ${directory.toString()}");
       }
     }
   }
-
+// try  ti use sharepdfOLD code lines to download the pdf file in ios 
+// now pdf is saved in the cache location using the sharepdfOLD codes, so just simple change needed we have to change  the location  
   sharePdf_OLD(String? url, String? type) async {
+
+        print('sharePdf_OLD called');
     if (type == 'pdf' ||
         type == 'pdf' ||
         type == 'png' ||
@@ -1473,13 +1481,47 @@ print("Status: ${directory.toString()}");
         File('$tempPath/payslip.$type').deleteSync();
       }
       sharePath = '$tempPath/payslip.$type';
+      print("Share path:$sharePath");
       await FlutterDownloader.enqueue(
         url: url!,
         savedDir: tempPath,
-        showNotification: false,
-        openFileFromNotification: false,
+        showNotification: true,
+        openFileFromNotification: true,
         fileName: 'payslip.$type',
       );
+
+      await Share.shareXFiles([XFile(tempPath)], text: 'Share Payslip PDF');
+    }
+  }
+
+  sharePdf_OLD_For_IOS(String? url, String? type) async {
+
+        print('sharePdf_OLD_For_IOS called');
+    if (type == 'pdf' ||
+        type == 'pdf' ||
+        type == 'png' ||
+        type == 'csv' ||
+        type == 'doc' ||
+        type == 'docx' ||
+        type == 'jpeg') {
+      isSharingOrDownloading.value = SharingOrDownloading.sharing;
+      // Directory tempDir = await getTemporaryDirectory();
+      Directory tempDir = await getApplicationDocumentsDirectory(); 
+      String tempPath = tempDir.path;
+      if (File('$tempPath/payslip.$type').existsSync()) {
+        File('$tempPath/payslip.$type').deleteSync();
+      }
+      sharePath = '$tempPath/payslip.$type';
+      print("Share path:$sharePath");
+      await FlutterDownloader.enqueue(
+        url: url!,
+        savedDir: tempPath,
+        showNotification: true,
+        openFileFromNotification: true,
+        fileName: 'payslip.$type',
+      );
+
+      // await Share.shareXFiles([XFile(tempPath)]);
     }
   }
 
