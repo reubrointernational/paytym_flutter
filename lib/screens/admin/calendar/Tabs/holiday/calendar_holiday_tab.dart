@@ -13,17 +13,22 @@ class CalendarHolidayTabAdmin extends StatelessWidget {
       Get.find<CalendarControllerAdmin>().getHolidays();
     });
     return Obx(
-      () => ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemCount: Get.find<CalendarControllerAdmin>()
+      () {
+        final leaveList = Get.find<CalendarControllerAdmin>()
             .leaveAdminResponseModel
             .value
-            .leaveList
-            .length,
-        itemBuilder: (context, index) {
-          return CalendarHolidayCardAdmin(index: index);
-        },
-      ),
+            .leaveList;
+
+        leaveList.sort((a, b) => a.date.compareTo(b.date));
+
+        return ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: leaveList.length,
+          itemBuilder: (context, index) {
+            return CalendarHolidayCardAdmin(index: index);
+          },
+        );
+      },
     );
   }
 }

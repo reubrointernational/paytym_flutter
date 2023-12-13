@@ -3,8 +3,10 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:typed_data';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
@@ -322,9 +324,9 @@ class ReportsControllerAdmin extends GetxController
         // processPayroll('all');
         print(
             "Process payroll for ALL: ${isAllEmployeesSelected.value.toString()} ");
-
-        showLoading();
         Get.find<DashboardControllerAdmin>().fetchEmployeeList();
+        employeeList.refresh();
+        showLoading();
 
         Get.back(); // will go to the employee homepage
 
@@ -522,17 +524,19 @@ class ReportsControllerAdmin extends GetxController
     if (responseString == null) {
       return;
     } else {
-      print('object');
+      print('fetchDepartments response null');
       departmentModel.value = departmentModelFromJson(responseString);
     }
   }
 
   fetchBranches(int businessId) async {
-    print('fetchDepartment with Business ID:${businessId.toString()}');
+    print('fetchBranches() with Business ID:${businessId.toString()}');
     var responseString = await Get.find<BaseClient>().post(
         ApiEndPoints.fetchBranch,
         jsonEncode({'business_id': businessId.toString()}),
         Get.find<LoginController>().getHeader());
+
+    print('fetchBranches() Response:${responseString}');
     if (responseString == null) {
       return;
     } else {
@@ -1305,19 +1309,47 @@ class ReportsControllerAdmin extends GetxController
     }
   }
 
+  downloadPdfInMyFiles(String? url) async {
+    print("downloadPdfInMyFiles:+$url");
+    showLoading();
+    if (url != null && url.isNotEmpty) {
+      sharePath = '';
+      isSharingOrDownloading.value = SharingOrDownloading.downloading;
+      final taskId = await FlutterDownloader.enqueue(
+        url: url,
+        saveInPublicStorage: true,
+        savedDir: '/storage/emulated/0/Download',
+        showNotification: true,
+        openFileFromNotification: true,
+        // fileName: 'payslip.pdf',
+      );
+
+      FlutterDownloader.registerCallback((id, status, progress) {
+        print("call back called ");
+        if (id == taskId && status == DownloadTaskStatus.complete) {
+          // Download complete, show prompt
+          // isSharingOrDownloading.value = SharingOrDownloading.notSharing;
+          // showDownloadCompleteDialog();
+          print("DownloadTaskStatus.complete");
+        }
+      });
+    }
+  }
+
   downloadFile(String fileFrom, String? url,
       void Function(int, int)? onReceiveProgress) async {
     showLoading();
-    print("URL when time of download :+${url}");
+    print("URL when time of download :+$url");
 
     final dir = await getTemporaryDirectory();
+
+    Directory? directory = Platform.isAndroid
+        ? await getExternalStorageDirectory() //FOR ANDROID
+        : await getApplicationSupportDirectory(); //FOR iOS
 
     if (url != null) {
       var dio = Dio();
       // final date = DateFormat('dd_MM_yyyy_hh_mm_s').format(DateTime.now());
-      //Now i am giving the extension as PDF, If the payslip file from API is correct,ie,paytym/storage/filename.pdf is correct no need to given the last pdf extension
-      // If the File name from API is correct no need to update the file name as pdf_emp_record
-      // just give the exact name from the API.
 
       String encodedUrl = Uri.encodeFull(url);
 
@@ -1327,23 +1359,55 @@ class ReportsControllerAdmin extends GetxController
       if (status.isDenied) {
         final result = await Permission.manageExternalStorage.request();
         if (result.isGranted) {
-          await dio.download(
-              // url,
-              encodedUrl,
-              // "${dir.path}/${path.basename(encodedUrl)}'",
-              '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
-              onReceiveProgress: onReceiveProgress);
+        } else {
+          print("Download permission not granted ");
         }
       } else if (status.isRestricted) {
         await openAppSettings();
       }
 
-      // await dio.download(
-      //     // url,
-      //     encodedUrl,
-      //     // "${dir.path}/${path.basename(encodedUrl)}'",
-      //     '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
-      //     onReceiveProgress: onReceiveProgress);
+      if (Platform.isAndroid) {
+        var status = await Permission.storage.status;
+        if (!status.isGranted) {
+          print("Permission is not granted ");
+          await Permission.storage.request();
+        } else {
+          DeviceInfoPlugin devInfo = DeviceInfoPlugin();
+          AndroidDeviceInfo info = await devInfo.androidInfo;
+          print("Android Version: ${info.version.release.toString()}");
+
+          // Android Version checking
+          if (int.parse(info.version.release) < 12) {
+            // Here use the old Download code of Android version of 12 and below.
+            DialogHelper.showToast(
+                desc: 'Going to download in android version below 12');
+            print("Dio going to download in android version below 12 ");
+            await dio.download(
+                // url,
+                encodedUrl,
+                // "${dir.path}/${path.basename(encodedUrl)}'",
+                '/storage/emulated/0/Download/${path.basename(encodedUrl)}',
+                onReceiveProgress: onReceiveProgress);
+          } else {
+            // Here use the new Download code of Android version above 12.
+            DialogHelper.showToast(
+                desc: 'Going to download in android version above 12');
+            print("Dio going to download in android version above 12 ");
+            String filename = '${DateTime.now().microsecondsSinceEpoch}';
+            var request = await HttpClient()?.getUrl(Uri.parse(url));
+            var response = await request?.close();
+            var bytes = await consolidateHttpClientResponseBytes(response!);
+            String dir = (await getApplicationDocumentsDirectory()).path;
+            print(" download saving location:$dir");
+            File file = File('$dir/$filename');
+            await file.writeAsBytes(bytes);
+            print('File download successful');
+            OpenFile.open('$dir/$filename');
+          }
+        }
+      } else if (Platform.isIOS) {
+        // Platform is IOS
+      }
       hideLoading();
       OpenFile.open('/storage/emulated/0/Download/${path.basename(url)}');
     }
@@ -1592,7 +1656,7 @@ class ReportsControllerAdmin extends GetxController
         flag: payrollFlag,
         id: empList.map((e) => e).toList(),
       );
-
+      print("Prasanth");
       var responseString;
       // commenting payroll operation
       try {
@@ -1610,6 +1674,8 @@ class ReportsControllerAdmin extends GetxController
       }
       if (responseString == null) {
         sliderValue.value = 0;
+        Get.find<DashboardControllerAdmin>().fetchEmployeeList();
+        employeeList.refresh();
         hideLoading();
         Get.back();
         // DialogHelper.showToast(
@@ -1619,6 +1685,8 @@ class ReportsControllerAdmin extends GetxController
         return;
       } else {
         hideLoading();
+        Get.find<DashboardControllerAdmin>().fetchEmployeeList();
+        employeeList.refresh();
         Get.back();
         DialogHelper.showToast(
             desc:
@@ -1659,10 +1727,14 @@ class ReportsControllerAdmin extends GetxController
         // For instance, you might want to set a default value for responseString or perform some recovery action.
       }
       if (responseString != null) {
-        // sliderValue.value = 0;
+        sliderValue.value = 0;
         // Get.back();
         hideLoading();
         DialogHelper.showToast(desc: "Payroll Generated for All the Employees");
+        showLoading();
+        // Get.find<DashboardControllerAdmin>().fetchEmployeeList();
+        Get.find<DashboardControllerAdmin>().fetchPayrollEmployeeList();
+
         hideLoading();
         Get.back();
         return;
@@ -1672,6 +1744,8 @@ class ReportsControllerAdmin extends GetxController
         //fake coding :fake toast
         // DialogHelper.showToast(
         //     desc: "Payroll Generated for All the Employees...");
+
+        Get.find<DashboardControllerAdmin>().fetchEmployeeList();
         Get.back();
         return;
       }
@@ -1706,7 +1780,7 @@ class ReportsControllerAdmin extends GetxController
     print("revertPayroll Response: ${responseString.toString()}");
 
     if (responseString != null) {
-      // sliderValue.value = 0;
+      sliderValue.value = 0;
       // Get.back();
       hideLoading();
       DialogHelper.showToast(desc: jsonDecode(responseString)['message']);

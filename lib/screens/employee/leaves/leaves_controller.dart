@@ -33,7 +33,7 @@ class LeavesController extends GetxController with BaseController {
   final TextEditingController endTimeController = TextEditingController();
 
   fetchLeaveData() async {
-    showLoading();
+    // showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var responseString = await Get.find<BaseClient>()
         .get(ApiEndPoints.leave, Get.find<LoginController>().getHeader())
@@ -41,7 +41,7 @@ class LeavesController extends GetxController with BaseController {
     if (responseString == null) {
       return;
     } else {
-      hideLoading();
+      // hideLoading();
       leaveResponseModel.value = leaveResponseModelFromJson(responseString);
       Get.find<BaseClient>().onError = null;
     }

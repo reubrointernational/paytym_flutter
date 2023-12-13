@@ -13,6 +13,15 @@ import '../../../network/end_points.dart';
 import '../../employee/reports/widgets/year_dropdown.dart';
 import '../reports/reports_controller.dart';
 
+int subStringOfLengthyDeptName(String dept) {
+  print("subStringOfLengthyDeptName called");
+  if (dept.length < 20) {
+    return dept.length;
+  } else {
+    return 20;
+  }
+}
+
 showFilterBottomSheet(context, controller) {
   showModalBottomSheet(
       isScrollControlled: true,
@@ -50,19 +59,29 @@ showFilterBottomSheet(context, controller) {
                     ),*/
 
                 Obx(() {
+                  // Get.find<DashboardControllerAdmin>()
+                  //     .selectedDropdownBranches
+                  //     .value = null;
+                  // Get.find<DashboardControllerAdmin>()
+                  //     .selectedDropdownDepartments
+                  //     .value = null;
+
                   final dept = Get.find<ReportsControllerAdmin>()
                       .departmentModel
                       .value
                       .departments;
+                  print("Department count:${dept?.length}");
                   final branch = Get.find<ReportsControllerAdmin>()
                       .branchModel
                       .value
                       .branches;
 
+                  print("Branch count:${branch?.length}");
                   final business = Get.find<ReportsControllerAdmin>()
                       .businessModel
                       .value
                       .businesses;
+                  print("businesses count:${business?.length}");
                   return ListView(
                       physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
@@ -96,6 +115,7 @@ showFilterBottomSheet(context, controller) {
                                     .firstWhere(
                                         (element) => element.name == value)
                                     .id;
+                                print("Selected business Id:$businessId");
 
                                 Get.find<ReportsControllerAdmin>()
                                     .fetchBranches(businessId);
@@ -165,6 +185,7 @@ showFilterBottomSheet(context, controller) {
                             ),
                           ),
                         ),
+
                         // Container(
                         //   decoration: BoxDecoration(
                         //       borderRadius: const BorderRadius.horizontal(
@@ -200,6 +221,7 @@ showFilterBottomSheet(context, controller) {
                         //     hint: selectMembersTabsAttendance[3],
                         //   ),
                         // ),
+
                         SizedBox(
                           height: 50,
                           child: TextFormField(

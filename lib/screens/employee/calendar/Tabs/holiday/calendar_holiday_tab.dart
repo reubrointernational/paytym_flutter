@@ -11,16 +11,21 @@ class CalendarHolidayTab extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.find<CalendarController>().getHolidays();
     });
-    return Obx(() => ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: Get.find<CalendarController>()
-              .leaveAdminResponseModel
-              .value
-              .leaveList
-              .length,
-          itemBuilder: (context, index) {
-            return CalendarHolidayCard(index: index);
-          },
-        ));
+    return Obx(() {
+      final leaveList = Get.find<CalendarController>()
+          .leaveAdminResponseModel
+          .value
+          .leaveList;
+
+      leaveList.sort((a, b) => a.date.compareTo(b.date));
+
+      return ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        itemCount: leaveList.length,
+        itemBuilder: (context, index) {
+          return CalendarHolidayCard(index: index);
+        },
+      );
+    });
   }
 }

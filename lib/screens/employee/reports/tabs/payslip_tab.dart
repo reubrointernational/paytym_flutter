@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -85,7 +87,6 @@ class PayslipTab extends StatelessWidget {
                     print("Payslip Date dropdown selected value: $value");
                     reportsController.selectedDropdownDay.value = value!;
                     reportsController.fetchPayslipCopy();
-
                     print(
                         "reportsController.selectedDropdownDay.value:${reportsController.selectedDropdownDay.value}");
                   } catch (e) {
@@ -196,23 +197,27 @@ class PayslipTab extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
+                      print("Download button pressed");
                       Get.find<ReportsController>()
                           .fileListResponseModel
                           .refresh();
-                      Get.find<ReportsControllerAdmin>().downloadFile(
-                        "emp_records",
-                        // "https://paytym.net/storage/employee_uploaded_file/Remote%20Jobs.pdf",
-                        // "https://paytym.net/storage/pdfs/EMP18_PS2023-08-08 00:00:00_19.pdf",
-                        url,
-                        ((progress, total) {
-                          if (progress == total) {
-                            Get.find<ReportsController>()
-                                .fileListResponseModel
-                                .refresh();
-                            DialogHelper.showToast(desc: 'Download completed');
-                          }
-                        }),
-                      );
+                      if (Platform.isAndroid) {
+                        Get.find<ReportsControllerAdmin>().downloadFile(
+                          "emp_records",
+                          // "https://paytym.net/storage/employee_uploaded_file/Remote%20Jobs.pdf",
+                          // "https://paytym.net/storage/pdfs/EMP18_PS2023-08-08 00:00:00_19.pdf",
+                          url,
+                          ((progress, total) {
+                            if (progress == total) {
+                              Get.find<ReportsController>()
+                                  .fileListResponseModel
+                                  .refresh();
+                              DialogHelper.showToast(
+                                  desc: 'Download completed');
+                            }
+                          }),
+                        );
+                      }
                     },
                     icon: CircleAvatar(
                       backgroundColor: CustomColors.fabColor,

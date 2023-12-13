@@ -41,6 +41,7 @@ class ChatController extends GetxController with BaseController {
   }
 
   fetchChat({bool isFromNotification = false}) async {
+    print("Fetchchat called");
     if (!isFromNotification) {
       showLoading();
       Get.find<BaseClient>().onError = fetchChat;
@@ -55,6 +56,7 @@ class ChatController extends GetxController with BaseController {
             }),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
+    print("Fetchchat Response");
     print(responseString);
 
     if (responseString != null) {

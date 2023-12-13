@@ -77,6 +77,8 @@ class MyFilesTab extends StatelessWidget {
                             backgroundColor: CustomColors.blueCardColor,
                             child: GestureDetector(
                               onTap: () {
+                                print(
+                                    "going to download:'$kStorageUrl${files?[index].file}'");
                                 //Download file
                                 Get.find<ReportsController>().downloadPdf(
                                     '$kStorageUrl${files?[index].file}');
@@ -168,8 +170,9 @@ class MyFilesTab extends StatelessWidget {
                                               // "https://paytym.net/storage/file/flutter.pdf",
                                               '$kBaseUrlForEmployeeUploadImages${Get.find<ReportsController>().removingPublicFilePath(files![index].file.toString())}',
                                               ((progress, total) {
-                                        print(
-                                            "Downloading File From URL:$kBaseUrlForEmployeeUploadImages${Get.find<ReportsController>().removingPublicFilePath(files![index].file.toString())}");
+                                        // print(
+                                        //     "Downloading File From URL:$kBaseUrlForEmployeeUploadImages${Get.find<ReportsController>().removingPublicFilePath(files![index].file.toString())}");
+                                        //
                                         if (progress == total) {
                                           files?[index].isDownloading = false;
                                           Get.find<ReportsController>()
@@ -193,8 +196,18 @@ class MyFilesTab extends StatelessWidget {
                                   backgroundColor: CustomColors.redColor,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Get.find<ReportsController>()
-                                          .deleteFiles(files?[index].id ?? -1);
+                                      DialogHelper.showConfirmDialog(
+                                        title: 'Delete Confirmation',
+                                        desc:
+                                            'Do you want to delete this file?',
+                                        onConfirm: () {
+                                          Get.find<ReportsController>()
+                                              .deleteFiles(
+                                                  files?[index].id ?? -1);
+                                          Get.back();
+                                        },
+                                        onCancel: () => Get.back(),
+                                      );
                                     },
                                     child: const Icon(
                                       Icons.delete,

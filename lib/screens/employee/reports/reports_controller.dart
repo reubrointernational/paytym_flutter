@@ -770,7 +770,7 @@ class ReportsController extends GetxController
         savedDir: await DownloadPath().getDownloadPath(),
         showNotification: true,
         openFileFromNotification: true,
-        fileName: 'paytym_doc_.pdf',
+        // fileName: 'paytym_doc_.pdf',
       );
 
       print("Downloadpdf: Task id:${taskId.toString()}");
@@ -931,7 +931,7 @@ class ReportsController extends GetxController
       print('port.listen test');
       DownloadTaskStatus status = data[1];
       // int progress = data[2];
-
+      print(status.toString());
       //download completed
       if (status == DownloadTaskStatus.complete) {
         //Download completed from Share button

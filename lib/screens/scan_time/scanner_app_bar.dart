@@ -11,13 +11,13 @@ class ScannerAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
+    return const Padding(
+      padding: EdgeInsets.all(18.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            children: const [
+            children: [
               CustomSVG(IconPath.menuSvg, size: 20),
               kSizedBoxW15,
               Text(

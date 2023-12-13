@@ -175,8 +175,18 @@ class UploadFilesPage extends StatelessWidget {
                                   backgroundColor: CustomColors.redColor,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Get.find<ReportsControllerAdmin>()
-                                          .deleteFiles(files?[index].id ?? -1);
+                                      DialogHelper.showConfirmDialog(
+                                        title: 'Delete Confirmation',
+                                        desc:
+                                            'Do you want to delete this file?',
+                                        onConfirm: () {
+                                          Get.find<ReportsControllerAdmin>()
+                                              .deleteFiles(
+                                                  files?[index].id ?? -1);
+                                          Get.back();
+                                        },
+                                        onCancel: () => Get.back(),
+                                      );
                                     },
                                     child: const Icon(
                                       Icons.delete,

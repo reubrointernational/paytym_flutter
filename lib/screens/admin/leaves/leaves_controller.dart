@@ -135,15 +135,16 @@ class LeavesControllerAdmin extends GetxController
   }
 
   fetchLeaveData([int status = 1]) async {
+    print('fetchLeaveData called ');
     //status 1 means month leaves, 3 means all leaves
-    if (status == 3) {
-      leaveAdminResponseModelAll.value =
-          LeavesListAdminModel(message: '', leaveRequest: []);
-    } else {
-      leaveAdminResponseModel.value =
-          LeavesListAdminModel(message: '', leaveRequest: []);
-    }
-    showLoading();
+    // if (status == 3) {
+    //   leaveAdminResponseModelAll.value =
+    //       LeavesListAdminModel(message: '', leaveRequest: []);
+    // } else {
+    //   leaveAdminResponseModel.value =
+    //       LeavesListAdminModel(message: '', leaveRequest: []);
+    // }
+    // showLoading();
     Get.find<BaseClient>().onError = fetchLeaveData;
     var requestModel = {
       'status': status,
@@ -154,7 +155,7 @@ class LeavesControllerAdmin extends GetxController
         .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    hideLoading();
+    // hideLoading();
     if (responseString == null) {
       return;
     } else {
@@ -164,6 +165,48 @@ class LeavesControllerAdmin extends GetxController
             leavesListAdminModelFromJson(responseString);
         print('fetch leave data 13');
       } else {
+        print('fetch leave data 14');
+        leaveAdminResponseModel.value =
+            leavesListAdminModelFromJson(responseString);
+      }
+
+      Get.find<BaseClient>().onError = null;
+    }
+  }
+
+  fetchLeaveDataForTimer([int status = 1]) async {
+    print('fetchLeaveDataForTimer called ');
+    //status 1 means month leaves, 3 means all leaves
+    if (status == 3) {
+      leaveAdminResponseModelAll.value =
+          LeavesListAdminModel(message: '', leaveRequest: []);
+    } else {
+      leaveAdminResponseModel.value =
+          LeavesListAdminModel(message: '', leaveRequest: []);
+    }
+    // showLoading();
+    Get.find<BaseClient>().onError = fetchLeaveData;
+    var requestModel = {
+      'status': status,
+      'employer_id':
+          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    };
+    var responseString = await Get.find<BaseClient>()
+        .post(ApiEndPoints.leaveRequestAdmin, jsonEncode(requestModel),
+            Get.find<LoginController>().getHeader())
+        .catchError(handleError);
+    // hideLoading();
+    if (responseString == null) {
+      return;
+    } else {
+      print('fetch leave data 01');
+      if (status == 3) {
+        print('fetch leave data 1');
+        leaveAdminResponseModelAll.value =
+            leavesListAdminModelFromJson(responseString);
+        print('fetch leave data 13');
+      } else {
+        print('fetch leave data 14');
         leaveAdminResponseModel.value =
             leavesListAdminModelFromJson(responseString);
       }

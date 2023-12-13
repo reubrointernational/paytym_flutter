@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -20,20 +22,22 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  // Timer? timer;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     Get.find<ChatController>().fetchChat(isFromNotification: true);
-  //   });
-  // }
+  Timer? timer;
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      print("Timer started");
+      Get.find<ChatController>().fetchChat(isFromNotification: true);
+    });
+  }
 
-  // @override
-  // void dispose() {
-  //   timer?.cancel();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    timer?.cancel();
+    print("Timer Stopped");
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,9 @@ class _ChatPageState extends State<ChatPage> {
     final controller = Get.find<ChatController>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchChat(isFromNotification: true);
-      controller.chatResponseModel.value = ChatResponseModel();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.chatResponseModel.value = ChatResponseModel();
+      });
     });
 
     return Scaffold(

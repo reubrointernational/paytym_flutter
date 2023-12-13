@@ -218,7 +218,7 @@ class DashboardControllerAdmin extends GetxController with BaseController {
       print("Element:");
       if (!branchwiseEmployeeMap.keys.contains(element.branch?.name ?? '')) {
         print(
-            "classifyEmployeeListByBranchAndDept branchwiseEmployeeMap element.branch?.name ");
+            "classifyEmployeeListByBranchAndDept branchwiseEmployeeMap element.branch?.name: ${element.branch?.name.toString()}");
         branchwiseEmployeeMap[element.branch?.name ?? ''] = [element];
       } else {
         print(

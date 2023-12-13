@@ -20,6 +20,8 @@ class PendingPayrollListview extends StatelessWidget {
   Widget build(BuildContext context) {
     print("PendingPayrollListview called from build()");
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // for testing loading
+      // Get.find<DashboardControllerAdmin>().fetchPayrollEmployeeList();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         WidgetsBinding.instance.addPostFrameCallback(
             (_) => Get.find<DashboardControllerAdmin>().clearFilter());
@@ -152,6 +154,15 @@ class PendingPayrollListview extends StatelessWidget {
                                   Get.find<ReportsControllerAdmin>()
                                       .isRevertPayrollSelected
                                       .value = false;
+                                  Get.find<DashboardControllerAdmin>()
+                                      .selectedDropdownBusiness
+                                      .value = null;
+                                  Get.find<DashboardControllerAdmin>()
+                                      .selectedDropdownBranches
+                                      .value = null;
+                                  Get.find<DashboardControllerAdmin>()
+                                      .selectedDropdownDepartments
+                                      .value = null;
                                   showFilterBottomSheet(context,
                                       Get.find<ReportsControllerAdmin>());
                                 },
@@ -248,11 +259,17 @@ class PendingPayrollListview extends StatelessWidget {
               Obx(() {
                 // List<EmployeeList>? employeesList =
                 //     Get.find<DashboardControllerAdmin>().getAllEmployees();
+                //Testing
+
+                // Get.find<DashboardControllerAdmin>().fetchPayrollEmployeeList();
                 List<EmployeeList>? employeesList =
                     Get.find<DashboardControllerAdmin>().getEmployees();
                 // List<EmployeeList>? employeesList =
                 // Get.find<DashboardControllerAdmin>()
                 //     .getFilteredEmployeeList();
+                // List<EmployeeList>? employeesList =
+                //     Get.find<DashboardControllerAdmin>()
+                //         .fetchPayrollEmployeeList();
 
                 //Filtering non active Employees by checking status of the employees
                 // employeesList = employeesList

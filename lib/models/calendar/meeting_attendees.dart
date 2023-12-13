@@ -36,16 +36,17 @@ class MeetingAttendessListPage extends StatelessWidget {
                       '${members?.firstName ?? ''} ${members?.lastName ?? ''}',
                       style: kTextStyleS15W600CBlack,
                     ),
-                    subtitle: Text('ID: ${members?.id}'),
-                    // subtitle: Text('ID: ${members?.jobTitle}'),
+                    // subtitle: Text('ID: ${members?.id}'),
+                    subtitle: Text('${members?.jobTitle}'),
                     leading: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.grey,
                       backgroundImage:
                           NetworkImage('$kStorageUrl${members?.image}'),
                     ),
-                    trailing: const Text(
-                      "Brach name",
+                    trailing: Text(
+                      // "Brach name",
+                      'ID : ${members?.id}',
                       style: kTextStyleS13W500Cgrey,
                     ),
                   ),

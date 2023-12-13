@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:paytym/core/colors/colors.dart';
 import 'package:paytym/core/constants/widgets.dart';
@@ -8,11 +10,35 @@ import 'package:paytym/screens/widgets/custom_tab_bar.dart';
 import '../../../core/constants/strings.dart';
 import 'widgets/leaves_app_bar.dart';
 
-class LeavesPage extends StatelessWidget {
+class LeavesPage extends StatefulWidget {
   const LeavesPage({Key? key}) : super(key: key);
 
   @override
+  State<LeavesPage> createState() => _LeavesPageState();
+}
+
+class _LeavesPageState extends State<LeavesPage> {
+  late Timer timer;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 4), (timer) {
+      print("timer from leave employee");
+      Get.find<LeavesController>().fetchLeaveData();
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("Leaves Page called");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<LeavesController>().fetchLeaveData();
     });
