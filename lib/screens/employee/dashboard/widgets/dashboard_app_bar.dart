@@ -37,7 +37,8 @@ class DashboardAppBar extends StatelessWidget {
               color: CustomColors.blueTextColor,
               itemBuilder: (BuildContext context) {
                 return [
-                  if (Get.find<LoginController>()
+                  if (
+                Get.find<LoginController>()
                               .loginResponseModel
                               ?.capabilities !=
                           null &&
@@ -50,8 +51,8 @@ class DashboardAppBar extends StatelessWidget {
                               ?.capabilities
                               ?.first
                               .role
-                              ?.roleName !=
-                          'Employee')
+                              ?.roleName ==
+                          'HR')
                     PopupMenuItem(
                       value: kDashboardDropDownItemList[3].dropDownItem,
                       child: Text(

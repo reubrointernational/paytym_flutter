@@ -17,6 +17,10 @@ import '../../network/base_controller.dart';
 import '../../network/end_points.dart';
 import '../../network/shared_preference_helper.dart';
 import '../../routes/app_routes.dart';
+import 'login_page.dart';
+import 'login_page.dart';
+import 'login_page.dart';
+import 'login_page.dart';
 
 class LoginController extends GetxController with BaseController {
   static String FCMToken = '';
@@ -65,12 +69,42 @@ class LoginController extends GetxController with BaseController {
           email: userModel.email, password: userModel.password);
 
       var responseString = await Get.find<BaseClient>()
-          .post(ApiEndPoints.login, loginRequestModelToJson(loginRequestModel))
+          .post(ApiEndPoints.login, 
+          loginRequestModelToJson(loginRequestModel))
           .catchError(handleError);
       print("fetchLoginData:${ApiEndPoints.login}");
       print("fetchLoginData Email:${loginRequestModel.email}");
       print("fetchLoginData Password:${loginRequestModel.password}");
       print("fetchLoginData Response :${responseString.toString()}");
+      print("******************************************************************************************************");
+
+
+      if (responseString != null) {
+        Map<String, dynamic> responseData = json.decode(responseString);
+        var employeeName = responseData['employee']['first_name'];
+       var employeeBranch = responseData['employee']['branch_id'];
+        var Branchname= responseData['employee']['bank_branch_name'];
+        var Salary= responseData['employee']['rate'];
+        var status= responseData['employee']['status'];
+
+
+
+        print('Employee Name: $employeeName');
+        print('Employee Branch: $employeeBranch');
+        print('Employee Branch: $Branchname');
+        print('Employee Branch: $Salary');
+        print('Employee Branch: $status');
+        if(status==1){
+          print('Employee Status: Active');
+        }
+        else{
+          Get.toNamed(Routes.login);
+          print('Employee Status: In-active');
+        }
+
+        print("******************************************************************************************************");
+
+      }
       if (responseString == null) {
         print("fetchLoginData loginResponseModel is null");
         return false;
@@ -86,6 +120,7 @@ class LoginController extends GetxController with BaseController {
       print("fetchLoginData loginResponseModel is NOt Null");
     }
     return true;
+
   }
 
   //if otp is send from forgot password page token is not needed, instead email is provided to identify the user
@@ -212,6 +247,8 @@ class LoginController extends GetxController with BaseController {
         await Get.find<SharedPreferenceHelper>()
             .addUserDetails(loginResponseModel);
         Get.offAndToNamed(Routes.bottomNav);
+
+
       }
     }
   }

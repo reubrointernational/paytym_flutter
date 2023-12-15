@@ -17,112 +17,132 @@ import '../../../routes/app_routes.dart';
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => DashboardController(), fenix: true);
-    return Scaffold(
-      backgroundColor: CustomColors.backgroundColor,
-      floatingActionButton: Animate(
-        effects: const [
-          ShakeEffect(hz: 0.8, rotation: 90, duration: Duration(seconds: 2)),
-          SlideEffect()
-        ],
-        child: FloatingActionButton(
-          onPressed: () => Get.toNamed(Routes.scanTime),
-          backgroundColor: CustomColors.fabColor,
-          child: const CustomSVG(
-            IconPath.scanIconSvg,
-            size: 23,
+   // int status =
+     //   Get.find<LoginController>().loginResponseModel?.employee?.status ?? 0;
+    // if (status == 2) {
+    //   Get.toNamed(Routes.licenceExpired);
+    //   print('+++++++++++++++++++++++++++++++++++++++++++++++');
+    //   //Get.offAllNamed(Routes.login);
+    //  // return const SizedBox.shrink();
+    //   return Container();
+    // }
+    // else {
+      return Scaffold(
+        backgroundColor: CustomColors.backgroundColor,
+        floatingActionButton: Animate(
+          effects: const [
+            ShakeEffect(hz: 0.8, rotation: 90, duration: Duration(seconds: 2)),
+            SlideEffect()
+          ],
+          child: FloatingActionButton(
+            onPressed: () => Get.toNamed(Routes.scanTime),
+            backgroundColor: CustomColors.fabColor,
+            child: const CustomSVG(
+              IconPath.scanIconSvg,
+              size: 23,
+            ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              color: CustomColors.backgroundColor,
-              child: const Padding(
-                padding: EdgeInsets.fromLTRB(6, 0, 18, 18),
-                child: DashboardAppBar(),
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    Container(
-                      color: CustomColors.backgroundColor,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 18, left: 18, right: 18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              Get.find<DashboardController>().getWish(),
-                              style: kTextStyleS13W600.copyWith(
-                                  color: CustomColors.lightBlueColor),
-                            ),
-                            kSizedBoxH4,
-                            Text(
-                              '${Get.find<LoginController>().loginResponseModel?.employee?.firstName ?? ''} ${Get.find<LoginController>().loginResponseModel?.employee?.lastName ?? ''}',
-                              style: const TextStyle(
-                                color: CustomColors.lightBlueColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ).animate().tint(color: Colors.black),
-                            kSizedBoxH15,
-                            const CheckInOutCard(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      color: CustomColors.dashboardGreyBackgroundColor,
-                      child: FutureBuilder(
-                        future: Get.find<DashboardController>()
-                            .fetchDashboardDetails(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<dynamic> snapshot) {
-                          return GridView.builder(
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(20),
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                            ),
-                            itemCount: employeeLeaves.length,
-                            itemBuilder: (context, index) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: employeeLeaves[index]["bgColor"],
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: DashboardColoredCard(
-                                      index: index, model: snapshot.data, 
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+        body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                color: CustomColors.backgroundColor,
+                child: const Padding(
+                  padding: EdgeInsets.fromLTRB(6, 0, 18, 18),
+                  child: DashboardAppBar(),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Container(
+                        color: CustomColors.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 18, left: 18, right: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                Get.find<DashboardController>().getWish(),
+                                style: kTextStyleS13W600.copyWith(
+                                    color: CustomColors.lightBlueColor),
+                              ),
+                              kSizedBoxH4,
+                              Text(
+                                '${Get
+                                    .find<LoginController>()
+                                    .loginResponseModel
+                                    ?.employee
+                                    ?.firstName ?? ''} ${Get
+                                    .find<LoginController>()
+                                    .loginResponseModel
+                                    ?.employee
+                                    ?.lastName ?? ''}',
+                                style: const TextStyle(
+                                  color: CustomColors.lightBlueColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ).animate().tint(color: Colors.black),
+                              kSizedBoxH15,
+                              const CheckInOutCard(),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: CustomColors.dashboardGreyBackgroundColor,
+                        child: FutureBuilder(
+                          future: Get.find<DashboardController>()
+                              .fetchDashboardDetails(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<dynamic> snapshot) {
+                            return GridView.builder(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(20),
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                              ),
+                              itemCount: employeeLeaves.length,
+                              itemBuilder: (context, index) {
+                                return Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: employeeLeaves[index]["bgColor"],
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: DashboardColoredCard(
+                                        index: index, model: snapshot.data,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
-}
+//}
