@@ -332,6 +332,7 @@ class DashboardController extends GetxController with BaseController {
   sliderController(
     double value,
   ) {
+    print(" sliderController called ");
     if (sliderValueChanged) {
       if (value > 95) {
         sliderValue.value = 100;
@@ -345,24 +346,32 @@ class DashboardController extends GetxController with BaseController {
         if (sliderValue.value == 100) {
           //checkin
           updateCheckInOut(CheckInOutStatus.checkIn);
+          print(" 1  called ");
         } else if (isCheckedInWithQR && sliderValue.value == 0) {
           //checkout not possible if checkedin with qrcode
+
+          print(" 2  called ");
           sliderValue.value = 100;
           checkInStatus = true;
           DialogHelper.showToast(desc: 'Use QR scanner to checkout');
         } else {
+          print(" 3  called ");
           updateCheckInOut(CheckInOutStatus.checkOut);
         }
       } else {
         if (sliderValue.value == 100) {
           //checkin
           updateCheckInOut(CheckInOutStatus.qrCheckIn);
+
+          print(" 4  called ");
         } else if (!isCheckedInWithQR && sliderValue.value == 0) {
+          print(" 5 called ");
           sliderValue.value = 100;
           checkInStatus = true;
-          DialogHelper.showToast(desc: 'Use Slider to checkout');
+          DialogHelper.showToast(desc: 'Use Slider to checkout ok ');
           Get.back();
         } else {
+          print("6   called ");
           updateCheckInOut(CheckInOutStatus.qrCheckOut);
         }
         qr = null;

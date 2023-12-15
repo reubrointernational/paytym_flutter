@@ -127,7 +127,7 @@ class ReportsController extends GetxController
     if (responseString == null) {
       return;
     } else {
-      print("Get Overtime Respons: ${responseString.toString()}");
+      print("Get Overtime Response: ${responseString.toString()}");
       hideLoading();
       overtimeResponseModel.value =
           overtimeListResponseModelFromJson(responseString);

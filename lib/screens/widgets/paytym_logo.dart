@@ -8,7 +8,8 @@ class PaytymLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/png/logo.png',
+      // 'assets/png/logo.png',
+      'assets/png/paytym_logo.png',
       height: size,
       color: color,
     );

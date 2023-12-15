@@ -23,6 +23,7 @@ class _ScanTimeState extends State<ScanTime> {
 
   @override
   Widget build(BuildContext context) {
+    print("Scantime called");
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       body: SafeArea(
@@ -37,6 +38,7 @@ class _ScanTimeState extends State<ScanTime> {
                     if (barcode.rawValue == null) {
                       debugPrint('Failed to scan Barcode');
                     } else {
+                      print("Barcode value: ${barcode.rawValue.toString()}");
                       Get.find<DashboardController>().qr = barcode.rawValue;
                       Get.find<DashboardController>().sliderValueChanged = true;
                       Get.find<DashboardController>().sliderController(

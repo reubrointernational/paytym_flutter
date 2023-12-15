@@ -25,8 +25,11 @@ class DashboardAppBar extends StatelessWidget {
           children: [
             // CustomSVG(IconPath.menuSvg, size: 20),
             // kSizedBoxW15,
-            PaytymLogo(
-              size: 60,
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: PaytymLogo(
+                size: 45,
+              ),
             )
           ],
         ),
@@ -50,8 +53,9 @@ class DashboardAppBar extends StatelessWidget {
                               ?.capabilities
                               ?.first
                               .role
-                              ?.roleName !=
-                          'Employee')
+                              ?.roleName
+                              ?.toLowerCase() ==
+                          'hr')
                     PopupMenuItem(
                       value: kDashboardDropDownItemList[3].dropDownItem,
                       child: Text(
