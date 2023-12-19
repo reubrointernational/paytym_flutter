@@ -46,7 +46,7 @@ class ReportsController extends GetxController
   final ReceivePort _port = ReceivePort();
   String sharePath = '';
   FilesTypeListModel filesTypeListModel =
-      FilesTypeListModel(fileTypes: [], message: '');
+  FilesTypeListModel(fileTypes: [], message: '');
 
   late TabController controller;
   late TabController subTabController;
@@ -116,18 +116,18 @@ class ReportsController extends GetxController
     showLoading();
     var model = {
       'employee_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+      '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
     };
     Get.find<BaseClient>().onError = getOvertime;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.getOvertime, jsonEncode(model),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     print("Get Overtime URL: ${ApiEndPoints.getOvertime.toString()}");
     if (responseString == null) {
       return;
     } else {
-      print("Get Overtime Respons: ${responseString.toString()}");
+      print("Get Overtime Response: ${responseString.toString()}");
       hideLoading();
       overtimeResponseModel.value =
           overtimeListResponseModelFromJson(responseString);
@@ -140,12 +140,12 @@ class ReportsController extends GetxController
     showLoading();
     var model = {
       'employee_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
+      '${Get.find<LoginController>().loginResponseModel?.employee?.id}'
     };
     Get.find<BaseClient>().onError = getAdvance;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.getAdvance, jsonEncode(model),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     print("Get Overtime URL: ${ApiEndPoints.getAdvance.toString()}");
     if (responseString == null) {
@@ -163,7 +163,7 @@ class ReportsController extends GetxController
     Get.find<BaseClient>().onError = fetchFileTypeList;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.fileTypeListEmployee, null,
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return null;
@@ -181,13 +181,13 @@ class ReportsController extends GetxController
         "POST", Uri.parse(ApiEndPoints.uploadFilesEmployee));
     FileUploadRequestModel fileUploadRequestModel = FileUploadRequestModel(
       employerId: Get.find<LoginController>()
-              .loginResponseModel
-              ?.employee
-              ?.employerId
-              .toString() ??
+          .loginResponseModel
+          ?.employee
+          ?.employerId
+          .toString() ??
           '',
       fileTypeId:
-          filesTypeListModel.fileTypes[selectedIndex.value].id.toString(),
+      filesTypeListModel.fileTypes[selectedIndex.value].id.toString(),
       userId: Get.find<LoginController>()
           .loginResponseModel!
           .employee!
@@ -200,7 +200,7 @@ class ReportsController extends GetxController
     request.fields.addAll(fileUploadRequestModel.toJson());
     request.headers.addAll(Get.find<LoginController>().getHeader()!);
     var multipartFile =
-        await http.MultipartFile.fromPath('file', filePath.value);
+    await http.MultipartFile.fromPath('file', filePath.value);
     print("multipartfile:${filePath.value.toString()}");
     request.files.add(multipartFile);
     var streamResponse = await request.send();
@@ -222,7 +222,7 @@ class ReportsController extends GetxController
     Get.find<BaseClient>().onError = fetchFileTypeList;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.uploadFilesEmployee, jsonEncode(map),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
@@ -260,18 +260,18 @@ class ReportsController extends GetxController
 
   getSumDeductionAmount(List deductionList) {
     bool isEmpty = (Get.find<ReportsController>()
-                .deductionResponseModel
-                .value
-                .deductions
-                ?.isEmpty ??
-            true) ||
+        .deductionResponseModel
+        .value
+        .deductions
+        ?.isEmpty ??
+        true) ||
         (Get.find<ReportsController>()
-                .deductionResponseModel
-                .value
-                .deductions
-                ?.first
-                .assignDeduction
-                ?.isEmpty ??
+            .deductionResponseModel
+            .value
+            .deductions
+            ?.first
+            .assignDeduction
+            ?.isEmpty ??
             true);
     if (isEmpty) {
       return 0;
@@ -294,7 +294,7 @@ class ReportsController extends GetxController
     Get.find<BaseClient>().onError = fetchPayslip(selPayslipDate);
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.payslip, jsonEncode(map),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     print("Fetch Payslip Response string:${responseString}");
 
@@ -333,7 +333,7 @@ class ReportsController extends GetxController
     Get.find<BaseClient>().onError = fetchPayslipCopy;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.payslip, jsonEncode(map),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     print("fetchPayslipCopy Response String:$responseString");
     if (responseString == null) {
@@ -398,14 +398,14 @@ class ReportsController extends GetxController
     showLoading();
     var model = {
       'employee_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.id}',
+      '${Get.find<LoginController>().loginResponseModel?.employee?.id}',
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     Get.find<BaseClient>().onError = getMedical;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.medicalList, jsonEncode(model),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
@@ -452,7 +452,7 @@ class ReportsController extends GetxController
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.employeeFileList, jsonEncode(requestModel),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     hideLoading();
     if (responseString == null) {
@@ -479,7 +479,7 @@ class ReportsController extends GetxController
     int startIndex = input.indexOf('public/');
     if (startIndex != -1) {
       String substring =
-          input.substring(startIndex + 7); // +7 to skip "public/"
+      input.substring(startIndex + 7); // +7 to skip "public/"
       return substring;
     } else {
       // Handle the case where "public/" is not found in the input string.
@@ -503,7 +503,7 @@ class ReportsController extends GetxController
 
   setSplitPayment(BuildContext context) async {
     if (splitAmount
-            .reduce((previousValue, element) => previousValue + element) ==
+        .reduce((previousValue, element) => previousValue + element) ==
         100) {
       Navigator.pop(context);
       showLoading();
@@ -525,10 +525,10 @@ class ReportsController extends GetxController
       };
       var responseString = await Get.find<BaseClient>()
           .post(
-            ApiEndPoints.splitPayment,
-            jsonEncode(requestModel),
-            Get.find<LoginController>().getHeader(),
-          )
+        ApiEndPoints.splitPayment,
+        jsonEncode(requestModel),
+        Get.find<LoginController>().getHeader(),
+      )
           .catchError(handleError);
       hideLoading();
       if (responseString == null) {
@@ -536,7 +536,7 @@ class ReportsController extends GetxController
       } else {
         DialogHelper.showToast(
             desc:
-                messageOnlyResponseModelFromJson(responseString).message ?? '');
+            messageOnlyResponseModelFromJson(responseString).message ?? '');
         getSplitPayment();
         //Get.find<BaseClient>().onError = null;
       }
@@ -580,7 +580,7 @@ class ReportsController extends GetxController
     Get.find<BaseClient>().onError = getDeduction;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.deductions, null,
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
@@ -597,16 +597,16 @@ class ReportsController extends GetxController
     showLoading();
     var requestModel = {
       'employer_id':
-          Get.find<LoginController>().loginResponseModel!.employee!.employerId,
+      Get.find<LoginController>().loginResponseModel!.employee!.employerId,
       'date': DateTime.now.toString(),
     };
 
     var responseString = await Get.find<BaseClient>()
         .post(
-          ApiEndPoints.employeeAttendance,
-          jsonEncode(requestModel),
-          Get.find<LoginController>().getHeader(),
-        )
+      ApiEndPoints.employeeAttendance,
+      jsonEncode(requestModel),
+      Get.find<LoginController>().getHeader(),
+    )
         .catchError(handleError);
 
     if (responseString == null) {
@@ -652,11 +652,11 @@ class ReportsController extends GetxController
     Get.find<BaseClient>().onError = getProjects;
     var requestModel = {
       'employer_id':
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
     };
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.projectsList, jsonEncode(requestModel),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     hideLoading();
     if (responseString == null) {
@@ -709,7 +709,7 @@ class ReportsController extends GetxController
       print("Project Name ${projectDetails.name.toString()}");
 
       for (ProjectsListEmployeeproject item
-          in projectList[i].employeeproject ?? []) {
+      in projectList[i].employeeproject ?? []) {
         if (item.employeeId.toString() !=
             '${Get.find<LoginController>().loginResponseModel?.employee?.id}') {
           print(item.employeeId.toString());
@@ -770,7 +770,7 @@ class ReportsController extends GetxController
         savedDir: await DownloadPath().getDownloadPath(),
         showNotification: true,
         openFileFromNotification: true,
-        fileName: 'paytym_doc_.pdf',
+        // fileName: 'paytym_doc_.pdf',
       );
 
       print("Downloadpdf: Task id:${taskId.toString()}");
@@ -788,16 +788,16 @@ class ReportsController extends GetxController
   OvertimeStatusModel getOvertimeStatusModel(String? status) {
     switch (status) {
       case '1':
-        //1 => status - approved
+      //1 => status - approved
         return OvertimeStatusModel(
             'Approved', CustomColors.greenColor, CustomColors.lightGreenColor);
       case '2':
-        //2 => status - declined
+      //2 => status - declined
         return OvertimeStatusModel(
             'Declined', CustomColors.redColor, CustomColors.lightRedColor);
       case '0':
       default:
-        //0 => status - awaiting
+      //0 => status - awaiting
         return OvertimeStatusModel('Awaiting', CustomColors.orangeLabelColor,
             CustomColors.lightOrangeColor);
     }
@@ -806,16 +806,16 @@ class ReportsController extends GetxController
   AdvanceStatusModel getAdvanceStatusModel(String? status) {
     switch (status) {
       case '1':
-        //1 => status - approved
+      //1 => status - approved
         return AdvanceStatusModel(
             'Approved', CustomColors.greenColor, CustomColors.lightGreenColor);
       case '2':
-        //2 => status - declined
+      //2 => status - declined
         return AdvanceStatusModel(
             'Declined', CustomColors.redColor, CustomColors.lightRedColor);
       case '0':
       default:
-        //0 => status - awaiting
+      //0 => status - awaiting
         return AdvanceStatusModel('Awaiting', CustomColors.orangeLabelColor,
             CustomColors.lightOrangeColor);
     }
@@ -931,7 +931,7 @@ class ReportsController extends GetxController
       print('port.listen test');
       DownloadTaskStatus status = data[1];
       // int progress = data[2];
-
+      print(status.toString());
       //download completed
       if (status == DownloadTaskStatus.complete) {
         //Download completed from Share button

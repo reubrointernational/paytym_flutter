@@ -131,7 +131,7 @@ class CheckInOutCard extends StatelessWidget {
                   //       ),
                   //     ),
                   //   ),
-                  // ),
+                  //  ),
                   Obx(
                     () => RichText(
                       text: TextSpan(

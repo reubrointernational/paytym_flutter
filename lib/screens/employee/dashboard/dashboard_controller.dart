@@ -335,11 +335,11 @@ class DashboardController extends GetxController with BaseController {
       sliderValue.value = value;
       if (value > 95) {
         sliderValue.value = 100;
-        updateCheckInOut(CheckInOutStatus.checkIn);
+       // updateCheckInOut(CheckInOutStatus.checkIn);
 
       } else if (value < 5) {
         sliderValue.value = 0;
-        updateCheckInOut(CheckInOutStatus.checkOut);
+       // updateCheckInOut(CheckInOutStatus.checkOut);
       } else {
         sliderValue.value = checkInStatus ? 100 : 0;
       }
@@ -464,7 +464,7 @@ class DashboardController extends GetxController with BaseController {
       updateTime();
     });
     //update check-in data when app starts
-    updateCheckInData();
+    //updateCheckInData();
     updateFCMToken();
   }
 

@@ -25,7 +25,7 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Get.find<ReportsController>().fetchFiles());
+            (_) => Get.find<ReportsController>().fetchFiles());
     Get.put(ReportsController());
 
     var file = Get.find<ReportsController>().filePath.value;
@@ -51,14 +51,14 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                         color: Colors.black,
                       ),
                       children: [
-                    TextSpan(
-                      text: ' *',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ])),
+                        TextSpan(
+                          text: ' *',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ])),
               kSizedBoxH10,
               //File type drop down
               DecoratedBox(
@@ -77,14 +77,14 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                         child: DropdownButton<FileType>(
                           isExpanded: true,
                           value: snapshot.data?.fileTypes[
-                              Get.find<ReportsController>()
-                                  .selectedIndex
-                                  .value],
+                          Get.find<ReportsController>()
+                              .selectedIndex
+                              .value],
                           onChanged: (FileType? value) {
                             if (value != null) {
                               Get.find<ReportsController>()
-                                      .selectedIndex
-                                      .value =
+                                  .selectedIndex
+                                  .value =
                                   snapshot.data!.fileTypes.indexOf(value);
                             }
                             setState(() {});
@@ -157,31 +157,31 @@ class _EmployeeUploadFilesPageState extends State<EmployeeUploadFilesPage> {
                   children: [
                     Container(
                       height:
-                          Get.find<ReportsController>().filePath.value.isEmpty
-                              ? 0
-                              : h * 0.3,
+                      Get.find<ReportsController>().filePath.value.isEmpty
+                          ? 0
+                          : h * 0.3,
                       width: double.infinity,
                       color: Colors.transparent,
                       //child: Container(),
                       child: Get.find<ReportsController>()
-                              .filePath
-                              .value
-                              .isEmpty
+                          .filePath
+                          .value
+                          .isEmpty
                           ? const SizedBox()
                           : Image.file(File(
-                              Get.find<ReportsController>().filePath.value)),
+                          Get.find<ReportsController>().filePath.value)),
                     ),
                     kSizedBoxH6,
                     // Attach file Name
                     Center(
                         child: Text(path.basename(Get.find<ReportsController>()
-                                .filePath
-                                .value
-                                .toString()) ??
+                            .filePath
+                            .value
+                            .toString()) ??
                             "prasanth")
-                        // Text(getExactFilenameFromFilefullpath(
-                        //     Get.find<ReportsController>().filePath.value.toString())),
-                        ),
+                      // Text(getExactFilenameFromFilefullpath(
+                      //     Get.find<ReportsController>().filePath.value.toString())),
+                    ),
                   ],
                 );
               }),
