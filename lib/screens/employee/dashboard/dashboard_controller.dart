@@ -329,19 +329,34 @@ class DashboardController extends GetxController with BaseController {
     }
   }
 
-  sliderController(
-    double value,
-  ) {
+  sliderController(double value)
+  {
     if (sliderValueChanged) {
+      sliderValue.value = value;
       if (value > 95) {
         sliderValue.value = 100;
+        updateCheckInOut(CheckInOutStatus.checkIn);
+
       } else if (value < 5) {
         sliderValue.value = 0;
+        updateCheckInOut(CheckInOutStatus.checkOut);
       } else {
         sliderValue.value = checkInStatus ? 100 : 0;
       }
+  // void sliderController(double value) {
+  //   if (sliderValueChanged) {
+  //     sliderValue.value = value;
+  //     if (value == 100) {
+  //       updateCheckInOut(CheckInOutStatus.checkIn);
+  //     } else if (value == 0) {
+  //       updateCheckInOut(CheckInOutStatus.checkOut);
+  //     }
+  //     sliderValueChanged = false;
+  //   }
+  // }
 
-      if (qr == null) {
+
+  if (qr != null) {
         if (sliderValue.value == 100) {
           //checkin
           updateCheckInOut(CheckInOutStatus.checkIn);
@@ -359,7 +374,7 @@ class DashboardController extends GetxController with BaseController {
           updateCheckInOut(CheckInOutStatus.qrCheckIn);
         } else if (!isCheckedInWithQR && sliderValue.value == 0) {
           sliderValue.value = 100;
-          checkInStatus = true;
+          checkInStatus = false;
           DialogHelper.showToast(desc: 'Use Slider to checkout');
           Get.back();
         } else {

@@ -145,6 +145,8 @@ class CalendarCardAdmin extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: BorderedTextFormField(
+
+
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
                                                 RegExp(r'[0-9-]')),
@@ -165,7 +167,7 @@ class CalendarCardAdmin extends StatelessWidget {
                                                       calendarTabList[1]
                                                   ? kDateString.substring(0, 4)
                                                   : kStartDateString,
-                                          keyboardType: TextInputType.datetime,
+                                          keyboardType: TextInputType.none,
                                           suffixIcon: GestureDetector(
                                             onTap: () => Get.find<
                                                     CalendarControllerAdmin>()

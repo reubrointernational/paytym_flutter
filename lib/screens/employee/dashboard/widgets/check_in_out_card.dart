@@ -71,7 +71,7 @@ class CheckInOutCard extends StatelessWidget {
                                       const Color.fromARGB(255, 2, 69, 124),*/
                                   overlayShape: SliderComponentShape.noOverlay,
                                   thumbShape: const CustomRoundSliderThumbShape(
-                                    enabledThumbRadius: 18.0,
+                                    enabledThumbRadius: 17.0,
                                   ),
                                 ),
                                 child: Slider(
@@ -89,8 +89,14 @@ class CheckInOutCard extends StatelessWidget {
                                   onChangeEnd: (double value) =>
                                       Get.find<DashboardController>()
                                           .sliderController(value),
+
+
+
                                 ),
                               ),
+                             // if (Get.find<DashboardController>().sliderValue.value == 100)
+
+
                             ],
                           ),
                         ),

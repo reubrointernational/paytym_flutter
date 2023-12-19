@@ -26,7 +26,7 @@ class BorderedTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.onSaved,
     this.suffixIcon,
-    this.keyboardType,
+    required this.keyboardType,
     this.controller,
     this.inputBorder,
     this.inputFormatters,

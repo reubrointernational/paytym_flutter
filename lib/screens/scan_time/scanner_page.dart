@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:paytym/core/colors/colors.dart';
@@ -44,6 +46,9 @@ class _ScanTimeState extends State<ScanTime> {
                             ? 100
                             : 0,
                       );
+                      Timer(Duration(seconds: 4), () {
+                        Get.back();
+                      });
                     }
                   }),
             ),

@@ -31,6 +31,7 @@ class CreateCalendarRequestModel {
   String place;
   String startDate;
   String startTime;
+
   String endDate;
   String endTime;
   String type;

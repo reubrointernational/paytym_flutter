@@ -85,6 +85,7 @@ class LeaveDialogue extends StatelessWidget {
                     ),
                     kSizedBoxH6,
                     BorderedTextFormField(
+                        keyboardType:TextInputType.none,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
                       ],
@@ -94,7 +95,7 @@ class LeaveDialogue extends StatelessWidget {
                       controller:
                           Get.find<LeavesController>().startDateController,
                       hintText: kStartDateString,
-                      keyboardType: TextInputType.datetime,
+                     // keyboardType: TextInputType.datetime,
                       suffixIcon: GestureDetector(
                         onTap: () => Get.find<LeavesController>()
                             .selectDateTime(context, true),
@@ -114,7 +115,7 @@ class LeaveDialogue extends StatelessWidget {
                       hintText: kEndDateString,
                       controller:
                           Get.find<LeavesController>().endDateController,
-                      keyboardType: TextInputType.datetime,
+                      keyboardType: TextInputType.none,
                       suffixIcon: GestureDetector(
                         onTap: () => Get.find<LeavesController>()
                             .selectDateTime(context, false),
@@ -134,8 +135,11 @@ class LeaveDialogue extends StatelessWidget {
                                 .formatTimeOfDay(selectedTime);
                       }),
                       child: BorderedTextFormField(
+                        keyboardType:TextInputType.none,
+
                         enabled: false,
                         inputFormatters: [
+
                           FilteringTextInputFormatter.allow(
                             RegExp(r'[0-9-]'),
                           ),
@@ -146,7 +150,7 @@ class LeaveDialogue extends StatelessWidget {
                         controller:
                             Get.find<LeavesController>().startTimeController,
                         hintText: kStartTimeString,
-                        keyboardType: TextInputType.datetime,
+                       // keyboardType: TextInputType.datetime,
                         suffixIcon: const Icon(
                           Icons.access_time,
                           size: 18,
@@ -192,6 +196,7 @@ class LeaveDialogue extends StatelessWidget {
                     ),
                     kSizedBoxH6,
                     BorderedTextFormField(
+                      keyboardType: TextInputType.text,
                       maxLines: 5,
                       maxLength: 300,
                       onSaved: (value) => Get.find<LeavesController>()
