@@ -7,6 +7,7 @@ import 'package:paytym/screens/employee/calendar/widgets/calendar_card.dart';
 import 'package:flutter/material.dart';
 import 'package:paytym/screens/widgets/custom_app_bar.dart';
 import '../../../core/constants/strings.dart';
+import '../../login/login_controller.dart';
 import '../../widgets/custom_tab_bar.dart';
 import 'Tabs/meeting/calendar_meeting_tab.dart';
 import 'Tabs/event/calendar_event_tab.dart';
@@ -17,6 +18,9 @@ class CalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Calender Build called");
+    print(
+        "Approve: ${Get.find<LoginController>().loginResponseModel?.capabilities?[0].approveAttendance}");
     Get.put(CalendarController());
     return DefaultTabController(
       length: calendarTabList.length,

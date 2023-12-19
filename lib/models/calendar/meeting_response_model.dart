@@ -259,13 +259,13 @@ class User {
   String? postcode;
   String? countryId;
   String? tin;
-  Null? fnpf;
+  String? fnpf;
   String? bank;
   String? accountNumber;
-  Null? licenceNo;
-  Null? licenceExpiryDate;
-  Null? passportNo;
-  Null? passportExpiryDate;
+  String? licenceNo;
+  String? licenceExpiryDate;
+  String? passportNo;
+  String? passportExpiryDate;
   String? image;
   String? isFirst;
   String? otp;
@@ -368,7 +368,8 @@ class User {
     fnpf = json['fnpf'];
     bank = json['bank'];
     accountNumber = json['account_number'];
-    licenceNo = json['licence_no'];
+    licenceNo = json['account_number'];
+    // licenceNo = json['licence_no'];
     licenceExpiryDate = json['licence_expiry_date'];
     passportNo = json['passport_no'];
     passportExpiryDate = json['passport_expiry_date'];

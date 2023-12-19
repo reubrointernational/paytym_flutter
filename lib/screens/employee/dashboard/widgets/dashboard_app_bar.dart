@@ -53,9 +53,8 @@ class DashboardAppBar extends StatelessWidget {
                               ?.capabilities
                               ?.first
                               .role
-                              ?.roleName
-                              ?.toLowerCase() ==
-                          'hr')
+                              ?.roleName !=
+                          'Employee')
                     PopupMenuItem(
                       value: kDashboardDropDownItemList[3].dropDownItem,
                       child: Text(
