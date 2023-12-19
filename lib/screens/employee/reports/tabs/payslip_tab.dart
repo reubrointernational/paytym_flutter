@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -180,8 +178,10 @@ class PayslipTab extends StatelessWidget {
 
                       // Share.share(url!);
                       Get.find<ReportsControllerAdmin>()
-                          .sharePdf(url, url?.getType());
+                      //  .sharePdf_OLD(url, url?.getType());
+                          .sharePdf_OLD_For_IOS(url, url?.getType());
                       // .sharePdf(url, url?.getType());
+                      //
                     },
                     icon: CircleAvatar(
                       backgroundColor: CustomColors.fabColor,
@@ -218,6 +218,22 @@ class PayslipTab extends StatelessWidget {
                           }),
                         );
                       }
+                      Get.find<ReportsControllerAdmin>().downloadFile(
+                        "emp_records",
+                        // "https://paytym.net/storage/employee_uploaded_file/Remote%20Jobs.pdf",
+                        // "https://paytym.net/storage/pdfs/EMP18_PS2023-08-08 00:00:00_19.pdf",
+                        url,
+                        ((progress, total) {
+                          if (progress == total) {
+                            Get.find<ReportsController>()
+                                .fileListResponseModel
+                                .refresh();
+                            DialogHelper.showToast(desc: 'Download completed');
+                          }
+                        }),
+                      );
+
+
                     },
                     icon: CircleAvatar(
                       backgroundColor: CustomColors.fabColor,

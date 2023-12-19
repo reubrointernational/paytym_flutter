@@ -46,6 +46,13 @@ class LoginController extends GetxController with BaseController {
     };
   }
 
+  Map<String, String>? getHeaderforOvertimeApprove() {
+    return {
+      'Accept': '*/*',
+      'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+      'Authorization': 'Bearer ${loginResponseModel?.token}'
+    };
+  }
   Future<bool> fetchLoginData() async {
     /// if login data is already present in storage it will not connect to server.
     /// login data is stored in after password reset is complete for the first time

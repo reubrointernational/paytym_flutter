@@ -41,7 +41,7 @@ class ChatController extends GetxController with BaseController {
   }
 
   fetchChat({bool isFromNotification = false}) async {
-    print("Fetchchat called");
+    print("fetchChat called");
     if (!isFromNotification) {
       showLoading();
       Get.find<BaseClient>().onError = fetchChat;
@@ -56,7 +56,6 @@ class ChatController extends GetxController with BaseController {
             }),
             Get.find<LoginController>().getHeader())
         .catchError(handleError);
-    print("Fetchchat Response");
     print(responseString);
 
     if (responseString != null) {
@@ -77,7 +76,10 @@ class ChatController extends GetxController with BaseController {
   }
 
   sendChat() async {
+    print("Send chat called");
     if (chatTextController.text.isNotEmpty) {
+
+   
       final employee =
           Get.find<LoginController>().loginResponseModel!.employee!;
       chatResponseModel.value.chats ??= [];
@@ -97,7 +99,7 @@ class ChatController extends GetxController with BaseController {
       scrollDown();
       String message = chatTextController.text;
       chatTextController.clear();
-
+print("send chat success message:$message");
       var responseString = await Get.find<BaseClient>()
           .post(
               ApiEndPoints.sendChat,
@@ -115,10 +117,16 @@ class ChatController extends GetxController with BaseController {
           .catchError(handleError);
 
       if (responseString == null) {
+         print("send chat response:$responseString");
         chatResponseModel.value.chats!.removeLast();
         chatResponseModel.refresh();
         DialogHelper.showToast(desc: 'Something went wrong');
         chatTextController.text = message;
+      }else{
+        print("send chat response:$responseString");
+        print(responseString.toString());
+
+        fetchChat(isFromNotification:true );
       }
     }
   }
