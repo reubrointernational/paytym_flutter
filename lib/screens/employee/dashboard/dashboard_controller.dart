@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paytym/core/dialog_helper.dart';
 import 'package:paytym/logout_controller.dart';
+import 'package:paytym/models/login/login_request_model.dart';
 import 'package:paytym/models/message_only_response_model.dart';
 import 'package:paytym/models/report/advance_approve_edit_request.dart';
 import 'package:paytym/network/base_controller.dart';
@@ -39,19 +40,19 @@ class DashboardController extends GetxController with BaseController {
 
   RequestAdvanceModel requestAdvanceModel = RequestAdvanceModel();
   OvertimeApproveEditRequestModel overtimeApproveEditRequestModel =
-      OvertimeApproveEditRequestModel(status: '0', id: '0');
+  OvertimeApproveEditRequestModel(status: '0', id: '0');
   AdvanceApproveEditRequestModel advanceApproveEditRequestModel =
-      AdvanceApproveEditRequestModel(status: '0', id: '0');
+  AdvanceApproveEditRequestModel(status: '0', id: '0');
 
   TextEditingController? advanceTextEditingcontroller = TextEditingController();
   TextEditingController? dateofrequiredTextEditingcontroller =
-      TextEditingController();
+  TextEditingController();
 
   TextEditingController? overtimeTextEditingController =
-      TextEditingController();
+  TextEditingController();
   final employerIdModel = {
     'employer_id':
-        '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
+    '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}'
   };
 
   String? qr;
@@ -87,19 +88,119 @@ class DashboardController extends GetxController with BaseController {
     return formattedDate;
   }
 
-  getNextShift() {
-    if (dashboardModel.value.nextShift?.startTime == null ||
-        dashboardModel.value.nextShift?.endDate == null) {
-      return '-';
-    } else {
-      DateTime dateTimeTomorrow = DateTime.now();
-      dateTimeTomorrow.day + 1;
+  // getNextShift() {
+  //   //print('${dashboardModel}===================================================');
+  //   if (dashboardModel.value.nextShift?.startTime == null ||
+  //       dashboardModel.value.nextShift?.endTime == null) {
+  //     return '-';
+  //   } else {
+  //     DateTime dateTimeTomorrow = DateTime.now();
+  //     dateTimeTomorrow.day + 1;
+  //
+  //     if (dateTimeTomorrow.isBefore(dashboardModel.value.nextShift!.endDate!)) {
+  //       DateTime startTime = DateFormat("hh:mm")
+  //           .parse(dashboardModel.value.nextShift?.startTime ?? '00:00:00');
+  //
+  //
+  //       if (startTime != DateTime(0)) {
+  //         return DateFormat('hh:mm aa').format(startTime);
+  //       }
+  //
+  //
+  //
+  //     }
+  //   }
+  //
+  //   return '-';
+  // }
+  // String getNextShift() {
+  //   if (dashboardModel.value.nextShift?.startTime == null ||
+  //       dashboardModel.value.nextShift?.endTime == null) {
+  //     // Start time and end time are null, use values in "mon", "tue", etc.
+  //     String shiftTiming = dashboardModel.value.nextShift!.mon ??
+  //         dashboardModel.value.nextShift!.tue ??
+  //         dashboardModel.value.nextShift!.wed ??
+  //         dashboardModel.value.nextShift!.thu ??
+  //         dashboardModel.value.nextShift!.fri ??
+  //         dashboardModel.value.nextShift!.sat ??
+  //         dashboardModel.value.nextShift!.sun ??
+  //         '';
+  //
+  //     if (shiftTiming.isNotEmpty) {
+  //       DateTime startTime = DateFormat("hh:mm").parse(shiftTiming.split("/")[0] ?? '00:00:00');
+  //       if (startTime != DateTime(0)) {
+  //         return DateFormat('hh:mm aa').format(startTime);
+  //       }
+  //     }
+  //   } else {
+  //     // Start time and end time are not null
+  //     DateTime dateTimeTomorrow = DateTime.now().add(Duration(days: 1+1));
+  //
+  //     if (dateTimeTomorrow.isBefore(dashboardModel.value.nextShift!.endDate!)) {
+  //       DateTime startTime = DateFormat("hh:mm").parse(dashboardModel.value.nextShift?.startTime ?? '00:00:00');
+  //
+  //       if (startTime != DateTime(0)) {
+  //         return DateFormat('hh:mm aa').format(startTime);
+  //       }
+  //     }
+  //   }
+  //
+  //   return '-';
+  // }
+  String getNextShift() {
+    if (dashboardModel.value.nextShift?.startTime != null ||
+          dashboardModel.value.nextShift?.endTime != null) {
 
-      if (dateTimeTomorrow.isBefore(dashboardModel.value.nextShift!.endDate!)) {
-        DateTime startTime = DateFormat("hh:mm")
-            .parse(dashboardModel.value.nextShift?.startTime ?? '00:00:00');
+      DateTime dateTimeTomorrow = DateTime.now();
+          dateTimeTomorrow.day + 1;
+
+          if (dateTimeTomorrow.isBefore(dashboardModel.value.nextShift!.endDate!)) {
+            DateTime startTime = DateFormat("hh:mm")
+                .parse(dashboardModel.value.nextShift?.startTime ?? '00:00:00');
+
+
+            if (startTime != DateTime(0)) {
+              return DateFormat('hh:mm aa').format(startTime);
+            }
+
+
+
+          }
+      } else {
+    if (dashboardModel.value.nextShift?.startTime == null ||
+        dashboardModel.value.nextShift?.endTime == null) {
+      // Start time and end time are null, use values in "mon", "tue", etc.
+      String shiftTiming = getShiftTimingForTomorrow();
+
+      if (shiftTiming.isNotEmpty) {
+        DateTime startTime = DateFormat("hh:mm").parse(shiftTiming.split("/")[0] ?? '00:00:00');
         if (startTime != DateTime(0)) {
           return DateFormat('hh:mm aa').format(startTime);
+        }
+      }
+    } else {
+      // Start time and end time are not null
+      DateTime nextShiftDate = dashboardModel.value.nextShift!.startDate!;
+      DateTime today = DateTime.now();
+
+      if (today.weekday == nextShiftDate.weekday) {
+        // Today is the same day as the next shift
+        DateTime startTime = DateFormat("hh:mm").parse(dashboardModel.value.nextShift?.startTime ?? '00:00:00');
+
+        if (startTime != DateTime(0)) {
+          return DateFormat('hh:mm aa').format(startTime);
+        }
+      } else {
+        // Today is not the same day as the next shift, use values in "mon", "tue", etc.
+        String shiftTiming = getShiftTimingForTomorrow();
+
+        if (shiftTiming.isNotEmpty) {
+          DateTime startTime = DateFormat("hh:mm").parse(
+              shiftTiming.split("/")[0] ?? '00:00:00');
+          if (startTime != DateTime(0)) {
+            return DateFormat('hh:mm aa').format(startTime);
+          }
+        }
         }
       }
     }
@@ -107,7 +208,56 @@ class DashboardController extends GetxController with BaseController {
     return '-';
   }
 
+  // String getShiftTimingForToday() {
+  //   DateTime today = DateTime.now();
+  //   today.day + 1;
+  //   String dayAbbreviation = DateFormat('EEE').format(today);
+  //
+  //   switch (dayAbbreviation) {
+  //     case 'Mon':
+  //       return dashboardModel.value.nextShift!.mon ?? '';
+  //     case 'Tue':
+  //       return dashboardModel.value.nextShift!.tue ?? '';
+  //     case 'Wed':
+  //       return dashboardModel.value.nextShift!.wed ?? '';
+  //     case 'Thu':
+  //       return dashboardModel.value.nextShift!.thu ?? '';
+  //     case 'Fri':
+  //       return dashboardModel.value.nextShift!.fri ?? '';
+  //     case 'Sat':
+  //       return dashboardModel.value.nextShift!.sat ?? '';
+  //     case 'Sun':
+  //       return dashboardModel.value.nextShift!.sun ?? '';
+  //     default:
+  //       return '';
+  //   }
+  // }
+  String getShiftTimingForTomorrow() {
+    DateTime tomorrow = DateTime.now().add(Duration(days: 0));
+    String dayAbbreviation = DateFormat('EEE').format(tomorrow);
+
+    switch (dayAbbreviation) {
+      case 'Mon':
+        return dashboardModel.value.nextShift!.tue ?? '';
+      case 'Tue':
+        return dashboardModel.value.nextShift!.wed ?? '';
+      case 'Wed':
+        return dashboardModel.value.nextShift!.thu ?? '';
+      case 'Thu':
+        return dashboardModel.value.nextShift!.fri ?? '';
+      case 'Fri':
+        return dashboardModel.value.nextShift!.sat ?? '';
+      case 'Sat':
+        return dashboardModel.value.nextShift!.sun ?? '';
+      case 'Sun':
+        return dashboardModel.value.nextShift!.mon ?? '';
+      default:
+        return '';
+    }
+  }
+
   getNextShiftDate() {
+    //print('${loginRequestModelFromJson}=====================================-------------====');
     if (dashboardModel.value.nextShift?.endDate == null) {
       return '-';
     } else {
@@ -118,18 +268,24 @@ class DashboardController extends GetxController with BaseController {
       if (dateTimeTomorrow.isBefore(dashboardModel.value.nextShift!.endDate!)) {
         return DateFormat('MMM dd').format(dateTimeTomorrow);
       }
+ // if (dateTimeTomorrow.isAfter(dashboardModel.value.nextShift!.startDate!)) {
+ //        return DateFormat('MMM dd').format(dashboardModel.value.nextShift!.startDate!);
+ //      }
     }
 
     return '-';
   }
 
+
   updateFCMToken() async {
+
+
     Map<String, String> map = {
       'user_id': Get.find<LoginController>()
-              .loginResponseModel
-              ?.employee
-              ?.id
-              .toString() ??
+          .loginResponseModel
+          ?.employee
+          ?.id
+          .toString() ??
           '',
       'device_id': LoginController.FCMToken
     };
@@ -142,8 +298,8 @@ class DashboardController extends GetxController with BaseController {
     if (value.isEmpty) {
       return 'Value cannot be empty';
     } else if (double.parse(
-            Get.find<LoginController>().loginResponseModel?.employee?.rate ??
-                '0') <
+        Get.find<LoginController>().loginResponseModel?.employee?.rate ??
+            '0') <
         double.parse(value)) {
       return 'Request amount should be less than salary';
     } else if (double.parse(value) <= 0) {
@@ -153,6 +309,7 @@ class DashboardController extends GetxController with BaseController {
   }
 
   changeSliderPosition(double value) {
+
     if ((sliderValue.value - value).abs() < 20) {
       sliderValue.value = value;
       sliderValueChanged = true;
@@ -204,7 +361,7 @@ class DashboardController extends GetxController with BaseController {
       //status 3 for editing overtime
       overtimeApproveEditRequestModel.status = '0';
       overtimeApproveEditRequestModel.employerId =
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
       print(
           "overtimeApproveEditRequestModel.employerId:${overtimeApproveEditRequestModel.employerId.toString()}");
       print("employeeList?.id:${employeeList?.id.toString()}");
@@ -222,12 +379,12 @@ class DashboardController extends GetxController with BaseController {
 
       var responseString = await Get.find<BaseClient>()
           .post(
-              employeeList?.id != null
-                  ? ApiEndPoints.approveOvertimeHR
-                  : ApiEndPoints.approveOvertime,
-              overtimeApproveEditRequestModelToJson(
-                  overtimeApproveEditRequestModel),
-              Get.find<LoginController>().getHeader())
+          employeeList?.id != null
+              ? ApiEndPoints.approveOvertimeHR
+              : ApiEndPoints.approveOvertime,
+          overtimeApproveEditRequestModelToJson(
+              overtimeApproveEditRequestModel),
+          Get.find<LoginController>().getHeader())
           .catchError(handleError);
 
       print('request Overtime Response:$responseString');
@@ -243,7 +400,7 @@ class DashboardController extends GetxController with BaseController {
         overtimeTextEditingController = TextEditingController();
         DialogHelper.showToast(
             desc:
-                messageOnlyResponseModelFromJson(responseString).message ?? '');
+            messageOnlyResponseModelFromJson(responseString).message ?? '');
       }
     }
   }
@@ -259,7 +416,7 @@ class DashboardController extends GetxController with BaseController {
       //status 3 for editing overtime
       advanceApproveEditRequestModel.status = '0';
       advanceApproveEditRequestModel.employerId =
-          '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
+      '${Get.find<LoginController>().loginResponseModel?.employee?.employerId}';
       print(
           "AdvanceApproveEditRequestModel.employerId:${advanceApproveEditRequestModel.employerId.toString()}");
       print("employeeList?.id:${employeeList?.id.toString()}");
@@ -277,12 +434,12 @@ class DashboardController extends GetxController with BaseController {
 
       var responseString = await Get.find<BaseClient>()
           .post(
-              employeeList?.id != null
-                  ? ApiEndPoints.approveOvertimeHR
-                  : ApiEndPoints.approveAdvance,
-              advanceApproveEditRequestModelToJson(
-                  advanceApproveEditRequestModel),
-              Get.find<LoginController>().getHeader())
+          employeeList?.id != null
+              ? ApiEndPoints.approveOvertimeHR
+              : ApiEndPoints.approveAdvance,
+          advanceApproveEditRequestModelToJson(
+              advanceApproveEditRequestModel),
+          Get.find<LoginController>().getHeader())
           .catchError(handleError);
 
       print('request Advance Response:$responseString');
@@ -298,7 +455,7 @@ class DashboardController extends GetxController with BaseController {
         advanceTextEditingcontroller = TextEditingController();
         DialogHelper.showToast(
             desc:
-                messageOnlyResponseModelFromJson(responseString).message ?? '');
+            messageOnlyResponseModelFromJson(responseString).message ?? '');
       }
     }
   }
@@ -314,9 +471,9 @@ class DashboardController extends GetxController with BaseController {
     showLoading();
     var responseString = await Get.find<BaseClient>()
         .post(
-            ApiEndPoints.requestAdvance,
-            requestAdvanceModelToJson(requestAdvanceModel),
-            Get.find<LoginController>().getHeader())
+        ApiEndPoints.requestAdvance,
+        requestAdvanceModelToJson(requestAdvanceModel),
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return;
@@ -335,36 +492,29 @@ class DashboardController extends GetxController with BaseController {
       sliderValue.value = value;
       if (value > 95) {
         sliderValue.value = 100;
-       // updateCheckInOut(CheckInOutStatus.checkIn);
+        updateCheckInOut(CheckInOutStatus.checkIn);
+        Get.back();
 
       } else if (value < 5) {
         sliderValue.value = 0;
-       // updateCheckInOut(CheckInOutStatus.checkOut);
+        updateCheckInOut(CheckInOutStatus.checkOut);
+        Get.back();
       } else {
         sliderValue.value = checkInStatus ? 100 : 0;
       }
-  // void sliderController(double value) {
-  //   if (sliderValueChanged) {
-  //     sliderValue.value = value;
-  //     if (value == 100) {
-  //       updateCheckInOut(CheckInOutStatus.checkIn);
-  //     } else if (value == 0) {
-  //       updateCheckInOut(CheckInOutStatus.checkOut);
-  //     }
-  //     sliderValueChanged = false;
-  //   }
-  // }
 
+      print('${sliderValue}================================');
 
-  if (qr != null) {
+      if (qr != null) {
+        print('${sliderValue}================================');
         if (sliderValue.value == 100) {
           //checkin
-          updateCheckInOut(CheckInOutStatus.checkIn);
+          //updateCheckInOut(CheckInOutStatus.checkIn);
         } else if (isCheckedInWithQR && sliderValue.value == 0) {
           //checkout not possible if checkedin with qrcode
           sliderValue.value = 100;
           checkInStatus = true;
-          DialogHelper.showToast(desc: 'Use QR scanner to checkout');
+         // DialogHelper.showToast(desc: 'Use QR scanner to checkout');
         } else {
           updateCheckInOut(CheckInOutStatus.checkOut);
         }
@@ -372,12 +522,21 @@ class DashboardController extends GetxController with BaseController {
         if (sliderValue.value == 100) {
           //checkin
           updateCheckInOut(CheckInOutStatus.qrCheckIn);
-        } else if (!isCheckedInWithQR && sliderValue.value == 0) {
+        } else if (!isCheckedInWithQR==0&& sliderValue.value == 100) {
+          updateCheckInOut(CheckInOutStatus.qrCheckOut);
+
+
           sliderValue.value = 100;
           checkInStatus = false;
           DialogHelper.showToast(desc: 'Use Slider to checkout');
           Get.back();
-        } else {
+        }//else if (!isCheckedInWithQR&& sliderValue.value ==0) {
+        //   sliderValue.value = 100;
+        //   checkInStatus = false;
+        //   DialogHelper.showToast(desc: 'Use Slider to checkout');
+        //   Get.back();
+        // }
+        else {
           updateCheckInOut(CheckInOutStatus.qrCheckOut);
         }
         qr = null;
@@ -419,7 +578,7 @@ class DashboardController extends GetxController with BaseController {
 
   String? dateValidator(String value) {
     final regExp =
-        RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
+    RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
     return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
         ? null
         : "Enter a valid date";
@@ -428,7 +587,7 @@ class DashboardController extends GetxController with BaseController {
   String? dateValidatorloan(String value) {
     print("Loan selected date ${value}");
     final regExp =
-        RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
+    RegExp(r'^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[012])\-\d{4}$');
     return regExp.hasMatch(value) && GetUtils.isLengthEqualTo(value, 10)
         ? null
         : "Enter a valid date in DD-MM-YYYY format";
@@ -497,7 +656,7 @@ class DashboardController extends GetxController with BaseController {
     Get.find<BaseClient>().onError = fetchDashboardDetails;
     var responseString = await Get.find<BaseClient>()
         .post(ApiEndPoints.dashboard, null,
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
     if (responseString == null) {
       return null;
@@ -519,7 +678,7 @@ class DashboardController extends GetxController with BaseController {
 
   updateCheckInData() async {
     Map<String, String> storageMap =
-        await Get.find<SharedPreferenceHelper>().getStorageData();
+    await Get.find<SharedPreferenceHelper>().getStorageData();
 
     DateTime now = DateTime.now();
 
@@ -552,8 +711,8 @@ class DashboardController extends GetxController with BaseController {
     try {
       checkInOutTimer =
           Timer.periodic(const Duration(minutes: 1), (timer) async {
-        seconds.value++;
-      });
+            seconds.value++;
+          });
     } catch (e) {
       print(e.toString());
     }
@@ -637,7 +796,7 @@ class DashboardController extends GetxController with BaseController {
 
     var responseString = await Get.find<BaseClient>()
         .post(endPoint, jsonEncode(employerIdModel),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
 
     return handleResponseForMessageOnlyResponse(responseString);
@@ -645,13 +804,13 @@ class DashboardController extends GetxController with BaseController {
 
   Future<bool> serverCheckInOutByScan(bool isCheckIn) async {
     String endPoint =
-        isCheckIn ? ApiEndPoints.checkInByScan : ApiEndPoints.checkOutByScan;
-    showLoading();
+    isCheckIn ? ApiEndPoints.checkInByScan : ApiEndPoints.checkOutByScan;
+    //showLoading();
     employerIdModel['qr_code'] = qr!;
     // employerIdModel['qr_code'] = 'ss123';
     var responseString = await Get.find<BaseClient>()
         .post(endPoint, jsonEncode(employerIdModel),
-            Get.find<LoginController>().getHeader())
+        Get.find<LoginController>().getHeader())
         .catchError(handleError);
 
     print('qr = null');

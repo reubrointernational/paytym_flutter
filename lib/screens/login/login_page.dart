@@ -86,16 +86,17 @@ class LoginPage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        print('jjj==7777777777777777777=---------------------================================');
+
                         Get.find<LoginController>()
-                            .validateAndGoToMainOrOtpPage();
+                            .validateAndGoToMainOrOtpPage();},
                         style: ElevatedButton.styleFrom(
                         backgroundColor: CustomColors.buttonColor,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                         ),
-                        );
-                        },
+                        ),
+
                       child: const Text(
                         kLogInString,
                         style: TextStyle(

@@ -152,6 +152,8 @@ class DashboardControllerAdmin extends GetxController with BaseController {
   }
 
   fetchDashboardDetails() async {
+
+
     Get.find<BaseClient>().onError = fetchDashboardDetails;
     var requestModel = {
       'employer_id':

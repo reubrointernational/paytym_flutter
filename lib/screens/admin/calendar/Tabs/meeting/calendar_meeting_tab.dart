@@ -27,16 +27,16 @@ class CalendarMeetingAdmin extends StatelessWidget {
         "Meeting List 1: ${Get.find<CalendarControllerAdmin>().meetingResponseModel.value.meetingsListe?.length.toString()}");
 
     return Obx(
-      () => ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        reverse: true,
-        itemCount: Get.find<CalendarControllerAdmin>()
-                .meetingResponseModel
-                .value
-                .meetingsListe
-                ?.length ??
-            0,
-        itemBuilder: (context, index) {
+          () => ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  reverse: true,
+                  itemCount: Get.find<CalendarControllerAdmin>()
+            .meetingResponseModel
+            .value
+            .meetingsListe
+            ?.length ??
+            1,
+                  itemBuilder: (context, index) {
           final meeting = Get.find<CalendarControllerAdmin>()
               .meetingResponseModel
               .value
@@ -123,7 +123,7 @@ class CalendarMeetingAdmin extends StatelessWidget {
 
                                           Get.to(MeetingHRAttendessListPage(
                                               listOfAttendees:
-                                                  meetingAttendees));
+                                              meetingAttendees));
                                         },
                                         child: AvatarStack(
                                           height: 30,
@@ -144,15 +144,15 @@ class CalendarMeetingAdmin extends StatelessWidget {
                                             );
                                           },
                                           avatars: [
-// Now you have a list of Image.network widgets in the networkImages list.
+          // Now you have a list of Image.network widgets in the networkImages list.
                                             for (var n = 0;
-                                                n < meetingAttendees!.length;
-                                                n++)
+                                            n < meetingAttendees!.length;
+                                            n++)
                                               NetworkImage(
                                                   '$kStorageUrl${meetingAttendees[n]?.image}')
-//                               for (var n = 0; n < 5; n++)
-//                                 NetworkImage(
-//                                     '$kStorageUrl${meeting?.meetings?.user?.image}')
+          //                               for (var n = 0; n < 5; n++)
+          //                                 NetworkImage(
+          //                                     '$kStorageUrl${meeting?.meetings?.user?.image}')
                                           ],
                                         ),
                                       ),
@@ -198,30 +198,30 @@ class CalendarMeetingAdmin extends StatelessWidget {
                             Center(
                               child: IconButton(
                                   onPressed: meeting?.userId ==
-                                          Get.find<LoginController>()
-                                              .loginResponseModel!
-                                              .employee!
-                                              .id
+                                      Get.find<LoginController>()
+                                          .loginResponseModel!
+                                          .employee!
+                                          .id
                                       ? () {
-                                          DialogHelper.showConfirmDialog(
-                                              title: 'Delete Meeting',
-                                              desc:
-                                                  'Do you want to delete this meeting?',
-                                              onConfirm: () {
-                                                Get.find<
-                                                        CalendarControllerAdmin>()
-                                                    .deleteMeeting(index);
-                                                Get.back();
-                                              });
-                                        }
+                                    DialogHelper.showConfirmDialog(
+                                        title: 'Delete Meeting',
+                                        desc:
+                                        'Do you want to delete this meeting?',
+                                        onConfirm: () {
+                                          Get.find<
+                                              CalendarControllerAdmin>()
+                                              .deleteMeeting(index);
+                                          Get.back();
+                                        });
+                                  }
                                       : null,
                                   icon: Icon(
                                     Icons.delete_outline_outlined,
                                     color: meeting?.userId ==
-                                            Get.find<LoginController>()
-                                                .loginResponseModel!
-                                                .employee!
-                                                .id
+                                        Get.find<LoginController>()
+                                            .loginResponseModel!
+                                            .employee!
+                                            .id
                                         ? CustomColors.redColor
                                         : CustomColors.greyTextColor,
                                   )),
@@ -235,9 +235,9 @@ class CalendarMeetingAdmin extends StatelessWidget {
               ],
             ),
           );
-        },
-        separatorBuilder: (BuildContext context, int index) => kSizedBoxH10,
-      ),
+                  },
+                  separatorBuilder: (BuildContext context, int index) => kSizedBoxH10,
+                ),
     );
   }
 }

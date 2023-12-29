@@ -25,22 +25,20 @@ class AttendanceByHrRequestModel {
     required this.date,
   });
 
-
   factory AttendanceByHrRequestModel.fromJson(Map<String, dynamic> json) =>
       AttendanceByHrRequestModel(
-        employerId: json['employer_id'],
-        employeeId: json['employee_id'],
-        checkInTime: json['check_in_time'],
-        checkOutTime: json['check_out_time'],
+        employerId: json["employer_id"],
+        employeeId: json["employee_id"],
+        checkInTime: json["check_in_time"],
+        checkOutTime: json["check_out_time"],
         date: json["date"],
       );
 
-
   Map<String, dynamic> toJson() => {
-        "employer_id": employerId,
-        "employee_id": employeeId,
-        "check_in_time": checkInTime,
-        "check_out_time": checkOutTime,
-        "date": date,
-      };
+    "employer_id": employerId,
+    "employee_id": employeeId,
+    "check_in_time": checkInTime,
+    "check_out_time": checkOutTime,
+    "date": date,
+  };
 }

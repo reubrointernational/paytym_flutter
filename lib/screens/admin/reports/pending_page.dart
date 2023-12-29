@@ -23,7 +23,7 @@ class PendingAttendanceScreen extends StatelessWidget {
     return CustomAdminScaffold(
       title: 'Pending Attendance',
       child: Obx(
-        () {
+            () {
           List<History>? attendanceList = Get.find<ReportsControllerAdmin>()
               .attendanceResponseModel
               .value
@@ -79,8 +79,8 @@ class PendingAttendanceScreen extends StatelessWidget {
                       Expanded(
                         child: attendanceList!.isNotEmpty
                             ? AttendanceCardColumn(
-                                attendanceElement: attendanceList![index],
-                              )
+                          attendanceElement: attendanceList![index],
+                        )
                             : Text("No Pending Attendance 2"),
                       ),
                       Column(
@@ -88,11 +88,11 @@ class PendingAttendanceScreen extends StatelessWidget {
                           IconButton(
                             onPressed: () {
                               Get.find<ReportsControllerAdmin>().selectedItem =
-                                  attendanceList![index];
+                              attendanceList![index];
 
                               Get.find<ReportsControllerAdmin>()
                                   .approveOrDeclineAttendance(
-                                      ReasonButton.attendanceApprove);
+                                  ReasonButton.attendanceApprove);
                             },
                             icon: RoundedIcon(
                               iconPath: Icons.done,
@@ -102,10 +102,10 @@ class PendingAttendanceScreen extends StatelessWidget {
                           IconButton(
                             onPressed: () {
                               Get.find<ReportsControllerAdmin>().selectedItem =
-                                  attendanceList![index];
+                              attendanceList![index];
                               Get.find<ReportsControllerAdmin>()
                                   .showBottomSheetForReason(
-                                      ReasonButton.attendanceEdit);
+                                  ReasonButton.attendanceEdit);
                             },
                             icon: RoundedIcon(
                               iconPath: Icons.edit_outlined,
@@ -116,10 +116,10 @@ class PendingAttendanceScreen extends StatelessWidget {
                           IconButton(
                             onPressed: () {
                               Get.find<ReportsControllerAdmin>().selectedItem =
-                                  attendanceList![index];
+                              attendanceList![index];
                               Get.find<ReportsControllerAdmin>()
                                   .showBottomSheetForReason(
-                                      ReasonButton.attendanceDecline);
+                                  ReasonButton.attendanceDecline);
                             },
                             icon: RoundedIcon(
                               iconPath: Icons.close,

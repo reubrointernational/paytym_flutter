@@ -70,6 +70,7 @@ class ResetPasswordPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+
                     Get.find<LoginController>()
                         .goToMainPageFromPasswordResetPage();
                   },

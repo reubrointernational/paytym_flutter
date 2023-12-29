@@ -17,6 +17,8 @@ class DashboardAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(DashboardControllerAdmin(), permanent: true);
+    DashboardControllerAdmin  dashboardDetails= DashboardControllerAdmin();
+    print('$dashboardDetails------------------------------------');
     return Scaffold(
       floatingActionButton: Animate(
         effects: const [

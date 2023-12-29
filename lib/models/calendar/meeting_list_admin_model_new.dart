@@ -21,7 +21,7 @@ class MeetingListAdminModel {
       message: json['message'],
       meetingsListe: json['meetings liste'] != null
           ? List<MeetingsListe>.from(
-              json['meetings liste'].map((x) => MeetingsListe.fromJson(x)),
+              json['meetings liste'].map((x) => MeetingsListe?.fromJson(x)),
             )
           : null,
     );
@@ -192,25 +192,25 @@ class User {
   String? dateOfBirth;
   String? street;
   String? city;
-  Null? town;
+  var town;
   String? postcode;
   String? countryId;
   String? tin;
-  Null? fnpf;
+  var fnpf;
   String? bank;
   String? accountNumber;
-  Null? licenceNo;
-  Null? licenceExpiryDate;
-  Null? passportNo;
-  Null? passportExpiryDate;
+  var licenceNo;
+  var licenceExpiryDate;
+  var passportNo;
+  var passportExpiryDate;
   String? image;
   String? isFirst;
   String? otp;
   String? deviceId;
-  Null? emailVerifiedAt;
+  var emailVerifiedAt;
   String? createdAt;
   String? updatedAt;
-  Null? forgotPassOtp;
+  var forgotPassOtp;
   int? status;
 
   User(
@@ -318,6 +318,7 @@ class User {
     updatedAt = json['updated_at'];
     forgotPassOtp = json['forgot_pass_otp'];
     status = json['status'];
+
   }
 
   Map<String, dynamic> toJson() {

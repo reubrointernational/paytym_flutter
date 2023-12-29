@@ -14,7 +14,7 @@ import '../../login/login_controller.dart';
 
 class CalendarController extends GetxController with BaseController {
   final selectedCalendarTab = CalendarTabs.meeting.obs;
-  final meetingResponseModel = MeetingResponseModel().obs;
+  final meetingResponseModel = MeetingResponseModel(meetingsList: [],).obs;
   final eventsResponseModel = EventsResponseModel().obs;
   final leaveAdminResponseModel =
       HolidayAdminResponseModel(leaveList: [], message: '').obs;

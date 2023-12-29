@@ -25,8 +25,11 @@ class DashboardAppBar extends StatelessWidget {
           children: [
             // CustomSVG(IconPath.menuSvg, size: 20),
             // kSizedBoxW15,
-            PaytymLogo(
-              size: 60,
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: PaytymLogo(
+                size: 45,
+              ),
             )
           ],
         ),
@@ -37,22 +40,21 @@ class DashboardAppBar extends StatelessWidget {
               color: CustomColors.blueTextColor,
               itemBuilder: (BuildContext context) {
                 return [
-                  if (
-                Get.find<LoginController>()
-                              .loginResponseModel
-                              ?.capabilities !=
-                          null &&
+                  if (Get.find<LoginController>()
+                      .loginResponseModel
+                      ?.capabilities !=
+                      null &&
                       Get.find<LoginController>()
                           .loginResponseModel!
                           .capabilities!
                           .isNotEmpty &&
                       Get.find<LoginController>()
-                              .loginResponseModel
-                              ?.capabilities
-                              ?.first
-                              .role
-                              ?.roleName?.toLowerCase() ==
-                          'HR'.toLowerCase())
+                          .loginResponseModel
+                          ?.capabilities
+                          ?.first
+                          .role
+                          ?.roleName !=
+                          'Employee')
                     PopupMenuItem(
                       value: kDashboardDropDownItemList[3].dropDownItem,
                       child: Text(
@@ -64,7 +66,7 @@ class DashboardAppBar extends StatelessWidget {
                     ),
                   ...List.generate(
                     3,
-                    (index) => PopupMenuItem(
+                        (index) => PopupMenuItem(
                       value: kDashboardDropDownItemList[index].dropDownItem,
                       child: Text(
                         kDashboardDropDownItemList[index].label,
@@ -82,7 +84,7 @@ class DashboardAppBar extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
                 child: CachedNetworkImage(
                   imageUrl:
-                      '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image}',
+                  '$kStorageUrl${Get.find<LoginController>().loginResponseModel?.employee?.image}',
                   imageBuilder: (context, imageProvider) => Animate(
                     effects: const [
                       ScaleEffect(duration: Duration(microseconds: 500))
@@ -98,7 +100,7 @@ class DashboardAppBar extends StatelessWidget {
                     size: 30,
                   ),
                   errorWidget: (context, url, error) =>
-                      const Icon(Icons.person, color: Colors.blue),
+                  const Icon(Icons.person, color: Colors.blue),
                 ),
               ),
             ),

@@ -13,13 +13,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/strings.dart';
 import '../../../routes/app_routes.dart';
+import '../../admin/dashboard/dashboard_controller.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
 
+
   @override
   Widget build(BuildContext context) {
+
+
     Get.lazyPut(() => DashboardController(), fenix: true);
    // int status =
      //   Get.find<LoginController>().loginResponseModel?.employee?.status ?? 0;

@@ -48,7 +48,7 @@ class MeetingResponseModel {
   //   return data;
   // }
 
-  Map<String, dynamic> toJson() => {
+  Map<String?, dynamic> toJson() => {
         "message": message,
         "meetings": meetingsList == null
             ? []
@@ -64,7 +64,7 @@ class MeetingsList {
 
   MeetingsList({this.id, this.meetingId, this.attendeeId, this.meetings});
 
-  MeetingsList.fromJson(Map<String, dynamic> json) {
+  MeetingsList.fromJson(Map<String?, dynamic> json) {
     id = json['id'];
     meetingId = json['meeting_id'];
     attendeeId = json['attendee_id'];
@@ -72,7 +72,7 @@ class MeetingsList {
         json['meetings'] != null ? Meetings.fromJson(json['meetings']) : null;
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String?, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['meeting_id'] = this.meetingId;
@@ -114,7 +114,7 @@ class Meetings {
       this.meetingAttendeess,
       this.user});
 
-  Meetings.fromJson(Map<String, dynamic> json) {
+  Meetings.fromJson(Map<String?, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     employerId = json['employer_id'];
@@ -135,10 +135,8 @@ class Meetings {
       meetingAttendeess = <MeetingAttendeess>[];
       json['meeting_attendeess'] != null
           ? json['meeting_attendeess'].forEach((v) {
-              if (MeetingAttendeess.fromJson(v) != null) {
-                meetingAttendeess!.add(MeetingAttendeess.fromJson(v));
-              }
-            })
+              meetingAttendeess!.add(MeetingAttendeess.fromJson(v));
+                        })
           : null;
     }
     // meetingAttendeess = (json['meeting_attendeess'] != null
@@ -151,10 +149,10 @@ class Meetings {
     //     meetingAttendeess!.add(new MeetingAttendeess.fromJson(v));
     //   });
     // }
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    user = json['user'];// != null ? User.fromJson(json['user']) : null;
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String?, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['user_id'] = this.userId;
@@ -196,7 +194,7 @@ class MeetingAttendeess {
     this.image,
   });
 
-  factory MeetingAttendeess.fromJson(Map<String, dynamic>? json) {
+  factory MeetingAttendeess.fromJson(Map<String?, dynamic>? json) {
     if (json == null) {
       // Handle the case where json is null (or return a default value)
       return MeetingAttendeess();
@@ -212,7 +210,7 @@ class MeetingAttendeess {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String?, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['employer_id'] = this.employerId;

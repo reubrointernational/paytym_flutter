@@ -10,8 +10,10 @@ import 'package:paytym/models/login/otp_request_model.dart';
 import 'package:paytym/models/login/password_reset_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:paytym/screens/login/license_expired_page.dart';
 
+import '../../core/dialog_helper.dart';
 import '../../network/base_client.dart';
 import '../../network/base_controller.dart';
 import '../../network/end_points.dart';
@@ -36,11 +38,14 @@ class LoginController extends GetxController with BaseController {
   get key => null;
 
   Map<String, String>? getHeader() {
+
     return {
       'content-type': 'application/json',
       'Authorization': 'Bearer ${loginResponseModel?.token}'
     };
   }
+
+
 
   Map<String, String>? getHeaderforpayroll() {
     return {
@@ -86,6 +91,7 @@ class LoginController extends GetxController with BaseController {
         var Branchname= responseData['employee']['bank_branch_name'];
         var Salary= responseData['employee']['rate'];
         var status= responseData['employee']['status'];
+        var token=responseData['token'];
 
 
 
@@ -94,6 +100,7 @@ class LoginController extends GetxController with BaseController {
         print('Employee Branch: $Branchname');
         print('Employee Branch: $Salary');
         print('Employee Branch: $status');
+        print('token  :$token');
         if(status==1){
           print('Employee Status: Active');
         }
@@ -262,9 +269,26 @@ class LoginController extends GetxController with BaseController {
     }
   }
 
+  // goToMainPageFromPasswordResetPage() async {
+  //   if (formKeyResetPassword.currentState!.validate()) {
+  //     formKeyResetPassword.currentState!.save();
+  //     if (userModel.password.isNotEmpty &&
+  //         userModel.password == userModel.confirmPassword) {
+  //       MessageOnlyResponseModel? confirmModel = await updatePassword();
+  //
+  //       if (confirmModel != null) {
+  //         loginResponseModel?.employee?.id != null
+  //             ? Get.offAllNamed(Routes.bottomNav)
+  //             : Get.offAllNamed(Routes.login);
+  //       }
+  //     }
+  //   }
+  // }
+
   goToMainPageFromPasswordResetPage() async {
     if (formKeyResetPassword.currentState!.validate()) {
       formKeyResetPassword.currentState!.save();
+
       if (userModel.password.isNotEmpty &&
           userModel.password == userModel.confirmPassword) {
         MessageOnlyResponseModel? confirmModel = await updatePassword();
@@ -274,9 +298,14 @@ class LoginController extends GetxController with BaseController {
               ? Get.offAllNamed(Routes.bottomNav)
               : Get.offAllNamed(Routes.login);
         }
+      } else {
+        // Passwords do not match, show validation message with custom Snackbar
+        DialogHelper.showToast(desc: 'Passwords do not match ');
       }
     }
   }
+
+
 
   goToOTPPage() async {
     if (formKeyForgotPassword.currentState!.validate()) {

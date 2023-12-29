@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:paytym/screens/admin/dashboard/dashboard_controller.dart';
 
 class CustomCardDetails extends StatelessWidget {
-  const CustomCardDetails({super.key});
+   const CustomCardDetails({super.key});
+  //var ac=Get.find<DashboardControllerAdmin>().fetchDashboardDetails();
 
   @override
   Widget build(BuildContext context) {
+
     return Animate(
       effects: const [
         FadeEffect(
@@ -17,6 +19,7 @@ class CustomCardDetails extends StatelessWidget {
         ),
       ],
       child: FutureBuilder(
+
         future: Get.find<DashboardControllerAdmin>().fetchDashboardDetails(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return GridView.builder(
